@@ -45,7 +45,6 @@ public class Case {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Reservation reservation;
 
-    @OneToMany
-    @JoinColumn(referencedColumnName = "id")
-    private List<Document> documents;
+    @OneToMany(mappedBy = "caseEntity")
+    private List<Document> documentList;
 }

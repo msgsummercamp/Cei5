@@ -29,6 +29,5 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private Case caseId;
-
+    private Case caseEntity;
 }
