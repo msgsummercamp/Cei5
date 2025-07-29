@@ -9,7 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+import com.airassist.backend.model.Comment;
+import com.airassist.backend.model.UserDetails;
 
 @Entity
 @Data
