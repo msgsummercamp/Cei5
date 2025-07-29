@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.airassist.backend.model.User;
-import com.airassist.backend.model.Case;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +18,7 @@ public class Comment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false, length = 500)
@@ -29,9 +27,8 @@ public class Comment {
     @Column(nullable = false)
     private Timestamp timestamp;
 
-    //later import
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private Case case;
+    private Case caseId;
 
 }

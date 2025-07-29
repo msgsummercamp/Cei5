@@ -6,14 +6,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Blob;
 
 @Entity
-@Table(name = "document")
+@Table(name = "documents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Documents {
+public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,9 +26,10 @@ public class Documents {
     private DocumentTypes type;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
-    private Blob content;
+    @Column
+    private byte[] content;
 
-    @OneToOne(mappedBy = "document")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Case caseEntity;
 }

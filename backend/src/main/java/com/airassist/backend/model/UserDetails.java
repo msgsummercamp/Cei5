@@ -7,12 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.NumberFormat;
-
 import java.util.Date;
 
 @Entity
-@Table(name = "user_details")
+@Table(name = "userdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

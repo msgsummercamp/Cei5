@@ -7,14 +7,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
-import com.airassist.backend.model.Comment;
-import com.airassist.backend.model.UserDetails;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -34,11 +31,11 @@ public class User {
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
-    @Column(nullable = false)
+    @Column
     @Size(max = 50, message = "First name must be less than 50 characters")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column
     @Size(max = 50, message = "Last name must be less than 50 characters")
     private String lastName;
 
@@ -46,17 +43,15 @@ public class User {
     private Roles role;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_details_id", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private UserDetails userDetails;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> comments;
 
-    //later import
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "assignedColleague")
     private List<Case> cases;
 
-    private boolean isFirstLogin = false;
-
-
+    @Column(nullable = false)
+    private boolean isFirstLogin = true;
 }

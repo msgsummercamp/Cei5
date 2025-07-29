@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "case_table")
+@Table(name = "cases")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +19,6 @@ public class Case {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // later import
     @Enumerated(EnumType.STRING)
     private Statuses status;
 
@@ -34,21 +33,19 @@ public class Case {
     @PastOrPresent
     private Date date;
 
-    // later import
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", nullable = false)
-    private User user;
+    private User client;
 
-    // later import
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
-    private User colleague;
+    private User assignedColleague;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "reservation_number", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Reservation reservation;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(referencedColumnName = "id")
-    private Documents document;
+    private List<Document> documents;
 }

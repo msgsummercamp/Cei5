@@ -11,7 +11,7 @@ import java.sql.Time;
 import java.util.Date;
 
 @Entity
-@Table(name = "flight")
+@Table(name = "flights")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,8 +49,13 @@ public class Flight {
     private Time arrivalTime;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "reservation_number", referencedColumnName = "reservation_number")
+    @JoinColumn(referencedColumnName = "id")
     private Reservation reservation;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Airline cannot be blank")
+    @Size(min = 3, max = 50, message = "Airline must be between 3 and 50 characters")
+    private String airLine;
 
     @Column(nullable = false)
     @NotBlank(message = "Passenger name cannot be blank")
