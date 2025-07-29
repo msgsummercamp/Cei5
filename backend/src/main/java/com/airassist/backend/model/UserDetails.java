@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "userdetails")
@@ -16,8 +17,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Phone number cannot be blank")

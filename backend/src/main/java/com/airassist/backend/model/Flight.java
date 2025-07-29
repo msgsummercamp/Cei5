@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Time;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "flights")
@@ -17,8 +18,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Flight {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     @NotBlank(message = "Flight date cannot be blank")

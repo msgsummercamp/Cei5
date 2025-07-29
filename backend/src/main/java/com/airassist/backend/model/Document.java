@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Entity
 @Table(name = "documents")
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     @NotBlank(message = "Document name cannot be blank")
