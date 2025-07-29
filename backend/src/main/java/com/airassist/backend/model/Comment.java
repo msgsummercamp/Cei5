@@ -29,8 +29,9 @@ public class Comment {
     @Column(nullable = false)
     private Timestamp timestamp;
 
+    //later import
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "case_id", nullable = false)
+    @JoinColumn(nullable = false, referencedColumnName = "id")
     private Case case;
 
 }

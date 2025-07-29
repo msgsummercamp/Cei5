@@ -52,6 +52,10 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> comments;
 
+    //later import
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Case> cases;
+
     private boolean isFirstLogin = false;
 
 
