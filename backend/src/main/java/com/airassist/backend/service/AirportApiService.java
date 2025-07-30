@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,19 @@ import java.util.Map;
  */
 @Service
 @NoArgsConstructor
+@Getter
 public class AirportApiService {
 
-    @Value("https://airportgap.com/api/airports/distance")
-    private String airportApiUrl;
+    @Value("${airport.api.url}")
+    public String airportApiUrl;
 
     private RestTemplate restTemplate;
     private ObjectMapper objectMapper;
 
     @PostConstruct
-    private void init() {
-        this.restTemplate = new RestTemplate();
-        this.objectMapper = new ObjectMapper();
+    void init() {
+        restTemplate = new RestTemplate();
+        objectMapper = new ObjectMapper();
     }
 
     /**
