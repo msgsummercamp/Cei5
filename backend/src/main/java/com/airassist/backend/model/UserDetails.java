@@ -7,19 +7,18 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.NumberFormat;
-
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
-@Table(name = "user_details")
+@Table(name = "userdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Phone number cannot be blank")

@@ -6,17 +6,17 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Blob;
+import java.util.UUID;
 
 @Entity
-@Table(name = "document")
+@Table(name = "documents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Documents {
+public class Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     @NotBlank(message = "Document name cannot be blank")
@@ -27,9 +27,10 @@ public class Documents {
     private DocumentTypes type;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
-    private Blob content;
+    @Column
+    private byte[] content;
 
-    @OneToOne(mappedBy = "document")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Case caseEntity;
 }
