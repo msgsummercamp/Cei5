@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +24,7 @@ public class Flight {
     @Column(nullable = false)
     @NotBlank(message = "Flight date cannot be blank")
     @PastOrPresent(message = "Flight date must be in the past or present")
-    private Date flightDate;
+    private LocalDate flightDate;
 
     @Column(nullable = false)
     @NotBlank(message = "Flight number cannot be blank")
@@ -43,11 +43,11 @@ public class Flight {
 
     @Column(nullable = false)
     @NotBlank(message = "Departure time cannot be blank")
-    private Time departureTime;
+    private LocalDateTime departureTime;
 
     @Column(nullable = false)
     @NotBlank(message = "Arrival time cannot be blank")
-    private Time arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @ManyToOne(optional = false)
     @JoinColumn(referencedColumnName = "id")

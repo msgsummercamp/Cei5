@@ -6,7 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class Case {
 
     @Column(nullable = false)
     @PastOrPresent
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", nullable = false)
