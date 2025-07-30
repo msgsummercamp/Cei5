@@ -1,0 +1,69 @@
+<p-card>
+  <form novalidate [formGroup]="flightDetailsForm">
+    <p-floatlabel variant="on">
+      <p-datepicker
+        inputId="buttondisplay"
+        formControlName="flightDate"
+        id="flightDate"
+      />
+      <label for="flightDate">Flight Date</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <label for="flightNumber">Flight Number</label>
+      <input
+        pInputText
+        type="text"
+        formControlName="flightNumber"
+        id="flightNumber"
+      />
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <label for="airline">Airline</label>
+      <input pInputText type="text" formControlName="airline" id="airline" />
+    </p-floatlabel>
+
+    <p-float-label variant="on">
+      <p-autocomplete
+        id="departingAirport"
+        formControlName="departingAirport"
+        field="name"
+        [dropdown]="true"
+      />
+      <label for="departingAirport">Departing Airport</label>
+    </p-float-label>
+
+    <p-float-label variant="on">
+      <p-autocomplete
+        id="destinationAirport"
+        formControlName="destinationAirport"
+        field="name"
+        [dropdown]="true"
+      />
+      <label for="destinationAirport">Destination Airport</label>
+    </p-float-label>
+
+    <p-floatlabel variant="on">
+      <p-datepicker
+        inputId="calendar-24h"
+        formControlName="plannedDepartureTime"
+        id="plannedDepartureTime"
+        [showTime]="true"
+        [hourFormat]="'24'"
+      />
+      <label for="plannedDepartureTime">Planned Departure Time</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <p-datepicker
+        inputId="calendar-24h"
+        formControlName="plannedArrivalTime"
+        id="plannedArrivalTime"
+        [showTime]="true"
+        [hourFormat]="'24'"
+      />
+      <label for="plannedArrivalTime">Planned Arrival Time</label>
+    </p-floatlabel>
+  </form>
+</p-card>
