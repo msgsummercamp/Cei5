@@ -63,6 +63,9 @@ export class CaseFormComponent {
       plannedArrivalTime: this._formBuilder.control<Date | null>(null),
     });
 
+  // default title for the form
+  public readonly title = input<string>('Flight Details');
+
   public getFormValue(): FlightDetails {
     return this.flightDetailsForm.value as FlightDetails;
   }
