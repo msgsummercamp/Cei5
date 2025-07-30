@@ -1,0 +1,82 @@
+<p-stepper [value]="currentStep">
+  <p-step-list>
+    <p-step [value]="1">Reservation Info</p-step>
+    <p-step [value]="2">Flight Details</p-step>
+    <p-step [value]="3">Passenger Info</p-step>
+  </p-step-list>
+  <p-step-panels>
+    <p-step-panel [value]="1">
+      <ng-template pTemplate="content" let-nextCallback="nextCallback">
+        <p-card>
+          <form [formGroup]="reservationForm" (ngSubmit)="onNext(nextCallback)">
+            <h2>Reservation Info</h2>
+
+            <p-floatlabel variant="on">
+              <input
+                pInputText
+                id="reservationNumber"
+                formControlName="reservationNumber"
+              />
+              <label for="reservationNumber">Reservation Number</label>
+            </p-floatlabel>
+
+            <p-floatlabel variant="on">
+              <p-autocomplete
+                id="departingAirport"
+                formControlName="departingAirport"
+                field="name"
+                [dropdown]="true"
+              />
+              <label for="departingAirport">Departing Airport</label>
+            </p-floatlabel>
+
+            <p-floatlabel variant="on">
+              <p-autocomplete
+                id="destinationAirport"
+                formControlName="destinationAirport"
+                field="name"
+                [dropdown]="true"
+              />
+              <label for="destinationAirport">Destination Airport</label>
+            </p-floatlabel>
+
+            <div class="step-actions">
+              <p-button
+                label="Next"
+                severity="primary"
+                (onClick)="onNext(nextCallback)"
+                [disabled]="reservationForm.invalid"
+              />
+            </div>
+          </form>
+        </p-card>
+      </ng-template>
+    </p-step-panel>
+    <p-step-panel [value]="2">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-nextCallback="nextCallback"
+      >
+        <p-card>
+          <h2>Flight Details</h2>
+          <app-case-form #mainFlightForm> </app-case-form>
+
+          <div class="step-actions">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+            />
+            <p-button
+              label="Next"
+              severity="primary"
+              [disabled]="!isMainFlightValid(mainFlightForm)"
+              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
+            />
+          </div>
+        </p-card>
+      </ng-template>
+    </p-step-panel>
+  </p-step-panels>
+</p-stepper>
