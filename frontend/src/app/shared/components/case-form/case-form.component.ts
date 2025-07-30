@@ -14,6 +14,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
 
+// Interface for flight details
 export interface FlightDetails {
   flightDate: Date | null;
   flightNumber: string;
@@ -54,12 +55,14 @@ type FlightDetailsForm = {
 export class CaseFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
+  // Date limits for flight date
   protected readonly maxDate = new Date();
   protected readonly minDate = (() => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - 3);
     return date;
   })();
+  // Form group for flight details
   protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>({
     flightDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
     flightNumber: this._formBuilder.control<string>('', [
@@ -86,8 +89,10 @@ export class CaseFormComponent {
     plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });
 
+  // default title for the form
   public readonly title = input<string>('Flight Details');
 
+  // Getter for the form value
   public getFormValue(): FlightDetails {
     return this.flightDetailsForm.value as FlightDetails;
   }

@@ -1,6 +1,8 @@
+<!-- Design of the case form -->
 <p-card>
   <h2>{{ title() }}</h2>
   <form novalidate [formGroup]="flightDetailsForm">
+    <!-- Flight Date -->
     <div class="field">
       <p-floatlabel variant="on">
         <p-datepicker
@@ -21,6 +23,7 @@
       }
     </div>
 
+    <!-- Flight Number -->
     <div class="field">
       <p-floatlabel variant="on">
         <label for="flightNumber">Flight Number</label>
@@ -59,6 +62,7 @@
       }
     </div>
 
+    <!-- Airline -->
     <div class="field">
       <p-floatlabel variant="on">
         <label for="airline">Airline</label>
@@ -97,6 +101,7 @@
       }
     </div>
 
+    <!-- Departing Airport -->
     <div class="field">
       <p-float-label variant="on">
         <p-autocomplete
@@ -135,6 +140,7 @@
       }
     </div>
 
+    <!-- Destination Airport -->
     <div class="field">
       <p-float-label variant="on">
         <p-autocomplete
@@ -173,6 +179,7 @@
       }
     </div>
 
+    <!-- Planned Departure Time -->
     <div class="field">
       <p-floatlabel variant="on">
         <p-datepicker
@@ -200,6 +207,7 @@
       }
     </div>
 
+    <!-- Planned Arrival Time -->
     <div class="field">
       <p-floatlabel variant="on">
         <p-datepicker

@@ -6,14 +6,12 @@ import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-import {
-  FlightDetails,
-  CaseFormComponent,
-} from '../case-form/case-form.component';
+import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 
@@ -48,12 +46,26 @@ export class CaseStartComponent {
     data: FlightDetails | null;
   } | null)[] = new Array(this.maxConnections).fill(null);
 
+  // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
-    reservationNumber: new FormControl<string>(''),
-    departingAirport: new FormControl<string>(''),
-    destinationAirport: new FormControl<string>(''),
+    reservationNumber: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(6),
+    ]),
+    departingAirport: new FormControl<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(3),
+      Validators.required,
+    ]),
+    destinationAirport: new FormControl<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(3),
+      Validators.required,
+    ]),
   });
 
+  // Navigation methods: previous and next
   public onPrevious(prevCallback?: Function) {
     this.currentStep--;
     if (prevCallback) {
@@ -70,10 +82,7 @@ export class CaseStartComponent {
     }
   }
 
-  public onNextFromFlightDetails(
-    nextCallback?: Function,
-    mainFlightForm?: any
-  ) {
+  public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any) {
     if (this.isMainFlightValid(mainFlightForm)) {
       this.flightData = mainFlightForm.getFormValue();
       this.currentStep++;
@@ -92,14 +101,14 @@ export class CaseStartComponent {
     }
   }
 
+  // Checker for main flight validity
   public isMainFlightValid(mainFlightForm: any): boolean {
     return mainFlightForm?.flightDetailsForm?.valid || false;
   }
 
+  // Function to add a new connection flight
   public addConnectionFlight(): void {
-    const emptyIndex = this.connectionFlights.findIndex(
-      (flight) => flight === null
-    );
+    const emptyIndex = this.connectionFlights.findIndex((flight) => flight === null);
     if (emptyIndex !== -1) {
       this.connectionFlights[emptyIndex] = {
         id: emptyIndex + 1,
@@ -109,27 +118,30 @@ export class CaseStartComponent {
     }
   }
 
+  // Checker for adding more connections
   public canAddMoreConnections(): boolean {
     return this.connectionFlights.some((flight) => flight === null);
   }
 
+  // Function to remove a connection flight (inplace of the missing connections)
   public removeConnectionFlight(index: number): void {
     if (index >= 0 && index < this.connectionFlights.length) {
       this.connectionFlights[index] = null;
     }
   }
 
+  // Validity check for all connection flights
   public areAllConnectionFlightsValid(): boolean {
-    const activeFlights = this.connectionFlights.filter(
-      (flight) => flight !== null
-    );
+    const activeFlights = this.connectionFlights.filter((flight) => flight !== null);
     if (activeFlights.length === 0) {
       return true;
     }
-    // change this after validations are implemented
+
+    // TODO: imaplement actual validation logic
     return true;
   }
 
+  // Function to handle validity change of connection flights
   public onConnectionFlightValidityChange(
     index: number,
     isValid: boolean,
@@ -141,6 +153,7 @@ export class CaseStartComponent {
     }
   }
 
+  // Function to get active connection flights
   public getActiveConnectionFlights(): {
     id: number;
     valid: boolean;
