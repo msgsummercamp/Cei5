@@ -54,5 +54,5 @@ public class User {
     private List<Case> cases;
 
     @Column(nullable = false)
-    private boolean isFirstLogin = true;
+    private Boolean isFirstLogin = true;
 }
