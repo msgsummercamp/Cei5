@@ -1,70 +1,230 @@
 <p-card>
   <h2>{{ title() }}</h2>
   <form novalidate [formGroup]="flightDetailsForm">
-    <p-floatlabel variant="on">
-      <p-datepicker
-        inputId="buttondisplay"
-        formControlName="flightDate"
-        id="flightDate"
-      />
-      <label for="flightDate">Flight Date</label>
-    </p-floatlabel>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-datepicker
+          inputId="buttondisplay"
+          formControlName="flightDate"
+          id="flightDate"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [readonlyInput]="true"
+        />
+        <label for="flightDate">Flight Date</label>
+      </p-floatlabel>
+      @if (
+        flightDetailsForm.controls.flightDate.hasError('required') &&
+        flightDetailsForm.controls.flightDate.touched
+      ) {
+        <p-message severity="error" variant="simple" size="small" text="Flight Date is required." />
+      }
+    </div>
 
-    <p-floatlabel variant="on">
-      <label for="flightNumber">Flight Number</label>
-      <input
-        pInputText
-        type="text"
-        formControlName="flightNumber"
-        id="flightNumber"
-      />
-    </p-floatlabel>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <label for="flightNumber">Flight Number</label>
+        <input pInputText type="text" formControlName="flightNumber" id="flightNumber" />
+      </p-floatlabel>
+      @if (
+        flightDetailsForm.controls.flightNumber.touched &&
+        flightDetailsForm.controls.flightNumber.errors
+      ) {
+        @switch (true) {
+          @case (flightDetailsForm.controls.flightNumber.hasError('required')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Flight Number is required."
+            />
+          }
+          @case (flightDetailsForm.controls.flightNumber.hasError('minlength')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Flight Number must be at least 3 characters."
+            />
+          }
+          @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Flight Number must be at most 6 characters."
+            />
+          }
+        }
+      }
+    </div>
 
-    <p-floatlabel variant="on">
-      <label for="airline">Airline</label>
-      <input pInputText type="text" formControlName="airline" id="airline" />
-    </p-floatlabel>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <label for="airline">Airline</label>
+        <input pInputText type="text" formControlName="airline" id="airline" />
+      </p-floatlabel>
+      @if (
+        flightDetailsForm.controls.airline.touched && flightDetailsForm.controls.airline.errors
+      ) {
+        @switch (true) {
+          @case (flightDetailsForm.controls.airline.hasError('required')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Airline name is required."
+            />
+          }
+          @case (flightDetailsForm.controls.airline.hasError('minlength')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Airline name must be at least 3 characters."
+            />
+          }
+          @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Airline number must be at most 50 characters."
+            />
+          }
+          @default {}
+        }
+      }
+    </div>
 
-    <p-float-label variant="on">
-      <p-autocomplete
-        id="departingAirport"
-        formControlName="departingAirport"
-        field="name"
-        [dropdown]="true"
-      />
-      <label for="departingAirport">Departing Airport</label>
-    </p-float-label>
+    <div class="field">
+      <p-float-label variant="on">
+        <p-autocomplete
+          id="departingAirport"
+          formControlName="departingAirport"
+          field="name"
+          [dropdown]="true"
+        />
+        <label for="departingAirport">Departing Airport</label>
+      </p-float-label>
+      @if (
+        flightDetailsForm.controls.departingAirport.touched &&
+        flightDetailsForm.controls.departingAirport.errors
+      ) {
+        @switch (true) {
+          @case (flightDetailsForm.controls.departingAirport.hasError('required')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Departing Airport is required."
+            />
+          }
+          @case (
+            flightDetailsForm.controls.departingAirport.hasError('minlength') ||
+            flightDetailsForm.controls.departingAirport.hasError('maxlength')
+          ) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Departing Airport must be exactly 3 characters."
+            />
+          }
+        }
+      }
+    </div>
 
-    <p-float-label variant="on">
-      <p-autocomplete
-        id="destinationAirport"
-        formControlName="destinationAirport"
-        field="name"
-        [dropdown]="true"
-      />
-      <label for="destinationAirport">Destination Airport</label>
-    </p-float-label>
+    <div class="field">
+      <p-float-label variant="on">
+        <p-autocomplete
+          id="destinationAirport"
+          formControlName="destinationAirport"
+          field="name"
+          [dropdown]="true"
+        />
+        <label for="destinationAirport">Destination Airport</label>
+      </p-float-label>
+      @if (
+        flightDetailsForm.controls.destinationAirport.touched &&
+        flightDetailsForm.controls.destinationAirport.errors
+      ) {
+        @switch (true) {
+          @case (flightDetailsForm.controls.destinationAirport.hasError('required')) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Destination Airport is required."
+            />
+          }
+          @case (
+            flightDetailsForm.controls.destinationAirport.hasError('minlength') ||
+            flightDetailsForm.controls.destinationAirport.hasError('maxlength')
+          ) {
+            <p-message
+              severity="error"
+              variant="simple"
+              size="small"
+              text="Destination Airport must be exactly 3 characters."
+            />
+          }
+        }
+      }
+    </div>
 
-    <p-floatlabel variant="on">
-      <p-datepicker
-        inputId="calendar-24h"
-        formControlName="plannedDepartureTime"
-        id="plannedDepartureTime"
-        [showTime]="true"
-        [hourFormat]="'24'"
-      />
-      <label for="plannedDepartureTime">Planned Departure Time</label>
-    </p-floatlabel>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-datepicker
+          inputId="calendar-24h"
+          formControlName="plannedDepartureTime"
+          id="plannedDepartureTime"
+          [showTime]="true"
+          [hourFormat]="'24'"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [readonlyInput]="true"
+        />
+        <label for="plannedDepartureTime">Planned Departure Time</label>
+      </p-floatlabel>
+      @if (
+        flightDetailsForm.controls.plannedDepartureTime.hasError('required') &&
+        flightDetailsForm.controls.plannedDepartureTime.touched
+      ) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small"
+          text="Planned Departure Time is required."
+        />
+      }
+    </div>
 
-    <p-floatlabel variant="on">
-      <p-datepicker
-        inputId="calendar-24h"
-        formControlName="plannedArrivalTime"
-        id="plannedArrivalTime"
-        [showTime]="true"
-        [hourFormat]="'24'"
-      />
-      <label for="plannedArrivalTime">Planned Arrival Time</label>
-    </p-floatlabel>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-datepicker
+          inputId="calendar-24h"
+          formControlName="plannedArrivalTime"
+          id="plannedArrivalTime"
+          [showTime]="true"
+          [hourFormat]="'24'"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [readonlyInput]="true"
+        />
+        <label for="plannedArrivalTime">Planned Arrival Time</label>
+      </p-floatlabel>
+      @if (
+        flightDetailsForm.controls.plannedArrivalTime.hasError('required') &&
+        flightDetailsForm.controls.plannedArrivalTime.touched
+      ) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small"
+          text="Planned Arrival Time is required."
+        />
+      }
+    </div>
   </form>
 </p-card>

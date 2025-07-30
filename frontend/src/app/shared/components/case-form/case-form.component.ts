@@ -3,6 +3,7 @@ import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +12,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ListboxModule } from 'primeng/listbox';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MessageModule } from 'primeng/message';
 
 export interface FlightDetails {
   flightDate: Date | null;
@@ -44,6 +46,7 @@ type FlightDetailsForm = {
     ListboxModule,
     IftaLabelModule,
     AutoCompleteModule,
+    MessageModule,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -51,19 +54,38 @@ type FlightDetailsForm = {
 export class CaseFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
-  // TODO: validate data
-  protected readonly flightDetailsForm =
-    this._formBuilder.group<FlightDetailsForm>({
-      flightDate: this._formBuilder.control<Date | null>(null),
-      flightNumber: this._formBuilder.control<string>(''),
-      airline: this._formBuilder.control<string>(''),
-      departingAirport: this._formBuilder.control<string>(''),
-      destinationAirport: this._formBuilder.control<string>(''),
-      plannedDepartureTime: this._formBuilder.control<Date | null>(null),
-      plannedArrivalTime: this._formBuilder.control<Date | null>(null),
-    });
+  protected readonly maxDate = new Date();
+  protected readonly minDate = (() => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 3);
+    return date;
+  })();
+  protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>({
+    flightDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
+    flightNumber: this._formBuilder.control<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(6),
+      Validators.required,
+    ]),
+    airline: this._formBuilder.control<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(50),
+      Validators.required,
+    ]),
+    departingAirport: this._formBuilder.control<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(3),
+      Validators.required,
+    ]),
+    destinationAirport: this._formBuilder.control<string>('', [
+      Validators.minLength(3),
+      Validators.maxLength(3),
+      Validators.required,
+    ]),
+    plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
+    plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
+  });
 
-  // default title for the form
   public readonly title = input<string>('Flight Details');
 
   public getFormValue(): FlightDetails {
