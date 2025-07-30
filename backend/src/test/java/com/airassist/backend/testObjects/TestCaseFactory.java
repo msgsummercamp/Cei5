@@ -36,7 +36,7 @@ public class TestCaseFactory {
                 .id(UUID.randomUUID())
                 .status(status)
                 .disruptionReason(reason)
-                .disruptionInfo("Test disruption info")
+                .disruptionInfo("DTO disruption info")
                 .date(LocalDate.now())
                 .client(client)
                 .assignedColleague(null)

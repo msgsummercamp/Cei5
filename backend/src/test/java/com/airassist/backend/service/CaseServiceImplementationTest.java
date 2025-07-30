@@ -37,7 +37,27 @@ public class CaseServiceImplementationTest {
         caseRepository = Mockito.mock(CaseRepository.class);
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
-        caseService = new CaseServiceImplementation(caseRepository,caseMapper);
+        caseMapper = Mockito.mock(CaseMapper.class);
+        caseService = new CaseServiceImplementation(caseRepository, caseMapper);
+
+        Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
+                .thenAnswer(inv -> {
+                    CaseDTO dto = inv.getArgument(0);
+                    return Case.builder()
+                            .id(UUID.randomUUID())
+                            .status(dto.getStatus())
+                            .disruptionReason(dto.getDisruptionReason())
+                            .disruptionInfo(dto.getDisruptionInfo())
+                            .date(dto.getDate())
+                            .client(dto.getClient())
+                            .assignedColleague(dto.getAssignedColleague())
+                            .reservation(dto.getReservation())
+                            .documentList(dto.getDocumentList())
+                            .build();
+                });
+
+        Mockito.when(caseRepository.save(Mockito.any(Case.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
     }
 
     @Test

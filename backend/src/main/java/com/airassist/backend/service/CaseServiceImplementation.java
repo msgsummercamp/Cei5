@@ -52,9 +52,9 @@ public class CaseServiceImplementation implements CaseService {
                 caseToAdd.setStatus(Statuses.INVALID);
                 newCase = caseRepository.save(caseToAdd);
             }
-        } catch (Exception e) {
+        } catch (CaseNotFoundException e) {
             logger.error("Service - error creating case: {}", e.getMessage());
-            throw new RuntimeException("Error creating case: " + e.getMessage());
+            throw e;
         }
         return newCase;
     }
@@ -74,8 +74,8 @@ public class CaseServiceImplementation implements CaseService {
             updatedCase = caseRepository.save(caseToUpdate);
 
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (CaseNotFoundException e) {
+            throw e;
         }
         return updatedCase;
     }
