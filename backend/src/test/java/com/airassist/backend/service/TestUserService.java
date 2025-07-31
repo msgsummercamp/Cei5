@@ -4,6 +4,8 @@ import com.airassist.backend.exceptions.user.DuplicateUserException;
 import com.airassist.backend.exceptions.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.RandomPasswordGeneratorService;
+import com.airassist.backend.service.UserServiceImpl;
 import com.airassist.backend.testObjects.TestUserFactory;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,29 +38,46 @@ class TestUserService {
     }
 
     @Test
-    void getUserByEmail_userExists_returnsUser() {
+    void getUserById_userExists_returnsUser() throws UserNotFoundException {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        Optional<User> result = userService.getUserByEmail(user.getEmail());
+        User result = userService.getUserById(user.getId());
 
-        MatcherAssert.assertThat(result.isPresent(), is(true));
-        MatcherAssert.assertThat(result.get().getEmail(), is(user.getEmail()));
+        MatcherAssert.assertThat(result, is(notNullValue()));
+        MatcherAssert.assertThat(result.getId(), is(user.getId()));
     }
 
     @Test
-    void getUserByEmail_userDoesNotExist_returnsEmpty() {
+    void getUserById_userDoesNotExist_throwsException() {
+        UUID id = UUID.randomUUID();
+        Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById(id));
+    }
+
+    @Test
+    void getUserByEmail_userExists_returnsUser() throws UserNotFoundException {
+        User user = TestUserFactory.createValidUser();
+        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+        User result = userService.getUserByEmail(user.getEmail());
+
+        MatcherAssert.assertThat(result, is(notNullValue()));
+        MatcherAssert.assertThat(result.getEmail(), is(user.getEmail()));
+    }
+
+    @Test
+    void getUserByEmail_userDoesNotExist_throwsException() {
         Mockito.when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
 
-        Optional<User> result = userService.getUserByEmail("notfound@example.com");
-
-        MatcherAssert.assertThat(result.isPresent(), is(false));
+        assertThrows(UserNotFoundException.class, () -> userService.getUserByEmail("notfound@example.com"));
     }
 
     @Test
     void addUser_duplicateEmail_throwsException() {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
         assertThrows(DuplicateUserException.class, () -> userService.addUser(user));
     }
@@ -65,7 +85,7 @@ class TestUserService {
     @Test
     void addUser_validUser_savesUser() throws DuplicateUserException {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         User saved = userService.addUser(user);
@@ -77,7 +97,7 @@ class TestUserService {
     @Test
     void updateUser_userNotFound_throwsException() {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.updateUser(user));
     }
@@ -86,15 +106,25 @@ class TestUserService {
     void updateUser_nullPhoneNumber_throwsException() {
         User user = TestUserFactory.createValidUser();
         user.getUserDetails().setPhoneNumber(null);
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         assertThrows(IllegalArgumentException.class, () -> userService.updateUser(user));
     }
 
     @Test
-    void updateUser_validUser_updatesUser() throws UserNotFoundException {
+    void updateUser_duplicateEmail_throwsException() {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
+
+        assertThrows(DuplicateUserException.class, () -> userService.updateUser(user));
+    }
+
+    @Test
+    void updateUser_validUser_updatesUser() throws UserNotFoundException, DuplicateUserException {
+        User user = TestUserFactory.createValidUser();
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         User updated = userService.updateUser(user);
@@ -104,17 +134,36 @@ class TestUserService {
     }
 
     @Test
+    void updateUser_nullEmail_throwsException() {
+        User user = TestUserFactory.createValidUser();
+        user.setEmail(null);
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        assertThrows(IllegalArgumentException.class, () -> userService.updateUser(user));
+    }
+
+    @Test
     void patchUser_userNotFound_throwsException() {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.patchUser(user));
     }
 
     @Test
-    void patchUser_validUser_patchesUser() throws UserNotFoundException {
+    void patchUser_duplicateEmail_throwsException() {
         User user = TestUserFactory.createValidUser();
-        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
+
+        assertThrows(DuplicateUserException.class, () -> userService.patchUser(user));
+    }
+
+    @Test
+    void patchUser_validUser_patchesUser() throws UserNotFoundException, DuplicateUserException {
+        User user = TestUserFactory.createValidUser();
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         User patched = userService.patchUser(user);
@@ -127,10 +176,12 @@ class TestUserService {
     void patchUser_onlyPassword_patchesPassword() throws Exception {
         User original = TestUserFactory.createValidUser();
         User patch = new User();
+        patch.setId(original.getId());
         patch.setEmail(original.getEmail());
         patch.setPassword("newPassword123");
 
-        Mockito.when(userRepository.findByEmail(original.getEmail())).thenReturn(Optional.of(original));
+        Mockito.when(userRepository.findById(original.getId())).thenReturn(Optional.of(original));
+        Mockito.when(userRepository.existsByEmail(original.getEmail())).thenReturn(false);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         Mockito.when(passwordEncoder.encode("newPassword123")).thenReturn("encodedNewPassword");
 
@@ -143,17 +194,19 @@ class TestUserService {
 
     @Test
     void deleteUser_userNotFound_throwsException() {
-        Mockito.when(userRepository.existsByEmail("notfound@example.com")).thenReturn(true);
+        UUID id = UUID.randomUUID();
+        Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.deleteUser("notfound@example.com"));
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(id));
     }
 
     @Test
     void deleteUser_userExists_deletesUser() throws UserNotFoundException {
-        Mockito.when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
+        User user = TestUserFactory.createValidUser();
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        userService.deleteUser("test@example.com");
+        userService.deleteUser(user.getId());
 
-        Mockito.verify(userRepository).deleteByEmail("test@example.com");
+        Mockito.verify(userRepository).deleteById(user.getId());
     }
 }

@@ -2,6 +2,8 @@ package com.airassist.backend.mapper;
 
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserDetailsDTO;
+import com.airassist.backend.dto.user.UserDetailsResponseDTO;
+import com.airassist.backend.dto.user.UserResponseDTO;
 import com.airassist.backend.model.Roles;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
@@ -68,7 +70,6 @@ class TestUserMapper {
 
     @Test
     void shouldMapUserToUserDTO_EmptyFields() {
-        UserDetails userDetails = TestUserFactory.createEmptyUserDetails();
         User user = TestUserFactory.createEmptyUser();
 
         UserDTO dto = UserMapper.INSTANCE.userToUserDTO(user);
@@ -124,5 +125,63 @@ class TestUserMapper {
     void shouldMapUserDetailsDTOToUserDetails_NullInput() {
         UserDetails userDetails = UserMapper.INSTANCE.userDetailsDTOToUserDetails(null);
         assertThat(userDetails, nullValue());
+    }
+
+    @Test
+    void shouldMapUserToUserResponseDTO_AllFields() {
+        User user = TestUserFactory.createValidUser();
+
+        UserResponseDTO dto = UserMapper.INSTANCE.userToUserResponseDTO(user);
+
+        assertThat(dto, notNullValue());
+        assertThat(dto.getId(), is(user.getId()));
+        assertThat(dto.getEmail(), is("test@example.com"));
+        assertThat(dto.getFirstName(), is("John"));
+        assertThat(dto.getLastName(), is("Doe"));
+        assertThat(dto.getRole(), is(Roles.USER));
+        assertThat(dto.getIsFirstLogin(), is(false));
+        assertThat(dto.getUserDetails(), notNullValue());
+        assertThat(dto.getUserDetails().getId(), is(user.getUserDetails().getId()));
+        assertThat(dto.getUserDetails().getPhoneNumber(), is("+12345678901"));
+        assertThat(dto.getUserDetails().getAddress(), is("123 Main St"));
+        assertThat(dto.getUserDetails().getPostalCode(), is("12345"));
+        assertThat(dto.getUserDetails().getBirthDate(), is(LocalDate.of(1990, 1, 1)));
+    }
+
+    @Test
+    void shouldMapUserToUserResponseDTO_NullUserDetails() {
+        User user = TestUserFactory.createValidUser();
+        user.setUserDetails(null);
+
+        UserResponseDTO dto = UserMapper.INSTANCE.userToUserResponseDTO(user);
+
+        assertThat(dto, notNullValue());
+        assertThat(dto.getUserDetails(), nullValue());
+    }
+
+    @Test
+    void shouldMapUserToUserResponseDTO_NullInput() {
+        UserResponseDTO dto = UserMapper.INSTANCE.userToUserResponseDTO(null);
+        assertThat(dto, nullValue());
+    }
+
+    @Test
+    void shouldMapUserDetailsToUserDetailsResponseDTO_AllFields() {
+        UserDetails userDetails = TestUserFactory.createValidUserDetails();
+
+        UserDetailsResponseDTO dto = UserMapper.INSTANCE.userDetailsToUserDetailsResponseDTO(userDetails);
+
+        assertThat(dto, notNullValue());
+        assertThat(dto.getId(), is(userDetails.getId()));
+        assertThat(dto.getPhoneNumber(), is("+12345678901"));
+        assertThat(dto.getAddress(), is("123 Main St"));
+        assertThat(dto.getPostalCode(), is("12345"));
+        assertThat(dto.getBirthDate(), is(LocalDate.of(1990, 1, 1)));
+    }
+
+    @Test
+    void shouldMapUserDetailsToUserDetailsResponseDTO_NullInput() {
+        UserDetailsResponseDTO dto = UserMapper.INSTANCE.userDetailsToUserDetailsResponseDTO(null);
+        assertThat(dto, nullValue());
     }
 }
