@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setFirstLogin(true);
         user = userRepository.save(user);
-        String token = generateToken(user);
+        String token = generateToken(user); // #TODO mail comes here instead of sign In process
         log.info("User registered successfully with email: {}", user.getEmail());
         return new SignInResponse(token, user.getRole(), user.isFirstLogin());
     }
