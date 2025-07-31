@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Case {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,7 +37,7 @@ public class Case {
     @PastOrPresent
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private User client;
 
@@ -43,10 +45,10 @@ public class Case {
     @JoinColumn(referencedColumnName = "id")
     private User assignedColleague;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "caseEntity")
+    @OneToMany(mappedBy = "caseEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Document> documentList;
 }
