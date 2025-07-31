@@ -1,5 +1,6 @@
 package com.airassist.backend.exceptionHandler;
 
+import com.airassist.backend.controller.AirportApiController;
 import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.Map;
  * Global exception handler for the Airport API.
  * Handles exceptions related to JSON processing and airport not found scenarios.
  */
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = AirportApiController.class)
 public class AirportApiExceptionHandler {
 
     @ExceptionHandler(InvalidAirportDetailsException.class)
