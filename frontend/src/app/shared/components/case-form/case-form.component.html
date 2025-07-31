@@ -19,7 +19,7 @@
         flightDetailsForm.controls.flightDate.hasError('required') &&
         flightDetailsForm.controls.flightDate.touched
       ) {
-        <p-message severity="error" variant="simple" size="small" text="Flight Date is required." />
+        <app-error-message text="Flight Date is required." />
       }
     </div>
 
@@ -35,28 +35,13 @@
       ) {
         @switch (true) {
           @case (flightDetailsForm.controls.flightNumber.hasError('required')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Flight Number is required."
-            />
+            <app-error-message text="Flight Number is required." />
           }
           @case (flightDetailsForm.controls.flightNumber.hasError('minlength')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Flight Number must be at least 3 characters."
-            />
+            <app-error-message text="Flight Number must be at least 3 characters." />
           }
           @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Flight Number must be at most 6 characters."
-            />
+            <app-error-message text="Flight Number must be at most 6 characters." />
           }
         }
       }
@@ -73,28 +58,13 @@
       ) {
         @switch (true) {
           @case (flightDetailsForm.controls.airline.hasError('required')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Airline name is required."
-            />
+            <app-error-message text="Airline name is required." />
           }
           @case (flightDetailsForm.controls.airline.hasError('minlength')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Airline name must be at least 3 characters."
-            />
+            <app-error-message text="Airline name must be at least 3 characters." />
           }
           @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Airline number must be at most 50 characters."
-            />
+            <app-error-message text="Airline number must be at most 50 characters." />
           }
           @default {}
         }
@@ -118,23 +88,13 @@
       ) {
         @switch (true) {
           @case (flightDetailsForm.controls.departingAirport.hasError('required')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Departing Airport is required."
-            />
+            <app-error-message text="Departing Airport is required." />
           }
           @case (
             flightDetailsForm.controls.departingAirport.hasError('minlength') ||
             flightDetailsForm.controls.departingAirport.hasError('maxlength')
           ) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Departing Airport must be exactly 3 characters."
-            />
+            <app-error-message text="Departing Airport must be exactly 3 characters." />
           }
         }
       }
@@ -157,23 +117,13 @@
       ) {
         @switch (true) {
           @case (flightDetailsForm.controls.destinationAirport.hasError('required')) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Destination Airport is required."
-            />
+            <app-error-message text="Destination Airport is required." />
           }
           @case (
             flightDetailsForm.controls.destinationAirport.hasError('minlength') ||
             flightDetailsForm.controls.destinationAirport.hasError('maxlength')
           ) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              text="Destination Airport must be exactly 3 characters."
-            />
+            <app-error-message text="Destination Airport must be exactly 3 characters." />
           }
         }
       }
@@ -198,12 +148,7 @@
         flightDetailsForm.controls.plannedDepartureTime.hasError('required') &&
         flightDetailsForm.controls.plannedDepartureTime.touched
       ) {
-        <p-message
-          severity="error"
-          variant="simple"
-          size="small"
-          text="Planned Departure Time is required."
-        />
+        <app-error-message text="Planned Departure Time is required." />
       }
     </div>
 
@@ -226,12 +171,7 @@
         flightDetailsForm.controls.plannedArrivalTime.hasError('required') &&
         flightDetailsForm.controls.plannedArrivalTime.touched
       ) {
-        <p-message
-          severity="error"
-          variant="simple"
-          size="small"
-          text="Planned Arrival Time is required."
-        />
+        <app-error-message text="Planned Arrival Time is required." />
       }
     </div>
   </form>

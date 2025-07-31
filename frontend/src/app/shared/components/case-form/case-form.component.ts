@@ -13,6 +13,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
+import { ErrorMessageComponent } from '../error-message/error-message.component';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -48,6 +49,7 @@ type FlightDetailsForm = {
     IftaLabelModule,
     AutoCompleteModule,
     MessageModule,
+    ErrorMessageComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
