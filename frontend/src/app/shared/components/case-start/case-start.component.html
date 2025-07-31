@@ -1,16 +1,20 @@
-<p-stepper [value]="currentStep" [linear]="true">
-  <p-step-list>
-    <!-- Step indicators -->
-    <p-step [value]="1">Reservation Info</p-step>
-    <p-step [value]="2">Flight Details</p-step>
-    <p-step [value]="3">Connection Flights</p-step>
-  </p-step-list>
-  <p-step-panels>
-    <!-- Step 1: Reservation Info -->
-    <p-step-panel [value]="1">
-      <ng-template pTemplate="content" let-nextCallback="nextCallback">
-        <p-card>
-          <form [formGroup]="reservationForm" (ngSubmit)="onNext(nextCallback)">
+<main>
+  <p-stepper [value]="currentStep" [linear]="true">
+    <p-step-list>
+      <!-- Step indicators -->
+      <p-step [value]="1">Reservation Info</p-step>
+      <p-step [value]="2">Flight Details</p-step>
+      <p-step [value]="3">Connection Flights</p-step>
+    </p-step-list>
+    <p-step-panels>
+      <!-- Step 1: Reservation Info -->
+      <p-step-panel [value]="1">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback">
+          <form
+            [formGroup]="reservationForm"
+            (ngSubmit)="onNext(nextCallback)"
+            class="reservation-form"
+          >
             <h2>Reservation Info</h2>
 
             <div class="field">
@@ -41,6 +45,7 @@
             <div class="field">
               <p-floatlabel variant="on">
                 <p-autocomplete
+                  [styleClass]="'airport-autocomplete'"
                   id="departingAirport"
                   formControlName="departingAirport"
                   field="name"
@@ -108,113 +113,113 @@
               />
             </div>
           </form>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
+        </ng-template>
+      </p-step-panel>
 
-    <!-- Step 2: Flight Details -->
-    <p-step-panel [value]="2">
-      <ng-template
-        pTemplate="content"
-        let-prevCallback="prevCallback"
-        let-nextCallback="nextCallback"
-      >
-        <p-card>
-          <!-- Main Flight Form -->
-          <app-case-form
-            title="Flight Details"
-            #mainFlightForm
-            [initialData]="flightData"
-            (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
-          >
-          </app-case-form>
+      <!-- Step 2: Flight Details -->
+      <p-step-panel [value]="2">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p-card>
+            <!-- Main Flight Form -->
+            <app-case-form
+              title="Flight Details"
+              #mainFlightForm
+              [initialData]="flightData"
+              (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
+            >
+            </app-case-form>
 
-          <!-- Next and back buttons -->
-          <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
-            <p-button
-              label="Next"
-              severity="primary"
-              [disabled]="!isMainFlightValid(mainFlightForm)"
-              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
-            />
-          </div>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
-
-    <!-- Step 3: Connection Flights -->
-    <p-step-panel [value]="3">
-      <ng-template
-        pTemplate="content"
-        let-prevCallback="prevCallback"
-        let-nextCallback="nextCallback"
-      >
-        <p-card>
-          @if (getActiveConnectionFlights().length === 0) {
-            <p-message>No connection flights added yet.</p-message>
-          }
-          <!-- Connection Flight Forms -->
-          @if (getActiveConnectionFlights().length > 0) {
-            <div class="connection-forms">
-              @for (flight of connectionFlights; track $index; let i = $index) {
-                @if (flight !== null) {
-                  <!-- Display Connection Flight card -->
-                  <p-card class="connection-flight-card">
-                    <app-case-form
-                      [title]="'Connection Flight ' + (i + 1)"
-                      #connectionForm
-                      [initialData]="connectionFlightsData[i]"
-                      (validityChange)="
-                        onConnectionFlightValidityChange(i, $event.valid, $event.data)
-                      "
-                    >
-                    </app-case-form>
-                    <p-button
-                      label="Remove"
-                      severity="danger"
-                      (onClick)="removeConnectionFlight(i)"
-                    >
-                    </p-button>
-                    <p-toggleswitch
-                      [(ngModel)]="isFlagged[i]"
-                      (onChange)="flagFlight(i)"
-                      [disabled]="!canFlagFlight(i)"
-                    />
-                  </p-card>
-                }
-              }
-            </div>
-          }
-          <!-- Add Connection Flight Button -->
-          @if (canAddMoreConnections()) {
-            <div class="add-connection-section">
+            <!-- Next and back buttons -->
+            <div class="step-actions">
+              <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
               <p-button
-                label="Add Connection Flight"
-                severity="secondary"
-                (onClick)="addConnectionFlight()"
-              >
-              </p-button>
+                label="Next"
+                severity="primary"
+                [disabled]="!isMainFlightValid(mainFlightForm)"
+                (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
+              />
             </div>
-          }
-          <!-- Maximum Connection Flights Message -->
-          @else {
-            <p-message severity="warn" text="Maximum number of connection flights reached.">
-            </p-message>
-          }
+          </p-card>
+        </ng-template>
+      </p-step-panel>
 
-          <!-- Next and back buttons -->
-          <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
-            <p-button
-              label="Next"
-              severity="primary"
-              [disabled]="!areAllConnectionFlightsValid()"
-              (onClick)="onNextFromConnectionFlights(nextCallback)"
-            />
-          </div>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
-  </p-step-panels>
-</p-stepper>
+      <!-- Step 3: Connection Flights -->
+      <p-step-panel [value]="3">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p-card>
+            @if (getActiveConnectionFlights().length === 0) {
+              <p-message>No connection flights added yet.</p-message>
+            }
+            <!-- Connection Flight Forms -->
+            @if (getActiveConnectionFlights().length > 0) {
+              <div class="connection-forms">
+                @for (flight of connectionFlights; track $index; let i = $index) {
+                  @if (flight !== null) {
+                    <!-- Display Connection Flight card -->
+                    <p-card class="connection-flight-card">
+                      <app-case-form
+                        [title]="'Connection Flight ' + (i + 1)"
+                        #connectionForm
+                        [initialData]="connectionFlightsData[i]"
+                        (validityChange)="
+                          onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                        "
+                      >
+                      </app-case-form>
+                      <p-button
+                        label="Remove"
+                        severity="danger"
+                        (onClick)="removeConnectionFlight(i)"
+                      >
+                      </p-button>
+                      <p-toggleswitch
+                        [(ngModel)]="isFlagged[i]"
+                        (onChange)="flagFlight(i)"
+                        [disabled]="!canFlagFlight(i)"
+                      />
+                    </p-card>
+                  }
+                }
+              </div>
+            }
+            <!-- Add Connection Flight Button -->
+            @if (canAddMoreConnections()) {
+              <div class="add-connection-section">
+                <p-button
+                  label="Add Connection Flight"
+                  severity="secondary"
+                  (onClick)="addConnectionFlight()"
+                >
+                </p-button>
+              </div>
+            }
+            <!-- Maximum Connection Flights Message -->
+            @else {
+              <p-message severity="warn" text="Maximum number of connection flights reached.">
+              </p-message>
+            }
+
+            <!-- Next and back buttons -->
+            <div class="step-actions">
+              <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
+              <p-button
+                label="Next"
+                severity="primary"
+                [disabled]="!areAllConnectionFlightsValid()"
+                (onClick)="onNextFromConnectionFlights(nextCallback)"
+              />
+            </div>
+          </p-card>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</main>
