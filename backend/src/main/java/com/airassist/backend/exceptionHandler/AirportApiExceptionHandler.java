@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Map;
 
 /**
+ * Global exception handler for the Airport API.
  * Handles exceptions related to JSON processing and airport not found scenarios.
  */
 @RestControllerAdvice(assignableTypes = AirportApiController.class)

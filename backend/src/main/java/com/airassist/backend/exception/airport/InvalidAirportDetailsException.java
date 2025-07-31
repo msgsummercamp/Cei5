@@ -1,4 +1,4 @@
-package com.airassist.backend.exception;
+package com.airassist.backend.exception.airport;
 
 public class InvalidAirportDetailsException extends RuntimeException {
     public InvalidAirportDetailsException(String departingAirportCode, String destinationAirportCode) {
