@@ -12,9 +12,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.util.Map;
 
 
-/** * Service for handling email sending operations.
- * It prepares the email session, creates the message and sends the email.
- */
+
 @Service
 public class MailSenderServiceImpl implements MailSenderService {
 
