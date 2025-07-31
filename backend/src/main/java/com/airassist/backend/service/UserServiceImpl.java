@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -27,67 +28,101 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
+    public User getUserById(UUID id) throws UserNotFoundException {
+        logger.info("UserService - Fetching user with ID: {}", id);
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            logger.warn("User with ID {} not found", id);
+            throw new UserNotFoundException();
+        }
+        return user.get();
+    }
+
+
+    @Override
+    public User getUserByEmail(String email) throws UserNotFoundException {
         logger.info("UserService - Fetching user with email: {}", email);
-        return userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return user.get();
     }
 
     @Override
     public User addUser(User user) throws DuplicateUserException {
-        logger.info("UserService - Attempting to add user: {}", user.getEmail());
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            logger.warn("User with email {} already exists", user.getEmail());
-            throw new DuplicateUserException();
-        }
+        String email = user.getEmail();
+        logger.info("UserService - Attempting to add user: {}", email);
+        checkForDuplicateEmail(email);
         user.setPassword(randomPasswordGenerator.generateRandomPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(User user) throws UserNotFoundException {
-        logger.info("UserService - Attempting to update user: {}", user.getEmail());
+    public User updateUser(User user) throws UserNotFoundException, DuplicateUserException {
+        UUID id = user.getId();
+        logger.info("UserService - Attempting to update user: {}", id);
 
-        /* This check is here to ensure the phone number (not nullable database field) is not null.
-        It enables us to use the same DTO's for both update and patch operations.*/
+        /*Check for null values in non-nullable fields. This allows us to use the same dto for update and patch*/
+        if(user.getEmail() == null) {
+            logger.warn("Email cannot be null for user update");
+            throw new IllegalArgumentException("Email cannot be null");
+        }
         if(user.getUserDetails() != null && user.getUserDetails().getPhoneNumber() == null) {
             logger.warn("Phone number cannot be null for user update");
             throw new IllegalArgumentException("Phone number cannot be null");
         }
 
-        Optional<User> existingUserOpt = userRepository.findByEmail(user.getEmail());
+        Optional<User> existingUserOpt = userRepository.findById(id);
         if (existingUserOpt.isEmpty()) {
-            logger.warn("User with email {} not found for update", user.getEmail());
+            logger.warn("User with ID {} not found for update", id);
             throw new UserNotFoundException();
         }
+        checkForDuplicateEmail(user.getEmail());
         User userToUpdate = existingUserOpt.get();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         UserUtils.updateUserFields(user, userToUpdate);
         return userRepository.save(userToUpdate);
     }
 
     @Override
-    public User patchUser(User user) throws UserNotFoundException {
-        logger.info("UserService - Attempting to patch user: {}", user.getEmail());
+    public User patchUser(User user) throws UserNotFoundException, DuplicateUserException {
+        UUID id = user.getId();
+        logger.info("UserService - Attempting to patch user: {}", id);
 
-        Optional<User> existingUserOpt = userRepository.findByEmail(user.getEmail());
+        Optional<User> existingUserOpt = userRepository.findById(id);
         if (existingUserOpt.isEmpty()) {
-            logger.warn("User with email {} not found for patch", user.getEmail());
+            logger.warn("User with id {} not found for patch", id);
             throw new UserNotFoundException();
         }
+        checkForDuplicateEmail(user.getEmail());
         User userToPatch = existingUserOpt.get();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         UserUtils.patchUserFields(user, userToPatch);
         return userRepository.save(userToPatch);
     }
 
     @Override
-    public void deleteUser(String email) throws UserNotFoundException {
-        logger.info("UserService - Attempting to delete user with email: {}", email);
-        if (userRepository.existsByEmail(email)) {
-            logger.warn("User with email {} not found for deletion", email);
+    public void deleteUser(UUID id) throws UserNotFoundException {
+        logger.info("UserService - Attempting to delete user with id: {}", id);
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            logger.warn("User with ID {} not found for deletion", id);
             throw new UserNotFoundException();
         }
-        userRepository.deleteByEmail(email);
+        userRepository.deleteById(id);
     }
+
+    private void checkForDuplicateEmail(String email) throws DuplicateUserException {
+        if (userRepository.existsByEmail(email)) {
+            logger.warn("User with email {} already exists", email);
+            throw new DuplicateUserException();
+        }
+    }
+
 }

@@ -18,7 +18,6 @@ public class UserUtils {
         target.setFirstName(source.getFirstName());
         target.setLastName(source.getLastName());
         target.setPassword(source.getPassword());
-        target.setUserDetails(source.getUserDetails());
         updateUserDetails(source.getUserDetails(), target.getUserDetails());
     }
 
@@ -52,10 +51,19 @@ public class UserUtils {
         }
     }
 
+    /**
+     * Patches the target UserDetails with the values from the source UserDetails.
+     *
+     * @param source the source UserDetails containing new values
+     * @param target the target UserDetails to be patched
+     */
     private static void patchUserDetails(UserDetails source, UserDetails target) {
         if (source.getAddress() != null) target.setAddress(source.getAddress());
         if (source.getPostalCode() != null) target.setPostalCode(source.getPostalCode());
         if (source.getPhoneNumber() != null) target.setPhoneNumber(source.getPhoneNumber());
         if (source.getBirthDate() != null) target.setBirthDate(source.getBirthDate());
     }
+
+
+
 }

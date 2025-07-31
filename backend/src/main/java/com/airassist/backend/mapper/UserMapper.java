@@ -2,6 +2,8 @@ package com.airassist.backend.mapper;
 
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserDetailsDTO;
+import com.airassist.backend.dto.user.UserDetailsResponseDTO;
+import com.airassist.backend.dto.user.UserResponseDTO;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import org.mapstruct.Mapper;
@@ -44,4 +46,19 @@ public interface UserMapper {
      */
     UserDetailsDTO userDetailsToUserDetailsDTO(UserDetails userDetails);
 
+    /**
+     * Converts a User entity to a UserResponseDTO.
+     *
+     * @param user the User entity to convert
+     * @return the converted UserResponseDTO
+     */
+    UserResponseDTO userToUserResponseDTO(User user);
+
+    /**
+     * Converts a UserDetails entity to a UserDetailsResponseDTO.
+     *
+     * @param userDetails the UserDetails entity to convert
+     * @return the converted UserDetailsResponseDTO
+     */
+    UserDetailsResponseDTO userDetailsToUserDetailsResponseDTO(UserDetails userDetails);
 }

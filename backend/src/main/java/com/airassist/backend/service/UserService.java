@@ -5,6 +5,7 @@ import com.airassist.backend.exceptions.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service interface for managing {@link User} entities.
@@ -13,12 +14,22 @@ import java.util.Optional;
 public interface UserService {
 
     /**
+     * Retrieves a user by their unique identifier.
+     *
+     * @param id the unique identifier of the user
+     * @return the user entity if found
+     * @throws UserNotFoundException if the user with the given ID does not exist
+     */
+    User getUserById(UUID id) throws UserNotFoundException;
+
+    /**
      * Retrieves a user by their email address.
      *
      * @param email the email of the user
      * @return an {@code Optional} containing the user if found, or empty if not
+     * @throws UserNotFoundException if the user with the given email does not exist
      */
-    Optional<User> getUserByEmail(String email);
+    User getUserByEmail(String email) throws UserNotFoundException;
 
     /**
      * Add a user to the repository.
@@ -37,8 +48,9 @@ public interface UserService {
      * @return the updated user entity
      * @throws UserNotFoundException if the user with the given email does not exist
      * @throws IllegalArgumentException if the user's phone number is null
+     * @throws DuplicateUserException if a user with the same email already exists
      */
-    User updateUser(User user) throws UserNotFoundException;
+    User updateUser(User user) throws UserNotFoundException, DuplicateUserException;
 
     /**
      * Patches an existing user in the repository by their email.
@@ -48,15 +60,16 @@ public interface UserService {
      * @param user the user containing new values
      * @return the patched user entity
      * @throws UserNotFoundException if the user with the given email does not exist
+     * @throws DuplicateUserException if a user with the same email already exists
      */
-    User patchUser(User user) throws UserNotFoundException;
+    User patchUser(User user) throws UserNotFoundException, DuplicateUserException;
 
     /**
-     * Retrieves a user by their unique identifier: the email address.
+     * Retrieves a user by their unique identifier.
      *
-     * @param email the email of the user
+     * @param id the unique identifier of the user
      */
-    void deleteUser(String email) throws UserNotFoundException;
+    void deleteUser(UUID id) throws UserNotFoundException;
 
 
 
