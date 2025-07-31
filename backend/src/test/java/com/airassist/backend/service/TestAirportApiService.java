@@ -11,6 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 @SpringBootTest
 public class TestAirportApiService {
@@ -67,7 +70,7 @@ public class TestAirportApiService {
         final int FIRST_COMPENSATION_LEVEL = 250;
 
         int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
-        assertEquals(FIRST_COMPENSATION_LEVEL, compensationLevel);
+        assertThat(compensationLevel, is(FIRST_COMPENSATION_LEVEL));
     }
 
     @Test
@@ -76,7 +79,7 @@ public class TestAirportApiService {
         final int SECOND_COMPENSATION_LEVEL = 400;
 
         int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
-        assertEquals(SECOND_COMPENSATION_LEVEL, compensationLevel);
+        assertThat(compensationLevel, is(SECOND_COMPENSATION_LEVEL));
     }
 
     @Test
@@ -85,6 +88,6 @@ public class TestAirportApiService {
         final int THIRD_COMPENSATION_LEVEL = 600;
 
         int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
-        assertEquals(THIRD_COMPENSATION_LEVEL, compensationLevel);
+        assertThat(compensationLevel, is(THIRD_COMPENSATION_LEVEL));
     }
 }
