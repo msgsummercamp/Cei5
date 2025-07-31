@@ -1,0 +1,37 @@
+package com.airassist.backend.dto;
+
+import com.airassist.backend.model.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Data
+public class CaseDTO {
+    @Enumerated(EnumType.STRING)
+    private Statuses status;
+
+    @Enumerated(EnumType.STRING)
+    private DisruptionReasons disruptionReason;
+
+    @Size(max = 500, message = "Disruption information must be less than 1000 characters")
+    private String disruptionInfo;
+
+    @PastOrPresent
+    private LocalDate date;
+
+    ///TODO : create USER DTO and use it instead of User class
+    private User client;
+
+    ///TODO: same here
+    private User assignedColleague;
+
+    /// TODO: create Reservation DTO and use it instead of Reservation class
+    private Reservation reservation;
+
+    /// TODO: create Document DTO and use it instead of Document class
+    private List<Document> documentList;
+}
