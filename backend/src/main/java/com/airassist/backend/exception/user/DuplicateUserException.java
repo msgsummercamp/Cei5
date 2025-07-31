@@ -1,4 +1,4 @@
-package com.airassist.backend.exceptions.user;
+package com.airassist.backend.exception.user;
 
 public class DuplicateUserException extends Exception {
     public DuplicateUserException() {

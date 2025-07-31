@@ -1,6 +1,6 @@
 package com.airassist.backend.dto.user;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -20,5 +20,6 @@ public class UserDetailsDTO {
     @Size(max = 10, message = "Postal code must be less than 10 characters")
     private String postalCode;
 
+    @PastOrPresent(message = "Birth date cannot be in the future")
     private LocalDate birthDate;
 }

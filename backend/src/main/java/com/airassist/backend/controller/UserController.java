@@ -1,9 +1,9 @@
-package com.airassist.backend.controllers;
+package com.airassist.backend.controller;
 
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserResponseDTO;
-import com.airassist.backend.exceptions.user.DuplicateUserException;
-import com.airassist.backend.exceptions.user.UserNotFoundException;
+import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.service.UserService;

@@ -1,6 +1,6 @@
 package com.airassist.backend.exceptionHandler;
 
-import com.airassist.backend.exception.InvalidAirportDetailsException;
+import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

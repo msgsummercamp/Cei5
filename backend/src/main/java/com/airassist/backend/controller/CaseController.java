@@ -1,7 +1,7 @@
 package com.airassist.backend.controller;
 
-import com.airassist.backend.dto.CaseDTO;
-import com.airassist.backend.dto.CaseResponseDTO;
+import com.airassist.backend.dto.cases.CaseDTO;
+import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.mapper.CaseResponseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.service.CaseService;

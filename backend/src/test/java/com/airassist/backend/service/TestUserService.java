@@ -1,11 +1,9 @@
 package com.airassist.backend.service;
 
-import com.airassist.backend.exceptions.user.DuplicateUserException;
-import com.airassist.backend.exceptions.user.UserNotFoundException;
+import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
-import com.airassist.backend.service.RandomPasswordGeneratorService;
-import com.airassist.backend.service.UserServiceImpl;
 import com.airassist.backend.testObjects.TestUserFactory;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TestUserService {
 
-    static UserRepository userRepository;
-    static PasswordEncoder passwordEncoder;
-    static RandomPasswordGeneratorService randomPasswordGenerator;
-    static UserServiceImpl userService;
+    private static UserRepository userRepository;
+    private static PasswordEncoder passwordEncoder;
+    private static RandomPasswordGeneratorService randomPasswordGenerator;
+    private static UserServiceImpl userService;
 
     @BeforeAll
     static void setup() {

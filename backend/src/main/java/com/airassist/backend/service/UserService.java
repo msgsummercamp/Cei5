@@ -1,7 +1,7 @@
 package com.airassist.backend.service;
 
-import com.airassist.backend.exceptions.user.DuplicateUserException;
-import com.airassist.backend.exceptions.user.UserNotFoundException;
+import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 
 import java.util.UUID;

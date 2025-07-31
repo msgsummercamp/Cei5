@@ -2,6 +2,7 @@ package com.airassist.backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,6 @@ public class UserDetails {
     private String postalCode;
 
     @Column(nullable = false)
+    @PastOrPresent(message = "Birth date cannot be in the future")
     private LocalDate birthDate;
 }

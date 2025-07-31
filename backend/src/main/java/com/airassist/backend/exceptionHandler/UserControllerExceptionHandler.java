@@ -1,8 +1,8 @@
 package com.airassist.backend.exceptionHandler;
 
-import com.airassist.backend.controllers.UserController;
-import com.airassist.backend.exceptions.user.DuplicateUserException;
-import com.airassist.backend.exceptions.user.UserNotFoundException;
+import com.airassist.backend.controller.UserController;
+import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

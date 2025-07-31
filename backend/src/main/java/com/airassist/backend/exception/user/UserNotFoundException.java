@@ -1,4 +1,4 @@
-package com.airassist.backend.exceptions.user;
+package com.airassist.backend.exception.user;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {
