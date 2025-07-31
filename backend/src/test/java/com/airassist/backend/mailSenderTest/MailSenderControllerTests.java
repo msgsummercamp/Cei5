@@ -1,7 +1,7 @@
 package com.airassist.backend.mailSenderTest;
 
 import com.airassist.backend.controller.MailSenderController;
-import com.airassist.backend.service.MailSenderService;
+import com.airassist.backend.service.MailSenderServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,11 +24,11 @@ public class MailSenderControllerTests {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private MailSenderService mailSenderService;
+    private MailSenderServiceImpl mailSenderServiceImpl;
 
     @Test
     void sendMailWithSuccess() throws Exception {
-        doNothing().when(mailSenderService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(mailSenderServiceImpl).sendEmail(anyString(), anyString(), anyString());
 
         String requestBody = """
                 {
@@ -52,7 +52,7 @@ public class MailSenderControllerTests {
      */
     @Test
     void sendMailWithEmailFailure() throws Exception {
-        doNothing().when(mailSenderService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(mailSenderServiceImpl).sendEmail(anyString(), anyString(), anyString());
 
         String requestBody = """
                 {

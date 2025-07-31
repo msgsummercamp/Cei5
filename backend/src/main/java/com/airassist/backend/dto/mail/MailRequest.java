@@ -9,13 +9,9 @@ public class MailRequest {
 
     @Size(max = 254, message = "Email must be less than 254 characters")
     @Email(message = "Email must be valid")
-    private String to;
+    private String recipient;
 
     @Size(max = 100, message = "Subject must be less than 255 characters")
     private String subject;
-
-    @Size(max  = 400, message = "Body must be less than 1000 characters")
-    private String body;
-
 
 }
