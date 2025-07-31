@@ -14,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-
 @SpringBootTest
-public class TestAirportApiService {
+public class TestAirportApiServiceImplementation {
 
     @Autowired
     private AirportApiServiceImplementation airportApiService;

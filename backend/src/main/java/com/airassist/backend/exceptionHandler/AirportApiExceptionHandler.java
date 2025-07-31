@@ -13,7 +13,7 @@ import java.util.Map;
  * Global exception handler for the Airport API.
  * Handles exceptions related to JSON processing and airport not found scenarios.
  */
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = AirportApiExceptionHandler.class)
 public class AirportApiExceptionHandler {
 
     @ExceptionHandler(InvalidAirportDetailsException.class)
