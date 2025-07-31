@@ -11,14 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class TestAirportApiService {
 
     @Autowired
-    private AirportApiService airportApiService;
+    private AirportApiServiceImplementation airportApiService;
 
     private AutoCloseable closeable;
 
@@ -34,52 +32,59 @@ public class TestAirportApiService {
 
     @Test
     void getDistance_shouldGetDistanceBetweenAirports() throws JsonProcessingException {
-        String fromAirport = "JFK";
-        String toAirport = "LAX";
+        final double DISTANCE_JFK_LAX = 3974.196718494172;
+        String departingAirportCode = "JFK";
+        String destinationAirportCode = "LAX";
 
-        double distance = airportApiService.getDistance(fromAirport, toAirport);
+        double distance = airportApiService.getDistance(departingAirportCode, destinationAirportCode);
 
-        assertEquals(3974.196718494172, distance);
+        assertEquals(DISTANCE_JFK_LAX, distance);
     }
 
     @Test
     void getDistance_shouldThrowExceptionForSameAirport() throws JsonProcessingException {
-        String fromAirport = "JFK";
-        String toAirport = "JFK";
+        String departingAirportCode = "JFK";
+        String destinationAirportCode = "JFK";
 
         assertThrows(InvalidAirportDetailsException.class, () ->
-                    airportApiService.getDistance(fromAirport, toAirport)
+                    airportApiService.getDistance(departingAirportCode, destinationAirportCode)
         );
     }
 
     @Test
     void getDistance_shouldThrowExceptionForEmptyAirportCode() throws JsonProcessingException {
-        String fromAirport = "";
-        String toAirport = "LAX";
+        String departingAirportCode = "";
+        String destinationAirportCode = "LAX";
 
         assertThrows(InvalidAirportDetailsException.class, () ->
-                    airportApiService.getDistance(fromAirport, toAirport)
+                    airportApiService.getDistance(departingAirportCode, destinationAirportCode)
         );
     }
 
     @Test
     void calculateCompensation_shouldReturn250ForShortDistance() throws JsonProcessingException {
-        double distance = 1000.0;
-        int compensationLevel = airportApiService.calculateCompensation(distance);
-        assertEquals(250, compensationLevel);
+        final double DISTANCE = 1000.0;
+        final int FIRST_COMPENSATION_LEVEL = 250;
+
+        int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
+        assertEquals(FIRST_COMPENSATION_LEVEL, compensationLevel);
     }
 
     @Test
     void calculateCompensation_shouldReturn400ForMediumDistance() throws JsonProcessingException {
-        double distance = 2000.0;
-        int compensationLevel = airportApiService.calculateCompensation(distance);
-        assertEquals(400, compensationLevel);
+        final double DISTANCE = 2000.0;
+        final int SECOND_COMPENSATION_LEVEL = 400;
+
+        int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
+        assertEquals(SECOND_COMPENSATION_LEVEL, compensationLevel);
     }
 
     @Test
     void calculateCompensation_shouldReturn600ForLongDistance() throws JsonProcessingException {
-        double distance = 4000.0;
-        int compensationLevel = airportApiService.calculateCompensation(distance);
-        assertEquals(600, compensationLevel);
+        final double DISTANCE = 4000.0;
+        final int THIRD_COMPENSATION_LEVEL = 600;
+
+        int compensationLevel = airportApiService.calculateCompensation(DISTANCE);
+        assertEquals(THIRD_COMPENSATION_LEVEL, compensationLevel);
     }
 }

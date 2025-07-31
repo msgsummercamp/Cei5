@@ -1,7 +1,7 @@
 package com.airassist.backend.exception;
 
 public class InvalidAirportDetailsException extends RuntimeException {
-    public InvalidAirportDetailsException(String fromAirport, String toAirport) {
-        super("Invalid airports details: from " + fromAirport + " to " + toAirport + ". Please check the airport codes.");
+    public InvalidAirportDetailsException(String departingAirportCode, String destinationAirportCode) {
+        super("Invalid airports details: from " + departingAirportCode + " to " + destinationAirportCode + ". Please check the airport codes.");
     }
 }

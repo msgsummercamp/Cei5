@@ -19,7 +19,7 @@ public class AirportApiExceptionHandler {
     @ExceptionHandler(JsonProcessingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleJsonProcessingException(JsonProcessingException ex) {
-        return Map.of("error", "Invalid JSON format: " + ex.getMessage());
+        return Map.of("error", "The server encountered an error while processing your request: " + ex.getMessage());
     }
 
     @ExceptionHandler(InvalidAirportDetailsException.class)
