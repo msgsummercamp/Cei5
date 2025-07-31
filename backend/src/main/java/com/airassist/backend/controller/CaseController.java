@@ -42,7 +42,7 @@ public class CaseController {
 
 
     @PostMapping
-    public ResponseEntity<CaseResponseDTO> creteCase(@Valid @RequestBody CaseDTO caseRequest) {
+    public ResponseEntity<CaseResponseDTO> createCase(@Valid @RequestBody CaseDTO caseRequest) {
         Case createdCase = caseService.createCase(caseRequest);
         CaseResponseDTO createdCaseResponse = caseResponseMapper.toCaseResponseDTO(createdCase);
         return ResponseEntity.status(201).body(createdCaseResponse);

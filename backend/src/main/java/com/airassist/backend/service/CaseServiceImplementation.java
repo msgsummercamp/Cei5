@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class CaseServiceImplementation implements CaseService {
     }
 
     @Override
-    public Page<Case> getCases(Pageable pageable) {
+    public Page<Case> getCases(Pageable pageable) throws CaseNotFoundException {
         logger.info("Service - fetching all cases with pagination: {}", pageable);
         return caseRepository.findAll(pageable);
     }
@@ -41,47 +42,38 @@ public class CaseServiceImplementation implements CaseService {
 
     @Override
     public Case createCase(CaseDTO caseDTO) {
-        Case newCase = null;
-        try {
-            Case caseToAdd = caseMapper.toEntity(caseDTO);
-            logger.info("Service - creating a new case: {}", caseToAdd);
-            if (checkEligibility(caseToAdd)) {
-                caseToAdd.setStatus(Statuses.VALID);
-                newCase = caseRepository.save(caseToAdd);
-            } else {
-                caseToAdd.setStatus(Statuses.INVALID);
-                newCase = caseRepository.save(caseToAdd);
-            }
-        } catch (CaseNotFoundException e) {
-            logger.error("Service - error creating case: {}", e.getMessage());
-            throw e;
+        Case newCase;
+        Case caseToAdd = caseMapper.toEntity(caseDTO);
+        logger.info("Service - creating a new case: {}", caseToAdd);
+        if (checkEligibility(caseToAdd)) {
+            caseToAdd.setStatus(Statuses.VALID);
+        }else {
+            caseToAdd.setStatus(Statuses.INVALID);
         }
+        newCase = caseRepository.save(caseToAdd);
         return newCase;
     }
 
     @Override
-    public Case updateCase(CaseDTO caseDTO, UUID id) {
-        Case updatedCase = null;
-        try {
-            Case updateReqCase = caseMapper.toEntity(caseDTO);
-            updateReqCase.setId(id);
-            Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
-                logger.warn("Service - Case with ID {} not found for update", id);
-                return new CaseNotFoundException("Case with ID " + id + " not found for deletion");
-            });
-            updateCaseFields(updateReqCase, caseToUpdate);
-            logger.info("Service - updating case with ID: {}", id);
-            updatedCase = caseRepository.save(caseToUpdate);
+    public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
+        Case updatedCase;
+
+        Case updateReqCase = caseMapper.toEntity(caseDTO);
+        updateReqCase.setId(id);
+        Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
+            logger.warn("Service - Case with ID {} not found for update", id);
+            return new CaseNotFoundException("Case with ID " + id + " not found for deletion");
+        });
+        updateCaseFields(updateReqCase, caseToUpdate);
+        logger.info("Service - updating case with ID: {}", id);
+        updatedCase = caseRepository.save(caseToUpdate);
 
 
-        } catch (CaseNotFoundException e) {
-            throw e;
-        }
         return updatedCase;
     }
 
     @Override
-    public void deleteCase(UUID id) {
+    public void deleteCase(UUID id) throws CaseNotFoundException {
         if (!caseRepository.existsById(id)) {
             logger.warn(("Service - Attempted to delete a case with non-existing ID: {}"), id);
             throw new CaseNotFoundException("Case with ID " + id + " not found for deletion");
