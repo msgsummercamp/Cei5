@@ -4,11 +4,8 @@ import com.airassist.backend.model.Airport;
 import com.airassist.backend.service.AirportApiFetchServiceImplementation;
 import com.airassist.backend.service.AirportApiServiceImplementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,17 +13,20 @@ import java.util.List;
  * Controller class to handle API requests related to airports.
  */
 @RestController
+@RequestMapping("/api/airports")
+@AllArgsConstructor
 public class AirportApiController {
     private final AirportApiServiceImplementation airportApiService;
     private final AirportApiFetchServiceImplementation airportApiFetchService;
 
-    @Autowired
-    public AirportApiController(AirportApiServiceImplementation airportApiService, AirportApiFetchServiceImplementation airportApiFetchService) {
-        this.airportApiService = airportApiService;
-        this.airportApiFetchService = airportApiFetchService;
-    }
-
-    @GetMapping("/api/airports/fetch")
+    /**
+     * Fetches airport data from the external API and returns a list of airports.
+     *
+     * @return List of airports fetched from the API.
+     * @throws JsonProcessingException If there is an error processing the JSON response.
+     * @throws InterruptedException If the thread is interrupted while fetching data.
+     */
+    @GetMapping("/fetch")
     public List<Airport> fetchAirports() throws JsonProcessingException, InterruptedException {
         return airportApiFetchService.fetchAirportData();
     }
@@ -39,7 +39,7 @@ public class AirportApiController {
      * @return The compensation level based on the distance.
      * @throws JsonProcessingException If there is an error processing the JSON response.
      */
-    @PostMapping("/api/airports/compensation")
+    @PostMapping("/compensation")
     public int calculateCompensationLevel(@RequestParam String departingAirportCode, @RequestParam String destinationAirportCode) throws JsonProcessingException {
         return airportApiService.calculateCompensation(airportApiService.getDistance(departingAirportCode, destinationAirportCode));
     }

@@ -9,10 +9,13 @@ import java.util.List;
  * Service interface for fetching airport data from an external API.
  */
 public interface AirportApiFetchService {
+
     /**
-     * Fetches airport data from the API.
+     * Fetches airport data from the external API.
      *
-     * @return A string containing the airport data in JSON format.
+     * @return List of airports fetched from the API.
+     * @throws JsonProcessingException If there is an error processing the JSON response.
+     * @throws InterruptedException If the thread is interrupted while fetching data.
      */
     List<Airport> fetchAirportData() throws JsonProcessingException, InterruptedException;
 }
