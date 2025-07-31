@@ -1,4 +1,4 @@
-<p-stepper [value]="currentStep">
+<p-stepper [value]="currentStep" [linear]="true">
   <p-step-list>
     <!-- Step indicators -->
     <p-step [value]="1">Reservation Info</p-step>
@@ -26,23 +26,13 @@
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.reservationNumber.hasError('required')) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="Reservation number is required."
-                    />
+                    <app-error-message text="Reservation number is required." />
                   }
                   @case (
                     reservationForm.controls.reservationNumber.hasError('minlength') ||
                     reservationForm.controls.reservationNumber.hasError('maxlength')
                   ) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="Reservation number has to be exactly 6 characters"
-                    />
+                    <app-error-message text="Reservation Number must be exactly 6 characters." />
                   }
                 }
               }
@@ -66,23 +56,13 @@
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.departingAirport.hasError('required')) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="Departing Airport is required."
-                    />
+                    <app-error-message text="Departing Airport is required." />
                   }
                   @case (
                     reservationForm.controls.departingAirport.hasError('minlength') ||
                     reservationForm.controls.departingAirport.hasError('maxlength')
                   ) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="Departing Airport must be exactly 3 characters."
-                    />
+                    <app-error-message text="Departing Airport must be exactly 3 characters." />
                   }
                 }
               }
@@ -106,23 +86,13 @@
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="DestinationAirport is required."
-                    />
+                    <app-error-message text="DestinationAirport is required." />
                   }
                   @case (
                     reservationForm.controls.destinationAirport.hasError('minlength') ||
                     reservationForm.controls.destinationAirport.hasError('maxlength')
                   ) {
-                    <p-message
-                      severity="error"
-                      variant="simple"
-                      size="small"
-                      text="Destination must be exactly 3 characters."
-                    />
+                    <app-error-message text="Destination must be exactly 3 characters." />
                   }
                 }
               }
@@ -151,7 +121,13 @@
       >
         <p-card>
           <!-- Main Flight Form -->
-          <app-case-form title="Flight Details" #mainFlightForm> </app-case-form>
+          <app-case-form
+            title="Flight Details"
+            #mainFlightForm
+            [initialData]="flightData"
+            (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
+          >
+          </app-case-form>
 
           <!-- Next and back buttons -->
           <div class="step-actions">
@@ -185,19 +161,21 @@
                 @if (flight !== null) {
                   <!-- Display Connection Flight card -->
                   <p-card class="connection-flight-card">
-                    <ng-template pTemplate="header">
-                      <div class="connection-header">
-                        <p-button
-                          label="Remove"
-                          severity="danger"
-                          (onClick)="removeConnectionFlight(i)"
-                        >
-                        </p-button>
-                      </div>
-                    </ng-template>
-
-                    <app-case-form [title]="'Connection Flight ' + (i + 1)" #connectionForm>
+                    <app-case-form
+                      [title]="'Connection Flight ' + (i + 1)"
+                      #connectionForm
+                      [initialData]="connectionFlightsData[i]"
+                      (validityChange)="
+                        onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                      "
+                    >
                     </app-case-form>
+                    <p-button
+                      label="Remove"
+                      severity="danger"
+                      (onClick)="removeConnectionFlight(i)"
+                    >
+                    </p-button>
                   </p-card>
                 }
               }

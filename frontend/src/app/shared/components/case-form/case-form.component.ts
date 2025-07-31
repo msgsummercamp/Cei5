@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output, effect } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -91,9 +91,51 @@ export class CaseFormComponent {
 
   // default title for the form
   public readonly title = input<string>('Flight Details');
+  public readonly validityChange = output<{ valid: boolean; data: FlightDetails | null }>();
+  public readonly initialData = input<FlightDetails | null>(null);
 
   // Getter for the form value
-  public getFormValue(): FlightDetails {
-    return this.flightDetailsForm.value as FlightDetails;
+  public getFormValue(): FlightDetails | null {
+    return this.flightDetailsForm.valid ? (this.flightDetailsForm.value as FlightDetails) : null;
+  }
+
+  constructor() {
+    // For data persistance during stepping
+    effect(() => {
+      const data = this.initialData();
+      if (data) {
+        this.flightDetailsForm.patchValue({
+          flightDate: data.flightDate,
+          flightNumber: data.flightNumber,
+          airline: data.airline,
+          departingAirport: data.departingAirport,
+          destinationAirport: data.destinationAirport,
+          plannedDepartureTime: data.plannedDepartureTime,
+          plannedArrivalTime: data.plannedArrivalTime,
+        });
+      }
+    });
+
+    // Subscribe to form changes
+    this.flightDetailsForm.valueChanges.subscribe(() => {
+      const isValid = this.flightDetailsForm.valid;
+      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
+
+      this.validityChange.emit({
+        valid: isValid,
+        data: data,
+      });
+    });
+
+    // Also emit on status changes
+    this.flightDetailsForm.statusChanges.subscribe(() => {
+      const isValid = this.flightDetailsForm.valid;
+      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
+
+      this.validityChange.emit({
+        valid: isValid,
+        data: data,
+      });
+    });
   }
 }

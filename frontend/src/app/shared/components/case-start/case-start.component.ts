@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { ErrorMessageComponent } from '../error-message/error-message.component';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -27,6 +28,7 @@ import { MessageModule } from 'primeng/message';
     InputTextModule,
     CaseFormComponent,
     MessageModule,
+    ErrorMessageComponent,
   ],
   templateUrl: './case-start.component.html',
   styleUrl: './case-start.component.scss',
@@ -45,6 +47,9 @@ export class CaseStartComponent {
     valid: boolean;
     data: FlightDetails | null;
   } | null)[] = new Array(this.maxConnections).fill(null);
+  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
+    null
+  );
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -64,6 +69,29 @@ export class CaseStartComponent {
       Validators.required,
     ]),
   });
+
+  // Function to check if the connection flights are consecutive in form
+  private areConnectionFlightsConsecutiveFromStart(): boolean {
+    let consecutiveCount = 0;
+
+    // Count consecutive flights from the beginning
+    for (let i = 0; i < this.connectionFlights.length; i++) {
+      if (this.connectionFlights[i] !== null) {
+        consecutiveCount++;
+      } else {
+        break;
+      }
+    }
+
+    // Check if remaining slots are all null
+    for (let i = consecutiveCount; i < this.connectionFlights.length; i++) {
+      if (this.connectionFlights[i] !== null) {
+        return false; // Found a flight after a gap
+      }
+    }
+
+    return true;
+  }
 
   // Navigation methods: previous and next
   public onPrevious(prevCallback?: Function) {
@@ -106,14 +134,21 @@ export class CaseStartComponent {
     return mainFlightForm?.flightDetailsForm?.valid || false;
   }
 
+  // Function for the event of changing validity of main flight
+  public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
+    if (isValid && data) {
+      this.flightData = data;
+    }
+  }
+
   // Function to add a new connection flight
   public addConnectionFlight(): void {
     const emptyIndex = this.connectionFlights.findIndex((flight) => flight === null);
     if (emptyIndex !== -1) {
       this.connectionFlights[emptyIndex] = {
         id: emptyIndex + 1,
-        valid: false,
-        data: null,
+        valid: !!this.connectionFlightsData[emptyIndex],
+        data: this.connectionFlightsData[emptyIndex],
       };
     }
   }
@@ -127,18 +162,43 @@ export class CaseStartComponent {
   public removeConnectionFlight(index: number): void {
     if (index >= 0 && index < this.connectionFlights.length) {
       this.connectionFlights[index] = null;
+      this.connectionFlightsData[index] = null;
     }
   }
 
-  // Validity check for all connection flights
   public areAllConnectionFlightsValid(): boolean {
     const activeFlights = this.connectionFlights.filter((flight) => flight !== null);
+
     if (activeFlights.length === 0) {
       return true;
     }
 
-    // TODO: imaplement actual validation logic
-    return true;
+    // Check if connection flights are consecutive from start
+    if (!this.areConnectionFlightsConsecutiveFromStart()) {
+      return false;
+    }
+
+    // Check if all active flights are valid and have data
+    return activeFlights.every((flight) => {
+      if (!flight) return false;
+
+      // Check if form is valid
+      if (!flight.valid) return false;
+
+      // Check if data exists and is complete
+      if (!flight.data) return false;
+
+      const data = flight.data;
+      return !!(
+        data.flightDate &&
+        data.flightNumber?.trim() &&
+        data.airline?.trim() &&
+        data.departingAirport?.trim() &&
+        data.destinationAirport?.trim() &&
+        data.plannedDepartureTime &&
+        data.plannedArrivalTime
+      );
+    });
   }
 
   // Function to handle validity change of connection flights
@@ -150,6 +210,8 @@ export class CaseStartComponent {
     if (this.connectionFlights[index]) {
       this.connectionFlights[index].valid = isValid;
       this.connectionFlights[index].data = data;
+
+      this.connectionFlightsData[index] = data;
     }
   }
 
