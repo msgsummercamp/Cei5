@@ -139,7 +139,7 @@ class TestUserMapper {
         assertThat(dto.getFirstName(), is("John"));
         assertThat(dto.getLastName(), is("Doe"));
         assertThat(dto.getRole(), is(Roles.USER));
-        assertThat(dto.getIsFirstLogin(), is(false));
+        assertThat(dto.isFirstLogin(), is(false));
         assertThat(dto.getUserDetails(), notNullValue());
         assertThat(dto.getUserDetails().getId(), is(user.getUserDetails().getId()));
         assertThat(dto.getUserDetails().getPhoneNumber(), is("+12345678901"));
