@@ -1,5 +1,5 @@
 <main>
-  <p-stepper [value]="currentStep" [linear]="true">
+  <p-stepper [value]="currentStep" [linear]="true" class="text-pink-500">
     <p-step-list>
       <!-- Step indicators -->
       <p-step [value]="1">Reservation Info</p-step>
@@ -13,13 +13,19 @@
           <form
             [formGroup]="reservationForm"
             (ngSubmit)="onNext(nextCallback)"
-            class="reservation-form"
+            class="flex flex-column gap-4 justify-content-center align-items-center"
           >
-            <h2>Reservation Info</h2>
+            <h1 style="--p-inputtext-color: var(--primary-color)">Reservation Info</h1>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
-                <input pInputText id="reservationNumber" formControlName="reservationNumber" />
+                <input
+                  pInputText
+                  id="reservationNumber"
+                  formControlName="reservationNumber"
+                  class="w-25rem h-3rem inputclass"
+                  style="--p-inputtext-color: var(--primary-color)"
+                />
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
               <!-- Error Messages -->
@@ -42,10 +48,10 @@
               }
             </div>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
-                  [styleClass]="'airport-autocomplete'"
+                  [styleClass]="'w-25rem h-3rem cssclass'"
                   id="departingAirport"
                   formControlName="departingAirport"
                   field="name"
@@ -73,13 +79,14 @@
               }
             </div>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
                   id="destinationAirport"
                   formControlName="destinationAirport"
                   field="name"
                   [dropdown]="true"
+                  [styleClass]="'w-25rem h-3rem cssclass'"
                 />
                 <label for="destinationAirport">Destination Airport</label>
               </p-floatlabel>
@@ -91,7 +98,7 @@
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                    <app-error-message text="DestinationAirport is required." />
+                    <app-error-message text="Destination airport is required." />
                   }
                   @case (
                     reservationForm.controls.destinationAirport.hasError('minlength') ||
@@ -104,14 +111,14 @@
             </div>
 
             <!-- Next Button -->
-            <div class="step-actions">
-              <p-button
-                label="Next"
-                severity="primary"
-                (onClick)="onNext(nextCallback)"
-                [disabled]="reservationForm.invalid"
-              />
-            </div>
+            <p-button
+              [styleClass]="'px-6 h-2.5rem'"
+              label="Next"
+              severity="primary"
+              (onClick)="onNext(nextCallback)"
+              [disabled]="reservationForm.invalid"
+              class="buttonclass"
+            />
           </form>
         </ng-template>
       </p-step-panel>
