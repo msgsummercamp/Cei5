@@ -14,7 +14,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { arrivalAfterDepartureValidator } from '../../validators/arrivalAfterDepartureValidator';
+import { flightTimeValidator } from '../../validators/flightTimeValidator';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -92,7 +92,7 @@ export class CaseFormComponent {
       plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
       plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
     },
-    { validators: arrivalAfterDepartureValidator() }
+    { validators: flightTimeValidator() }
   );
 
   // default title for the form
@@ -133,6 +133,7 @@ export class CaseFormComponent {
     });
   }
 
+  // Function to check and emit validity of the form
   public checkAndEmitValidity(): void {
     const isValid = this.flightDetailsForm.valid;
     const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
