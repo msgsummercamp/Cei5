@@ -1,6 +1,5 @@
 package com.airassist.backend.dto.user;
 
-import com.airassist.backend.model.Roles;
 import lombok.Data;
 
 import java.time.LocalDate;

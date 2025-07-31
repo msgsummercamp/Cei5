@@ -4,7 +4,6 @@ import com.airassist.backend.exceptions.user.DuplicateUserException;
 import com.airassist.backend.exceptions.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**

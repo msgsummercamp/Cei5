@@ -4,7 +4,6 @@ import com.airassist.backend.controllers.UserController;
 import com.airassist.backend.exceptions.user.DuplicateUserException;
 import com.airassist.backend.exceptions.user.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
