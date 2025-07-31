@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
-    @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email must be valid")
     @Size(max = 254, message = "Email must be less than 254 characters")
     private String email;
