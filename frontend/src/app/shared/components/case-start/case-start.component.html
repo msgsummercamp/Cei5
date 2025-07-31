@@ -4,6 +4,7 @@
     <p-step [value]="1">Reservation Info</p-step>
     <p-step [value]="2">Flight Details</p-step>
     <p-step [value]="3">Connection Flights</p-step>
+    <p-step [value]="4">Submit</p-step>
   </p-step-list>
   <p-step-panels>
     <!-- Step 1: Reservation Info -->
@@ -15,24 +16,20 @@
 
             <div class="field">
               <p-floatlabel variant="on">
-                <input pInputText id="reservationNumber" formControlName="reservationNumber" />
+                <input pInputText id="reservationNumber" formControlName="reservationNumber"/>
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.reservationNumber.touched &&
-                reservationForm.controls.reservationNumber.errors
-              ) {
+              @if (reservationForm.controls.reservationNumber.touched &&
+              reservationForm.controls.reservationNumber.errors) {
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.reservationNumber.hasError('required')) {
-                    <app-error-message text="Reservation number is required." />
+                    <app-error-message text="Reservation number is required."/>
                   }
-                  @case (
-                    reservationForm.controls.reservationNumber.hasError('minlength') ||
-                    reservationForm.controls.reservationNumber.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Reservation Number must be exactly 6 characters." />
+                  @case (reservationForm.controls.reservationNumber.hasError('minlength') ||
+                  reservationForm.controls.reservationNumber.hasError('maxlength')) {
+                    <app-error-message text="Reservation Number must be exactly 6 characters."/>
                   }
                 }
               }
@@ -49,20 +46,16 @@
                 <label for="departingAirport">Departing Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.departingAirport.touched &&
-                reservationForm.controls.departingAirport.errors
-              ) {
+              @if (reservationForm.controls.departingAirport.touched &&
+              reservationForm.controls.departingAirport.errors) {
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.departingAirport.hasError('required')) {
-                    <app-error-message text="Departing Airport is required." />
+                    <app-error-message text="Departing Airport is required."/>
                   }
-                  @case (
-                    reservationForm.controls.departingAirport.hasError('minlength') ||
-                    reservationForm.controls.departingAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Departing Airport must be exactly 3 characters." />
+                  @case (reservationForm.controls.departingAirport.hasError('minlength') ||
+                  reservationForm.controls.departingAirport.hasError('maxlength')) {
+                    <app-error-message text="Departing Airport must be exactly 3 characters."/>
                   }
                 }
               }
@@ -79,20 +72,16 @@
                 <label for="destinationAirport">Destination Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.destinationAirport.touched &&
-                reservationForm.controls.destinationAirport.errors
-              ) {
+              @if (reservationForm.controls.destinationAirport.touched &&
+              reservationForm.controls.destinationAirport.errors) {
                 <!-- In case there is an error, it will display the first one that has value true-->
                 @switch (true) {
                   @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                    <app-error-message text="DestinationAirport is required." />
+                    <app-error-message text="DestinationAirport is required."/>
                   }
-                  @case (
-                    reservationForm.controls.destinationAirport.hasError('minlength') ||
-                    reservationForm.controls.destinationAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Destination must be exactly 3 characters." />
+                  @case (reservationForm.controls.destinationAirport.hasError('minlength') ||
+                  reservationForm.controls.destinationAirport.hasError('maxlength')) {
+                    <app-error-message text="Destination must be exactly 3 characters."/>
                   }
                 }
               }
@@ -131,7 +120,7 @@
 
           <!-- Next and back buttons -->
           <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
+            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)"/>
             <p-button
               label="Next"
               severity="primary"
@@ -200,7 +189,7 @@
 
           <!-- Next and back buttons -->
           <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
+            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)"/>
             <p-button
               label="Next"
               severity="primary"
@@ -211,5 +200,16 @@
         </p-card>
       </ng-template>
     </p-step-panel>
+
+    <p-step-panel [value]="4">
+      <ng-template
+        pTemplate="content"
+      >
+      <div class="step-actions">
+        <p-button label="Submit" severity="secondary" (onClick) = "submitForm()"/>
+      </div>
+      </ng-template>
+    </p-step-panel>
+
   </p-step-panels>
 </p-stepper>

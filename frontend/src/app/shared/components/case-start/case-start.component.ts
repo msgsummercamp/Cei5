@@ -15,6 +15,12 @@ import { Router } from '@angular/router';
 import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import {CaseService} from '../../service/case.service';
+import {Reservation} from '../../interfaces/reservation.interface';
+import {Flight} from '../../interfaces/flight.interface';
+import {Case} from '../../interfaces/case.interface';
+import {DisruptionReason} from '../../enums/disruptionReason.enum';
+import {Role} from '../../enums/role.enum';
 
 @Component({
   selector: 'app-case-start',
@@ -36,6 +42,8 @@ import { MessageModule } from 'primeng/message';
 export class CaseStartComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private readonly _router = inject(Router);
+  private readonly _caseService = inject(CaseService);
+
 
   public currentStep = 1;
   public isFlightFormValid = false;
@@ -230,5 +238,97 @@ export class CaseStartComponent {
         data: FlightDetails | null;
       } => flight !== null
     );
+  }
+
+  public submitForm(): void {
+    // Build the Case object (without nested references yet)
+    const caseData: Case = {
+      disruptionReason: DisruptionReason.ARRIVED_3H_LATE, // Replace with actual value
+      disruptionInfo: 'PLACEHOLDER_INFO',
+      date: new Date(),
+      client: {
+        id: '00000000-0000-0000-0000-000000000000',
+        email: 'PLACEHOLDER_EMAIL@email.com',
+        password: 'PLACEHOLDER_PASSWORD',
+        firstName: 'PLACEHOLDER_FIRST_NAME',
+        lastName: 'PLACEHOLDER_LAST_NAME',
+        role: Role.USER,
+        userDetails: {
+          phoneNumber: 'PLACEHOLDER_PHONE_NUMBER',
+          address: 'PLACEHOLDER_ADDRESS',
+          postalCode: 'PLACEHOLDER_POSTAL_CODE',
+          birthDate: new Date('2000-01-01'),
+        },
+        cases: [],
+      },
+      assignedColleague: null,
+      reservation: {} as Reservation, // Temporary, will fill below
+      documentList: [],
+    };
+
+    // Build main flight
+    const mainFlight: Flight = {
+      id: '00000000-0000-0000-0000-000000000000',
+      flightDate: this.flightData?.flightDate ?? new Date(),
+      flightNumber: this.flightData?.flightNumber ?? '',
+      departingAirport: this.flightData?.departingAirport ?? '',
+      destinationAirport: this.flightData?.destinationAirport ?? '',
+      departureTime: this.flightData?.plannedDepartureTime ?? new Date(),
+      arrivalTime: this.flightData?.plannedArrivalTime ?? new Date(),
+      airLine: this.flightData?.airline ?? '',
+      isProblematic: false,
+      reservation: {} as Reservation, // Temporary, will fill below
+    };
+
+    // Build connection flights
+    const connectionFlights: Flight[] = this.connectionFlightsData
+      .filter(f => f !== null)
+      .map((f, idx) => ({
+        id: `00000000-0000-0000-0000-000000000000`,
+        flightDate: f!.flightDate ?? new Date(),
+        flightNumber: f!.flightNumber ?? '',
+        departingAirport: f!.departingAirport ?? '',
+        destinationAirport: f!.destinationAirport ?? '',
+        departureTime: f!.plannedDepartureTime ?? new Date(),
+        arrivalTime: f!.plannedArrivalTime ?? new Date(),
+        airLine: f!.airline ?? '',
+        isProblematic: false,
+        reservation: {} as Reservation,
+      }));
+
+    const reservation: Reservation = {
+      id: '00000000-0000-0000-0000-000000000000',
+      reservationNumber: this.reservationForm.get('reservationNumber')?.value ?? '',
+      flights: [mainFlight, ...connectionFlights],
+      caseEntity: caseData,
+    };
+
+    reservation.flights.forEach(flight => {
+      flight.reservation = reservation;
+    });
+
+    // Assign reservation and caseEntity to caseData
+    caseData.reservation = reservation;
+
+    // Remove circular reference before sending
+    const sanitizedReservation: Reservation = {
+      ...reservation,
+      flights: reservation.flights.map(flight => ({
+        ...flight,
+        reservation: null // Remove circular reference
+      })),
+      caseEntity:null
+    };
+    caseData.reservation = sanitizedReservation;
+
+    /// TODO remove console.logs
+    this._caseService.createCase(caseData).subscribe({
+      next: (createdCase) => {
+        console.log(createdCase);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 }

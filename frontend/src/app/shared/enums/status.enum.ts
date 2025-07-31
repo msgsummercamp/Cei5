@@ -1,0 +1,8 @@
+export enum Statuses {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  ARCHIVED = 'ARCHIVED',
+  FAILED = 'FAILED',
+  VALID = 'VALID',
+  INVALID = 'INVALID',
+}

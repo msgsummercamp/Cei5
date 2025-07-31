@@ -1,0 +1,7 @@
+export interface UserDetails {
+  id? : string;
+  phoneNumber: string;
+  address: string;
+  postalCode: string;
+  birthDate: Date;
+}
