@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-case-start',
@@ -29,6 +31,8 @@ import { MessageModule } from 'primeng/message';
     CaseFormComponent,
     MessageModule,
     ErrorMessageComponent,
+    ToggleSwitch,
+    FormsModule,
   ],
   templateUrl: './case-start.component.html',
   styleUrl: './case-start.component.scss',
@@ -36,20 +40,6 @@ import { MessageModule } from 'primeng/message';
 export class CaseStartComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private readonly _router = inject(Router);
-
-  public currentStep = 1;
-  public isFlightFormValid = false;
-  public flightData: FlightDetails | null = null;
-  public maxConnections = 4;
-  public connectionIdCounter = 0;
-  public connectionFlights: ({
-    id: number;
-    valid: boolean;
-    data: FlightDetails | null;
-  } | null)[] = new Array(this.maxConnections).fill(null);
-  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
-    null
-  );
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -69,6 +59,22 @@ export class CaseStartComponent {
       Validators.required,
     ]),
   });
+
+  public currentStep = 1;
+  public isFlightFormValid = false;
+  public flightData: FlightDetails | null = null;
+  public maxConnections = 4;
+  public connectionIdCounter = 0;
+  public connectionFlights: ({
+    id: number;
+    valid: boolean;
+    data: FlightDetails | null;
+    isFlagged: boolean | null;
+  } | null)[] = new Array(this.maxConnections).fill(null);
+  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
+    null
+  );
+  public isFlagged: boolean[] = new Array(this.maxConnections).fill(false);
 
   // Function to check if the connection flights are consecutive in form
   private areConnectionFlightsConsecutiveFromStart(): boolean {
@@ -149,6 +155,7 @@ export class CaseStartComponent {
         id: emptyIndex + 1,
         valid: !!this.connectionFlightsData[emptyIndex],
         data: this.connectionFlightsData[emptyIndex],
+        isFlagged: this.isFlagged[emptyIndex],
       };
     }
   }
@@ -163,6 +170,7 @@ export class CaseStartComponent {
     if (index >= 0 && index < this.connectionFlights.length) {
       this.connectionFlights[index] = null;
       this.connectionFlightsData[index] = null;
+      this.isFlagged[index] = false;
     }
   }
 
@@ -228,7 +236,25 @@ export class CaseStartComponent {
         id: number;
         valid: boolean;
         data: FlightDetails | null;
+        isFlagged: boolean | null;
       } => flight !== null
     );
+  }
+
+  // Function for flagging the flights
+  public flagFlight(index: number): void {
+    if (index >= 0 && index < this.isFlagged.length) {
+      if (this.connectionFlights[index]) {
+        this.connectionFlights[index].isFlagged = this.isFlagged[index];
+      }
+    }
+  }
+
+  public canFlagAFlight(): boolean {
+    return this.isFlagged.some((flag) => flag === true);
+  }
+
+  public canFlagFlight(index: number): boolean {
+    return this.isFlagged[index] || !this.canFlagAFlight();
   }
 }
