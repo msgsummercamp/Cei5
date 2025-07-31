@@ -1,4 +1,4 @@
-import { Component, inject, input, output, effect } from '@angular/core';
+import { Component, inject, input, output, effect, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -13,6 +13,8 @@ import { ListboxModule } from 'primeng/listbox';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
+import { ErrorMessageComponent } from '../error-message/error-message.component';
+import { flightTimeValidator } from '../../validators/flightTimeValidator';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -48,6 +50,7 @@ type FlightDetailsForm = {
     IftaLabelModule,
     AutoCompleteModule,
     MessageModule,
+    ErrorMessageComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -63,31 +66,34 @@ export class CaseFormComponent {
     return date;
   })();
   // Form group for flight details
-  protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>({
-    flightDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
-    flightNumber: this._formBuilder.control<string>('', [
-      Validators.minLength(3),
-      Validators.maxLength(6),
-      Validators.required,
-    ]),
-    airline: this._formBuilder.control<string>('', [
-      Validators.minLength(3),
-      Validators.maxLength(50),
-      Validators.required,
-    ]),
-    departingAirport: this._formBuilder.control<string>('', [
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-    destinationAirport: this._formBuilder.control<string>('', [
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-    plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
-    plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
-  });
+  protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>(
+    {
+      flightDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
+      flightNumber: this._formBuilder.control<string>('', [
+        Validators.minLength(3),
+        Validators.maxLength(6),
+        Validators.required,
+      ]),
+      airline: this._formBuilder.control<string>('', [
+        Validators.minLength(3),
+        Validators.maxLength(50),
+        Validators.required,
+      ]),
+      departingAirport: this._formBuilder.control<string>('', [
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+      destinationAirport: this._formBuilder.control<string>('', [
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+      plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
+      plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
+    },
+    { validators: flightTimeValidator() }
+  );
 
   // default title for the form
   public readonly title = input<string>('Flight Details');
@@ -100,42 +106,41 @@ export class CaseFormComponent {
   }
 
   constructor() {
-    // For data persistance during stepping
+    let hasInitialized = false;
+
     effect(() => {
       const data = this.initialData();
-      if (data) {
-        this.flightDetailsForm.patchValue({
-          flightDate: data.flightDate,
-          flightNumber: data.flightNumber,
-          airline: data.airline,
-          departingAirport: data.departingAirport,
-          destinationAirport: data.destinationAirport,
-          plannedDepartureTime: data.plannedDepartureTime,
-          plannedArrivalTime: data.plannedArrivalTime,
-        });
+      if (data && !hasInitialized) {
+        hasInitialized = true;
+
+        this.flightDetailsForm.patchValue(
+          {
+            flightDate: data.flightDate,
+            flightNumber: data.flightNumber,
+            airline: data.airline,
+            departingAirport: data.departingAirport,
+            destinationAirport: data.destinationAirport,
+            plannedDepartureTime: data.plannedDepartureTime,
+            plannedArrivalTime: data.plannedArrivalTime,
+          },
+          { emitEvent: false }
+        );
+
+        setTimeout(() => {
+          this.checkAndEmitValidity();
+        }, 0);
       }
     });
+  }
 
-    // Subscribe to form changes
-    this.flightDetailsForm.valueChanges.subscribe(() => {
-      const isValid = this.flightDetailsForm.valid;
-      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
+  // Function to check and emit validity of the form
+  public checkAndEmitValidity(): void {
+    const isValid = this.flightDetailsForm.valid;
+    const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
 
-      this.validityChange.emit({
-        valid: isValid,
-        data: data,
-      });
-    });
-
-    // Also emit on status changes
-    this.flightDetailsForm.statusChanges.subscribe(() => {
-      const isValid = this.flightDetailsForm.valid;
-      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
-
-      this.validityChange.emit({
-        valid: isValid,
-        data: data,
-      });
+    this.validityChange.emit({
+      valid: isValid,
+      data: data,
     });
   }
 }
