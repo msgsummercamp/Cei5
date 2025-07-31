@@ -190,6 +190,13 @@
       ) {
         <app-error-message text="Planned Arrival Time is required." />
       }
+      @if (
+        flightDetailsForm.hasError('arrivalBeforeDeparture') &&
+        flightDetailsForm.controls.plannedArrivalTime.touched &&
+        flightDetailsForm.controls.plannedDepartureTime.touched
+      ) {
+        <app-error-message text="Arrival time must be after departure time." />
+      }
     </div>
   </form>
 </p-card>

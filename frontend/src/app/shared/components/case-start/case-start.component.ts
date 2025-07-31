@@ -251,10 +251,12 @@ export class CaseStartComponent {
     }
   }
 
+  // Function to check if there are any flagged flights
   public canFlagAFlight(): boolean {
     return this.isFlagged.some((flag) => flag === true);
   }
 
+  // Checking if the current flight can be flagged
   public canFlagFlight(index: number): boolean {
     return this.isFlagged[index] || !this.canFlagAFlight();
   }
