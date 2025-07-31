@@ -1,7 +1,7 @@
 package com.airassist.backend.service;
 
 import com.airassist.backend.dto.CaseDTO;
-import com.airassist.backend.exceptions.CaseNotFoundException;
+import com.airassist.backend.exception.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Statuses;
@@ -92,20 +92,14 @@ public class CaseServiceImplementation implements CaseService {
 
     @Override
     public boolean checkEligibility(Case caseEntity) {
-        switch (caseEntity.getDisruptionReason()) {
-            case CANCELATION_ON_DAY_OF_DEPARTURE:
-                return true;
-            case CANCELATION_NOTICE_UNDER_14_DAYS:
-                return true;
-            case ARRIVED_3H_LATE:
-                return true;
-            case NEVER_ARRIVED:
-                return true;
-            case DID_NOT_GIVE_THE_SEAT_VOLUNTARILY:
-                return true;
-            default:
-                return false;
-        }
+        return switch (caseEntity.getDisruptionReason()) {
+            case CANCELATION_ON_DAY_OF_DEPARTURE -> true;
+            case CANCELATION_NOTICE_UNDER_14_DAYS -> true;
+            case ARRIVED_3H_LATE -> true;
+            case NEVER_ARRIVED -> true;
+            case DID_NOT_GIVE_THE_SEAT_VOLUNTARILY -> true;
+            default -> false;
+        };
     }
 
     private void updateCaseFields(Case source, Case target) {

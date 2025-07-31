@@ -1,7 +1,7 @@
 package com.airassist.backend.service;
 
 import com.airassist.backend.dto.CaseDTO;
-import com.airassist.backend.exceptions.CaseNotFoundException;
+import com.airassist.backend.exception.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Statuses;
@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CaseServiceImplementationTest {
+public class TestCaseServiceImplementation {
 
     private CaseRepository caseRepository;
     private UserRepository userRepository;

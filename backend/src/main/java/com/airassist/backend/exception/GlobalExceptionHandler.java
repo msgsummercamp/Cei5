@@ -1,4 +1,4 @@
-package com.airassist.backend.exceptions;
+package com.airassist.backend.exception;
 
 
 import org.springframework.http.ResponseEntity;
