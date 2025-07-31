@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +54,6 @@ public class User {
     @OneToMany(mappedBy = "assignedColleague")
     private List<Case> cases;
 
-    @Column(nullable = false)
-    private boolean isFirstLogin = true;
+    @Column(nullable = false,columnDefinition ="boolean default true")
+    private boolean isFirstLogin ;
 }

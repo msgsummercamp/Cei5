@@ -7,7 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -35,5 +36,5 @@ public class UserDetails {
     private String postalCode;
 
     @Column(nullable = false)
-    private Date birthDate;
+    private LocalDate birthDate;
 }

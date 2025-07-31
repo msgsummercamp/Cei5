@@ -21,7 +21,7 @@ public class Reservation {
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Reservation number cannot be blank")
-    @Size(min = 6, max = 6, message = "Reservation number must be between 3 and 50 characters")
+    @Size(min = 6, max = 6, message = "Reservation number must be exactly 6 characters")
     private String reservationNumber;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
