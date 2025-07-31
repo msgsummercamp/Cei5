@@ -16,8 +16,8 @@ VALUES
 -- Insert Users
 INSERT INTO users (id, email, password, firstName, lastName, role, userDetails_id, isFirstLogin)
 VALUES
-    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'john.doe@example.com', 'Password1', 'John', 'Doe', 'ADMIN', '11111111-1111-1111-1111-111111111111', true),
-    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'jane.smith@example.com', 'Password2', 'Jane', 'Smith', 'USER', '22222222-2222-2222-2222-222222222222', false);
+    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'john.doe@example.com', '$2a$12$IncqVqp3IfzRhuYMLdSo7O4cQsdS2J3E8cUq6uqraCPkXb2j23LYi', 'John', 'Doe', 'ADMIN', '11111111-1111-1111-1111-111111111111', true), --Password1
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'jane.smith@example.com', '$2a$12$a/3QU997zt.FMK/zUaVNv.UmL8PA7bs3Dvvrc2QNAWSLiMxv3q5qy', 'Jane', 'Smith', 'USER', '22222222-2222-2222-2222-222222222222', false); --Password2
 
 -- Insert Reservations
 INSERT INTO reservations (id, reservationNumber)
