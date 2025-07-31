@@ -1,6 +1,7 @@
-package com.airassist.backend.exception;
+package com.airassist.backend.exceptionHandler;
 
 
+import com.airassist.backend.exception.cases.CaseNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class CaseControllerExceptionHandler {
 
     @ExceptionHandler(CaseNotFoundException.class)
     public ResponseEntity<String> handleCaseNotFound(CaseNotFoundException ex) {

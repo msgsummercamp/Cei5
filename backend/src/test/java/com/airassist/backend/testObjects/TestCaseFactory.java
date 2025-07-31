@@ -1,7 +1,7 @@
 package com.airassist.backend.testObjects;
 
-import com.airassist.backend.dto.CaseDTO;
-import com.airassist.backend.dto.CaseResponseDTO;
+import com.airassist.backend.dto.cases.CaseDTO;
+import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.model.*;
 import java.time.LocalDate;
 import java.util.List;

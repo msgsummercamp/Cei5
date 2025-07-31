@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -15,15 +15,12 @@ import { Router } from '@angular/router';
 import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import {CaseService} from '../../service/case.service';
-import {Reservation} from '../../interfaces/reservation.interface';
-import {Flight} from '../../interfaces/flight.interface';
-import {Case} from '../../interfaces/case.interface';
-import {DisruptionReason} from '../../enums/disruptionReason.enum';
-import {Role} from '../../enums/role.enum';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-case-start',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     StepperModule,
     CardModule,
@@ -35,6 +32,8 @@ import {Role} from '../../enums/role.enum';
     CaseFormComponent,
     MessageModule,
     ErrorMessageComponent,
+    ToggleSwitch,
+    FormsModule,
   ],
   templateUrl: './case-start.component.html',
   styleUrl: './case-start.component.scss',
@@ -42,22 +41,6 @@ import {Role} from '../../enums/role.enum';
 export class CaseStartComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private readonly _router = inject(Router);
-  private readonly _caseService = inject(CaseService);
-
-
-  public currentStep = 1;
-  public isFlightFormValid = false;
-  public flightData: FlightDetails | null = null;
-  public maxConnections = 4;
-  public connectionIdCounter = 0;
-  public connectionFlights: ({
-    id: number;
-    valid: boolean;
-    data: FlightDetails | null;
-  } | null)[] = new Array(this.maxConnections).fill(null);
-  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
-    null
-  );
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -77,6 +60,22 @@ export class CaseStartComponent {
       Validators.required,
     ]),
   });
+
+  public currentStep = 1;
+  public isFlightFormValid = false;
+  public flightData: FlightDetails | null = null;
+  public maxConnections = 4;
+  public connectionIdCounter = 0;
+  public connectionFlights: ({
+    id: number;
+    valid: boolean;
+    data: FlightDetails | null;
+    isFlagged: boolean | null;
+  } | null)[] = new Array(this.maxConnections).fill(null);
+  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
+    null
+  );
+  public isFlagged: boolean[] = new Array(this.maxConnections).fill(false);
 
   // Function to check if the connection flights are consecutive in form
   private areConnectionFlightsConsecutiveFromStart(): boolean {
@@ -157,6 +156,7 @@ export class CaseStartComponent {
         id: emptyIndex + 1,
         valid: !!this.connectionFlightsData[emptyIndex],
         data: this.connectionFlightsData[emptyIndex],
+        isFlagged: this.isFlagged[emptyIndex],
       };
     }
   }
@@ -171,6 +171,7 @@ export class CaseStartComponent {
     if (index >= 0 && index < this.connectionFlights.length) {
       this.connectionFlights[index] = null;
       this.connectionFlightsData[index] = null;
+      this.isFlagged[index] = false;
     }
   }
 
@@ -236,99 +237,27 @@ export class CaseStartComponent {
         id: number;
         valid: boolean;
         data: FlightDetails | null;
+        isFlagged: boolean | null;
       } => flight !== null
     );
   }
 
-  public submitForm(): void {
-    // Build the Case object (without nested references yet)
-    const caseData: Case = {
-      disruptionReason: DisruptionReason.ARRIVED_3H_LATE, // Replace with actual value
-      disruptionInfo: 'PLACEHOLDER_INFO',
-      date: new Date(),
-      client: {
-        id: '00000000-0000-0000-0000-000000000000',
-        email: 'PLACEHOLDER_EMAIL@email.com',
-        password: 'PLACEHOLDER_PASSWORD',
-        firstName: 'PLACEHOLDER_FIRST_NAME',
-        lastName: 'PLACEHOLDER_LAST_NAME',
-        role: Role.USER,
-        userDetails: {
-          phoneNumber: 'PLACEHOLDER_PHONE_NUMBER',
-          address: 'PLACEHOLDER_ADDRESS',
-          postalCode: 'PLACEHOLDER_POSTAL_CODE',
-          birthDate: new Date('2000-01-01'),
-        },
-        cases: [],
-      },
-      assignedColleague: null,
-      reservation: {} as Reservation, // Temporary, will fill below
-      documentList: [],
-    };
-
-    // Build main flight
-    const mainFlight: Flight = {
-      id: '00000000-0000-0000-0000-000000000000',
-      flightDate: this.flightData?.flightDate ?? new Date(),
-      flightNumber: this.flightData?.flightNumber ?? '',
-      departingAirport: this.flightData?.departingAirport ?? '',
-      destinationAirport: this.flightData?.destinationAirport ?? '',
-      departureTime: this.flightData?.plannedDepartureTime ?? new Date(),
-      arrivalTime: this.flightData?.plannedArrivalTime ?? new Date(),
-      airLine: this.flightData?.airline ?? '',
-      isProblematic: false,
-      reservation: {} as Reservation, // Temporary, will fill below
-    };
-
-    // Build connection flights
-    const connectionFlights: Flight[] = this.connectionFlightsData
-      .filter(f => f !== null)
-      .map((f, idx) => ({
-        id: `00000000-0000-0000-0000-000000000000`,
-        flightDate: f!.flightDate ?? new Date(),
-        flightNumber: f!.flightNumber ?? '',
-        departingAirport: f!.departingAirport ?? '',
-        destinationAirport: f!.destinationAirport ?? '',
-        departureTime: f!.plannedDepartureTime ?? new Date(),
-        arrivalTime: f!.plannedArrivalTime ?? new Date(),
-        airLine: f!.airline ?? '',
-        isProblematic: false,
-        reservation: {} as Reservation,
-      }));
-
-    const reservation: Reservation = {
-      id: '00000000-0000-0000-0000-000000000000',
-      reservationNumber: this.reservationForm.get('reservationNumber')?.value ?? '',
-      flights: [mainFlight, ...connectionFlights],
-      caseEntity: caseData,
-    };
-
-    reservation.flights.forEach(flight => {
-      flight.reservation = reservation;
-    });
-
-    // Assign reservation and caseEntity to caseData
-    caseData.reservation = reservation;
-
-    // Remove circular reference before sending
-    const sanitizedReservation: Reservation = {
-      ...reservation,
-      flights: reservation.flights.map(flight => ({
-        ...flight,
-        reservation: null // Remove circular reference
-      })),
-      caseEntity:null
-    };
-    caseData.reservation = sanitizedReservation;
-
-    /// TODO remove console.logs
-    this._caseService.createCase(caseData).subscribe({
-      next: (createdCase) => {
-        console.log(createdCase);
-      },
-      error: (err) => {
-        console.log(err);
+  // Function for flagging the flights
+  public flagFlight(index: number): void {
+    if (index >= 0 && index < this.isFlagged.length) {
+      if (this.connectionFlights[index]) {
+        this.connectionFlights[index].isFlagged = this.isFlagged[index];
       }
-    });
+    }
+  }
+
+  // Function to check if there are any flagged flights
+  public canFlagAFlight(): boolean {
+    return this.isFlagged.some((flag) => flag === true);
+  }
+
+  // Checking if the current flight can be flagged
+  public canFlagFlight(index: number): boolean {
+    return this.isFlagged[index] || !this.canFlagAFlight();
   }
 }
