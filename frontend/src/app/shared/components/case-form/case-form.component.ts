@@ -106,38 +106,33 @@ export class CaseFormComponent {
     effect(() => {
       const data = this.initialData();
       if (data) {
-        this.flightDetailsForm.patchValue({
-          flightDate: data.flightDate,
-          flightNumber: data.flightNumber,
-          airline: data.airline,
-          departingAirport: data.departingAirport,
-          destinationAirport: data.destinationAirport,
-          plannedDepartureTime: data.plannedDepartureTime,
-          plannedArrivalTime: data.plannedArrivalTime,
-        });
+        this.flightDetailsForm.patchValue(
+          {
+            flightDate: data.flightDate,
+            flightNumber: data.flightNumber,
+            airline: data.airline,
+            departingAirport: data.departingAirport,
+            destinationAirport: data.destinationAirport,
+            plannedDepartureTime: data.plannedDepartureTime,
+            plannedArrivalTime: data.plannedArrivalTime,
+          },
+          { emitEvent: false }
+        );
+
+        setTimeout(() => {
+          this.checkAndEmitValidity();
+        }, 0);
       }
     });
+  }
 
-    // Subscribe to form changes
-    this.flightDetailsForm.valueChanges.subscribe(() => {
-      const isValid = this.flightDetailsForm.valid;
-      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
+  public checkAndEmitValidity(): void {
+    const isValid = this.flightDetailsForm.valid;
+    const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
 
-      this.validityChange.emit({
-        valid: isValid,
-        data: data,
-      });
-    });
-
-    // Also emit on status changes
-    this.flightDetailsForm.statusChanges.subscribe(() => {
-      const isValid = this.flightDetailsForm.valid;
-      const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
-
-      this.validityChange.emit({
-        valid: isValid,
-        data: data,
-      });
+    this.validityChange.emit({
+      valid: isValid,
+      data: data,
     });
   }
 }

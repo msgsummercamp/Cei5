@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-case-start',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     StepperModule,
     CardModule,
