@@ -1,7 +1,7 @@
 package com.airassist.backend.service;
 
-import com.airassist.backend.dto.CaseDTO;
-import com.airassist.backend.exception.CaseNotFoundException;
+import com.airassist.backend.dto.cases.CaseDTO;
+import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Statuses;

@@ -1,6 +1,6 @@
 package com.airassist.backend.service;
 
-import com.airassist.backend.exception.InvalidAirportDetailsException;
+import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +45,7 @@ public class TestAirportApiService {
     }
 
     @Test
-    void getDistance_shouldThrowExceptionForSameAirport() throws JsonProcessingException {
+    void getDistance_shouldThrowExceptionForSameAirport(){
         String departingAirportCode = "JFK";
         String destinationAirportCode = "JFK";
 
@@ -55,7 +55,7 @@ public class TestAirportApiService {
     }
 
     @Test
-    void getDistance_shouldThrowExceptionForEmptyAirportCode() throws JsonProcessingException {
+    void getDistance_shouldThrowExceptionForEmptyAirportCode(){
         String departingAirportCode = "";
         String destinationAirportCode = "LAX";
 
@@ -65,7 +65,7 @@ public class TestAirportApiService {
     }
 
     @Test
-    void calculateCompensation_shouldReturn250ForShortDistance() throws JsonProcessingException {
+    void calculateCompensation_shouldReturn250ForShortDistance(){
         final double DISTANCE = 1000.0;
         final int FIRST_COMPENSATION_LEVEL = 250;
 
@@ -74,7 +74,7 @@ public class TestAirportApiService {
     }
 
     @Test
-    void calculateCompensation_shouldReturn400ForMediumDistance() throws JsonProcessingException {
+    void calculateCompensation_shouldReturn400ForMediumDistance(){
         final double DISTANCE = 2000.0;
         final int SECOND_COMPENSATION_LEVEL = 400;
 
@@ -83,7 +83,7 @@ public class TestAirportApiService {
     }
 
     @Test
-    void calculateCompensation_shouldReturn600ForLongDistance() throws JsonProcessingException {
+    void calculateCompensation_shouldReturn600ForLongDistance() {
         final double DISTANCE = 4000.0;
         final int THIRD_COMPENSATION_LEVEL = 600;
 
