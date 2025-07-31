@@ -32,6 +32,8 @@ public class AirportApiServiceImplementation implements AirportApiService {
     private final int FIRST_COMPENSATION_LEVEL = 250;
     private final int SECOND_COMPENSATION_LEVEL = 400;
     private final int THIRD_COMPENSATION_LEVEL = 600;
+    private final int TIER_ONE_DISTANCE = 1500;
+    private final int TIER_TWO_DISTANCE = 3500;
 
     @PostConstruct
     void init() {
@@ -65,9 +67,9 @@ public class AirportApiServiceImplementation implements AirportApiService {
     public int calculateCompensation(double distance) {
         logger.info("Calculating compensation for distance: {}", distance);
 
-        if (distance < 1500) {
+        if (distance < TIER_ONE_DISTANCE) {
             return FIRST_COMPENSATION_LEVEL;
-        } else if (distance <= 3500) {
+        } else if (distance <= TIER_TWO_DISTANCE) {
             return SECOND_COMPENSATION_LEVEL;
         } else {
             return THIRD_COMPENSATION_LEVEL;
