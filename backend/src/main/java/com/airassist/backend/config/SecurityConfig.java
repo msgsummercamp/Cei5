@@ -1,10 +1,15 @@
 package com.airassist.backend.config;
 
+import com.airassist.backend.filters.JwtAuthFilter;
+import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.AuthService;
+import com.airassist.backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,6 +28,15 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new CustomUserDetailsService(userRepository);
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter(AuthService authService, UserDetailsService userDetailsService) {
+        return new JwtAuthFilter(authService, (CustomUserDetailsService) userDetailsService);
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
