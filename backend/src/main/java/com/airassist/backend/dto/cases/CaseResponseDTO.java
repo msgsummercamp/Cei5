@@ -1,4 +1,4 @@
-package com.airassist.backend.dto;
+package com.airassist.backend.dto.cases;
 
 import com.airassist.backend.model.Statuses;
 import com.airassist.backend.model.DisruptionReasons;

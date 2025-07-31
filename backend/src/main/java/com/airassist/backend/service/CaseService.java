@@ -1,6 +1,6 @@
 package com.airassist.backend.service;
 
-import com.airassist.backend.dto.CaseDTO;
+import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.model.Case;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

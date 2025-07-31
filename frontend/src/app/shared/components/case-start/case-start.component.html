@@ -176,6 +176,11 @@
                       (onClick)="removeConnectionFlight(i)"
                     >
                     </p-button>
+                    <p-toggleswitch
+                      [(ngModel)]="isFlagged[i]"
+                      (onChange)="flagFlight(i)"
+                      [disabled]="!canFlagFlight(i)"
+                    />
                   </p-card>
                 }
               }
