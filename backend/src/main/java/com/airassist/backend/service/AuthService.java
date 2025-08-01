@@ -7,6 +7,7 @@ import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import com.airassist.backend.model.User;
 
 public interface AuthService {
 
@@ -24,10 +25,10 @@ public interface AuthService {
      * Registers a new user with the provided user details.
      *
      * @param userDTO the user details for registration
-     * @return SignInResponse containing the JWT token and user roles
+     * @return User the registered user entity
      * @throws DuplicateUserException if a user with the same username or email already exists
      */
-    SignInResponse register(UserDTO userDTO) throws DuplicateUserException;
+    User register(UserDTO userDTO) throws DuplicateUserException;
 
     /**
      * Validates the provided JWT token.

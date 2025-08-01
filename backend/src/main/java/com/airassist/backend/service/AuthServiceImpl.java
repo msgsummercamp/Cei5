@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public SignInResponse register(UserDTO userDTO) throws DuplicateUserException {
+    public User register(UserDTO userDTO) throws DuplicateUserException {
         log.info("Registering user with email: {}", userDTO.getEmail());
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new DuplicateUserException();
@@ -64,9 +64,8 @@ public class AuthServiceImpl implements AuthService{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setFirstLogin(true);
         user = userRepository.save(user);
-        String token = generateToken(user); // #TODO mail comes here instead of sign In process
         log.info("User registered successfully with email: {}", user.getEmail());
-        return new SignInResponse(token, user.getRole(), user.isFirstLogin());
+        return user;
     }
 
     @Override
