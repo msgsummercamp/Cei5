@@ -15,10 +15,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
-public class TestAirportApiServiceImplementation {
+public class TestAirportApiService {
 
     @Autowired
-    private AirportApiServiceImplementation airportApiService;
+    private AirportApiServiceImpl airportApiService;
 
     private AutoCloseable closeable;
 

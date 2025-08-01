@@ -19,9 +19,9 @@ import java.util.List;
 @Service
 @NoArgsConstructor
 @Getter
-public class AirportApiFetchServiceImplementation implements AirportApiFetchService {
+public class AirportApiFetchServiceImpl implements AirportApiFetchService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AirportApiFetchServiceImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(AirportApiFetchServiceImpl.class);
 
     @Value("https://airportgap.com/api/airports?page=1")
     public String airportApiUrl;

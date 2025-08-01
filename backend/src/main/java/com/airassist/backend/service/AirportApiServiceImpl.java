@@ -19,9 +19,9 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 @Getter
-public class AirportApiServiceImplementation implements AirportApiService {
+public class AirportApiServiceImpl implements AirportApiService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AirportApiServiceImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(AirportApiServiceImpl.class);
 
     @Value("${airport.api.url}")
     public String airportApiUrl;

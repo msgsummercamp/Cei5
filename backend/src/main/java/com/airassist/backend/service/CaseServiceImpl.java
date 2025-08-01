@@ -17,13 +17,13 @@ import java.util.UUID;
 
 
 @Service
-public class CaseServiceImplementation implements CaseService {
+public class CaseServiceImpl implements CaseService {
     private final CaseRepository caseRepository;
     private final CaseMapper caseMapper;
-    private static final Logger logger = LoggerFactory.getLogger(CaseServiceImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(CaseServiceImpl.class);
 
 
-    public CaseServiceImplementation(CaseRepository caseRepository, CaseMapper caseMapper) {
+    public CaseServiceImpl(CaseRepository caseRepository, CaseMapper caseMapper) {
         this.caseRepository = caseRepository;
         this.caseMapper = caseMapper;
     }

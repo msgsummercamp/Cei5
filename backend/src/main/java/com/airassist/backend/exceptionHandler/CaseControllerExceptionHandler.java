@@ -2,7 +2,7 @@ package com.airassist.backend.exceptionHandler;
 
 
 import com.airassist.backend.controller.CaseController;
-import com.airassist.backend.exception.CaseNotFoundException;
+import com.airassist.backend.exception.cases.CaseNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

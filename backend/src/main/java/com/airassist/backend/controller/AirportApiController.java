@@ -1,8 +1,8 @@
 package com.airassist.backend.controller;
 
 import com.airassist.backend.model.Airport;
-import com.airassist.backend.service.AirportApiFetchServiceImplementation;
-import com.airassist.backend.service.AirportApiServiceImplementation;
+import com.airassist.backend.service.AirportApiFetchServiceImpl;
+import com.airassist.backend.service.AirportApiServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ import java.util.List;
 @RequestMapping("/api/airports")
 @AllArgsConstructor
 public class AirportApiController {
-    private final AirportApiServiceImplementation airportApiService;
-    private final AirportApiFetchServiceImplementation airportApiFetchService;
+    private final AirportApiServiceImpl airportApiService;
+    private final AirportApiFetchServiceImpl airportApiFetchService;
 
     /**
      * Fetches airport data from the external API and returns a list of airports.
