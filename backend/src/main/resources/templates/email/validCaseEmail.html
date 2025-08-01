@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Case Approval Notification</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 24px; background: #f9f9f9; border-radius: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>Dear <strong th:text="${recipientName}">Recipient Name</strong>,</p>
+    <p>
+        We are pleased to inform you that your case has been <strong>approved</strong>.
+    </p>
+    <p>
+        <strong>Case ID:</strong> <span th:text="${caseId}">123456</span>
+    </p>
+    <p>
+        If you have any questions or need further assistance, please do not hesitate to contact us.
+    </p>
+</div>
+</body>
+</html>
