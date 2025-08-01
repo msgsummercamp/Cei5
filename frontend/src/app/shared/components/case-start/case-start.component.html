@@ -1,46 +1,59 @@
-<p-stepper [value]="currentStep" [linear]="true">
-  <p-step-list>
-    <!-- Step indicators -->
-    <p-step [value]="1">Reservation Info</p-step>
-    <p-step [value]="2">Flight Details</p-step>
-    <p-step [value]="3">Connection Flights</p-step>
-  </p-step-list>
-  <p-step-panels>
-    <!-- Step 1: Reservation Info -->
-    <p-step-panel [value]="1">
-      <ng-template pTemplate="content" let-nextCallback="nextCallback">
-        <p-card>
-          <form [formGroup]="reservationForm" (ngSubmit)="onNext(nextCallback)">
-            <h2>Reservation Info</h2>
+<main>
+  <p-stepper [value]="currentStep" [linear]="true" class="text-pink-500">
+    <p-step-list>
+      <!-- Step indicators -->
+      <p-step [value]="1">Reservation Info</p-step>
+      <p-step [value]="2">Flight Details</p-step>
+      <p-step [value]="3">Connection Flights</p-step>
+    </p-step-list>
+    <p-step-panels>
+      <!-- Step 1: Reservation Info -->
+      <p-step-panel [value]="1">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback">
+          <form
+            [formGroup]="reservationForm"
+            (ngSubmit)="onNext(nextCallback)"
+            class="flex flex-column gap-4 justify-content-center align-items-center"
+          >
+            <p-header class="text-3xl">Reservation Info</p-header>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
-                <input pInputText id="reservationNumber" formControlName="reservationNumber" />
+                <input
+                  pInputText
+                  id="reservationNumber"
+                  formControlName="reservationNumber"
+                  class="w-25rem h-3rem inputclass"
+                  style="--p-inputtext-color: var(--primary-color)"
+                />
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.reservationNumber.touched &&
-                reservationForm.controls.reservationNumber.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.reservationNumber.hasError('required')) {
-                    <app-error-message text="Reservation number is required." />
-                  }
-                  @case (
-                    reservationForm.controls.reservationNumber.hasError('minlength') ||
-                    reservationForm.controls.reservationNumber.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Reservation Number must be exactly 6 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.reservationNumber.touched &&
+                  reservationForm.controls.reservationNumber.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.reservationNumber.hasError('required')) {
+                      <app-error-message text="Reservation number is required." />
+                    }
+                    @case (
+                      reservationForm.controls.reservationNumber.hasError('minlength') ||
+                      reservationForm.controls.reservationNumber.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Reservation Number must be exactly 6 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
+                  [styleClass]="'w-25rem h-3rem cssclass'"
                   id="departingAirport"
                   formControlName="departingAirport"
                   field="name"
@@ -49,77 +62,79 @@
                 <label for="departingAirport">Departing Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.departingAirport.touched &&
-                reservationForm.controls.departingAirport.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.departingAirport.hasError('required')) {
-                    <app-error-message text="Departing Airport is required." />
-                  }
-                  @case (
-                    reservationForm.controls.departingAirport.hasError('minlength') ||
-                    reservationForm.controls.departingAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Departing Airport must be exactly 3 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.departingAirport.touched &&
+                  reservationForm.controls.departingAirport.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.departingAirport.hasError('required')) {
+                      <app-error-message text="Departing Airport is required." />
+                    }
+                    @case (
+                      reservationForm.controls.departingAirport.hasError('minlength') ||
+                      reservationForm.controls.departingAirport.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Departing Airport must be exactly 3 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
-            <div class="field">
+            <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
                   id="destinationAirport"
                   formControlName="destinationAirport"
                   field="name"
                   [dropdown]="true"
+                  [styleClass]="'w-25rem h-3rem cssclass'"
                 />
                 <label for="destinationAirport">Destination Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.destinationAirport.touched &&
-                reservationForm.controls.destinationAirport.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                    <app-error-message text="DestinationAirport is required." />
-                  }
-                  @case (
-                    reservationForm.controls.destinationAirport.hasError('minlength') ||
-                    reservationForm.controls.destinationAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Destination must be exactly 3 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.destinationAirport.touched &&
+                  reservationForm.controls.destinationAirport.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.destinationAirport.hasError('required')) {
+                      <app-error-message text="Destination airport is required." />
+                    }
+                    @case (
+                      reservationForm.controls.destinationAirport.hasError('minlength') ||
+                      reservationForm.controls.destinationAirport.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Destination must be exactly 3 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
             <!-- Next Button -->
-            <div class="step-actions">
-              <p-button
-                label="Next"
-                severity="primary"
-                (onClick)="onNext(nextCallback)"
-                [disabled]="reservationForm.invalid"
-              />
-            </div>
+            <p-button
+              [styleClass]="'px-6 h-2.5rem'"
+              label="Next"
+              severity="primary"
+              (onClick)="onNext(nextCallback)"
+              [disabled]="reservationForm.invalid"
+            />
           </form>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
+        </ng-template>
+      </p-step-panel>
 
-    <!-- Step 2: Flight Details -->
-    <p-step-panel [value]="2">
-      <ng-template
-        pTemplate="content"
-        let-prevCallback="prevCallback"
-        let-nextCallback="nextCallback"
-      >
-        <p-card>
+      <!-- Step 2: Flight Details -->
+      <p-step-panel [value]="2">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
           <!-- Main Flight Form -->
           <app-case-form
             title="Flight Details"
@@ -130,91 +145,119 @@
           </app-case-form>
 
           <!-- Next and back buttons -->
-          <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
+          <div class="justify-content-between flex flex-row gap-2">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!isMainFlightValid(mainFlightForm)"
               (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
+              [styleClass]="'px-6 h-2.5rem'"
             />
           </div>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
+        </ng-template>
+      </p-step-panel>
 
-    <!-- Step 3: Connection Flights -->
-    <p-step-panel [value]="3">
-      <ng-template
-        pTemplate="content"
-        let-prevCallback="prevCallback"
-        let-nextCallback="nextCallback"
-      >
-        <p-card>
+      <!-- Step 3: Connection Flights -->
+      <p-step-panel [value]="3">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
           @if (getActiveConnectionFlights().length === 0) {
             <p-message>No connection flights added yet.</p-message>
           }
           <!-- Connection Flight Forms -->
           @if (getActiveConnectionFlights().length > 0) {
-            <div class="connection-forms">
+            <div>
               @for (flight of connectionFlights; track $index; let i = $index) {
                 @if (flight !== null) {
                   <!-- Display Connection Flight card -->
-                  <p-card class="connection-flight-card">
-                    <app-case-form
-                      [title]="'Connection Flight ' + (i + 1)"
-                      #connectionForm
-                      [initialData]="connectionFlightsData[i]"
-                      (validityChange)="
-                        onConnectionFlightValidityChange(i, $event.valid, $event.data)
-                      "
-                    >
-                    </app-case-form>
-                    <p-button
-                      label="Remove"
-                      severity="danger"
-                      (onClick)="removeConnectionFlight(i)"
-                    >
-                    </p-button>
-                    <p-toggleswitch
-                      [(ngModel)]="isFlagged[i]"
-                      (onChange)="flagFlight(i)"
-                      [disabled]="!canFlagFlight(i)"
-                    />
+                  <p-card [styleClass]="'mb-4'">
+                    <div class="flex flex-row justify-content-between align-items-start gap-3">
+                      <div
+                        class="flex flex-column align-items-center gap-2"
+                        style="min-width: 150px"
+                      >
+                        <p-tag value="Flag the flight: " />
+                        <p-toggleswitch
+                          [(ngModel)]="isFlagged[i]"
+                          (onChange)="flagFlight(i)"
+                          [disabled]="!canFlagFlight(i)"
+                        />
+                      </div>
+
+                      <div class="flex-1">
+                        <app-case-form
+                          [title]="'Connection Flight ' + (i + 1)"
+                          #connectionForm
+                          [initialData]="connectionFlightsData[i]"
+                          (validityChange)="
+                            onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                          "
+                        >
+                        </app-case-form>
+                      </div>
+
+                      <div class="flex flex-column align-items-center" style="min-width: 150px">
+                        <p-button
+                          severity="danger"
+                          (onClick)="removeConnectionFlight(i)"
+                          [styleClass]="'align-self-right'"
+                          icon="pi pi-trash"
+                        >
+                        </p-button>
+                      </div>
+                    </div>
                   </p-card>
                 }
               }
             </div>
           }
-          <!-- Add Connection Flight Button -->
-          @if (canAddMoreConnections()) {
-            <div class="add-connection-section">
-              <p-button
-                label="Add Connection Flight"
-                severity="secondary"
-                (onClick)="addConnectionFlight()"
-              >
-              </p-button>
-            </div>
-          }
-          <!-- Maximum Connection Flights Message -->
-          @else {
-            <p-message severity="warn" text="Maximum number of connection flights reached.">
-            </p-message>
-          }
 
           <!-- Next and back buttons -->
-          <div class="step-actions">
-            <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
+          <div class="justify-content-between flex flex-row gap-2 mt-4">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+
+            <!-- Add Connection Flight Button -->
+            @if (canAddMoreConnections()) {
+              <div class="add-connection-section">
+                <p-button
+                  label="Add Connection Flight"
+                  severity="primary"
+                  (onClick)="addConnectionFlight()"
+                  [styleClass]="'px-6 h-2.5rem'"
+                >
+                </p-button>
+              </div>
+            }
+            <!-- Maximum Connection Flights Message -->
+            @else {
+              <p-message severity="warn" text="Maximum number of connection flights reached.">
+              </p-message>
+            }
+
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!areAllConnectionFlightsValid()"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
             />
           </div>
-        </p-card>
-      </ng-template>
-    </p-step-panel>
-  </p-step-panels>
-</p-stepper>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</main>

@@ -24,12 +24,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestCaseServiceImplementation {
+public class TestCaseService {
 
     private CaseRepository caseRepository;
     private UserRepository userRepository;
     private ReservationRepository reservationRepository;
-    private CaseServiceImplementation  caseService;
+    private CaseServiceImpl caseService;
     private CaseMapper caseMapper;
 
     @BeforeEach
@@ -38,7 +38,7 @@ public class TestCaseServiceImplementation {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
-        caseService = new CaseServiceImplementation(caseRepository, caseMapper);
+        caseService = new CaseServiceImpl(caseRepository, caseMapper);
 
         Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
                 .thenAnswer(inv -> {

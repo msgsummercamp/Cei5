@@ -1,9 +1,15 @@
 <!-- Design of the case form -->
-<p-card>
-  <h2>{{ title() }}</h2>
-  <form novalidate [formGroup]="flightDetailsForm">
+<div class="page-container" style="text-align: center">
+  <p-header class="text-3xl">
+    {{ title() }}
+  </p-header>
+  <form
+    novalidate
+    [formGroup]="flightDetailsForm"
+    class="flex flex-column gap-4 justify-content-center align-items-center mt-4"
+  >
     <!-- Flight Date -->
-    <div class="field">
+    <div>
       <p-floatlabel variant="on">
         <p-datepicker
           inputId="buttondisplay"
@@ -13,26 +19,29 @@
           [maxDate]="maxDate"
           (onSelect)="checkAndEmitValidity()"
           [readonlyInput]="true"
+          [styleClass]="'w-25rem h-3rem'"
         />
         <label for="flightDate">Flight Date</label>
       </p-floatlabel>
-      @if (
-        flightDetailsForm.controls.flightDate.hasError('required') &&
-        flightDetailsForm.controls.flightDate.touched
-      ) {
-        <app-error-message text="Flight Date is required." />
-      }
-      @if (
-        flightDetailsForm.hasError('flightDateMismatch') &&
-        flightDetailsForm.controls.flightDate.touched &&
-        flightDetailsForm.controls.plannedDepartureTime.touched
-      ) {
-        <app-error-message text="Flight date must match the departure date." />
-      }
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.flightDate.hasError('required') &&
+          flightDetailsForm.controls.flightDate.touched
+        ) {
+          <app-error-message text="Flight Date is required." />
+        }
+        @if (
+          flightDetailsForm.hasError('flightDateMismatch') &&
+          flightDetailsForm.controls.flightDate.touched &&
+          flightDetailsForm.controls.plannedDepartureTime.touched
+        ) {
+          <app-error-message text="Flight date must match the departure date." />
+        }
+      </div>
     </div>
 
     <!-- Flight Number -->
-    <div class="field">
+    <div>
       <p-floatlabel variant="on">
         <label for="flightNumber">Flight Number</label>
         <input
@@ -41,28 +50,31 @@
           formControlName="flightNumber"
           id="flightNumber"
           (input)="checkAndEmitValidity()"
+          class="w-25rem h-3rem"
         />
       </p-floatlabel>
-      @if (
-        flightDetailsForm.controls.flightNumber.touched &&
-        flightDetailsForm.controls.flightNumber.errors
-      ) {
-        @switch (true) {
-          @case (flightDetailsForm.controls.flightNumber.hasError('required')) {
-            <app-error-message text="Flight Number is required." />
-          }
-          @case (flightDetailsForm.controls.flightNumber.hasError('minlength')) {
-            <app-error-message text="Flight Number must be at least 3 characters." />
-          }
-          @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
-            <app-error-message text="Flight Number must be at most 6 characters." />
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.flightNumber.touched &&
+          flightDetailsForm.controls.flightNumber.errors
+        ) {
+          @switch (true) {
+            @case (flightDetailsForm.controls.flightNumber.hasError('required')) {
+              <app-error-message text="Flight Number is required." />
+            }
+            @case (flightDetailsForm.controls.flightNumber.hasError('minlength')) {
+              <app-error-message text="Flight Number must be at least 3 characters." />
+            }
+            @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
+              <app-error-message text="Flight Number must be at most 6 characters." />
+            }
           }
         }
-      }
+      </div>
     </div>
 
     <!-- Airline -->
-    <div class="field">
+    <div>
       <p-floatlabel variant="on">
         <label for="airline">Airline</label>
         <input
@@ -71,28 +83,31 @@
           formControlName="airline"
           id="airline"
           (input)="checkAndEmitValidity()"
+          class="w-25rem h-3rem"
         />
       </p-floatlabel>
-      @if (
-        flightDetailsForm.controls.airline.touched && flightDetailsForm.controls.airline.errors
-      ) {
-        @switch (true) {
-          @case (flightDetailsForm.controls.airline.hasError('required')) {
-            <app-error-message text="Airline name is required." />
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.airline.touched && flightDetailsForm.controls.airline.errors
+        ) {
+          @switch (true) {
+            @case (flightDetailsForm.controls.airline.hasError('required')) {
+              <app-error-message text="Airline name is required." />
+            }
+            @case (flightDetailsForm.controls.airline.hasError('minlength')) {
+              <app-error-message text="Airline name must be at least 3 characters." />
+            }
+            @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
+              <app-error-message text="Airline number must be at most 50 characters." />
+            }
+            @default {}
           }
-          @case (flightDetailsForm.controls.airline.hasError('minlength')) {
-            <app-error-message text="Airline name must be at least 3 characters." />
-          }
-          @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
-            <app-error-message text="Airline number must be at most 50 characters." />
-          }
-          @default {}
         }
-      }
+      </div>
     </div>
 
     <!-- Departing Airport -->
-    <div class="field">
+    <div>
       <p-float-label variant="on">
         <p-autocomplete
           id="departingAirport"
@@ -100,29 +115,32 @@
           field="name"
           [dropdown]="true"
           (input)="checkAndEmitValidity()"
+          [styleClass]="'w-25rem h-3rem'"
         />
         <label for="departingAirport">Departing Airport</label>
       </p-float-label>
-      @if (
-        flightDetailsForm.controls.departingAirport.touched &&
-        flightDetailsForm.controls.departingAirport.errors
-      ) {
-        @switch (true) {
-          @case (flightDetailsForm.controls.departingAirport.hasError('required')) {
-            <app-error-message text="Departing Airport is required." />
-          }
-          @case (
-            flightDetailsForm.controls.departingAirport.hasError('minlength') ||
-            flightDetailsForm.controls.departingAirport.hasError('maxlength')
-          ) {
-            <app-error-message text="Departing Airport must be exactly 3 characters." />
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.departingAirport.touched &&
+          flightDetailsForm.controls.departingAirport.errors
+        ) {
+          @switch (true) {
+            @case (flightDetailsForm.controls.departingAirport.hasError('required')) {
+              <app-error-message text="Departing Airport is required." />
+            }
+            @case (
+              flightDetailsForm.controls.departingAirport.hasError('minlength') ||
+              flightDetailsForm.controls.departingAirport.hasError('maxlength')
+            ) {
+              <app-error-message text="Departing Airport must be exactly 3 characters." />
+            }
           }
         }
-      }
+      </div>
     </div>
 
     <!-- Destination Airport -->
-    <div class="field">
+    <div>
       <p-float-label variant="on">
         <p-autocomplete
           id="destinationAirport"
@@ -130,29 +148,32 @@
           field="name"
           [dropdown]="true"
           (input)="checkAndEmitValidity()"
+          [styleClass]="'w-25rem h-3rem'"
         />
         <label for="destinationAirport">Destination Airport</label>
       </p-float-label>
-      @if (
-        flightDetailsForm.controls.destinationAirport.touched &&
-        flightDetailsForm.controls.destinationAirport.errors
-      ) {
-        @switch (true) {
-          @case (flightDetailsForm.controls.destinationAirport.hasError('required')) {
-            <app-error-message text="Destination Airport is required." />
-          }
-          @case (
-            flightDetailsForm.controls.destinationAirport.hasError('minlength') ||
-            flightDetailsForm.controls.destinationAirport.hasError('maxlength')
-          ) {
-            <app-error-message text="Destination Airport must be exactly 3 characters." />
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.destinationAirport.touched &&
+          flightDetailsForm.controls.destinationAirport.errors
+        ) {
+          @switch (true) {
+            @case (flightDetailsForm.controls.destinationAirport.hasError('required')) {
+              <app-error-message text="Destination Airport is required." />
+            }
+            @case (
+              flightDetailsForm.controls.destinationAirport.hasError('minlength') ||
+              flightDetailsForm.controls.destinationAirport.hasError('maxlength')
+            ) {
+              <app-error-message text="Destination Airport must be exactly 3 characters." />
+            }
           }
         }
-      }
+      </div>
     </div>
 
     <!-- Planned Departure Time -->
-    <div class="field">
+    <div>
       <p-floatlabel variant="on">
         <p-datepicker
           inputId="calendar-24h"
@@ -164,26 +185,29 @@
           [maxDate]="maxDate"
           [readonlyInput]="true"
           (onSelect)="checkAndEmitValidity()"
+          [styleClass]="'w-25rem h-3rem'"
         />
         <label for="plannedDepartureTime">Planned Departure Time</label>
       </p-floatlabel>
-      @if (
-        flightDetailsForm.controls.plannedDepartureTime.hasError('required') &&
-        flightDetailsForm.controls.plannedDepartureTime.touched
-      ) {
-        <app-error-message text="Planned Departure Time is required." />
-      }
-      @if (
-        flightDetailsForm.hasError('flightDateMismatch') &&
-        flightDetailsForm.controls.flightDate.touched &&
-        flightDetailsForm.controls.plannedDepartureTime.touched
-      ) {
-        <app-error-message text="Departure date must match the flight date." />
-      }
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.plannedDepartureTime.hasError('required') &&
+          flightDetailsForm.controls.plannedDepartureTime.touched
+        ) {
+          <app-error-message text="Planned Departure Time is required." />
+        }
+        @if (
+          flightDetailsForm.hasError('flightDateMismatch') &&
+          flightDetailsForm.controls.flightDate.touched &&
+          flightDetailsForm.controls.plannedDepartureTime.touched
+        ) {
+          <app-error-message text="Departure date must match the flight date." />
+        }
+      </div>
     </div>
 
     <!-- Planned Arrival Time -->
-    <div class="field">
+    <div>
       <p-floatlabel variant="on">
         <p-datepicker
           inputId="calendar-24h"
@@ -195,22 +219,25 @@
           [maxDate]="maxDate"
           [readonlyInput]="true"
           (onSelect)="checkAndEmitValidity()"
+          [styleClass]="'w-25rem h-3rem'"
         />
         <label for="plannedArrivalTime">Planned Arrival Time</label>
       </p-floatlabel>
-      @if (
-        flightDetailsForm.controls.plannedArrivalTime.hasError('required') &&
-        flightDetailsForm.controls.plannedArrivalTime.touched
-      ) {
-        <app-error-message text="Planned Arrival Time is required." />
-      }
-      @if (
-        flightDetailsForm.hasError('arrivalBeforeDeparture') &&
-        flightDetailsForm.controls.plannedArrivalTime.touched &&
-        flightDetailsForm.controls.plannedDepartureTime.touched
-      ) {
-        <app-error-message text="Arrival time must be after departure time." />
-      }
+      <div class="error-placeholder">
+        @if (
+          flightDetailsForm.controls.plannedArrivalTime.hasError('required') &&
+          flightDetailsForm.controls.plannedArrivalTime.touched
+        ) {
+          <app-error-message text="Planned Arrival Time is required." />
+        }
+        @if (
+          flightDetailsForm.hasError('arrivalBeforeDeparture') &&
+          flightDetailsForm.controls.plannedArrivalTime.touched &&
+          flightDetailsForm.controls.plannedDepartureTime.touched
+        ) {
+          <app-error-message text="Arrival time must be after departure time." />
+        }
+      </div>
     </div>
   </form>
-</p-card>
+</div>
