@@ -44,6 +44,14 @@ export class AuthService {
     this.userRole = computed(() => this._authState().role);
   }
 
+  /**
+   * Logs in the user by sending a sign-in request to the server.
+   * If the login is successful, it saves the JWT token to session storage,
+   * decodes the token to set the auth state, and navigates to the appropriate page.
+   * If it's the user's first login, it redirects to the change password page.
+   * If the login fails, it shows an error notification and resets the auth state.
+   * @param req - The sign-in request containing the user's credentials.
+   */
   public logIn(req: SignInRequest): void {
     this._httpClient.post<SignInResponse>(`${this.API_URL}/auth/signin`, req).subscribe({
       next: (response) => {
@@ -56,9 +64,20 @@ export class AuthService {
           this._router.navigate(['/dashboard']);
         }
       },
+      error: (error) => {
+        this._notificationService.showError('Login failed: ' + error.message);
+        this._authState.set(initialState);
+        this.clearTokenFromSessionStorage();
+      },
     });
   }
 
+  /**
+   * Registers a new user by sending a registration request to the server.
+   * If the registration is successful, it shows a success notification and navigates to the login page.
+   * If the registration fails, it shows an error notification.
+   * @param req - The user registration request containing the user's details.
+   */
   public register(req: User): void {
     this._httpClient.post<User>(`${this.API_URL}/auth/register`, req).subscribe({
       next: () => {
@@ -71,20 +90,39 @@ export class AuthService {
     });
   }
 
+  /**
+   * Logs out the user by clearing the token from session storage,
+   * resetting the auth state, and navigating to the login page.
+   */
   public logOut(): void {
     this.clearTokenFromSessionStorage();
     this._authState.set(initialState);
     this._router.navigate(['/login']);
   }
 
+  /**
+   * Saves the JWT token to session storage.
+   * @param token - The JWT token to save.
+   * @private
+   */
   private saveTokenToSessionStorage(token: string): void {
     sessionStorage.setItem('authToken', token);
   }
 
+  /**
+   * Retrieves the JWT token from session storage.
+   * @returns The JWT token if it exists, otherwise null.
+   * @private
+   */
   private getTokenFromSessionStorage(): string | null {
     return sessionStorage.getItem('authToken');
   }
 
+  /**
+   * Clears the JWT token from session storage.
+   * This is typically called when the user logs out.
+   * @private
+   */
   private clearTokenFromSessionStorage(): void {
     sessionStorage.removeItem('authToken');
   }
