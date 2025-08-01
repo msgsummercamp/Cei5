@@ -19,11 +19,11 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 @Getter
-public class AirportApiServiceImplementation implements AirportApiService {
+public class AirportApiServiceImpl implements AirportApiService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AirportApiServiceImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(AirportApiServiceImpl.class);
 
-    @Value("${airport.api.url}")
+    @Value("${airport.api.url}" + "/distance")
     public String airportApiUrl;
 
     private RestTemplate restTemplate;
