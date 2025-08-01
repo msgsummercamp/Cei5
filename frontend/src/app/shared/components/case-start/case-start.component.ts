@@ -17,6 +17,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-case-start',
@@ -34,6 +35,7 @@ import { FormsModule } from '@angular/forms';
     ErrorMessageComponent,
     ToggleSwitch,
     FormsModule,
+    TagModule,
   ],
   templateUrl: './case-start.component.html',
   styleUrl: './case-start.component.scss',

@@ -15,7 +15,7 @@
             (ngSubmit)="onNext(nextCallback)"
             class="flex flex-column gap-4 justify-content-center align-items-center"
           >
-            <h1 style="--p-inputtext-color: var(--primary-color)">Reservation Info</h1>
+            <p-header class="text-3xl">Reservation Info</p-header>
 
             <div>
               <p-floatlabel variant="on">
@@ -117,7 +117,6 @@
               severity="primary"
               (onClick)="onNext(nextCallback)"
               [disabled]="reservationForm.invalid"
-              class="buttonclass"
             />
           </form>
         </ng-template>
@@ -130,27 +129,31 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p-card>
-            <!-- Main Flight Form -->
-            <app-case-form
-              title="Flight Details"
-              #mainFlightForm
-              [initialData]="flightData"
-              (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
-            >
-            </app-case-form>
+          <!-- Main Flight Form -->
+          <app-case-form
+            title="Flight Details"
+            #mainFlightForm
+            [initialData]="flightData"
+            (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
+          >
+          </app-case-form>
 
-            <!-- Next and back buttons -->
-            <div class="step-actions">
-              <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
-              <p-button
-                label="Next"
-                severity="primary"
-                [disabled]="!isMainFlightValid(mainFlightForm)"
-                (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
-              />
-            </div>
-          </p-card>
+          <!-- Next and back buttons -->
+          <div class="justify-content-between flex flex-row gap-2">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+            <p-button
+              label="Next"
+              severity="primary"
+              [disabled]="!isMainFlightValid(mainFlightForm)"
+              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
 
@@ -161,49 +164,74 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p-card>
-            @if (getActiveConnectionFlights().length === 0) {
-              <p-message>No connection flights added yet.</p-message>
-            }
-            <!-- Connection Flight Forms -->
-            @if (getActiveConnectionFlights().length > 0) {
-              <div class="connection-forms">
-                @for (flight of connectionFlights; track $index; let i = $index) {
-                  @if (flight !== null) {
-                    <!-- Display Connection Flight card -->
-                    <p-card class="connection-flight-card">
-                      <app-case-form
-                        [title]="'Connection Flight ' + (i + 1)"
-                        #connectionForm
-                        [initialData]="connectionFlightsData[i]"
-                        (validityChange)="
-                          onConnectionFlightValidityChange(i, $event.valid, $event.data)
-                        "
+          @if (getActiveConnectionFlights().length === 0) {
+            <p-message>No connection flights added yet.</p-message>
+          }
+          <!-- Connection Flight Forms -->
+          @if (getActiveConnectionFlights().length > 0) {
+            <div>
+              @for (flight of connectionFlights; track $index; let i = $index) {
+                @if (flight !== null) {
+                  <!-- Display Connection Flight card -->
+                  <p-card [styleClass]="'mb-4'">
+                    <div class="flex flex-row justify-content-between align-items-start gap-3">
+                      <div
+                        class="flex flex-column align-items-center gap-2"
+                        style="min-width: 150px"
                       >
-                      </app-case-form>
-                      <p-button
-                        label="Remove"
-                        severity="danger"
-                        (onClick)="removeConnectionFlight(i)"
-                      >
-                      </p-button>
-                      <p-toggleswitch
-                        [(ngModel)]="isFlagged[i]"
-                        (onChange)="flagFlight(i)"
-                        [disabled]="!canFlagFlight(i)"
-                      />
-                    </p-card>
-                  }
+                        <p-tag value="Flag the flight: " />
+                        <p-toggleswitch
+                          [(ngModel)]="isFlagged[i]"
+                          (onChange)="flagFlight(i)"
+                          [disabled]="!canFlagFlight(i)"
+                        />
+                      </div>
+
+                      <div class="flex-1">
+                        <app-case-form
+                          [title]="'Connection Flight ' + (i + 1)"
+                          #connectionForm
+                          [initialData]="connectionFlightsData[i]"
+                          (validityChange)="
+                            onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                          "
+                        >
+                        </app-case-form>
+                      </div>
+
+                      <div class="flex flex-column align-items-center" style="min-width: 150px">
+                        <p-button
+                          severity="danger"
+                          (onClick)="removeConnectionFlight(i)"
+                          [styleClass]="'align-self-right'"
+                          icon="pi pi-trash"
+                        >
+                        </p-button>
+                      </div>
+                    </div>
+                  </p-card>
                 }
-              </div>
-            }
+              }
+            </div>
+          }
+
+          <!-- Next and back buttons -->
+          <div class="justify-content-between flex flex-row gap-2 mt-4">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+
             <!-- Add Connection Flight Button -->
             @if (canAddMoreConnections()) {
               <div class="add-connection-section">
                 <p-button
                   label="Add Connection Flight"
-                  severity="secondary"
+                  severity="primary"
                   (onClick)="addConnectionFlight()"
+                  [styleClass]="'px-6 h-2.5rem'"
                 >
                 </p-button>
               </div>
@@ -214,17 +242,14 @@
               </p-message>
             }
 
-            <!-- Next and back buttons -->
-            <div class="step-actions">
-              <p-button label="Back" severity="secondary" (onClick)="onPrevious(prevCallback)" />
-              <p-button
-                label="Next"
-                severity="primary"
-                [disabled]="!areAllConnectionFlightsValid()"
-                (onClick)="onNextFromConnectionFlights(nextCallback)"
-              />
-            </div>
-          </p-card>
+            <p-button
+              label="Next"
+              severity="primary"
+              [disabled]="!areAllConnectionFlightsValid()"
+              (onClick)="onNextFromConnectionFlights(nextCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
     </p-step-panels>
