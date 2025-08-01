@@ -26,6 +26,7 @@ public class CacheWarmer implements CommandLineRunner {
             logger.info("Cache warm-up for airports list completed successfully.");
         } catch (Exception e) {
             logger.error("Failed to warm up the airport cache on startup.", e);
+            throw e;
         }
     }
 }

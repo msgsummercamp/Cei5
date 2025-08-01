@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,7 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
     private RestTemplate restTemplate;
     private ObjectMapper objectMapper;
 
-    private final Executor cacheExecutor = Executors.newFixedThreadPool(1);
+    private final ExecutorService cacheExecutor = Executors.newFixedThreadPool(1);
 
     private AsyncLoadingCache<String, List<Airport>> airportsCache;
 
@@ -53,6 +54,20 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
                 .buildAsync(key -> fetchAirportDataInternal());
     }
 
+    @PreDestroy
+    private void shutdownExecutor() {
+        logger.info("Shutting down cacheExecutor.");
+        cacheExecutor.shutdown();
+        try {
+            if (!cacheExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
+                cacheExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            cacheExecutor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+
     @Override
     public List<Airport> fetchAirportData() {
         return this.airportsCache.get(AIRPORTS_CACHE_KEY).join();
@@ -66,7 +81,7 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
         String nextPageUrl = airportApiUrl;
 
         while (nextPageUrl != null) {
-            Thread.sleep(650);
+            Thread.sleep(700);
             String response = restTemplate.getForObject(nextPageUrl, String.class);
             JsonNode root = objectMapper.readTree(response);
 
