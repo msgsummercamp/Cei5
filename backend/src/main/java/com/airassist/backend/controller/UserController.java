@@ -8,6 +8,7 @@ import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
-
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id) throws UserNotFoundException {
