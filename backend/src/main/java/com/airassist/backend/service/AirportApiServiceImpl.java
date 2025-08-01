@@ -23,7 +23,7 @@ public class AirportApiServiceImpl implements AirportApiService {
 
     private static final Logger logger = LoggerFactory.getLogger(AirportApiServiceImpl.class);
 
-    @Value("${airport.api.url}")
+    @Value("${airport.api.url}" + "/distance")
     public String airportApiUrl;
 
     private RestTemplate restTemplate;

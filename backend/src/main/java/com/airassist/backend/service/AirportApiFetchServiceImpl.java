@@ -4,8 +4,9 @@ import com.airassist.backend.model.Airport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import jakarta.annotation.PostConstruct;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +16,51 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @NoArgsConstructor
-@Getter
 public class AirportApiFetchServiceImpl implements AirportApiFetchService {
 
     private static final Logger logger = LoggerFactory.getLogger(AirportApiFetchServiceImpl.class);
+    private static final String AIRPORTS_CACHE_KEY = "allAirports";
 
-    @Value("https://airportgap.com/api/airports?page=1")
+    @Value("${airport.api.url}")
     public String airportApiUrl;
 
     private RestTemplate restTemplate;
     private ObjectMapper objectMapper;
+
+    private final Executor cacheExecutor = Executors.newFixedThreadPool(1);
+
+    private AsyncLoadingCache<String, List<Airport>> airportsCache;
 
     @PostConstruct
     void init() {
         restTemplate = new RestTemplate();
         objectMapper = new ObjectMapper();
         logger.info("AirportApiFetchServiceImplementation initialized with API URL: {}", airportApiUrl);
+
+        this.airportsCache = Caffeine.newBuilder()
+                .maximumSize(1)
+                .refreshAfterWrite(1, TimeUnit.DAYS)
+                // The hard expiration can be slightly longer to handle cases where
+                // the refresh fails. We still want to serve the old data.
+                .expireAfterWrite(2, TimeUnit.DAYS)
+                .executor(cacheExecutor)
+                .buildAsync(key -> fetchAirportDataInternal());
     }
 
     @Override
-    public List<Airport> fetchAirportData() throws JsonProcessingException, InterruptedException {
-        logger.info("Fetching airport data from API: {}", airportApiUrl);
+    public List<Airport> fetchAirportData() {
+        return this.airportsCache.get(AIRPORTS_CACHE_KEY).join();
+    }
+
+    @Override
+    public List<Airport> fetchAirportDataInternal() throws InterruptedException, JsonProcessingException {
+        logger.info("Starting asynchronous refresh of airport data.");
 
         List<Airport> airports = new ArrayList<>();
         String nextPageUrl = airportApiUrl;
@@ -75,7 +97,7 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
             }
         }
 
-        logger.info("Fetched total airports: {}", airports.size());
+        logger.info("Successfully refreshed and fetched total airports: {}", airports.size());
         return airports;
     }
 }

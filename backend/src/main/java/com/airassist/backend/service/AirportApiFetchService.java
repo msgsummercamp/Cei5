@@ -18,4 +18,13 @@ public interface AirportApiFetchService {
      * @throws InterruptedException If the thread is interrupted while fetching data.
      */
     List<Airport> fetchAirportData() throws JsonProcessingException, InterruptedException;
+
+    /**
+     * Fetches airport data from the external API.
+     *
+     * @return List of airports fetched from the API.
+     * @throws JsonProcessingException If there is an error processing the JSON response.
+     * @throws InterruptedException If the thread is interrupted while fetching data.
+     */
+    List<Airport> fetchAirportDataInternal() throws JsonProcessingException, InterruptedException;
 }
