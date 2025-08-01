@@ -29,23 +29,25 @@
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.reservationNumber.touched &&
-                reservationForm.controls.reservationNumber.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.reservationNumber.hasError('required')) {
-                    <app-error-message text="Reservation number is required." />
-                  }
-                  @case (
-                    reservationForm.controls.reservationNumber.hasError('minlength') ||
-                    reservationForm.controls.reservationNumber.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Reservation Number must be exactly 6 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.reservationNumber.touched &&
+                  reservationForm.controls.reservationNumber.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.reservationNumber.hasError('required')) {
+                      <app-error-message text="Reservation number is required." />
+                    }
+                    @case (
+                      reservationForm.controls.reservationNumber.hasError('minlength') ||
+                      reservationForm.controls.reservationNumber.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Reservation Number must be exactly 6 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
             <div>
@@ -60,23 +62,25 @@
                 <label for="departingAirport">Departing Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.departingAirport.touched &&
-                reservationForm.controls.departingAirport.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.departingAirport.hasError('required')) {
-                    <app-error-message text="Departing Airport is required." />
-                  }
-                  @case (
-                    reservationForm.controls.departingAirport.hasError('minlength') ||
-                    reservationForm.controls.departingAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Departing Airport must be exactly 3 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.departingAirport.touched &&
+                  reservationForm.controls.departingAirport.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.departingAirport.hasError('required')) {
+                      <app-error-message text="Departing Airport is required." />
+                    }
+                    @case (
+                      reservationForm.controls.departingAirport.hasError('minlength') ||
+                      reservationForm.controls.departingAirport.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Departing Airport must be exactly 3 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
             <div>
@@ -91,23 +95,25 @@
                 <label for="destinationAirport">Destination Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
-              @if (
-                reservationForm.controls.destinationAirport.touched &&
-                reservationForm.controls.destinationAirport.errors
-              ) {
-                <!-- In case there is an error, it will display the first one that has value true-->
-                @switch (true) {
-                  @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                    <app-error-message text="Destination airport is required." />
-                  }
-                  @case (
-                    reservationForm.controls.destinationAirport.hasError('minlength') ||
-                    reservationForm.controls.destinationAirport.hasError('maxlength')
-                  ) {
-                    <app-error-message text="Destination must be exactly 3 characters." />
+              <div class="error-placeholder">
+                @if (
+                  reservationForm.controls.destinationAirport.touched &&
+                  reservationForm.controls.destinationAirport.errors
+                ) {
+                  <!-- In case there is an error, it will display the first one that has value true-->
+                  @switch (true) {
+                    @case (reservationForm.controls.destinationAirport.hasError('required')) {
+                      <app-error-message text="Destination airport is required." />
+                    }
+                    @case (
+                      reservationForm.controls.destinationAirport.hasError('minlength') ||
+                      reservationForm.controls.destinationAirport.hasError('maxlength')
+                    ) {
+                      <app-error-message text="Destination must be exactly 3 characters." />
+                    }
                   }
                 }
-              }
+              </div>
             </div>
 
             <!-- Next Button -->
