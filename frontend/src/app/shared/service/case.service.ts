@@ -17,4 +17,8 @@ export class CaseService {
   createCase(caseData: Case): Observable<Case> {
     return this._http.post<Case>(this._apiUrl, caseData);
   }
+
+  public checkEligibility(caseDTO: any): Observable<boolean> {
+    return this._http.post<boolean>('/api/cases/check-eligibility', caseDTO);
+  }
 }

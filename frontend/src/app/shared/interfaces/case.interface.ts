@@ -14,5 +14,5 @@ export interface Case {
   client: User;
   assignedColleague?: User|null;
   reservation: Reservation;
-  documentList: Document[];
+  documentList?: Document[];
 }

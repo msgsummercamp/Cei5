@@ -2,6 +2,7 @@ package com.airassist.backend.controller;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
+import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.CaseResponseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.service.CaseService;
@@ -22,6 +23,7 @@ public class CaseController {
 
     private final CaseService caseService;
     private final CaseResponseMapper caseResponseMapper;
+    private final CaseMapper caseMapper;
 
     @GetMapping
     public ResponseEntity<List<CaseResponseDTO>> getCases(Pageable pageable) {
@@ -62,4 +64,12 @@ public class CaseController {
         caseService.deleteCase(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/check-eligibility")
+    public ResponseEntity<Boolean> checkEligibility(@RequestBody CaseDTO caseDTO) {
+        boolean eligible = caseService.checkEligibility(caseMapper.toEntity(caseDTO));
+        return ResponseEntity.ok(eligible);
+    }
+
+
 }

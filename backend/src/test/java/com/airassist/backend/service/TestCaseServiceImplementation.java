@@ -3,6 +3,7 @@ package com.airassist.backend.service;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
+import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Statuses;
 import com.airassist.backend.model.DisruptionReasons;
@@ -31,6 +32,7 @@ public class TestCaseServiceImplementation {
     private ReservationRepository reservationRepository;
     private CaseServiceImplementation  caseService;
     private CaseMapper caseMapper;
+    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -38,7 +40,11 @@ public class TestCaseServiceImplementation {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
-        caseService = new CaseServiceImplementation(caseRepository, caseMapper);
+        userMapper = Mockito.mock(UserMapper.class);
+        caseService = new CaseServiceImplementation(caseRepository,caseMapper);
+
+
+        TestCaseFactory.userMapper = userMapper;
 
         Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
                 .thenAnswer(inv -> {
@@ -49,8 +55,8 @@ public class TestCaseServiceImplementation {
                             .disruptionReason(dto.getDisruptionReason())
                             .disruptionInfo(dto.getDisruptionInfo())
                             .date(dto.getDate())
-                            .client(dto.getClient())
-                            .assignedColleague(dto.getAssignedColleague())
+                            .client(userMapper.userDTOToUser(dto.getClient()))
+                            .assignedColleague(userMapper.userDTOToUser(dto.getAssignedColleague()))
                             .reservation(dto.getReservation())
                             .documentList(dto.getDocumentList())
                             .build();

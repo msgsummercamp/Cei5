@@ -1,22 +1,29 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { StepperModule } from 'primeng/stepper';
-import { CardModule } from 'primeng/card';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
+import {StepperModule} from 'primeng/stepper';
+import {CardModule} from 'primeng/card';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {ErrorMessageComponent} from '../error-message/error-message.component';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
-import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
-import { ToggleSwitch } from 'primeng/toggleswitch';
-import { FormsModule } from '@angular/forms';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {ButtonModule} from 'primeng/button';
+import {Router} from '@angular/router';
+import {FlightDetails, CaseFormComponent} from '../case-form/case-form.component';
+import {InputTextModule} from 'primeng/inputtext';
+import {MessageModule} from 'primeng/message';
+import {ToggleSwitch} from 'primeng/toggleswitch';
+import {FormsModule} from '@angular/forms';
+import {Reservation} from '../../interfaces/reservation.interface';
+import {Flight} from '../../interfaces/flight.interface';
+import {Case} from '../../interfaces/case.interface';
+import { Statuses } from '../../enums/status.enum';
+import {DisruptionReason} from '../../enums/disruptionReason.enum';
+import {Role} from '../../enums/role.enum';
+import {CaseService} from '../../service/case.service';
 
 @Component({
   selector: 'app-case-start',
@@ -41,6 +48,7 @@ import { FormsModule } from '@angular/forms';
 export class CaseStartComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private readonly _router = inject(Router);
+  private readonly _caseService = inject(CaseService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -260,4 +268,91 @@ export class CaseStartComponent {
   public canFlagFlight(index: number): boolean {
     return this.isFlagged[index] || !this.canFlagAFlight();
   }
+
+  public onSubmit(): void {
+  if (
+    this.reservationForm.invalid ||
+    !this.flightData ||
+    !this.areAllConnectionFlightsValid()
+  ) {
+    alert('Form is invalid or incomplete');
+    return;
+  }
+
+  // Create flights array from main flight and connection flights
+  const flights: Flight[] = [];
+  
+  // Add main flight
+  if (this.flightData) {
+    flights.push({
+      flightNumber: this.flightData.flightNumber,
+      airLine: this.flightData.airline,
+      departingAirport: this.flightData.departingAirport,
+      destinationAirport: this.flightData.destinationAirport,
+      departureTime: this.flightData.plannedDepartureTime || new Date(),
+      arrivalTime: this.flightData.plannedArrivalTime || new Date(),
+      flightDate: this.flightData.flightDate || new Date(),
+      reservation: null,
+      isProblematic: false,
+    });
+  }
+
+  // Add connection flights
+  const activeConnectionFlights = this.getActiveConnectionFlights();
+  activeConnectionFlights.forEach((connectionFlight) => {
+    if (connectionFlight.data) {
+      flights.push({
+        flightNumber: connectionFlight.data.flightNumber,
+        airLine: connectionFlight.data.airline,
+        departingAirport: connectionFlight.data.departingAirport,
+        destinationAirport: connectionFlight.data.destinationAirport,
+        departureTime: connectionFlight.data.plannedDepartureTime || new Date(),
+        arrivalTime: connectionFlight.data.plannedArrivalTime || new Date(),
+        flightDate: connectionFlight.data.flightDate || new Date(),
+        reservation: null,
+        isProblematic: false,
+      });
+    }
+  });
+
+  const caseDto: Case = {
+    status: Statuses.PENDING,
+    disruptionReason: DisruptionReason.ARRIVED_3H_LATE, // You can replace this with a form field
+    disruptionInfo: 'Entered by user during manual case submission', // or bind from form
+    date: new Date(), // or use selected date field if available
+
+    reservation: {
+      reservationNumber: this.reservationForm.value.reservationNumber ?? '',
+      flights: flights,
+      caseEntity: null,
+    },
+
+    client: {
+      id: '00000000-0000-0000-0000-000000000001', // placeholder UUID — replace later
+    } as any, // 👈 TypeScript will allow partial object this way
+
+    assignedColleague: null,
+    documentList: [],
+  };
+
+  // 1. Check eligibility
+  this._caseService.checkEligibility(caseDto).subscribe((isEligible) => {
+    if (!isEligible) {
+      alert('Case is not eligible.');
+      return;
+    }
+
+    // 2. Create case
+    this._caseService.createCase(caseDto).subscribe({
+      next: () => {
+        alert('Case successfully created!');
+        this._router.navigate(['/success']); // or another page
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to create case.');
+      },
+    });
+  });
+}
 }

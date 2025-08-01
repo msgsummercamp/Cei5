@@ -2,6 +2,7 @@ package com.airassist.backend.testObjects;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
+import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 public class TestCaseFactory {
 
+    public static UserMapper userMapper;
     public static User createTestUser() {
         User user = new User();
         user.setId(UUID.randomUUID());
@@ -53,7 +55,7 @@ public class TestCaseFactory {
         dto.setDisruptionReason(reason);
         dto.setDisruptionInfo("DTO disruption info");
         dto.setDate(LocalDate.now());
-        dto.setClient(client);
+        dto.setClient(userMapper.userToUserDTO(client));
         dto.setAssignedColleague(null);
         dto.setReservation(reservation);
         dto.setDocumentList(List.of());

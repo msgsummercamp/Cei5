@@ -1,5 +1,6 @@
 package com.airassist.backend.dto.cases;
 
+import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.model.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
@@ -23,11 +24,9 @@ public class CaseDTO {
     @PastOrPresent
     private LocalDate date;
 
-    ///TODO : create USER DTO and use it instead of User class
-    private User client;
+    private UserDTO client;
 
-    ///TODO: same here
-    private User assignedColleague;
+    private UserDTO assignedColleague;
 
     /// TODO: create Reservation DTO and use it instead of Reservation class
     private Reservation reservation;

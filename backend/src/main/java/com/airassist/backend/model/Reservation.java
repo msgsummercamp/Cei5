@@ -1,5 +1,6 @@
 package com.airassist.backend.model;
 
+import com.airassist.backend.dto.flight.FlightDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
