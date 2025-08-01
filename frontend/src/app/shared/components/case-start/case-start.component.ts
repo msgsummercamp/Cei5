@@ -42,6 +42,7 @@ export class CaseStartComponent {
   public readonly MAXIMUM_CONNECTIONS = 4;
 
   private readonly _formBuilder = inject(NonNullableFormBuilder);
+  private connectionFormData: { [key: string]: FlightDetails } = {};
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -76,13 +77,55 @@ export class CaseStartComponent {
     reservationNumber: string;
     departingAirport: string;
     destinationAirport: string;
-  } | null = null;
+  } = {
+    reservationNumber: '',
+    departingAirport: '',
+    destinationAirport: '',
+  };
   public autocompleteInputArray: string[] = [];
   public isMainFlightValid = false;
+  public connectionFlights: [string, string][] = [];
+  public connectionFlightData: { [key: number]: FlightDetails | null } = {};
 
   // getter for the airports FormArray
   public get airportsArray(): FormArray<FormControl<string>> {
     return this.airportFormArray.get('airports') as FormArray<FormControl<string>>;
+  }
+
+  // Function for creating a connection
+  public setConnectionStrings(airports: string[]): void {
+    this.connectionFlights.push([this.reservationInformation?.departingAirport || '', airports[0]]);
+    airports.forEach((airport, index) => {
+      if (index < airports.length - 1) {
+        this.connectionFlights.push([airport, airports[index + 1]]);
+      }
+    });
+    this.connectionFlights.push([
+      airports[airports.length - 1],
+      this.reservationInformation.destinationAirport,
+    ]);
+  }
+
+  // Getter for connection indices
+  public get connectionIndices(): number[] {
+    return Array.from({ length: this.connectionFlights.length }, (_, i) => i);
+  }
+
+  // Method to handle validity changes from connection flight forms
+  public onConnectionFlightValidityChange(
+    connectionIndex: number,
+    isValid: boolean,
+    data: FlightDetails | null
+  ): void {
+    // Store the data for this specific connection
+    this.connectionFlightData[connectionIndex] = data;
+
+    console.log(`Connection ${connectionIndex} validity:`, isValid, data);
+  }
+
+  // Method to get initial data for a connection form
+  public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
+    return this.connectionFlightData[connectionIndex] || null;
   }
 
   // Navigation methods: previous and next
@@ -96,11 +139,16 @@ export class CaseStartComponent {
   // Function to check if the reservation form is valid (and go to the next step)
   public onNext(nextCallback?: Function) {
     if (this.reservationForm.valid) {
+      const formValues = this.reservationForm.getRawValue();
+
+      console.log('Reservation Information:', formValues);
+
       this.reservationInformation = {
-        reservationNumber: this.reservationForm.value.reservationNumber || '',
-        departingAirport: this.reservationForm.value.departingAirport || '',
-        destinationAirport: this.reservationForm.value.destinationAirport || '',
+        reservationNumber: formValues.reservationNumber || '',
+        departingAirport: formValues.departingAirport || '',
+        destinationAirport: formValues.destinationAirport || '',
       };
+
       this.currentStep++;
       if (nextCallback) {
         nextCallback();
@@ -112,10 +160,39 @@ export class CaseStartComponent {
   public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
     if (this.isMainFlightValid && this.isAirportsValid()) {
       this.currentStep++;
+      if (this.airportsArray.length === 0) {
+        this.currentStep++;
+      } else {
+        // Only create connections if they don't exist yet
+        if (this.connectionFlights.length === 0) {
+          this.setConnectionStrings(this.getAirportValues());
+        }
+      }
+
       if (nextCallback) {
         nextCallback();
       }
     }
+  }
+
+  // Method to handle navigation from connection flights step
+  public onNextFromConnectionFlights(nextCallback?: Function): void {
+    if (this.areAllConnectionFlightsValid()) {
+      this.currentStep++;
+      if (nextCallback) {
+        nextCallback();
+      }
+    }
+  }
+
+  // Method to check if all connection flight forms are valid
+  public areAllConnectionFlightsValid(): boolean {
+    for (let i = 0; i < this.connectionFlights.length; i++) {
+      if (!this.connectionFlightData[i]) {
+        return false; // No data means form is not valid
+      }
+    }
+    return true;
   }
 
   // Method to handle the validity change from the flight details form
@@ -160,5 +237,14 @@ export class CaseStartComponent {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+  }
+
+  public onConnectionChange(index: number, event: any): void {
+    const value = event.target?.value || event.query || '';
+    this.airports[index] = value;
+  }
+
+  public onConnectionModelChange(index: number, value: string): void {
+    this.airports[index] = value;
   }
 }

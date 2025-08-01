@@ -5,6 +5,7 @@
       <p-step [value]="1">Reservation Info</p-step>
       <p-step [value]="2">Flight Details</p-step>
       <p-step [value]="3">Connection Flights</p-step>
+      <p-step [value]="4">Disruption Info</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -190,8 +191,9 @@
                                     [dropdown]="true"
                                     class="w-15rem h-2rem"
                                     id="connectionFlight{{ $index }}"
-                                    [(ngModel)]="airports[$index]"
                                     [formControlName]="$index"
+                                    (onInput)="onConnectionChange($index, $event)"
+                                    (ngModelChange)="onConnectionModelChange($index, $event)"
                                   />
                                   <label for="connectionFlight{{ $index }}">Connection</label>
                                 </p-floatlabel>
@@ -268,6 +270,52 @@
 
       <!-- Step 3: Connection Flights -->
       <p-step-panel [value]="3">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <div class="flex flex-wrap justify-content-center gap-4">
+            @for (i of connectionIndices; track i) {
+              <div class="w-5 mb-4">
+                <div
+                  class="flex justify-content-center align-items-center p-3 border-round surface-card"
+                >
+                  <app-case-form
+                    title="Connection: {{ connectionFlights[i][0] }} - {{
+                      connectionFlights[i][1]
+                    }}"
+                    [initialData]="getConnectionInitialData(i)"
+                    (validityChange)="
+                      onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                    "
+                  >
+                  </app-case-form>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Next and back buttons -->
+          <div class="justify-content-between flex flex-row gap-2">
+            <p-button
+              label="Back"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 h-2.5rem'"
+            />
+            <p-button
+              label="Next"
+              severity="primary"
+              [disabled]="!areAllConnectionFlightsValid()"
+              [styleClass]="'px-6 h-2.5rem'"
+              (onClick)="onNextFromConnectionFlights(nextCallback)"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 4: Disruption Info -->
+      <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
