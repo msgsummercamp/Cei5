@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.util.Map;
-
-
 
 @Service
 public class MailSenderServiceImpl implements MailSenderService {
+
+    private String mailSubject;
 
     @Autowired
     private SpringTemplateEngine templateEngine;
@@ -35,14 +34,38 @@ public class MailSenderServiceImpl implements MailSenderService {
     }
 
     @Override
-    public void sendMessageUsingThymesleaf(String recipient, String subject, Map<String, Object> templateModel) throws MessagingException {
+    public void sendValidCaseEmail(String recipient, int caseId) throws MessagingException {
         Context thymeleafContext = new Context();
-        thymeleafContext.setVariables(templateModel);
-        thymeleafContext.setVariable("recipientName", recipient);
-        thymeleafContext.setVariable("text", subject);
-        thymeleafContext.setVariable("senderName", "AirAssist Team");
-        String htmlBody = templateEngine.process("mail.html", thymeleafContext);
-        sendMessage(recipient, subject, htmlBody);
 
+        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable("caseId", caseId);
+        String htmlBody = templateEngine.process("validCaseEmail.html", thymeleafContext);
+        mailSubject = "Case Validated Successfully";
+
+        sendMessage(recipient, mailSubject, htmlBody);
+    }
+
+    @Override
+    public void sendGeneratedPasswordEmail(String recipient, String generatedPassword) throws MessagingException {
+        Context thymeleafContext = new Context();
+
+        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable("generatedPassword", generatedPassword);
+        String htmlBody = templateEngine.process("generatedPasswordEmail.html", thymeleafContext);
+        mailSubject = "Your Generated Password";
+
+        sendMessage(recipient, mailSubject, htmlBody);
+    }
+
+    @Override
+    public void sendContractLink(String recipient, String contractLink) throws MessagingException {
+        Context thymeleafContext = new Context();
+
+        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable("contractLink", contractLink);
+        String htmlBody = templateEngine.process("contractLinkEmail.html", thymeleafContext);
+        mailSubject = "Contract Link";
+
+        sendMessage(recipient, mailSubject, htmlBody);
     }
 }
