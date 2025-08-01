@@ -1,4 +1,4 @@
-import { Component, inject, input, output, effect, signal } from '@angular/core';
+import { Component, inject, input, output, effect } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -14,11 +14,10 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { flightTimeValidator } from '../../validators/flightTimeValidator';
+import { arrivalAfterDepartureValidator } from '../../validators/arrivalAfterDepartureValidator';
 
 // Interface for flight details
 export interface FlightDetails {
-  flightDate: Date | null;
   flightNumber: string;
   airline: string;
   reservationNumber: string;
@@ -29,7 +28,6 @@ export interface FlightDetails {
 }
 
 type FlightDetailsForm = {
-  flightDate: FormControl<Date | null>;
   flightNumber: FormControl<string>;
   airline: FormControl<string>;
   plannedDepartureTime: FormControl<Date | null>;
@@ -66,7 +64,6 @@ export class CaseFormComponent {
   // Form group for flight details
   protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>(
     {
-      flightDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
       flightNumber: this._formBuilder.control<string>('', [
         Validators.minLength(3),
         Validators.maxLength(6),
@@ -80,7 +77,7 @@ export class CaseFormComponent {
       plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
       plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
     },
-    { validators: flightTimeValidator() }
+    { validators: arrivalAfterDepartureValidator() }
   );
 
   // default title for the form
@@ -103,7 +100,6 @@ export class CaseFormComponent {
 
         this.flightDetailsForm.patchValue(
           {
-            flightDate: data.flightDate,
             flightNumber: data.flightNumber,
             airline: data.airline,
             plannedDepartureTime: data.plannedDepartureTime,
@@ -122,11 +118,7 @@ export class CaseFormComponent {
   // Function to check and emit validity of the form
   public checkAndEmitValidity(): void {
     const isValid = this.flightDetailsForm.valid;
-    const data = isValid ? (this.flightDetailsForm.value as FlightDetails) : null;
-
-    this.validityChange.emit({
-      valid: isValid,
-      data: data,
-    });
+    const data = isValid ? this.getFormValue() : null;
+    this.validityChange.emit({ valid: isValid, data });
   }
 }

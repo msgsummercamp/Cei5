@@ -78,6 +78,9 @@
                     ) {
                       <app-error-message text="Departing Airport must be exactly 3 characters." />
                     }
+                    @case (reservationForm.controls.departingAirport.hasError('pattern')) {
+                      <app-error-message text="Airport code must be 3 uppercase letters." />
+                    }
                   }
                 }
               </div>
@@ -111,6 +114,9 @@
                     ) {
                       <app-error-message text="Destination must be exactly 3 characters." />
                     }
+                    @case (reservationForm.controls.destinationAirport.hasError('pattern')) {
+                      <app-error-message text="Airport code must be 3 uppercase letters." />
+                    }
                   }
                 }
               </div>
@@ -141,6 +147,7 @@
               title="Flight Details"
               #mainFlightForm
               [initialData]="flightData"
+              (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
               class="ml-8 col"
             >
             </app-case-form>
@@ -155,39 +162,85 @@
                     (onClick)="addConnectionFlight()"
                     [styleClass]="'px-1'"
                     [disabled]="airports.length === MAXIMUM_CONNECTIONS"
+                    size="small"
                   ></p-button>
                 </div>
               </div>
 
               <div class="flex flex-column mt-4">
+                <!-- Displaying the departing airport -->
                 <p-message
                   variant="outlined"
                   severity="primary"
-                  class="w-12rem align-self-center mb-2"
+                  class="w-15rem align-self-center mb-4"
                   >Departing Airport: {{ reservationInformation?.departingAirport }}</p-message
                 >
 
-                @if (airports.length > 0) {
-                  <div class="align-self-center">
-                    @for (item of airports; track $index) {
-                      @if (item !== null) {
-                        <div class="mb-2">
-                          <p-floatlabel variant="on">
-                            <p-autocomplete
-                              [dropdown]="true"
-                              class="w-15rem h-2rem inputclass"
-                              id="connectionFlight{{ $index }}"
-                              [(ngModel)]="airports[$index]"
-                            />
-                            <label for="connectionFlight{{ $index }}">Connection</label>
-                          </p-floatlabel>
-                        </div>
-                      }
+                <!-- Connection Flight Form -->
+                <form novalidate [formGroup]="airportFormArray">
+                  <div formArrayName="airports" class="flex flex-column gap-2">
+                    @if (airportsArray.length > 0) {
+                      <div class="align-self-center mt-2">
+                        @for (airport of airportsArray.controls; track $index) {
+                          @if (airport !== null) {
+                            <div class="grid justify-content-between align-items-center mb-4">
+                              <div class="flex flex-column">
+                                <p-floatlabel variant="on" class="">
+                                  <p-autocomplete
+                                    [dropdown]="true"
+                                    class="w-15rem h-2rem"
+                                    id="connectionFlight{{ $index }}"
+                                    [(ngModel)]="airports[$index]"
+                                    [formControlName]="$index"
+                                  />
+                                  <label for="connectionFlight{{ $index }}">Connection</label>
+                                </p-floatlabel>
+
+                                <!-- Error Messages -->
+                                <div class="error-placeholder">
+                                  @if (airport.touched && airport.errors) {
+                                    @switch (true) {
+                                      @case (airport.hasError('required')) {
+                                        <app-error-message
+                                          text="Connection destination is required."
+                                        />
+                                      }
+                                      @case (
+                                        airport.hasError('minlength') ||
+                                        airport.hasError('maxlength')
+                                      ) {
+                                        <app-error-message
+                                          text="Airport code must be exactly 3 characters."
+                                        />
+                                      }
+                                      @case (airport.hasError('pattern')) {
+                                        <app-error-message
+                                          text="Airport code must be 3 uppercase letters."
+                                        />
+                                      }
+                                    }
+                                  }
+                                </div>
+                              </div>
+
+                              <!-- Remove Button -->
+                              <p-button
+                                icon="pi pi-trash"
+                                severity="danger"
+                                (onClick)="removeConnectionFlight($index)"
+                                [styleClass]="'px-1 py-1 text-xs'"
+                                class="ml-2 mb-1"
+                              />
+                            </div>
+                          }
+                        }
+                      </div>
                     }
                   </div>
-                }
+                </form>
 
-                <p-message variant="outlined" severity="primary" class="align-self-center w-12rem"
+                <!-- Displaying the destination airport -->
+                <p-message variant="outlined" severity="primary" class="align-self-center w-15rem"
                   >Destination Airport: {{ reservationInformation?.destinationAirport }}</p-message
                 >
               </div>
@@ -205,8 +258,9 @@
             <p-button
               label="Next"
               severity="primary"
-              [disabled]=""
+              [disabled]="!isNextButtonEnabled"
               [styleClass]="'px-6 h-2.5rem'"
+              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
             />
           </div>
         </ng-template>

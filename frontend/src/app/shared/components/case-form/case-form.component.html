@@ -98,13 +98,6 @@
         ) {
           <app-error-message text="Planned Departure Time is required." />
         }
-        @if (
-          flightDetailsForm.hasError('flightDateMismatch') &&
-          flightDetailsForm.controls.flightDate.touched &&
-          flightDetailsForm.controls.plannedDepartureTime.touched
-        ) {
-          <app-error-message text="Departure date must match the flight date." />
-        }
       </div>
     </div>
 
