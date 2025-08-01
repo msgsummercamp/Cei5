@@ -5,6 +5,7 @@ import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,5 +32,10 @@ public class AuthControllerExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<String> handleInvalidToken(InvalidTokenException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<String> handleMessagingException(MessagingException exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email: " + exception.getMessage());
     }
 }

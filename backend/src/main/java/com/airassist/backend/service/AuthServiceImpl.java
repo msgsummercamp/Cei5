@@ -13,6 +13,7 @@ import com.airassist.backend.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RandomPasswordGeneratorService randomPasswordGenerator;
+    private final MailSenderService mailSenderService;
     private final UserMapper userMapper;
     private final Key jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_EXPIRATION_MS = 3600000; // 1 hour in milliseconds
@@ -49,17 +51,18 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public User register(UserDTO userDTO) throws DuplicateUserException {
+    public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException {
         log.info("Registering user with email: {}", userDTO.getEmail());
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new DuplicateUserException();
         }
         User user = userMapper.userDTOToUser(userDTO);
-        user.setPassword(randomPasswordGenerator.generateRandomPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String userPassword = randomPasswordGenerator.generateRandomPassword();
+        user.setPassword(passwordEncoder.encode(userPassword));
         user.setFirstLogin(true);
         user = userRepository.save(user);
         log.info("User registered successfully with email: {}", user.getEmail());
+        mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), userPassword);
         return user;
     }
 
