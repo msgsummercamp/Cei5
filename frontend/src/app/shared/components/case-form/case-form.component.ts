@@ -32,8 +32,6 @@ type FlightDetailsForm = {
   flightDate: FormControl<Date | null>;
   flightNumber: FormControl<string>;
   airline: FormControl<string>;
-  departingAirport: FormControl<string>;
-  destinationAirport: FormControl<string>;
   plannedDepartureTime: FormControl<Date | null>;
   plannedArrivalTime: FormControl<Date | null>;
 };
@@ -79,16 +77,6 @@ export class CaseFormComponent {
         Validators.maxLength(50),
         Validators.required,
       ]),
-      departingAirport: this._formBuilder.control<string>('', [
-        Validators.minLength(3),
-        Validators.maxLength(3),
-        Validators.required,
-      ]),
-      destinationAirport: this._formBuilder.control<string>('', [
-        Validators.minLength(3),
-        Validators.maxLength(3),
-        Validators.required,
-      ]),
       plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
       plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
     },
@@ -118,8 +106,6 @@ export class CaseFormComponent {
             flightDate: data.flightDate,
             flightNumber: data.flightNumber,
             airline: data.airline,
-            departingAirport: data.departingAirport,
-            destinationAirport: data.destinationAirport,
             plannedDepartureTime: data.plannedDepartureTime,
             plannedArrivalTime: data.plannedArrivalTime,
           },
