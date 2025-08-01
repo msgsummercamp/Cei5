@@ -13,6 +13,7 @@ import com.airassist.backend.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Date;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
 
     private final UserRepository userRepository;
@@ -30,13 +32,6 @@ public class AuthServiceImpl implements AuthService{
     private final UserMapper userMapper;
     private final Key jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_EXPIRATION_MS = 3600000; // 1 hour in milliseconds
-
-    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, RandomPasswordGeneratorService randomPasswordGenerator) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.randomPasswordGenerator = randomPasswordGenerator;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {
@@ -50,7 +45,7 @@ public class AuthServiceImpl implements AuthService{
             throw new InvalidPasswordException("Invalid password for user: " + signInRequest.getEmail());
         }
         String token = generateToken(foundUser);
-        return new SignInResponse(token, foundUser.getRole(), foundUser.isFirstLogin());
+        return new SignInResponse(token, foundUser.isFirstLogin());
     }
 
     @Override

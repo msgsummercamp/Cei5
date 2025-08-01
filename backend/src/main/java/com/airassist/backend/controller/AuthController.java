@@ -11,6 +11,7 @@ import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.service.AuthService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,15 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private final UserMapper userMapper;
-
-    public AuthController(AuthService authService, UserMapper userMapper) {
-        this.authService = authService;
-        this.userMapper = userMapper;
-    }
 
     @PostMapping("/signin")
     public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {

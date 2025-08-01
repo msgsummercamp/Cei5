@@ -5,6 +5,7 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.utils.UserUtils;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,18 +15,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RandomPasswordGeneratorService randomPasswordGenerator;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RandomPasswordGeneratorService randomPasswordGenerator) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.randomPasswordGenerator = randomPasswordGenerator;
-    }
 
     @Override
     public User getUserById(UUID id) throws UserNotFoundException {
@@ -37,7 +33,6 @@ public class UserServiceImpl implements UserService{
         }
         return user.get();
     }
-
 
     @Override
     public User getUserByEmail(String email) throws UserNotFoundException {

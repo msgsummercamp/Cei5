@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().toString());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().toString());
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
