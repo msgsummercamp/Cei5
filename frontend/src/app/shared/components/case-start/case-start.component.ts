@@ -40,9 +40,9 @@ import {
 })
 export class CaseStartComponent {
   public readonly MAXIMUM_CONNECTIONS = 4;
+  public readonly MAX_FLAGS = 1;
 
   private readonly _formBuilder = inject(NonNullableFormBuilder);
-  private connectionFormData: { [key: string]: FlightDetails } = {};
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -86,6 +86,30 @@ export class CaseStartComponent {
   public isMainFlightValid = false;
   public connectionFlights: [string, string][] = [];
   public connectionFlightData: { [key: number]: FlightDetails | null } = {};
+  public allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
+  public isFlagged: boolean[] = [];
+  public flags = 0;
+
+  public toggleFlag(index: number): void {
+    this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
+    this.isFlagged[index] = !this.isFlagged[index];
+  }
+
+  public createAllFlights(): void {
+    this.allFlights = [];
+    this.connectionFlights.forEach((connection, index) => {
+      const flightDetails: FlightDetails = {
+        flightNumber: this.connectionFlightData[index]?.flightNumber || '',
+        airline: this.connectionFlightData[index]?.airline || '',
+        reservationNumber: this.reservationInformation.reservationNumber,
+        departingAirport: connection[0],
+        destinationAirport: connection[1],
+        plannedDepartureTime: this.connectionFlightData[index]?.plannedDepartureTime || null,
+        plannedArrivalTime: this.connectionFlightData[index]?.plannedArrivalTime || null,
+      };
+      this.allFlights.push({ flightDetails, isFlagged: this.isFlagged[index] || false });
+    });
+  }
 
   // getter for the airports FormArray
   public get airportsArray(): FormArray<FormControl<string>> {
@@ -119,8 +143,6 @@ export class CaseStartComponent {
   ): void {
     // Store the data for this specific connection
     this.connectionFlightData[connectionIndex] = data;
-
-    console.log(`Connection ${connectionIndex} validity:`, isValid, data);
   }
 
   // Method to get initial data for a connection form
@@ -141,8 +163,6 @@ export class CaseStartComponent {
     if (this.reservationForm.valid) {
       const formValues = this.reservationForm.getRawValue();
 
-      console.log('Reservation Information:', formValues);
-
       this.reservationInformation = {
         reservationNumber: formValues.reservationNumber || '',
         departingAirport: formValues.departingAirport || '',
@@ -162,10 +182,21 @@ export class CaseStartComponent {
       this.currentStep++;
       if (this.airportsArray.length === 0) {
         this.currentStep++;
+        const flightDetails: FlightDetails = {
+          flightNumber: this.flightData?.flightNumber || '',
+          airline: this.flightData?.airline || '',
+          reservationNumber: this.reservationInformation.reservationNumber,
+          departingAirport: this.reservationInformation.departingAirport,
+          destinationAirport: this.reservationInformation.destinationAirport,
+          plannedDepartureTime: this.flightData?.plannedDepartureTime || null,
+          plannedArrivalTime: this.flightData?.plannedArrivalTime || null,
+        };
+        this.allFlights.push({ flightDetails, isFlagged: true });
       } else {
-        // Only create connections if they don't exist yet
-        if (this.connectionFlights.length === 0) {
-          this.setConnectionStrings(this.getAirportValues());
+        this.connectionFlights = [];
+        this.setConnectionStrings(this.getAirportValues());
+        if (this.isFlagged.length === 0) {
+          this.isFlagged = Array(this.connectionFlights.length).fill(false);
         }
       }
 
@@ -179,6 +210,8 @@ export class CaseStartComponent {
   public onNextFromConnectionFlights(nextCallback?: Function): void {
     if (this.areAllConnectionFlightsValid()) {
       this.currentStep++;
+
+      this.createAllFlights();
       if (nextCallback) {
         nextCallback();
       }
@@ -204,7 +237,7 @@ export class CaseStartComponent {
 
   // Function to add a connection flight airport
   public addConnectionFlight(): void {
-    if (this.airports.length < this.MAXIMUM_CONNECTIONS) {
+    if (this.airportsArray.length < this.MAXIMUM_CONNECTIONS) {
       const airportControl = this._formBuilder.control('', [
         Validators.required,
         Validators.minLength(3),
@@ -237,14 +270,5 @@ export class CaseStartComponent {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
-  }
-
-  public onConnectionChange(index: number, event: any): void {
-    const value = event.target?.value || event.query || '';
-    this.airports[index] = value;
-  }
-
-  public onConnectionModelChange(index: number, value: string): void {
-    this.airports[index] = value;
   }
 }

@@ -149,7 +149,7 @@
               #mainFlightForm
               [initialData]="flightData"
               (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
-              class="ml-8 col"
+              class="ml-8 col mb-8"
             >
             </app-case-form>
 
@@ -192,8 +192,6 @@
                                     class="w-15rem h-2rem"
                                     id="connectionFlight{{ $index }}"
                                     [formControlName]="$index"
-                                    (onInput)="onConnectionChange($index, $event)"
-                                    (ngModelChange)="onConnectionModelChange($index, $event)"
                                   />
                                   <label for="connectionFlight{{ $index }}">Connection</label>
                                 </p-floatlabel>
@@ -250,7 +248,7 @@
           </div>
 
           <!-- Next and back buttons -->
-          <div class="justify-content-between flex flex-row gap-2">
+          <div class="justify-content-center flex flex-row gap-6">
             <p-button
               label="Back"
               severity="secondary"
@@ -279,12 +277,19 @@
             @for (i of connectionIndices; track i) {
               <div class="w-5 mb-4">
                 <div
-                  class="flex justify-content-center align-items-center p-3 border-round surface-card"
+                  class="flex flex-column justify-content-center align-items-center p-3 border-round surface-card"
                 >
+                  <h3 class="text-center mb-2"
+                    >Connection: {{ connectionFlights[i][0] }} - {{ connectionFlights[i][1] }}</h3
+                  >
+                  <p-button
+                    icon="pi pi-flag"
+                    severity="success"
+                    (onClick)="toggleFlag(i)"
+                    [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
+                  ></p-button>
                   <app-case-form
-                    title="Connection: {{ connectionFlights[i][0] }} - {{
-                      connectionFlights[i][1]
-                    }}"
+                    [title]="''"
                     [initialData]="getConnectionInitialData(i)"
                     (validityChange)="
                       onConnectionFlightValidityChange(i, $event.valid, $event.data)
@@ -321,6 +326,12 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
+          <p-button
+            label="Back"
+            severity="secondary"
+            (onClick)="onPrevious(prevCallback)"
+            [styleClass]="'px-6 h-2.5rem'"
+          />
         </ng-template>
       </p-step-panel>
     </p-step-panels>
