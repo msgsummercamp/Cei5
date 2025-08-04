@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGeneratorService{
 
-    @Value("${random.password.api.url}")
+    @Value("${password.generator.api.url}")
     private String apiUrl;
 
     private RestTemplate restTemplate;
@@ -33,12 +32,12 @@ public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGenerat
         String url = apiUrl.replace("{}", String.valueOf(length));
         logger.info("Generating random password with length: {}", length);
 
-        String reponse = restTemplate.getForObject(url, String.class);
+        String response = restTemplate.getForObject(url, String.class);
         logger.info("Received response from airport API.");
 
-        JsonNode root = objectMapper.readTree(reponse);
+        JsonNode root = objectMapper.readTree(response);
 
-        return root.get("random_password").asText();
+        return root.get("password").asText();
     }
 
     @Override
