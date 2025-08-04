@@ -1,29 +1,22 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
-import {StepperModule} from 'primeng/stepper';
-import {CardModule} from 'primeng/card';
-import {FloatLabelModule} from 'primeng/floatlabel';
-import {ErrorMessageComponent} from '../error-message/error-message.component';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { StepperModule } from 'primeng/stepper';
+import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ErrorMessageComponent } from '../error-message/error-message.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
+  FormsModule,
+  FormArray,
 } from '@angular/forms';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {ButtonModule} from 'primeng/button';
-import {Router} from '@angular/router';
-import {FlightDetails, CaseFormComponent} from '../case-form/case-form.component';
-import {InputTextModule} from 'primeng/inputtext';
-import {MessageModule} from 'primeng/message';
-import {ToggleSwitch} from 'primeng/toggleswitch';
-import {FormsModule} from '@angular/forms';
-import {Reservation} from '../../interfaces/reservation.interface';
-import {Flight} from '../../interfaces/flight.interface';
-import {Case} from '../../interfaces/case.interface';
-import { Statuses } from '../../enums/status.enum';
-import {DisruptionReason} from '../../enums/disruptionReason.enum';
-import {Role} from '../../enums/role.enum';
-import {CaseService} from '../../service/case.service';
 
 @Component({
   selector: 'app-case-start',
@@ -39,16 +32,17 @@ import {CaseService} from '../../service/case.service';
     CaseFormComponent,
     MessageModule,
     ErrorMessageComponent,
-    ToggleSwitch,
     FormsModule,
+    TagModule,
   ],
   templateUrl: './case-start.component.html',
   styleUrl: './case-start.component.scss',
 })
 export class CaseStartComponent {
+  public readonly MAXIMUM_CONNECTIONS = 4;
+  public readonly MAX_FLAGS = 1;
+
   private readonly _formBuilder = inject(NonNullableFormBuilder);
-  private readonly _router = inject(Router);
-  private readonly _caseService = inject(CaseService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -58,54 +52,102 @@ export class CaseStartComponent {
       Validators.maxLength(6),
     ]),
     departingAirport: new FormControl<string>('', [
+      Validators.pattern(/^[A-Z]{3}$/),
       Validators.minLength(3),
       Validators.maxLength(3),
       Validators.required,
     ]),
     destinationAirport: new FormControl<string>('', [
+      Validators.pattern(/^[A-Z]{3}$/),
       Validators.minLength(3),
       Validators.maxLength(3),
       Validators.required,
     ]),
   });
 
+  protected readonly airportFormArray = this._formBuilder.group({
+    airports: this._formBuilder.array<string>([]),
+  });
+
   public currentStep = 1;
   public isFlightFormValid = false;
   public flightData: FlightDetails | null = null;
-  public maxConnections = 4;
-  public connectionIdCounter = 0;
-  public connectionFlights: ({
-    id: number;
-    valid: boolean;
-    data: FlightDetails | null;
-    isFlagged: boolean | null;
-  } | null)[] = new Array(this.maxConnections).fill(null);
-  public connectionFlightsData: (FlightDetails | null)[] = new Array(this.maxConnections).fill(
-    null
-  );
-  public isFlagged: boolean[] = new Array(this.maxConnections).fill(false);
+  public airports: string[] = [];
+  public reservationInformation: {
+    reservationNumber: string;
+    departingAirport: string;
+    destinationAirport: string;
+  } = {
+    reservationNumber: '',
+    departingAirport: '',
+    destinationAirport: '',
+  };
+  public autocompleteInputArray: string[] = [];
+  public isMainFlightValid = false;
+  public connectionFlights: [string, string][] = [];
+  public connectionFlightData: { [key: number]: FlightDetails | null } = {};
+  public allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
+  public isFlagged: boolean[] = [];
+  public flags = 0;
 
-  // Function to check if the connection flights are consecutive in form
-  private areConnectionFlightsConsecutiveFromStart(): boolean {
-    let consecutiveCount = 0;
+  public toggleFlag(index: number): void {
+    this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
+    this.isFlagged[index] = !this.isFlagged[index];
+  }
 
-    // Count consecutive flights from the beginning
-    for (let i = 0; i < this.connectionFlights.length; i++) {
-      if (this.connectionFlights[i] !== null) {
-        consecutiveCount++;
-      } else {
-        break;
+  public createAllFlights(): void {
+    this.allFlights = [];
+    this.connectionFlights.forEach((connection, index) => {
+      const flightDetails: FlightDetails = {
+        flightNumber: this.connectionFlightData[index]?.flightNumber || '',
+        airline: this.connectionFlightData[index]?.airline || '',
+        reservationNumber: this.reservationInformation.reservationNumber,
+        departingAirport: connection[0],
+        destinationAirport: connection[1],
+        plannedDepartureTime: this.connectionFlightData[index]?.plannedDepartureTime || null,
+        plannedArrivalTime: this.connectionFlightData[index]?.plannedArrivalTime || null,
+      };
+      this.allFlights.push({ flightDetails, isFlagged: this.isFlagged[index] || false });
+    });
+  }
+
+  // getter for the airports FormArray
+  public get airportsArray(): FormArray<FormControl<string>> {
+    return this.airportFormArray.get('airports') as FormArray<FormControl<string>>;
+  }
+
+  // Function for creating a connection
+  public setConnectionStrings(airports: string[]): void {
+    this.connectionFlights.push([this.reservationInformation?.departingAirport || '', airports[0]]);
+    airports.forEach((airport, index) => {
+      if (index < airports.length - 1) {
+        this.connectionFlights.push([airport, airports[index + 1]]);
       }
-    }
+    });
+    this.connectionFlights.push([
+      airports[airports.length - 1],
+      this.reservationInformation.destinationAirport,
+    ]);
+  }
 
-    // Check if remaining slots are all null
-    for (let i = consecutiveCount; i < this.connectionFlights.length; i++) {
-      if (this.connectionFlights[i] !== null) {
-        return false; // Found a flight after a gap
-      }
-    }
+  // Getter for connection indices
+  public get connectionIndices(): number[] {
+    return Array.from({ length: this.connectionFlights.length }, (_, i) => i);
+  }
 
-    return true;
+  // Method to handle validity changes from connection flight forms
+  public onConnectionFlightValidityChange(
+    connectionIndex: number,
+    isValid: boolean,
+    data: FlightDetails | null
+  ): void {
+    // Store the data for this specific connection
+    this.connectionFlightData[connectionIndex] = data;
+  }
+
+  // Method to get initial data for a connection form
+  public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
+    return this.connectionFlightData[connectionIndex] || null;
   }
 
   // Navigation methods: previous and next
@@ -116,8 +158,27 @@ export class CaseStartComponent {
     }
   }
 
+  public onPreviousFromDisruptionInfo(prevCallback?: Function) {
+    this.currentStep--;
+    if (this.allFlights.length === 1) {
+      this.currentStep--;
+    }
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
+  // Function to check if the reservation form is valid (and go to the next step)
   public onNext(nextCallback?: Function) {
     if (this.reservationForm.valid) {
+      const formValues = this.reservationForm.getRawValue();
+
+      this.reservationInformation = {
+        reservationNumber: formValues.reservationNumber || '',
+        departingAirport: formValues.departingAirport || '',
+        destinationAirport: formValues.destinationAirport || '',
+      };
+
       this.currentStep++;
       if (nextCallback) {
         nextCallback();
@@ -125,234 +186,99 @@ export class CaseStartComponent {
     }
   }
 
-  public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any) {
-    if (this.isMainFlightValid(mainFlightForm)) {
-      this.flightData = mainFlightForm.getFormValue();
+  // Function to handle the next step from flight details
+  public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
+    if (this.isMainFlightValid && this.isAirportsValid()) {
       this.currentStep++;
+      if (this.airportsArray.length === 0) {
+        this.currentStep++;
+        const flightDetails: FlightDetails = {
+          flightNumber: this.flightData?.flightNumber || '',
+          airline: this.flightData?.airline || '',
+          reservationNumber: this.reservationInformation.reservationNumber,
+          departingAirport: this.reservationInformation.departingAirport,
+          destinationAirport: this.reservationInformation.destinationAirport,
+          plannedDepartureTime: this.flightData?.plannedDepartureTime || null,
+          plannedArrivalTime: this.flightData?.plannedArrivalTime || null,
+        };
+        this.allFlights.push({ flightDetails, isFlagged: true });
+      } else {
+        this.connectionFlights = [];
+        this.setConnectionStrings(this.getAirportValues());
+        if (this.isFlagged.length === 0) {
+          this.isFlagged = Array(this.connectionFlights.length).fill(false);
+        }
+      }
+
       if (nextCallback) {
         nextCallback();
       }
     }
   }
 
+  // Method to handle navigation from connection flights step
   public onNextFromConnectionFlights(nextCallback?: Function): void {
     if (this.areAllConnectionFlightsValid()) {
       this.currentStep++;
+
+      this.createAllFlights();
       if (nextCallback) {
         nextCallback();
       }
     }
   }
 
-  // Checker for main flight validity
-  public isMainFlightValid(mainFlightForm: any): boolean {
-    return mainFlightForm?.flightDetailsForm?.valid || false;
-  }
-
-  // Function for the event of changing validity of main flight
-  public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
-    if (isValid && data) {
-      this.flightData = data;
-    }
-  }
-
-  // Function to add a new connection flight
-  public addConnectionFlight(): void {
-    const emptyIndex = this.connectionFlights.findIndex((flight) => flight === null);
-    if (emptyIndex !== -1) {
-      this.connectionFlights[emptyIndex] = {
-        id: emptyIndex + 1,
-        valid: !!this.connectionFlightsData[emptyIndex],
-        data: this.connectionFlightsData[emptyIndex],
-        isFlagged: this.isFlagged[emptyIndex],
-      };
-    }
-  }
-
-  // Checker for adding more connections
-  public canAddMoreConnections(): boolean {
-    return this.connectionFlights.some((flight) => flight === null);
-  }
-
-  // Function to remove a connection flight (inplace of the missing connections)
-  public removeConnectionFlight(index: number): void {
-    if (index >= 0 && index < this.connectionFlights.length) {
-      this.connectionFlights[index] = null;
-      this.connectionFlightsData[index] = null;
-      this.isFlagged[index] = false;
-    }
-  }
-
+  // Method to check if all connection flight forms are valid
   public areAllConnectionFlightsValid(): boolean {
-    const activeFlights = this.connectionFlights.filter((flight) => flight !== null);
-
-    if (activeFlights.length === 0) {
-      return true;
-    }
-
-    // Check if connection flights are consecutive from start
-    if (!this.areConnectionFlightsConsecutiveFromStart()) {
-      return false;
-    }
-
-    // Check if all active flights are valid and have data
-    return activeFlights.every((flight) => {
-      if (!flight) return false;
-
-      // Check if form is valid
-      if (!flight.valid) return false;
-
-      // Check if data exists and is complete
-      if (!flight.data) return false;
-
-      const data = flight.data;
-      return !!(
-        data.flightDate &&
-        data.flightNumber?.trim() &&
-        data.airline?.trim() &&
-        data.departingAirport?.trim() &&
-        data.destinationAirport?.trim() &&
-        data.plannedDepartureTime &&
-        data.plannedArrivalTime
-      );
-    });
-  }
-
-  // Function to handle validity change of connection flights
-  public onConnectionFlightValidityChange(
-    index: number,
-    isValid: boolean,
-    data: FlightDetails | null
-  ): void {
-    if (this.connectionFlights[index]) {
-      this.connectionFlights[index].valid = isValid;
-      this.connectionFlights[index].data = data;
-
-      this.connectionFlightsData[index] = data;
-    }
-  }
-
-  // Function to get active connection flights
-  public getActiveConnectionFlights(): {
-    id: number;
-    valid: boolean;
-    data: FlightDetails | null;
-  }[] {
-    return this.connectionFlights.filter(
-      (
-        flight
-      ): flight is {
-        id: number;
-        valid: boolean;
-        data: FlightDetails | null;
-        isFlagged: boolean | null;
-      } => flight !== null
-    );
-  }
-
-  // Function for flagging the flights
-  public flagFlight(index: number): void {
-    if (index >= 0 && index < this.isFlagged.length) {
-      if (this.connectionFlights[index]) {
-        this.connectionFlights[index].isFlagged = this.isFlagged[index];
+    for (let i = 0; i < this.connectionFlights.length; i++) {
+      if (!this.connectionFlightData[i]) {
+        return false; // No data means form is not valid
       }
     }
+    return true;
   }
 
-  // Function to check if there are any flagged flights
-  public canFlagAFlight(): boolean {
-    return this.isFlagged.some((flag) => flag === true);
+  // Method to handle the validity change from the flight details form
+  public get isNextButtonEnabled(): boolean {
+    const airportsValid = this.isAirportsValid();
+    const mainFlightValid = this.isMainFlightValid;
+    return airportsValid && mainFlightValid;
   }
 
-  // Checking if the current flight can be flagged
-  public canFlagFlight(index: number): boolean {
-    return this.isFlagged[index] || !this.canFlagAFlight();
-  }
-
-  public onSubmit(): void {
-  if (
-    this.reservationForm.invalid ||
-    !this.flightData ||
-    !this.areAllConnectionFlightsValid()
-  ) {
-    alert('Form is invalid or incomplete');
-    return;
-  }
-
-  // Create flights array from main flight and connection flights
-  const flights: Flight[] = [];
-  
-  // Add main flight
-  if (this.flightData) {
-    flights.push({
-      flightNumber: this.flightData.flightNumber,
-      airLine: this.flightData.airline,
-      departingAirport: this.flightData.departingAirport,
-      destinationAirport: this.flightData.destinationAirport,
-      departureTime: this.flightData.plannedDepartureTime || new Date(),
-      arrivalTime: this.flightData.plannedArrivalTime || new Date(),
-      flightDate: this.flightData.flightDate || new Date(),
-      reservation: null,
-      isProblematic: false,
-    });
-  }
-
-  // Add connection flights
-  const activeConnectionFlights = this.getActiveConnectionFlights();
-  activeConnectionFlights.forEach((connectionFlight) => {
-    if (connectionFlight.data) {
-      flights.push({
-        flightNumber: connectionFlight.data.flightNumber,
-        airLine: connectionFlight.data.airline,
-        departingAirport: connectionFlight.data.departingAirport,
-        destinationAirport: connectionFlight.data.destinationAirport,
-        departureTime: connectionFlight.data.plannedDepartureTime || new Date(),
-        arrivalTime: connectionFlight.data.plannedArrivalTime || new Date(),
-        flightDate: connectionFlight.data.flightDate || new Date(),
-        reservation: null,
-        isProblematic: false,
-      });
+  // Function to add a connection flight airport
+  public addConnectionFlight(): void {
+    if (this.airportsArray.length < this.MAXIMUM_CONNECTIONS) {
+      const airportControl = this._formBuilder.control('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.pattern(/^[A-Z]{3}$/),
+      ]);
+      this.airportsArray.push(airportControl);
     }
-  });
+  }
 
-  const caseDto: Case = {
-    status: Statuses.PENDING,
-    disruptionReason: DisruptionReason.ARRIVED_3H_LATE, // You can replace this with a form field
-    disruptionInfo: 'Entered by user during manual case submission', // or bind from form
-    date: new Date(), // or use selected date field if available
-
-    reservation: {
-      reservationNumber: this.reservationForm.value.reservationNumber ?? '',
-      flights: flights,
-      caseEntity: null,
-    },
-
-    client: {
-      id: '00000000-0000-0000-0000-000000000001', // placeholder UUID — replace later
-    } as any, // 👈 TypeScript will allow partial object this way
-
-    assignedColleague: null,
-    documentList: [],
-  };
-
-  // 1. Check eligibility
-  this._caseService.checkEligibility(caseDto).subscribe((isEligible) => {
-    if (!isEligible) {
-      alert('Case is not eligible.');
-      return;
+  // Function to remove a connection flight airport
+  public removeConnectionFlight(index: number): void {
+    if (index >= 0 && index < this.airportsArray.length) {
+      this.airportsArray.removeAt(index);
     }
+  }
 
-    // 2. Create case
-    this._caseService.createCase(caseDto).subscribe({
-      next: () => {
-        alert('Case successfully created!');
-        this._router.navigate(['/success']); // or another page
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Failed to create case.');
-      },
-    });
-  });
-}
+  // Method to get all airport values
+  public getAirportValues(): string[] {
+    return this.airportsArray.value;
+  }
+
+  // Method to check if airports form is valid
+  public isAirportsValid(): boolean {
+    const valid = this.airportsArray.valid;
+    return valid;
+  }
+
+  // Method to handle the validity change from the main flight form
+  public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
+    this.isMainFlightValid = isValid;
+    this.flightData = data;
+  }
 }
