@@ -344,11 +344,13 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
+          <app-disruption-form />
+
           <p-button
             label="Back"
             severity="secondary"
             (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 h-2.5rem'"
+            [styleClass]="'px-6 h-2.5rem mt-8'"
           />
         </ng-template>
       </p-step-panel>

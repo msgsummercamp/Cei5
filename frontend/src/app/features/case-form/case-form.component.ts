@@ -14,7 +14,6 @@ import {
   FormsModule,
   FormArray,
 } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -25,6 +24,7 @@ import {
 } from '../../shared/services/reservation.service';
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
+import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 
 @Component({
   selector: 'app-case-form',
@@ -41,6 +41,7 @@ import { AirportResponse, AirportsService } from '../../shared/services/airports
     ErrorMessageComponent,
     FormsModule,
     TagModule,
+    DisruptionFormComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
