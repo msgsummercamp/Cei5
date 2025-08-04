@@ -11,6 +11,7 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -52,7 +53,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException {
+    public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException, JsonProcessingException {
         log.info("Registering user with email: {}", userDTO.getEmail());
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new DuplicateUserException();
@@ -68,7 +69,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException {
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException {
         log.info("Resetting password for email: {}", resetPasswordRequest.getEmail());
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User with given email not found!"));

@@ -6,6 +6,7 @@ import com.airassist.backend.model.Roles;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ class UserServiceTests {
     }
 
     @BeforeAll
-    static void setup() {
+    static void setup() throws JsonProcessingException {
         userRepository = Mockito.mock(UserRepository.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         randomPasswordGenerator = Mockito.mock(RandomPasswordGeneratorService.class);
@@ -109,7 +110,7 @@ class UserServiceTests {
     }
 
     @Test
-    void addUser_validUser_savesUser() throws DuplicateUserException {
+    void addUser_validUser_savesUser() throws DuplicateUserException, JsonProcessingException {
         User user = createValidUser();
         Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);

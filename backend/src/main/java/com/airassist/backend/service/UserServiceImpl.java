@@ -6,6 +6,7 @@ import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.validator.UserValidator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User addUser(User user) throws DuplicateUserException {
+    public User addUser(User user) throws DuplicateUserException, JsonProcessingException {
         String email = user.getEmail();
         logger.info("UserService - Attempting to add user: {}", email);
         checkForDuplicateEmail(email);

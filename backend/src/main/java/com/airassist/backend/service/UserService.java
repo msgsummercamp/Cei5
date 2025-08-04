@@ -3,6 +3,7 @@ package com.airassist.backend.service;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.UUID;
 
@@ -36,8 +37,9 @@ public interface UserService {
      * @param user the user to save
      * @return the saved user entity
      * @throws DuplicateUserException if a user with the same email already exists
+     * @throws JsonProcessingException if there is an error processing the generated password data
      */
-    User addUser(User user) throws DuplicateUserException;
+    User addUser(User user) throws DuplicateUserException, JsonProcessingException;
 
     /**
      * Updates an existing user in the repository by their email.

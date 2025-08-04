@@ -9,6 +9,7 @@ import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
 
 public interface AuthService {
@@ -30,8 +31,9 @@ public interface AuthService {
      * @return User the registered user entity
      * @throws DuplicateUserException if a user with the same username or email already exists
      * @throws MessagingException if there is an error sending the registration email
+     * @throws JsonProcessingException if there is an error processing JSON data for the password
      */
-    User register(UserDTO userDTO) throws DuplicateUserException, MessagingException;
+    User register(UserDTO userDTO) throws DuplicateUserException, MessagingException, JsonProcessingException;
 
     /**
      * Initiates the password reset process for a user.
@@ -39,8 +41,9 @@ public interface AuthService {
      * @param resetPasswordRequest the request containing the user's email
      * @throws MessagingException if there is an error sending the reset password email
      * @throws UserNotFoundException if the user with the provided email does not exist
+     * @throws JsonProcessingException if there is an error processing JSON data for the password
      */
-    void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException;
+    void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException;
 
     /**
      * Validates the provided JWT token.

@@ -3,6 +3,7 @@ package com.airassist.backend.exceptionHandler;
 import com.airassist.backend.controller.UserController;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,10 @@ public class UserControllerExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ProblemDetail handleConstraintViolationException(ConstraintViolationException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Database constraint violation: " + e.getMessage());
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ProblemDetail handleJsonProcessingException(JsonProcessingException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process password JSON: " + exception.getMessage());
     }
 }
