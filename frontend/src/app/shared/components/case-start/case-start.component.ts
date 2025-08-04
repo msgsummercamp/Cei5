@@ -20,7 +20,7 @@ import {
   FormsModule,
   FormArray,
 } from '@angular/forms';
-import { CaseService } from '../../service/case.service';
+import { CaseService } from '../../services/case.service';
 import { CaseDTO } from '../../dto/case.dto';
 import { UserDTO } from '../../dto/user.dto';
 import { ReservationDTO } from '../../dto/reservation.dto';
@@ -94,12 +94,7 @@ export class CaseStartComponent {
   public get reservationInformation(): ReservationInformation {
     return this._reservationService.getReservationInformation();
   }
-  public connectionFlights: [string, string][] = [];
-  public connectionFlightData: { [key: number]: FlightDetails | null } = {};
-  //here are all flights including main flight and connections
-  public allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
-  public isFlagged: boolean[] = [];
-  public flags = 0;
+
 
   public get connectionFlights(): [string, string][] {
     return this._flightService.getConnectionFlights();
@@ -273,8 +268,11 @@ export class CaseStartComponent {
 
   public submitCase(): void {
     // Add validation before submitting
+    console.log('Submit case called');
+    console.log('All flights:', this._flightService.getAllFlights());
 
-    if (!this.allFlights || this.allFlights.length === 0) {
+    if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
+      console.error('No flights available');
       return;
     }
 
@@ -282,29 +280,37 @@ export class CaseStartComponent {
       status: Statuses.PENDING,
       disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
       disruptionInfo: 'Flight was delayed by 3 hours',
-      date: new Date().toISOString(), // This matches your DTO (string | null)
-      ///TODO : replace with user data after user form is created
+      date: new Date().toISOString(),
       clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       assignedColleague: undefined,
       reservation: this.createReservationDTO(),
       documentList: [],
     };
 
+    console.log('Case data to submit:', caseData);
 
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
+        console.log('Eligibility check result:', isEligible);
         if (isEligible) {
           this._caseService.createCase(caseData).subscribe({
-            next: (response) => console.log('Case created successfully', response),
+            next: (response) => {
+              console.log('Case created successfully', response);
+              // Add success handling here
+            },
             error: (error) => {
+              console.error('Error creating case:', error);
+              // Add error handling here
             }
           });
         } else {
-
+          console.log('Client is not eligible for a case');
+          // Add handling for ineligible case
         }
       },
       error: (error) => {
-
+        console.error('Error checking eligibility:', error);
+        // Add error handling here
       }
     });
   }
@@ -313,7 +319,7 @@ export class CaseStartComponent {
 
     return {
       reservationNumber: this.reservationInformation.reservationNumber,
-      flights: this.allFlights.map((flight, index) => {
+      flights: this._flightService.getAllFlights().map((flight, index) => {
         const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
         const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
 
