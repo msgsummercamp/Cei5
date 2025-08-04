@@ -17,6 +17,13 @@ import {
   FormsModule,
   FormArray,
 } from '@angular/forms';
+import { CaseService } from '../../service/case.service';
+import { CaseDTO } from '../../dto/case.dto';
+import { UserDTO } from '../../dto/user.dto';
+import { ReservationDTO } from '../../dto/reservation.dto';
+import { DisruptionReason } from '../../enums/disruptionReason.enum';
+import { Statuses } from '../../enums/status.enum';
+import { Role } from '../../enums/role.enum';
 
 @Component({
   selector: 'app-case-start',
@@ -43,6 +50,7 @@ export class CaseStartComponent {
   public readonly MAX_FLAGS = 1;
 
   private readonly _formBuilder = inject(NonNullableFormBuilder);
+  private readonly _caseService = inject(CaseService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -86,6 +94,7 @@ export class CaseStartComponent {
   public isMainFlightValid = false;
   public connectionFlights: [string, string][] = [];
   public connectionFlightData: { [key: number]: FlightDetails | null } = {};
+  //here are all flights including main flight and connections
   public allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
   public isFlagged: boolean[] = [];
   public flags = 0;
@@ -280,5 +289,92 @@ export class CaseStartComponent {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+  }
+
+  public submitCase(): void {
+    // Add validation before submitting
+    console.log('All flights data:', this.allFlights);
+    console.log('Reservation info:', this.reservationInformation);
+
+    if (!this.allFlights || this.allFlights.length === 0) {
+      console.error('No flights to submit');
+      return;
+    }
+
+    const caseData: CaseDTO = {
+      status: Statuses.PENDING,
+      disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
+      disruptionInfo: 'Flight was delayed by 3 hours',
+      date: new Date().toISOString(), // This matches your DTO (string | null)
+      ///TODO : replace with user data after user form is created
+      clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      assignedColleague: undefined,
+      reservation: this.createReservationDTO(),
+      documentList: [],
+    };
+
+    console.log('Case data to submit:', JSON.stringify(caseData, null, 2));
+
+    this._caseService.checkEligibility(caseData).subscribe({
+      next: (isEligible) => {
+        console.log('Eligibility check result:', isEligible);
+        if (isEligible) {
+          this._caseService.createCase(caseData).subscribe({
+            next: (response) => console.log('Case created successfully', response),
+            error: (error) => {
+              console.error('Error creating case', error);
+              console.log('Full error object:', JSON.stringify(error, null, 2));
+            }
+          });
+        } else {
+          console.error('Client is not eligible for a case');
+        }
+      },
+      error: (error) => {
+        console.error('Error checking eligibility', error);
+        console.log('Eligibility check error:', JSON.stringify(error, null, 2));
+      }
+    });
+  }
+
+  private createReservationDTO(): ReservationDTO {
+    console.log('Creating reservation DTO with flights:', this.allFlights);
+    
+    return {
+      reservationNumber: this.reservationInformation.reservationNumber,
+      flights: this.allFlights.map((flight, index) => {
+        const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
+        const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
+
+        const flightData = {
+          flightDate: this.extractDateOnly(departureDateTime), // Convert to string (YYYY-MM-DD)
+          flightNumber: flight.flightDetails.flightNumber || `FLIGHT${index + 1}`,
+          departingAirport: flight.flightDetails.departingAirport || 'XXX',
+          destinationAirport: flight.flightDetails.destinationAirport || 'YYY',
+          departureTime: this.formatForLocalDateTime(departureDateTime), // Remove 'Z' for LocalDateTime
+          arrivalTime: this.formatForLocalDateTime(arrivalDateTime), // Remove 'Z' for LocalDateTime
+          airLine: flight.flightDetails.airline || 'UNKNOWN',
+          isProblematic: flight.isFlagged
+        };
+
+        console.log(`Flight ${index + 1} data:`, flightData);
+        return flightData;
+      })
+    };
+  }
+
+  // Helper method to format date for Java LocalDateTime (without timezone)
+  private formatForLocalDateTime(date: Date): string {
+    // Convert to ISO string and remove the 'Z' at the end
+    return date.toISOString().slice(0, -1); // Removes the 'Z'
+    // This converts "2025-08-01T08:59:42.000Z" to "2025-08-01T08:59:42.000"
+  }
+
+  // Helper method to extract date only (YYYY-MM-DD format)
+  private extractDateOnly(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

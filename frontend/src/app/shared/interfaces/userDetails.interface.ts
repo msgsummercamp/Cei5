@@ -1,4 +1,4 @@
-export interface UserDetails {
+export type UserDetails = {
   id? : string;
   phoneNumber: string;
   address: string;

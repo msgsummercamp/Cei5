@@ -5,7 +5,9 @@
       <p-step [value]="1">Reservation Info</p-step>
       <p-step [value]="2">Flight Details</p-step>
       <p-step [value]="3">Connection Flights</p-step>
-      <p-step [value]="4">Disruption Info</p-step>
+      <p-step [value]="4">Submit</p-step>
+      <p-step [value]="5">Disruption Info</p-step>
+      
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -318,9 +320,24 @@
             />
           </div>
         </ng-template>
+        <!-- Step 5: Test Submit -->
+      </p-step-panel>
+       <p-step-panel [value]="4">
+        <ng-template 
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-nextCallback="nextCallback"
+        >
+          <p-button
+            label="Submit"
+            severity="secondary"
+            (onClick)="submitCase()"
+            [styleClass]="'px-6 h-2.5rem'"
+          />
+        </ng-template>
       </p-step-panel>
       <!-- Step 4: Disruption Info -->
-      <p-step-panel [value]="4">
+      <p-step-panel [value]="5">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
@@ -334,6 +351,7 @@
           />
         </ng-template>
       </p-step-panel>
+     
     </p-step-panels>
   </p-stepper>
 </main>

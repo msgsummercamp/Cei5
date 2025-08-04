@@ -22,7 +22,6 @@ public class Flight {
     private UUID id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Flight date cannot be blank")
     @PastOrPresent(message = "Flight date must be in the past or present")
     private LocalDate flightDate;
 
@@ -42,11 +41,9 @@ public class Flight {
     private String destinationAirport;
 
     @Column(nullable = false)
-    @NotBlank(message = "Departure time cannot be blank")
     private LocalDateTime departureTime;
 
     @Column(nullable = false)
-    @NotBlank(message = "Arrival time cannot be blank")
     private LocalDateTime arrivalTime;
 
     @ManyToOne(optional = false)
@@ -59,6 +56,5 @@ public class Flight {
     private String airLine;
 
     @Column(nullable = false)
-    @NotBlank(message = "Passenger name cannot be blank")
     private boolean isProblematic;
 }

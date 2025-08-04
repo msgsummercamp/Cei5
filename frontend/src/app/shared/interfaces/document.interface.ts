@@ -1,7 +1,7 @@
 import {DocumentType} from '../enums/documentType.enum';
 import {Case} from './case.interface';
 
-export interface Document {
+export type Document = {
   id?: string;
   name: string;
   type: DocumentType;

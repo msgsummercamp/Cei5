@@ -5,7 +5,7 @@ import {Reservation} from './reservation.interface';
 import {Document} from './document.interface';
 
 
-export interface Case {
+export type Case  = {
   id?: string;
   status?: Statuses;
   disruptionReason: DisruptionReason;

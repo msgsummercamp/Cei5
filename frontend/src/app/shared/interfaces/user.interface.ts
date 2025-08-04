@@ -2,7 +2,7 @@ import {Role} from '../enums/role.enum';
 import {UserDetails} from './userDetails.interface';
 import {Case} from './case.interface';
 
-export interface User {
+export type User = {
   id?: string;
   email: string;
   password: string;

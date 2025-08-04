@@ -3,7 +3,9 @@ package com.airassist.backend.service;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
+import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.mapper.UserMapper;
+import com.airassist.backend.model.User;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Statuses;
 import com.airassist.backend.model.DisruptionReasons;
@@ -33,6 +35,7 @@ public class TestCaseServiceImplementation {
     private CaseServiceImplementation  caseService;
     private CaseMapper caseMapper;
     private UserMapper userMapper;
+    private ReservationMapper reservationMapper;
 
     @BeforeEach
     void setUp() {
@@ -41,29 +44,54 @@ public class TestCaseServiceImplementation {
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
         userMapper = Mockito.mock(UserMapper.class);
-        caseService = new CaseServiceImplementation(caseRepository,caseMapper);
+        reservationMapper = Mockito.mock(ReservationMapper.class);
+        caseService = new CaseServiceImplementation(caseRepository,caseMapper,reservationMapper);
+        try {
+            java.lang.reflect.Field userRepoField = CaseServiceImplementation.class.getDeclaredField("userRepository");
+            userRepoField.setAccessible(true);
+            userRepoField.set(caseService, userRepository);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            java.lang.reflect.Field reservationRepoField = CaseServiceImplementation.class.getDeclaredField("reservationRepository");
+            reservationRepoField.setAccessible(true);
+            reservationRepoField.set(caseService, reservationRepository);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
 
 
         TestCaseFactory.userMapper = userMapper;
+        TestCaseFactory.reservationMapper = reservationMapper;
+        User testUser = TestCaseFactory.createTestUser();
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Optional.of(testUser));
 
         Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
                 .thenAnswer(inv -> {
                     CaseDTO dto = inv.getArgument(0);
+                    User client = userRepository.findById(dto.getClientID()).orElse(null);
+                    User assignedColleague = dto.getAssignedColleague() != null
+                            ? userMapper.userDTOToUser(dto.getAssignedColleague())
+                            : null;
                     return Case.builder()
                             .id(UUID.randomUUID())
                             .status(dto.getStatus())
                             .disruptionReason(dto.getDisruptionReason())
                             .disruptionInfo(dto.getDisruptionInfo())
                             .date(dto.getDate())
-                            .client(userMapper.userDTOToUser(dto.getClient()))
-                            .assignedColleague(userMapper.userDTOToUser(dto.getAssignedColleague()))
-                            .reservation(dto.getReservation())
+                            .client(client)
+                            .assignedColleague(assignedColleague)
+                            .reservation(reservationMapper.toEntity(dto.getReservation()))
                             .documentList(dto.getDocumentList())
                             .build();
                 });
 
         Mockito.when(caseRepository.save(Mockito.any(Case.class)))
                 .thenAnswer(inv -> inv.getArgument(0));
+        Mockito.when(reservationMapper.toEntity(Mockito.any()))
+                .thenReturn(TestCaseFactory.createTestReservation());
     }
 
     @Test
@@ -102,9 +130,12 @@ public class TestCaseServiceImplementation {
 
     @Test
     void addCase_ValidCase_ReturnsSavedCase() {
+        User testUser = TestCaseFactory.createTestUser();
         CaseDTO caseDTO = TestCaseFactory.createCaseDTO(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
-        Case caseEntity = TestCaseFactory.createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
+        caseDTO.setClientID(testUser.getId());
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Optional.of(testUser));
 
+        Case caseEntity = TestCaseFactory.createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
         Mockito.when(caseRepository.save(Mockito.any(Case.class))).thenReturn(caseEntity);
 
         Case saved = caseService.createCase(caseDTO);

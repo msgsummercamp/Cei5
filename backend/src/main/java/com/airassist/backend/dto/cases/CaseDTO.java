@@ -1,5 +1,6 @@
 package com.airassist.backend.dto.cases;
 
+import com.airassist.backend.dto.reservation.ReservationDTO;
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.model.*;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class CaseDTO {
@@ -24,12 +26,11 @@ public class CaseDTO {
     @PastOrPresent
     private LocalDate date;
 
-    private UserDTO client;
+    private UUID clientID;
 
     private UserDTO assignedColleague;
 
-    /// TODO: create Reservation DTO and use it instead of Reservation class
-    private Reservation reservation;
+    private ReservationDTO reservation;
 
     /// TODO: create Document DTO and use it instead of Document class
     private List<Document> documentList;

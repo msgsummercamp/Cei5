@@ -1,6 +1,6 @@
 import {Reservation} from './reservation.interface';
 
-export interface Flight {
+export type Flight = {
   id?: string;
   flightDate: Date;
   flightNumber: string;
