@@ -1,4 +1,25 @@
 {
   "Home": "Acasa",
-  "Flight Date is required.": "Data zborului este obligatorie"
+  "Flight Date is required.": "Data zborului este obligatorie",
+  "auth-service": {
+    "email-required": "Adresa de email este obligatorie.",
+    "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
+    "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
+    "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
+    "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
+    "password-reset-success": "Resetarea parolei a fost realizată cu succes."
+  },
+  "sign-in": {
+    "title": "Introduceți datele contului dvs.",
+    "email-label": "Email",
+    "email-required": "Adresa de email este obligatorie.",
+    "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
+    "password-label": "Parolă",
+    "password-required": "Parola este obligatorie.",
+    "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
+    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "forgot-password": "Ați uitat parola? Resetați",
+    "here": "aici",
+    "sign-in-button": "Autentificare"
+  }
 }
