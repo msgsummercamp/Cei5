@@ -1,15 +1,19 @@
-import { computed, inject, Injectable, signal, Signal } from '@angular/core';
-import { AuthState } from '../models/auth-state';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { AuthState } from '../../models/auth/auth-state';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import { DecodedToken } from '../models/decoded-token';
+import { DecodedToken } from '../../models/auth/decoded-token';
 import { jwtDecode } from 'jwt-decode';
-import { SignInRequest } from '../models/sign-in-request';
-import { SignInResponse } from '../models/sign-in-response';
-import { User } from '../../../../shared/models/user';
-import { NotificationService } from '../../notifications/services/notification.service';
-import { InitiatePasswordResetRequest, PasswordResetRequest } from '../models/password-reset';
+import { SignInRequest } from '../../models/auth/sign-in-request';
+import { SignInResponse } from '../../models/auth/sign-in-response';
+import { User } from '../../models/user';
+import { NotificationService } from '../toaster/notification.service';
+import {
+  InitiatePasswordResetRequest,
+  PasswordResetRequest,
+} from '../../models/auth/password-reset';
+import { TranslateService } from '@ngx-translate/core';
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -23,26 +27,21 @@ const initialState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
-  public isLoggedIn: Signal<boolean>;
-  public userId: Signal<string>;
-  public userEmail: Signal<string>;
-  public jwtToken: Signal<string>;
-  public userRole: Signal<string>;
-
-  private readonly _authState = signal<AuthState>(initialState);
   private readonly _httpClient = inject(HttpClient);
   private readonly _router = inject(Router);
   private readonly _notificationService = inject(NotificationService);
+  private readonly _translationService = inject(TranslateService);
   private readonly API_URL: string = environment.API_URL;
+
+  private readonly _authState = signal<AuthState>(initialState);
+  public isLoggedIn = computed(() => this._authState().isAuthenticated);
+  public userId = computed(() => this._authState().id);
+  public userEmail = computed(() => this._authState().email);
+  public jwtToken = computed(() => this._authState().token);
+  public userRole = computed(() => this._authState().role);
 
   constructor() {
     this.restoreAuthState();
-
-    this.isLoggedIn = computed(() => this._authState().isAuthenticated);
-    this.userId = computed(() => this._authState().id);
-    this.userEmail = computed(() => this._authState().email);
-    this.jwtToken = computed(() => this._authState().token);
-    this.userRole = computed(() => this._authState().role);
   }
 
   /**
@@ -54,11 +53,12 @@ export class AuthService {
    * @param req - The sign-in request containing the user's credentials.
    */
   public logIn(req: SignInRequest): void {
-    this._httpClient.post<SignInResponse>(`${this.API_URL}/auth/signin`, req).subscribe({
+    this._httpClient.post<SignInResponse>(`${this.API_URL}/auth/sign-in`, req).subscribe({
       next: (response) => {
         const token = response.token;
         this.saveTokenToSessionStorage(token);
         this.decodeTokenAndSetState(token);
+        // #TODO replace with real routes
         if (response.isFirstLogin) {
           this._router.navigate(['/change-password']);
         } else {
@@ -80,10 +80,19 @@ export class AuthService {
    * @param req - The user registration request containing the user's details.
    */
   public register(req: User): void {
+    if (!req.email) {
+      this._notificationService.showError(
+        this._translationService.instant('auth-service.email-required')
+      );
+      return;
+    }
+
     this._httpClient.post<User>(`${this.API_URL}/auth/register`, req).subscribe({
       next: () => {
-        this._notificationService.showSuccess('Registration successful');
-        this._router.navigate(['/login']);
+        this._notificationService.showSuccess(
+          this._translationService.instant('registration-success')
+        );
+        this._router.navigate(['/sign-in']);
       },
       error: (error) => {
         this._notificationService.showError('Registration failed: ' + error.message);
@@ -98,7 +107,7 @@ export class AuthService {
   public logOut(): void {
     this.clearTokenFromSessionStorage();
     this._authState.set(initialState);
-    this._router.navigate(['/login']);
+    this._router.navigate(['/sign-in']);
   }
 
   /**
@@ -108,13 +117,22 @@ export class AuthService {
    * @param email - The email address of the user requesting the password reset.
    */
   public sendPasswordResetEmail(email: string): void {
+    if (!email) {
+      this._notificationService.showError(
+        this._translationService.instant('auth-service.email-required')
+      );
+      return;
+    }
+
     const resetRequest: InitiatePasswordResetRequest = {
       email: email,
     };
 
-    this._httpClient.post<void>(`${this.API_URL}/auth/forgot-password`, resetRequest).subscribe({
+    this._httpClient.post<void>(`${this.API_URL}/auth/reset-password`, resetRequest).subscribe({
       next: () => {
-        this._notificationService.showSuccess('Password reset email sent successfully');
+        this._notificationService.showSuccess(
+          this._translationService.instant('password-reset-email-sent')
+        );
       },
       error: (error) => {
         this._notificationService.showError(
@@ -133,7 +151,16 @@ export class AuthService {
    */
   public resetPassword(newPassword: string): void {
     if (!this.isLoggedIn) {
-      this._notificationService.showError('You must be logged in to reset your password.');
+      this._notificationService.showError(
+        this._translationService.instant('must-be-logged-for-reset')
+      );
+      return;
+    }
+
+    if (!newPassword) {
+      this._notificationService.showError(
+        this._translationService.instant('password-null-or-empty')
+      );
       return;
     }
 
@@ -144,7 +171,9 @@ export class AuthService {
 
     this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId}`, patchRequest).subscribe({
       next: () => {
-        this._notificationService.showSuccess('Password reset successful');
+        this._notificationService.showSuccess(
+          this._translationService.instant('password-reset-success')
+        );
       },
       error: (error) => {
         this._notificationService.showError('Password reset failed: ' + error.message);

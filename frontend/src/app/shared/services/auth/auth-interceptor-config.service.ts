@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AuthInterceptorConfigService {
-  private readonly excludedRoutes = ['/auth/signin', '/auth/signup', '/auth/reset-password'];
+  private readonly excludedRoutes = ['/auth/sign-in', '/auth/register', '/auth/reset-password'];
 
   constructor() {}
 

@@ -1,16 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../core/auth/services/auth.service';
+import { AuthService } from '../../shared/services/auth/auth.service';
 import {
   FormControl,
   NonNullableFormBuilder,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { SignInRequest } from '../../../core/auth/models/sign-in-request';
+import { SignInRequest } from '../../shared/models/auth/sign-in-request';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { Button } from 'primeng/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type SignInForm = {
   email: FormControl<string>;
@@ -19,7 +20,14 @@ type SignInForm = {
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FloatLabel, ReactiveFormsModule, InputText, ErrorMessageComponent, Button],
+  imports: [
+    FloatLabel,
+    ReactiveFormsModule,
+    InputText,
+    ErrorMessageComponent,
+    Button,
+    TranslatePipe,
+  ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',
 })

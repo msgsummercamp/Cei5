@@ -7,8 +7,6 @@ import { MessageService } from 'primeng/api';
 export class NotificationService {
   private readonly messageService = inject(MessageService);
 
-  constructor() {}
-
   /**
    * Displays a success notification with the given message.
    * @param message The message to display in the notification.
