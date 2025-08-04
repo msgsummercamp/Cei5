@@ -100,7 +100,6 @@ export class CaseFormComponent {
         (!!airport.code && airport.code.toLowerCase().includes(query.toLowerCase())) ||
         (!!airport.name && airport.name.toLowerCase().includes(query.toLowerCase()))
     );
-    console.log('Airports fetched:', this.airportsSuggestion);
   }
 
   // Getters
