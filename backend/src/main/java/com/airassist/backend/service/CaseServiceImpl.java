@@ -25,17 +25,18 @@ import java.util.UUID;
 
 
 @Service
-public class CaseServiceImplementation implements CaseService {
+public class CaseServiceImpl implements CaseService {
     private final CaseRepository caseRepository;
     private final CaseMapper caseMapper;
-    private static final Logger logger = LoggerFactory.getLogger(CaseServiceImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(CaseServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
     private final ReservationMapper reservationMapper;
     private ReservationRepository reservationRepository;
 
 
-    public CaseServiceImplementation(CaseRepository caseRepository, CaseMapper caseMapper, ReservationMapper reservationMapper) {
+
+    public CaseServiceImpl(CaseRepository caseRepository, CaseMapper caseMapper, ReservationMapper reservationMapper) {
         this.caseRepository = caseRepository;
         this.caseMapper = caseMapper;
         this.reservationMapper = reservationMapper;

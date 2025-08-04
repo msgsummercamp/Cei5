@@ -14,12 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-
 @SpringBootTest
 public class TestAirportApiService {
 
     @Autowired
-    private AirportApiServiceImplementation airportApiService;
+    private AirportApiServiceImpl airportApiService;
 
     private AutoCloseable closeable;
 

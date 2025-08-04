@@ -27,12 +27,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestCaseServiceImplementation {
+public class TestCaseService {
 
     private CaseRepository caseRepository;
     private UserRepository userRepository;
     private ReservationRepository reservationRepository;
-    private CaseServiceImplementation  caseService;
+    private CaseServiceImpl caseService;
     private CaseMapper caseMapper;
     private UserMapper userMapper;
     private ReservationMapper reservationMapper;
@@ -43,18 +43,19 @@ public class TestCaseServiceImplementation {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
+        caseService = new CaseServiceImpl(caseRepository, caseMapper,reservationMapper);
         userMapper = Mockito.mock(UserMapper.class);
         reservationMapper = Mockito.mock(ReservationMapper.class);
-        caseService = new CaseServiceImplementation(caseRepository,caseMapper,reservationMapper);
+        caseService = new CaseServiceImpl(caseRepository,caseMapper,reservationMapper);
         try {
-            java.lang.reflect.Field userRepoField = CaseServiceImplementation.class.getDeclaredField("userRepository");
+            java.lang.reflect.Field userRepoField = CaseServiceImpl.class.getDeclaredField("userRepository");
             userRepoField.setAccessible(true);
             userRepoField.set(caseService, userRepository);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
         try {
-            java.lang.reflect.Field reservationRepoField = CaseServiceImplementation.class.getDeclaredField("reservationRepository");
+            java.lang.reflect.Field reservationRepoField = CaseServiceImpl.class.getDeclaredField("reservationRepository");
             reservationRepoField.setAccessible(true);
             reservationRepoField.set(caseService, reservationRepository);
         } catch (NoSuchFieldException | IllegalAccessException e) {
