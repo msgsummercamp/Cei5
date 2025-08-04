@@ -9,8 +9,6 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DatePickerModule } from 'primeng/datepicker';
-import { ListboxModule } from 'primeng/listbox';
-import { IftaLabelModule } from 'primeng/iftalabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
@@ -42,8 +40,6 @@ type FlightDetailsForm = {
     ReactiveFormsModule,
     FloatLabelModule,
     DatePickerModule,
-    ListboxModule,
-    IftaLabelModule,
     AutoCompleteModule,
     MessageModule,
     ErrorMessageComponent,

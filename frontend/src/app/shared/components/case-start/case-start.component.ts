@@ -1,6 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { Step, StepperModule } from 'primeng/stepper';
-import { CardModule } from 'primeng/card';
+import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -26,7 +25,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     StepperModule,
-    CardModule,
     FloatLabelModule,
     ReactiveFormsModule,
     AutoCompleteModule,
