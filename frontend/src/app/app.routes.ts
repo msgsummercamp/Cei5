@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { CaseStartComponent } from './shared/components/case-start/case-start.component';
-import { SignInComponent } from './feat/auth-components/sign-in/sign-in.component';
+import { SignInComponent } from './features/sign-in/sign-in.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
