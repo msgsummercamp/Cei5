@@ -9,11 +9,10 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
-export type DisruptionForm = {
+type DisruptionForm = {
   disruptionType: FormControl<string>;
   cancellationAnswer: FormControl<string | null>;
   delayAnswer: FormControl<string | null>;
@@ -32,7 +31,6 @@ export type DisruptionForm = {
     ErrorMessageComponent,
     RadioButtonModule,
     MessageModule,
-    FormsModule,
     TextareaModule,
     FloatLabelModule,
   ],
@@ -49,12 +47,12 @@ export class DisruptionFormComponent {
   // Protected State
   protected readonly disruptionForm = this._formBuilder.group<DisruptionForm>({
     disruptionType: this._formBuilder.control('', [Validators.required]),
-    cancellationAnswer: this._formBuilder.control(''),
-    delayAnswer: this._formBuilder.control(''),
-    deniedBoardingAnswer: this._formBuilder.control(''),
-    deniedBoardingFollowUpAnswer: this._formBuilder.control(''),
-    airlineMotiveAnswer: this._formBuilder.control(''),
-    airlineMotiveFollowUpAnswer: this._formBuilder.control(''),
+    cancellationAnswer: this._formBuilder.control<string | null>(null),
+    delayAnswer: this._formBuilder.control<string | null>(null),
+    deniedBoardingAnswer: this._formBuilder.control<string | null>(null),
+    deniedBoardingFollowUpAnswer: this._formBuilder.control<string | null>(null),
+    airlineMotiveAnswer: this._formBuilder.control<string | null>(null),
+    airlineMotiveFollowUpAnswer: this._formBuilder.control<string | null>(null),
     disruptionInformation: this._formBuilder.control('', [
       Validators.required,
       Validators.maxLength(1000),
