@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { StepperModule } from 'primeng/stepper';
+import { Step, StepperModule } from 'primeng/stepper';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
@@ -9,6 +9,7 @@ import { FlightDetails, CaseFormComponent } from '../case-form/case-form.compone
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
+import { StepNavigationService } from '../../services/step-navigation.service';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -43,6 +44,7 @@ export class CaseStartComponent {
   public readonly MAX_FLAGS = 1;
 
   private readonly _formBuilder = inject(NonNullableFormBuilder);
+  private readonly _navigationService = inject(StepNavigationService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -69,7 +71,6 @@ export class CaseStartComponent {
     airports: this._formBuilder.array<string>([]),
   });
 
-  public currentStep = 1;
   public isFlightFormValid = false;
   public flightData: FlightDetails | null = null;
   public airports: string[] = [];
@@ -89,6 +90,10 @@ export class CaseStartComponent {
   public allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
   public isFlagged: boolean[] = [];
   public flags = 0;
+
+  public get currentStep(): number {
+    return this._navigationService.getCurrentStep();
+  }
 
   public toggleFlag(index: number): void {
     this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
@@ -152,17 +157,16 @@ export class CaseStartComponent {
 
   // Navigation methods: previous and next
   public onPrevious(prevCallback?: Function) {
-    this.currentStep--;
+    this._navigationService.previousStep();
     if (prevCallback) {
       prevCallback();
     }
   }
 
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
-    this.currentStep--;
-    if (this.allFlights.length === 1) {
-      this.currentStep--;
-    }
+    //const allFlights = this._flightService.getAllFlights();
+    const allFlights = this.allFlights;
+    this._navigationService.goBackFromDisruptionInfo(allFlights.length);
     if (prevCallback) {
       prevCallback();
     }
@@ -179,7 +183,7 @@ export class CaseStartComponent {
         destinationAirport: formValues.destinationAirport || '',
       };
 
-      this.currentStep++;
+      this._navigationService.nextStep();
       if (nextCallback) {
         nextCallback();
       }
@@ -189,9 +193,9 @@ export class CaseStartComponent {
   // Function to handle the next step from flight details
   public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
     if (this.isMainFlightValid && this.isAirportsValid()) {
-      this.currentStep++;
+      this._navigationService.nextStep();
       if (this.airportsArray.length === 0) {
-        this.currentStep++;
+        this._navigationService.nextStep();
         const flightDetails: FlightDetails = {
           flightNumber: this.flightData?.flightNumber || '',
           airline: this.flightData?.airline || '',
@@ -219,7 +223,7 @@ export class CaseStartComponent {
   // Method to handle navigation from connection flights step
   public onNextFromConnectionFlights(nextCallback?: Function): void {
     if (this.areAllConnectionFlightsValid()) {
-      this.currentStep++;
+      this._navigationService.nextStep();
 
       this.createAllFlights();
       if (nextCallback) {
