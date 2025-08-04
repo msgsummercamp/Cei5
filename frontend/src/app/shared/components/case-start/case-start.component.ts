@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { StepNavigationService } from '../../services/step-navigation.service';
+import { ReservationInformation, ReservationService } from '../../services/reservation.service';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -40,11 +41,14 @@ import {
   styleUrl: './case-start.component.scss',
 })
 export class CaseStartComponent {
+  // Constants
   public readonly MAXIMUM_CONNECTIONS = 4;
   public readonly MAX_FLAGS = 1;
 
+  // Services injection
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private readonly _navigationService = inject(StepNavigationService);
+  private readonly _reservationService = inject(ReservationService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -74,15 +78,6 @@ export class CaseStartComponent {
   public isFlightFormValid = false;
   public flightData: FlightDetails | null = null;
   public airports: string[] = [];
-  public reservationInformation: {
-    reservationNumber: string;
-    departingAirport: string;
-    destinationAirport: string;
-  } = {
-    reservationNumber: '',
-    departingAirport: '',
-    destinationAirport: '',
-  };
   public autocompleteInputArray: string[] = [];
   public isMainFlightValid = false;
   public connectionFlights: [string, string][] = [];
@@ -93,6 +88,10 @@ export class CaseStartComponent {
 
   public get currentStep(): number {
     return this._navigationService.getCurrentStep();
+  }
+
+  public get reservationInformation(): ReservationInformation {
+    return this._reservationService.getReservationInformation();
   }
 
   public toggleFlag(index: number): void {
@@ -177,11 +176,11 @@ export class CaseStartComponent {
     if (this.reservationForm.valid) {
       const formValues = this.reservationForm.getRawValue();
 
-      this.reservationInformation = {
+      this._reservationService.setReservationInformation({
         reservationNumber: formValues.reservationNumber || '',
         departingAirport: formValues.departingAirport || '',
         destinationAirport: formValues.destinationAirport || '',
-      };
+      });
 
       this._navigationService.nextStep();
       if (nextCallback) {
@@ -194,14 +193,18 @@ export class CaseStartComponent {
   public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
     if (this.isMainFlightValid && this.isAirportsValid()) {
       this._navigationService.nextStep();
+
       if (this.airportsArray.length === 0) {
         this._navigationService.nextStep();
+
+        const reservation = this._reservationService.getReservationInformation();
+
         const flightDetails: FlightDetails = {
           flightNumber: this.flightData?.flightNumber || '',
           airline: this.flightData?.airline || '',
-          reservationNumber: this.reservationInformation.reservationNumber,
-          departingAirport: this.reservationInformation.departingAirport,
-          destinationAirport: this.reservationInformation.destinationAirport,
+          reservationNumber: reservation.reservationNumber,
+          departingAirport: reservation.departingAirport,
+          destinationAirport: reservation.destinationAirport,
           plannedDepartureTime: this.flightData?.plannedDepartureTime || null,
           plannedArrivalTime: this.flightData?.plannedArrivalTime || null,
         };
@@ -225,7 +228,8 @@ export class CaseStartComponent {
     if (this.areAllConnectionFlightsValid()) {
       this._navigationService.nextStep();
 
-      this.createAllFlights();
+      const reservation = this._reservationService.getReservationInformation();
+      this.createAllFlights(reservation.reservationNumber);
       if (nextCallback) {
         nextCallback();
       }
