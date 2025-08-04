@@ -111,6 +111,7 @@ export class CaseStartComponent {
   }
 
   public onNext(nextCallback?: Function) {
+    debugger;
     if (this.reservationForm.valid) {
       this.currentStep++;
       if (nextCallback) {

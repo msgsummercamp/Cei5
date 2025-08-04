@@ -24,7 +24,6 @@
                   id="reservationNumber"
                   formControlName="reservationNumber"
                   class="w-25rem h-3rem inputclass"
-                  style="--p-inputtext-color: var(--primary-color)"
                 />
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
@@ -241,9 +240,8 @@
                 >
                 </p-button>
               </div>
-            }
-            <!-- Maximum Connection Flights Message -->
-            @else {
+            } @else {
+              <!-- Maximum Connection Flights Message -->
               <p-message severity="warn" text="Maximum number of connection flights reached.">
               </p-message>
             }
