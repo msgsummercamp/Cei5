@@ -9,6 +9,7 @@ import { SignInRequest } from '../models/sign-in-request';
 import { SignInResponse } from '../models/sign-in-response';
 import { User } from '../../../../shared/models/user';
 import { NotificationService } from '../../notifications/services/notification.service';
+import { InitiatePasswordResetRequest, PasswordResetRequest } from '../models/password-reset';
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -98,6 +99,57 @@ export class AuthService {
     this.clearTokenFromSessionStorage();
     this._authState.set(initialState);
     this._router.navigate(['/login']);
+  }
+
+  /**
+   * Sends a password reset email to the user.
+   * If the request is successful, it shows a success notification.
+   * If the request fails, it shows an error notification.
+   * @param email - The email address of the user requesting the password reset.
+   */
+  public sendPasswordResetEmail(email: string): void {
+    const resetRequest: InitiatePasswordResetRequest = {
+      email: email,
+    };
+
+    this._httpClient.post<void>(`${this.API_URL}/auth/forgot-password`, resetRequest).subscribe({
+      next: () => {
+        this._notificationService.showSuccess('Password reset email sent successfully');
+      },
+      error: (error) => {
+        this._notificationService.showError(
+          'Failed to send password reset email: ' + error.message
+        );
+      },
+    });
+  }
+
+  /**
+   * Resets the user's password by sending a patch request to the server.
+   * If the reset is successful, it shows a success notification.
+   * If the reset fails, it shows an error notification.
+   * This method requires the user to be logged in.
+   * @param newPassword - The new password to set for the user.
+   */
+  public resetPassword(newPassword: string): void {
+    if (!this.isLoggedIn) {
+      this._notificationService.showError('You must be logged in to reset your password.');
+      return;
+    }
+
+    const patchRequest: PasswordResetRequest = {
+      newPassword: newPassword,
+      isFirstLogin: false,
+    };
+
+    this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId}`, patchRequest).subscribe({
+      next: () => {
+        this._notificationService.showSuccess('Password reset successful');
+      },
+      error: (error) => {
+        this._notificationService.showError('Password reset failed: ' + error.message);
+      },
+    });
   }
 
   /**
