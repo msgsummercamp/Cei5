@@ -8,6 +8,7 @@ import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
+import jakarta.mail.MessagingException;
 
 public interface AuthService {
 
@@ -27,8 +28,9 @@ public interface AuthService {
      * @param userDTO the user details for registration
      * @return User the registered user entity
      * @throws DuplicateUserException if a user with the same username or email already exists
+     * @throws MessagingException if there is an error sending the registration email
      */
-    User register(UserDTO userDTO) throws DuplicateUserException;
+    User register(UserDTO userDTO) throws DuplicateUserException, MessagingException;
 
     /**
      * Validates the provided JWT token.
