@@ -69,7 +69,7 @@
               inputId="delay-answer3"
               formControlName="delayAnswer"
             ></p-radio-button>
-            <label for="delay-answer3">connection fligth lost</label>
+            <label for="delay-answer3">connection flight lost</label>
           </div>
         } @else if (this.disruptionForm.controls.disruptionType.value === 'Denied Boarding') {
           <p-message severity="secondary" variant="simple"
@@ -108,11 +108,11 @@
 
             <div>
               <p-radio-button
-                value="Aggresive behaviour with staff"
+                value="Aggressive behaviour with staff"
                 inputId="follow-up-answer-denied2"
                 formControlName="deniedBoardingFollowUpAnswer"
               ></p-radio-button>
-              <label for="follow-up-answer-denied2">Aggresive behaviour with staff</label>
+              <label for="follow-up-answer-denied2">Aggressive behaviour with staff</label>
             </div>
 
             <div>
@@ -141,7 +141,7 @@
           this.disruptionForm.controls.disruptionType.valid
         ) {
           <p-message severity="secondary" variant="simple"
-            >Did the airline mention distruption motive?</p-message
+            >Did the airline mention disruption motive?</p-message
           >
           <div>
             <p-radio-button
@@ -190,7 +190,7 @@
                 inputId="airline-motive-followup-answer2"
                 formControlName="airlineMotiveFollowUpAnswer"
               ></p-radio-button>
-              <label for="airline-motive-followup-answer2">Technical problems</label>
+              <label for="airline-motive-followup-answer2">Meteorological conditions</label>
             </div>
 
             <div>
@@ -236,7 +236,7 @@
           <p-floatlabel variant="on">
             <textarea
               rows="10"
-              columns="100"
+              cols="100"
               pTextarea
               formControlName="disruptionInformation"
               id="disruptionInformation"
