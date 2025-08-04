@@ -1,5 +1,6 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.dto.auth.ResetPasswordRequest;
 import com.airassist.backend.dto.auth.SignInRequest;
 import com.airassist.backend.dto.auth.SignInResponse;
 import com.airassist.backend.dto.user.UserDTO;
@@ -31,6 +32,15 @@ public interface AuthService {
      * @throws MessagingException if there is an error sending the registration email
      */
     User register(UserDTO userDTO) throws DuplicateUserException, MessagingException;
+
+    /**
+     * Initiates the password reset process for a user.
+     * This method generates a new password and sends it to the user's email.
+     * @param resetPasswordRequest the request containing the user's email
+     * @throws MessagingException if there is an error sending the reset password email
+     * @throws UserNotFoundException if the user with the provided email does not exist
+     */
+    void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException;
 
     /**
      * Validates the provided JWT token.

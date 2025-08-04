@@ -1,5 +1,6 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.dto.auth.ResetPasswordRequest;
 import com.airassist.backend.dto.auth.SignInRequest;
 import com.airassist.backend.dto.auth.SignInResponse;
 import com.airassist.backend.dto.user.UserDTO;
@@ -64,6 +65,19 @@ public class AuthServiceImpl implements AuthService{
         log.info("User registered successfully with email: {}", user.getEmail());
         mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), userPassword);
         return user;
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException {
+        log.info("Resetting password for email: {}", resetPasswordRequest.getEmail());
+        User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User with given email not found!"));
+        String newPassword = randomPasswordGenerator.generateRandomPassword();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setFirstLogin(true);
+        userRepository.save(user);
+        log.info("Password reset successfully for email: {}", user.getEmail());
+        mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), newPassword);
     }
 
     @Override

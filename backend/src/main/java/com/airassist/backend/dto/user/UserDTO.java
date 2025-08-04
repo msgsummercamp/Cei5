@@ -28,4 +28,5 @@ public class UserDTO {
 
     private UserDetailsDTO userDetails;
 
+    private boolean isFirstLogin;
 }
