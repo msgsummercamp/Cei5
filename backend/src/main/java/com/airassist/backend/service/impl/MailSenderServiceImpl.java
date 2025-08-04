@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.MimeMessage;

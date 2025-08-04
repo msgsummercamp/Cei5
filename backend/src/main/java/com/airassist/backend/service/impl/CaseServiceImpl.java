@@ -1,10 +1,10 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
-import com.airassist.backend.model.Statuses;
+import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

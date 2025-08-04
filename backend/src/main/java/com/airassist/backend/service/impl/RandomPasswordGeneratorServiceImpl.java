@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;

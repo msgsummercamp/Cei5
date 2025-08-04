@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CaseStartComponent } from './shared/components/case-start/case-start.component';
+import { CaseFormComponent } from './features/case-form/case-form.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
@@ -10,6 +10,6 @@ export const routes: Routes = [
   },
   {
     path: 'form',
-    component: CaseStartComponent,
+    component: CaseFormComponent,
   },
 ];

@@ -1,7 +1,7 @@
 package com.airassist.backend.dto.cases;
 
-import com.airassist.backend.model.Statuses;
-import com.airassist.backend.model.DisruptionReasons;
+import com.airassist.backend.model.enums.Statuses;
+import com.airassist.backend.model.enums.DisruptionReasons;
 import lombok.Data;
 
 import java.time.LocalDate;
