@@ -28,7 +28,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserMapper userMapper;
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {
         return ResponseEntity.ok(authService.signIn(signInRequest));
     }
