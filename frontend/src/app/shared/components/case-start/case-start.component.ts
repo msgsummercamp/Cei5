@@ -158,6 +158,16 @@ export class CaseStartComponent {
     }
   }
 
+  public onPreviousFromDisruptionInfo(prevCallback?: Function) {
+    this.currentStep--;
+    if (this.allFlights.length === 1) {
+      this.currentStep--;
+    }
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
   // Function to check if the reservation form is valid (and go to the next step)
   public onNext(nextCallback?: Function) {
     if (this.reservationForm.valid) {
