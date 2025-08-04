@@ -293,11 +293,8 @@ export class CaseStartComponent {
 
   public submitCase(): void {
     // Add validation before submitting
-    console.log('All flights data:', this.allFlights);
-    console.log('Reservation info:', this.reservationInformation);
 
     if (!this.allFlights || this.allFlights.length === 0) {
-      console.error('No flights to submit');
       return;
     }
 
@@ -313,33 +310,27 @@ export class CaseStartComponent {
       documentList: [],
     };
 
-    console.log('Case data to submit:', JSON.stringify(caseData, null, 2));
 
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
-        console.log('Eligibility check result:', isEligible);
         if (isEligible) {
           this._caseService.createCase(caseData).subscribe({
             next: (response) => console.log('Case created successfully', response),
             error: (error) => {
-              console.error('Error creating case', error);
-              console.log('Full error object:', JSON.stringify(error, null, 2));
             }
           });
         } else {
-          console.error('Client is not eligible for a case');
+
         }
       },
       error: (error) => {
-        console.error('Error checking eligibility', error);
-        console.log('Eligibility check error:', JSON.stringify(error, null, 2));
+
       }
     });
   }
 
   private createReservationDTO(): ReservationDTO {
-    console.log('Creating reservation DTO with flights:', this.allFlights);
-    
+
     return {
       reservationNumber: this.reservationInformation.reservationNumber,
       flights: this.allFlights.map((flight, index) => {
@@ -356,8 +347,6 @@ export class CaseStartComponent {
           airLine: flight.flightDetails.airline || 'UNKNOWN',
           isProblematic: flight.isFlagged
         };
-
-        console.log(`Flight ${index + 1} data:`, flightData);
         return flightData;
       })
     };
