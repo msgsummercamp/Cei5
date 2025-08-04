@@ -5,6 +5,7 @@
       <p-step [value]="1">Reservation Info</p-step>
       <p-step [value]="2">Flight Details</p-step>
       <p-step [value]="3">Connection Flights</p-step>
+      <p-step [value]="4">Disruption Info</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -78,6 +79,9 @@
                     ) {
                       <app-error-message text="Departing Airport must be exactly 3 characters." />
                     }
+                    @case (reservationForm.controls.departingAirport.hasError('pattern')) {
+                      <app-error-message text="Airport code must be 3 uppercase letters." />
+                    }
                   }
                 }
               </div>
@@ -111,6 +115,9 @@
                     ) {
                       <app-error-message text="Destination must be exactly 3 characters." />
                     }
+                    @case (reservationForm.controls.destinationAirport.hasError('pattern')) {
+                      <app-error-message text="Airport code must be 3 uppercase letters." />
+                    }
                   }
                 }
               </div>
@@ -135,17 +142,113 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <!-- Main Flight Form -->
-          <app-case-form
-            title="Flight Details"
-            #mainFlightForm
-            [initialData]="flightData"
-            (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
-          >
-          </app-case-form>
+          <div class="grid">
+            <!-- Main Flight Form -->
+            <app-case-form
+              title="Flight Details"
+              #mainFlightForm
+              [initialData]="flightData"
+              (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
+              class="ml-8 col mb-8"
+            >
+            </app-case-form>
+
+            <!-- Connection Flights -->
+            <div class="mr-8 col">
+              <div class="flex flex-row justify-content-center align-items-center">
+                <p-header class="text-3xl">Connection Flights</p-header>
+                <div class="ml-4">
+                  <p-button
+                    icon="pi pi-plus"
+                    (onClick)="addConnectionFlight()"
+                    [styleClass]="'px-1'"
+                    [disabled]="airportsArray.length === MAXIMUM_CONNECTIONS"
+                    size="small"
+                  ></p-button>
+                </div>
+              </div>
+
+              <div class="flex flex-column mt-4">
+                <!-- Displaying the departing airport -->
+                <p-message
+                  variant="outlined"
+                  severity="primary"
+                  class="w-15rem align-self-center mb-4"
+                  >Departing Airport: {{ reservationInformation.departingAirport }}</p-message
+                >
+
+                <!-- Connection Flight Form -->
+                <form novalidate [formGroup]="airportFormArray">
+                  <div formArrayName="airports" class="flex flex-column gap-2">
+                    @if (airportsArray.length > 0) {
+                      <div class="align-self-center mt-2">
+                        @for (airport of airportsArray.controls; track $index) {
+                          @if (airport !== null) {
+                            <div class="grid justify-content-between align-items-center mb-4">
+                              <div class="flex flex-column">
+                                <p-floatlabel variant="on" class="">
+                                  <p-autocomplete
+                                    [dropdown]="true"
+                                    class="w-15rem h-2rem"
+                                    id="connectionFlight{{ $index }}"
+                                    [formControlName]="$index"
+                                  />
+                                  <label for="connectionFlight{{ $index }}">Connection</label>
+                                </p-floatlabel>
+
+                                <!-- Error Messages -->
+                                <div class="error-placeholder">
+                                  @if (airport.touched && airport.errors) {
+                                    @switch (true) {
+                                      @case (airport.hasError('required')) {
+                                        <app-error-message
+                                          text="Connection destination is required."
+                                        />
+                                      }
+                                      @case (
+                                        airport.hasError('minlength') ||
+                                        airport.hasError('maxlength')
+                                      ) {
+                                        <app-error-message
+                                          text="Airport code must be exactly 3 characters."
+                                        />
+                                      }
+                                      @case (airport.hasError('pattern')) {
+                                        <app-error-message
+                                          text="Airport code must be 3 uppercase letters."
+                                        />
+                                      }
+                                    }
+                                  }
+                                </div>
+                              </div>
+
+                              <!-- Remove Button -->
+                              <p-button
+                                icon="pi pi-trash"
+                                severity="danger"
+                                (onClick)="removeConnectionFlight($index)"
+                                [styleClass]="'px-1 py-1 text-xs'"
+                                class="ml-2 mb-1"
+                              />
+                            </div>
+                          }
+                        }
+                      </div>
+                    }
+                  </div>
+                </form>
+
+                <!-- Displaying the destination airport -->
+                <p-message variant="outlined" severity="primary" class="align-self-center w-15rem"
+                  >Destination Airport: {{ reservationInformation.destinationAirport }}</p-message
+                >
+              </div>
+            </div>
+          </div>
 
           <!-- Next and back buttons -->
-          <div class="justify-content-between flex flex-row gap-2">
+          <div class="justify-content-center flex flex-row gap-6">
             <p-button
               label="Back"
               severity="secondary"
@@ -155,9 +258,9 @@
             <p-button
               label="Next"
               severity="primary"
-              [disabled]="!isMainFlightValid(mainFlightForm)"
-              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
+              [disabled]="!isNextButtonEnabled"
               [styleClass]="'px-6 h-2.5rem'"
+              (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
             />
           </div>
         </ng-template>
@@ -170,92 +273,65 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          @if (getActiveConnectionFlights().length === 0) {
-            <p-message>No connection flights added yet.</p-message>
-          }
-          <!-- Connection Flight Forms -->
-          @if (getActiveConnectionFlights().length > 0) {
-            <div>
-              @for (flight of connectionFlights; track $index; let i = $index) {
-                @if (flight !== null) {
-                  <!-- Display Connection Flight card -->
-                  <p-card [styleClass]="'mb-4'">
-                    <div class="flex flex-row justify-content-between align-items-start gap-3">
-                      <div
-                        class="flex flex-column align-items-center gap-2"
-                        style="min-width: 150px"
-                      >
-                        <p-tag value="Flag the flight: " />
-                        <p-toggleswitch
-                          [(ngModel)]="isFlagged[i]"
-                          (onChange)="flagFlight(i)"
-                          [disabled]="!canFlagFlight(i)"
-                        />
-                      </div>
-
-                      <div class="flex-1">
-                        <app-case-form
-                          [title]="'Connection Flight ' + (i + 1)"
-                          #connectionForm
-                          [initialData]="connectionFlightsData[i]"
-                          (validityChange)="
-                            onConnectionFlightValidityChange(i, $event.valid, $event.data)
-                          "
-                        >
-                        </app-case-form>
-                      </div>
-
-                      <div class="flex flex-column align-items-center" style="min-width: 150px">
-                        <p-button
-                          severity="danger"
-                          (onClick)="removeConnectionFlight(i)"
-                          [styleClass]="'align-self-right'"
-                          icon="pi pi-trash"
-                        >
-                        </p-button>
-                      </div>
-                    </div>
-                  </p-card>
-                }
-              }
-            </div>
-          }
+          <div class="flex flex-wrap justify-content-center gap-4">
+            @for (i of connectionIndices; track i) {
+              <div class="w-5 mb-4">
+                <div
+                  class="flex flex-column justify-content-center align-items-center p-3 border-round surface-card"
+                >
+                  <h3 class="text-center mb-2"
+                    >Connection: {{ connectionFlights[i][0] }} - {{ connectionFlights[i][1] }}</h3
+                  >
+                  <p-button
+                    icon="pi pi-flag"
+                    severity="success"
+                    (onClick)="toggleFlag(i)"
+                    [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
+                  ></p-button>
+                  <app-case-form
+                    [title]="''"
+                    [initialData]="getConnectionInitialData(i)"
+                    (validityChange)="
+                      onConnectionFlightValidityChange(i, $event.valid, $event.data)
+                    "
+                  >
+                  </app-case-form>
+                </div>
+              </div>
+            }
+          </div>
 
           <!-- Next and back buttons -->
-          <div class="justify-content-between flex flex-row gap-2 mt-4">
+          <div class="justify-content-between flex flex-row gap-2">
             <p-button
               label="Back"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
               [styleClass]="'px-6 h-2.5rem'"
             />
-
-            <!-- Add Connection Flight Button -->
-            @if (canAddMoreConnections()) {
-              <div class="add-connection-section">
-                <p-button
-                  label="Add Connection Flight"
-                  severity="primary"
-                  (onClick)="addConnectionFlight()"
-                  [styleClass]="'px-6 h-2.5rem'"
-                >
-                </p-button>
-              </div>
-            }
-            <!-- Maximum Connection Flights Message -->
-            @else {
-              <p-message severity="warn" text="Maximum number of connection flights reached.">
-              </p-message>
-            }
-
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!areAllConnectionFlightsValid()"
-              (onClick)="onNextFromConnectionFlights(nextCallback)"
               [styleClass]="'px-6 h-2.5rem'"
+              (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
           </div>
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 4: Disruption Info -->
+      <p-step-panel [value]="4">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p-button
+            label="Back"
+            severity="secondary"
+            (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+            [styleClass]="'px-6 h-2.5rem'"
+          />
         </ng-template>
       </p-step-panel>
     </p-step-panels>
