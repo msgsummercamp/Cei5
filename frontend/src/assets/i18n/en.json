@@ -144,5 +144,49 @@
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password"
+  },
+  "stepper": {
+    "step1": "Reservation Info",
+    "step2": "Flight Info",
+    "step3": "Connection Flights",
+    "step4": "Disruption Info"
+  },
+  "mainForm": {
+    "next": "Next",
+    "previous": "Previous",
+    "reservationHeader": "Reservation Info",
+    "reservationNumber": "Reservation Number",
+    "reservationNumberRequired": "Reservation number is required.",
+    "reservationLength": "Reservation number must be exactly 6 characters.",
+    "departingAirport": "Departing Airport",
+    "departingAirportRequired": "Departing Airport is required.",
+    "departingAirportLength": "Departing Airport must be exactly 3 characters",
+    "departingAirportUpper": "Airport code must be 3 uppercase letters.",
+    "destinationAirport": "Destination Airport",
+    "destinationAirportRequired": "Destination Airport is required.",
+    "destinationAirportLength": "Destination Airport must be exactly 3 characters",
+    "destinationAirportUpper": "Airport code must be 3 uppercase letters.",
+    "flightDetailsTitle": "Flight Details",
+    "connectionFlightsHeader": "Connection Flights",
+    "connectionDepartingAirport": "Departing Airport:",
+    "connection": "Connection",
+    "connectionDestinationRequired": "Connection destination is required.",
+    "connectionDestinationLength": "Airport code must be exactly 3 characters.",
+    "connectionDestinationUpper": "Airport code must be 3 uppercase letters."
+  },
+  "flightForm": {
+    "flightNumber": "Flight Number",
+    "flightNumberRequired": "Flight number is required.",
+    "flightNumberMinLength": "Flight Number must be at least 3 characters.",
+    "flightNumberMaxLength": "Flight Number must be at most 6 characters.",
+    "airline": "Airline",
+    "airlineRequired": "Airline name is required.",
+    "airlineMinLength": "Airline name must be at least 3 characters.",
+    "airlineMaxLength": "Airline name must be at most 50 characters.",
+    "plannedDepartureTime": "Planned Departure Time",
+    "plannedDepartureTimeRequired": "Planned departure time is required.",
+    "plannedArrivalTime": "Planned Arrival Time",
+    "plannedArrivalTimeRequired": "Planned arrival time is required.",
+    "arrivalBeforeDeparture": "Arrival time must be after departure time."
   }
 }

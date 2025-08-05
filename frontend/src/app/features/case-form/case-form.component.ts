@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
   FormControl,
   NonNullableFormBuilder,
