@@ -1,50 +1,52 @@
 ::ng-deep {
-  .p-button {
-    --p-button-primary-background: #1a3547;
-    --p-button-primary-border-color: #0078bd;
-    --p-button-primary-hover-background: #0078bd;
-  }
+  .caseFormWrapper {
+    .p-button {
+      --p-button-primary-background: #1a3547;
+      --p-button-primary-border-color: #0078bd;
+      --p-button-primary-hover-background: #0078bd;
+    }
 
-  .p-stepper {
-    --p-stepper-step-title-color: #1a3547;
-    --p-stepper-step-title-active-color: #0078bd;
-    --p-stepper-step-number-active-color: #0078bd;
-    --p-stepper-separator-background-color: #1a3547;
-    --p-stepper-step-number-border-color: #1a3547;
-    --p-stepper-step-number-active-border-color: #0078bd;
-    --p-stepper-separator-active-background: #0078bd;
-  }
+    .p-stepper {
+      --p-stepper-step-title-color: #1a3547;
+      --p-stepper-step-title-active-color: #0078bd;
+      --p-stepper-step-number-active-color: #0078bd;
+      --p-stepper-separator-background-color: #1a3547;
+      --p-stepper-step-number-border-color: #1a3547;
+      --p-stepper-step-number-active-border-color: #0078bd;
+      --p-stepper-separator-active-background: #0078bd;
+    }
 
-  .p-inputtext {
-    --p-inputtext-border-color: #1a3547;
-    --p-inputtext-color: #1a3547;
-    --p-inputtext-focus-border-color: #1a3547;
-  }
+    .p-inputtext {
+      --p-inputtext-border-color: #1a3547;
+      --p-inputtext-color: #1a3547;
+      --p-inputtext-focus-border-color: #1a3547;
+    }
 
-  .p-floatlabel {
-    --p-floatlabel-active-color: #1a3547;
-    --p-floatlabel-focus-color: #1a3547;
-    --p-floatlabel-color: #1a3547;
-  }
+    .p-floatlabel {
+      --p-floatlabel-active-color: #1a3547;
+      --p-floatlabel-focus-color: #1a3547;
+      --p-floatlabel-color: #1a3547;
+    }
 
-  .p-autocomplete {
-    --p-autocomplete-dropdown-border-color: #1a3547;
-    --p-autocomplete-dropdown-hover-border-color: #1a3547;
-    --p-autocomplete-dropdown-active-border-color: #1a3547;
-    --p-autocomplete-focus-border-color: #1a3547;
-  }
+    .p-autocomplete {
+      --p-autocomplete-dropdown-border-color: #1a3547;
+      --p-autocomplete-dropdown-hover-border-color: #1a3547;
+      --p-autocomplete-dropdown-active-border-color: #1a3547;
+      --p-autocomplete-focus-border-color: #1a3547;
+    }
 
-  .p-card {
-    --p-card-shadow: 0 1px 3px 0 #1a3547, 0 1px 2px -1px #1a3547;
-  }
+    .p-card {
+      --p-card-shadow: 0 1px 3px 0 #1a3547, 0 1px 2px -1px #1a3547;
+    }
 
-  .p-tag {
-    --p-tag-primary-background: white;
-    --p-tag-primary-color: #1a3547;
-  }
+    .p-tag {
+      --p-tag-primary-background: white;
+      --p-tag-primary-color: #1a3547;
+    }
 
-  .p-datepicker {
-    --p-datepicker-date-selected-background: #a6eb55;
+    .p-datepicker {
+      --p-datepicker-date-selected-background: #a6eb55;
+    }
   }
 }
 

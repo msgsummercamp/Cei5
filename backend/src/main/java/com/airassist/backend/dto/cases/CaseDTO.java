@@ -3,6 +3,8 @@ package com.airassist.backend.dto.cases;
 import com.airassist.backend.dto.reservation.ReservationDTO;
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.DisruptionReasons;
+import com.airassist.backend.model.enums.Statuses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;

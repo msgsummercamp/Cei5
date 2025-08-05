@@ -1,5 +1,6 @@
 package com.airassist.backend.controller;
 
+import com.airassist.backend.dto.auth.ResetPasswordRequest;
 import com.airassist.backend.dto.auth.SignInRequest;
 import com.airassist.backend.dto.auth.SignInResponse;
 import com.airassist.backend.dto.user.UserDTO;
@@ -27,7 +28,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserMapper userMapper;
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {
         return ResponseEntity.ok(authService.signIn(signInRequest));
     }
@@ -37,5 +38,11 @@ public class AuthController {
         User newUser = authService.register(userToRegister);
         UserResponseDTO userResponse = userMapper.userToUserResponseDTO(newUser);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws MessagingException, UserNotFoundException {
+        authService.resetPassword(request);
+        return ResponseEntity.ok().build();
     }
 }

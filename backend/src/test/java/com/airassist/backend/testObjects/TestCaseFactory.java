@@ -6,6 +6,10 @@ import com.airassist.backend.dto.reservation.ReservationDTO;
 import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.DisruptionReasons;
+import com.airassist.backend.model.enums.Roles;
+import com.airassist.backend.model.enums.Statuses;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;

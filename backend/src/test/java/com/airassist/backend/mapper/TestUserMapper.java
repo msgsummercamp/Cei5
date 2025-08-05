@@ -4,7 +4,7 @@ import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserDetailsDTO;
 import com.airassist.backend.dto.user.UserDetailsResponseDTO;
 import com.airassist.backend.dto.user.UserResponseDTO;
-import com.airassist.backend.model.Roles;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.testObjects.TestUserFactory;

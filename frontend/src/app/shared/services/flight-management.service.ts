@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FlightDetails } from '../../features/case-form/views/flight-form.component';
+import { FlightDetails } from '../../features/case-form/views/flight-form/flight-form.component';
 
 @Injectable({
   providedIn: 'root',

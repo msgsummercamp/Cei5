@@ -1,6 +1,6 @@
 package com.airassist.backend.dto.user;
 
-import com.airassist.backend.model.Roles;
+import com.airassist.backend.model.enums.Roles;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -28,4 +28,5 @@ public class UserDTO {
 
     private UserDetailsDTO userDetails;
 
+    private boolean isFirstLogin;
 }

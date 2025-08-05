@@ -1,5 +1,5 @@
-<main>
-  <p-stepper [value]="currentStep" [linear]="true" class="text-pink-500">
+<div class="caseFormWrapper">
+  <p-stepper [value]="currentStep()" [linear]="true" class="text-pink-500">
     <p-step-list>
       <!-- Step indicators -->
       <p-step [value]="1">Reservation Info</p-step>
@@ -26,7 +26,6 @@
                   id="reservationNumber"
                   formControlName="reservationNumber"
                   class="w-25rem h-3rem inputclass"
-                  style="--p-inputtext-color: var(--primary-color)"
                 />
                 <label for="reservationNumber">Reservation Number</label>
               </p-floatlabel>
@@ -55,12 +54,18 @@
             <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
-                  [styleClass]="'w-25rem h-3rem cssclass'"
+                  [styleClass]="'w-25rem h-3rem'"
                   id="departingAirport"
                   formControlName="departingAirport"
-                  field="name"
                   [dropdown]="true"
-                />
+                  [suggestions]="airportsSuggestion"
+                  (completeMethod)="search($event)"
+                  optionValue="code"
+                  optionLabel="name"
+                  [forceSelection]="true"
+                  [virtualScroll]="true"
+                  [virtualScrollItemSize]="50"
+                ></p-autocomplete>
                 <label for="departingAirport">Departing Airport</label>
               </p-floatlabel>
               <!-- Error Messages -->
@@ -93,9 +98,15 @@
                 <p-autocomplete
                   id="destinationAirport"
                   formControlName="destinationAirport"
-                  field="name"
                   [dropdown]="true"
-                  [styleClass]="'w-25rem h-3rem cssclass'"
+                  [styleClass]="'w-25rem h-3rem'"
+                  [suggestions]="airportsSuggestion"
+                  (completeMethod)="search($event)"
+                  optionValue="code"
+                  optionLabel="name"
+                  [forceSelection]="true"
+                  [virtualScroll]="true"
+                  [virtualScrollItemSize]="50"
                 />
                 <label for="destinationAirport">Destination Airport</label>
               </p-floatlabel>
@@ -145,14 +156,14 @@
         >
           <div class="grid">
             <!-- Main Flight Form -->
-            <app-case-form
+            <app-flight-form
               title="Flight Details"
               #mainFlightForm
               [initialData]="flightData"
               (validityChange)="onMainFlightValidityChange($event.valid, $event.data)"
               class="ml-8 col mb-8"
             >
-            </app-case-form>
+            </app-flight-form>
 
             <!-- Connection Flights -->
             <div class="mr-8 col">
@@ -193,6 +204,13 @@
                                     class="w-15rem h-2rem"
                                     id="connectionFlight{{ $index }}"
                                     [formControlName]="$index"
+                                    [suggestions]="airportsSuggestion"
+                                    (completeMethod)="search($event)"
+                                    optionValue="code"
+                                    optionLabel="name"
+                                    [forceSelection]="true"
+                                    [virtualScroll]="true"
+                                    [virtualScrollItemSize]="50"
                                   />
                                   <label for="connectionFlight{{ $index }}">Connection</label>
                                 </p-floatlabel>
@@ -289,14 +307,14 @@
                     (onClick)="toggleFlag(i)"
                     [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
                   ></p-button>
-                  <app-case-form
+                  <app-flight-form
                     [title]="''"
                     [initialData]="getConnectionInitialData(i)"
                     (validityChange)="
                       onConnectionFlightValidityChange(i, $event.valid, $event.data)
                     "
                   >
-                  </app-case-form>
+                  </app-flight-form>
                 </div>
               </div>
             }
@@ -352,4 +370,4 @@
       </p-step-panel>
     </p-step-panels>
   </p-stepper>
-</main>
+</div>
