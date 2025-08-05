@@ -41,6 +41,10 @@
     "copyright": "© 2025 AirAssist. All rights reserved.",
     "back-to-top": "Back to top"
   },
+  "case-form": {
+    "compensation-start": "Congratulations! You could earn up to €",
+    "compensation-end": ". Click next to continue."
+  },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
     "disruptionTypeRequired": "A disruption type is required.",
