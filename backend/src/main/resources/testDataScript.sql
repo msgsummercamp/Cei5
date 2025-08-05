@@ -8,25 +8,25 @@ TRUNCATE TABLE users CASCADE;
 TRUNCATE TABLE userdetails CASCADE;
 
 -- Insert UserDetails
-INSERT INTO userdetails (id, phoneNumber, address, postalCode, birthDate)
+INSERT INTO userdetails (id, phone_number, address, postal_code, birth_date)
 VALUES
     ('11111111-1111-1111-1111-111111111111', '+1234567890', '123 Main Street', '10001', '1990-05-12'),
     ('22222222-2222-2222-2222-222222222222', '+1987654321', '456 Elm Street', '20002', '1985-11-23');
 
 -- Insert Users
-INSERT INTO users (id, email, password, firstName, lastName, role, userDetails_id, isFirstLogin)
+INSERT INTO users (id, email, password, first_name, last_name, role, user_details_id, is_first_login)
 VALUES
-    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'john.doe@example.com', '$2a$12$IncqVqp3IfzRhuYMLdSo7O4cQsdS2J3E8cUq6uqraCPkXb2j23LYi', 'John', 'Doe', 'ADMIN', '11111111-1111-1111-1111-111111111111', true), --Password1
-    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'jane.smith@example.com', '$2a$12$a/3QU997zt.FMK/zUaVNv.UmL8PA7bs3Dvvrc2QNAWSLiMxv3q5qy', 'Jane', 'Smith', 'USER', '22222222-2222-2222-2222-222222222222', false); --Password2
+    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'john.doe@example.com', '$2a$12$IncqVqp3IfzRhuYMLdSo7O4cQsdS2J3E8cUq6uqraCPkXb2j23LYi', 'John', 'Doe', 'ADMIN', '11111111-1111-1111-1111-111111111111', true),
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'jane.smith@example.com', '$2a$12$a/3QU997zt.FMK/zUaVNv.UmL8PA7bs3Dvvrc2QNAWSLiMxv3q5qy', 'Jane', 'Smith', 'USER', '22222222-2222-2222-2222-222222222222', false);
 
 -- Insert Reservations
-INSERT INTO reservations (id, reservationNumber)
+INSERT INTO reservations (id, reservation_number)
 VALUES
     ('33333333-3333-3333-3333-333333333333', 'ABC123'),
     ('44444444-4444-4444-4444-444444444444', 'XYZ789');
 
 -- Insert Flights
-INSERT INTO flights (id, flightDate, flightNumber, departingAirport, destinationAirport, departureTime, arrivalTime, reservation_id, airLine, isProblematic)
+INSERT INTO flights (id, flight_date, flight_number, departing_airport, destination_airport, departure_time, arrival_time, reservation_id, air_line, is_problematic)
 VALUES
     (
         '77777777-7777-7777-7777-777777777777',
@@ -54,7 +54,7 @@ VALUES
     );
 
 -- Insert Cases
-INSERT INTO cases (id, status, disruptionReason, disruptionInfo, date, client_id, assignedColleague_id, reservation_id)
+INSERT INTO cases (id, status, disruption_reason, disruption_info, date, client_id, assigned_colleague_id, reservation_id)
 VALUES
     (
         '55555555-5555-5555-5555-555555555555',
@@ -62,8 +62,8 @@ VALUES
         'ARRIVED_3H_LATE',
         'Flight delayed due to storm conditions',
         '2024-03-15',
-        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', -- client
-        'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', -- assigned colleague
+        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+        'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
         '33333333-3333-3333-3333-333333333333'
     ),
     (
@@ -78,7 +78,7 @@ VALUES
     );
 
 -- Insert Documents
-INSERT INTO documents (id, name, type, content, caseEntity_id)
+INSERT INTO documents (id, name, type, content, case_entity_id)
 VALUES
     (
         '99999999-9999-9999-9999-999999999999',
@@ -96,7 +96,7 @@ VALUES
     );
 
 -- Insert Comments
-INSERT INTO comments (id, user_id, text, timestamp, caseEntity_id)
+INSERT INTO comments (id, user_id, text, timestamp, case_entity_id)
 VALUES
     (
         '12121212-1212-1212-1212-121212121212',

@@ -1,0 +1,23 @@
+import { DisruptionReason } from '../types/disruptionReason.enum';
+import { Statuses } from '../types/status.enum';
+import { UserDTO } from './user.dto';
+import { ReservationDTO } from './reservation.dto';
+
+type DocumentInfo = {
+  id?: string;
+  name: string;
+  type: string;
+  content: Uint8Array;
+};
+
+export type CaseDTO = {
+  id?: string;
+  status?: Statuses;
+  disruptionReason: DisruptionReason;
+  disruptionInfo: string;
+  date: string | null;
+  clientID: string;
+  assignedColleague?: UserDTO;
+  reservation: ReservationDTO;
+  documentList?: DocumentInfo[];
+};

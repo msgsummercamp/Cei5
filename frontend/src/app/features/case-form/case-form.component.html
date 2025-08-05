@@ -5,7 +5,8 @@
       <p-step [value]="1">Reservation Info</p-step>
       <p-step [value]="2">Flight Details</p-step>
       <p-step [value]="3">Connection Flights</p-step>
-      <p-step [value]="4">Disruption Info</p-step>
+      <p-step [value]="4">Submit</p-step>
+      <p-step [value]="5">Disruption Info</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -336,8 +337,8 @@
             />
           </div>
         </ng-template>
+        <!-- Step 4: Test Submit -->
       </p-step-panel>
-      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"
@@ -349,6 +350,21 @@
             (validityChange)="onDisruptionFormValidityChange($event)"
           />
 
+          <p-button
+            label="Submit"
+            severity="secondary"
+            (onClick)="submitCase()"
+            styleClass="px-6"
+          />
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 5: Disruption Info -->
+      <p-step-panel [value]="5">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
           <p-button
             label="Back"
             severity="secondary"

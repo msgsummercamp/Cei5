@@ -1,6 +1,8 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
+import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,7 +18,6 @@ import {
   Form,
 } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
 import { StepNavigationService } from '../../shared/services/step-navigation.service';
 import {
@@ -25,6 +26,11 @@ import {
 } from '../../shared/services/reservation.service';
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
+import { ReservationDTO } from '../../shared/dto/reservation.dto';
+import { CaseDTO } from '../../shared/dto/case.dto';
+import { Statuses } from '../../shared/types/status.enum';
+import { DisruptionReason } from '../../shared/types/disruptionReason.enum';
+import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 
 @Component({
@@ -54,6 +60,7 @@ export class CaseFormComponent {
 
   // Services injection
   private readonly _formBuilder = inject(NonNullableFormBuilder);
+  private readonly _caseService = inject(CaseService);
   private readonly _navigationService = inject(StepNavigationService);
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
@@ -286,5 +293,91 @@ export class CaseFormComponent {
 
   public areAllConnectionFlightsValid(): boolean {
     return this._flightService.areAllConnectionFlightsValid();
+  }
+
+  public submitCase(): void {
+    // Add validation before submitting
+    console.log('Submit case called');
+    console.log('All flights:', this._flightService.getAllFlights());
+
+    if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
+      console.error('No flights available');
+      return;
+    }
+
+    const caseData: CaseDTO = {
+      status: Statuses.PENDING,
+      disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
+      disruptionInfo: 'Flight was delayed by 3 hours',
+      date: new Date().toISOString(),
+      clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      assignedColleague: undefined,
+      reservation: this.createReservationDTO(),
+      documentList: [],
+    };
+
+    console.log('Case data to submit:', caseData);
+
+    this._caseService.checkEligibility(caseData).subscribe({
+      next: (isEligible) => {
+        console.log('Eligibility check result:', isEligible);
+        if (isEligible) {
+          this._caseService.createCase(caseData).subscribe({
+            next: (response) => {
+              console.log('Case created successfully', response);
+              // Add success handling here
+            },
+            error: (error) => {
+              console.error('Error creating case:', error);
+              // Add error handling here
+            },
+          });
+        } else {
+          console.log('Client is not eligible for a case');
+          // Add handling for ineligible case
+        }
+      },
+      error: (error) => {
+        console.error('Error checking eligibility:', error);
+        // Add error handling here
+      },
+    });
+  }
+
+  private createReservationDTO(): ReservationDTO {
+    return {
+      reservationNumber: this.reservationInformation.reservationNumber,
+      flights: this._flightService.getAllFlights().map((flight, index) => {
+        const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
+        const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
+
+        const flightData = {
+          flightDate: this.extractDateOnly(departureDateTime), // Convert to string (YYYY-MM-DD)
+          flightNumber: flight.flightDetails.flightNumber || `FLIGHT${index + 1}`,
+          departingAirport: flight.flightDetails.departingAirport || 'XXX',
+          destinationAirport: flight.flightDetails.destinationAirport || 'YYY',
+          departureTime: this.formatForLocalDateTime(departureDateTime), // Remove 'Z' for LocalDateTime
+          arrivalTime: this.formatForLocalDateTime(arrivalDateTime), // Remove 'Z' for LocalDateTime
+          airLine: flight.flightDetails.airline || 'UNKNOWN',
+          isProblematic: flight.isFlagged,
+        };
+        return flightData;
+      }),
+    };
+  }
+
+  // Helper method to format date for Java LocalDateTime (without timezone)
+  private formatForLocalDateTime(date: Date): string {
+    // Convert to ISO string and remove the 'Z' at the end
+    return date.toISOString().slice(0, -1); // Removes the 'Z'
+    // This converts "2025-08-01T08:59:42.000Z" to "2025-08-01T08:59:42.000"
+  }
+
+  // Helper method to extract date only (YYYY-MM-DD format)
+  private extractDateOnly(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
