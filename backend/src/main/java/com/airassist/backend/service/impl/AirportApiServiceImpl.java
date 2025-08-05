@@ -1,6 +1,7 @@
 package com.airassist.backend.service.impl;
 
 import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
+import com.airassist.backend.service.AirportApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

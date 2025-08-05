@@ -6,6 +6,7 @@ import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
+import com.airassist.backend.service.CaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
