@@ -21,5 +21,11 @@
     "forgot-password": "Forgot your password? Reset",
     "here": "here",
     "sign-in-button": "Sign In"
+  },
+  "notifications": {
+    "error": "Error",
+    "success": "Success",
+    "info": "Info",
+    "warning": "Warning"
   }
 }

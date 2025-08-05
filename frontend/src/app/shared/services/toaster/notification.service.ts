@@ -1,18 +1,24 @@
 import { inject, Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private readonly messageService = inject(MessageService);
+  private readonly _messageService = inject(MessageService);
+  private readonly _translationService = inject(TranslateService);
 
   /**
    * Displays a success notification with the given message.
    * @param message The message to display in the notification.
    */
   public showSuccess(message: string): void {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+    this._messageService.add({
+      severity: 'success',
+      summary: this._translationService.instant('notifications.success'),
+      detail: message,
+    });
   }
 
   /**
@@ -20,7 +26,11 @@ export class NotificationService {
    * @param message The message to display in the notification.
    */
   public showError(message: string): void {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    this._messageService.add({
+      severity: 'error',
+      summary: this._translationService.instant('notifications.error'),
+      detail: message,
+    });
   }
 
   /**
@@ -28,7 +38,11 @@ export class NotificationService {
    * @param message The message to display in the notification.
    */
   public showInfo(message: string): void {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: message });
+    this._messageService.add({
+      severity: 'info',
+      summary: this._translationService.instant('notifications.info'),
+      detail: message,
+    });
   }
 
   /**
@@ -36,6 +50,10 @@ export class NotificationService {
    * @param message The message to display in the notification.
    */
   public showWarn(message: string): void {
-    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: message });
+    this._messageService.add({
+      severity: 'warn',
+      summary: this._translationService.instant('notifications.warning'),
+      detail: message,
+    });
   }
 }

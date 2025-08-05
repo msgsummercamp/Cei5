@@ -21,5 +21,11 @@
     "forgot-password": "Ați uitat parola? Resetați",
     "here": "aici",
     "sign-in-button": "Autentificare"
+  },
+  "notifications": {
+    "error": "Eroare",
+    "success": "Succes",
+    "info": "Info",
+    "warning": "Avertisment"
   }
 }
