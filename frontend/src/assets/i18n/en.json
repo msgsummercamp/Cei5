@@ -128,5 +128,20 @@
     "connectionDestinationRequired": "Connection destination is required.",
     "connectionDestinationLength": "Airport code must be exactly 3 characters.",
     "connectionDestinationUpper": "Airport code must be 3 uppercase letters."
+  },
+  "flightForm": {
+    "flightNumber": "Flight Number",
+    "flightNumberRequired": "Flight number is required.",
+    "flightNumberMinLength": "Flight Number must be at least 3 characters.",
+    "flightNumberMaxLength": "Flight Number must be at most 6 characters.",
+    "airline": "Airline",
+    "airlineRequired": "Airline name is required.",
+    "airlineMinLength": "Airline name must be at least 3 characters.",
+    "airlineMaxLength": "Airline name must be at most 50 characters.",
+    "plannedDepartureTime": "Planned Departure Time",
+    "plannedDepartureTimeRequired": "Planned departure time is required.",
+    "plannedArrivalTime": "Planned Arrival Time",
+    "plannedArrivalTimeRequired": "Planned arrival time is required.",
+    "arrivalBeforeDeparture": "Arrival time must be after departure time."
   }
 }
