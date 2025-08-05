@@ -1,3 +1,31 @@
 {
-  "Home": "Home"
+  "Home": "Home",
+  "auth-service": {
+    "email-required": "Email is required.",
+    "registration-success": "Registration successful. Please check your email.",
+    "password-reset-email-sent": "Password reset email sent successfully.",
+    "must-be-logged-for-reset": "You must be logged in to reset your password.",
+    "password-null-or-empty": "New password must be at least 6 characters long.",
+    "password-reset-success": "Password reset successful.",
+    "token-decode-error": "Error decoding token. Please try again"
+  },
+  "sign-in": {
+    "title": "Enter your account's data",
+    "email-label": "Email",
+    "email-required": "Email is required.",
+    "email-invalid": "Please enter a valid email address.",
+    "password-label": "Password",
+    "password-required": "Password is required.",
+    "password-minlength": "Password must be at least 6 characters long.",
+    "password-maxlength": "Password cannot exceed 20 characters.",
+    "forgot-password": "Forgot your password? Reset",
+    "here": "here",
+    "sign-in-button": "Sign In"
+  },
+  "notifications": {
+    "error": "Error",
+    "success": "Success",
+    "info": "Info",
+    "warning": "Warning"
+  }
 }
