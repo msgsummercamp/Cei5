@@ -1,4 +1,4 @@
-import { DocumentType } from '../enums/documentType.enum';
+import { DocumentType } from './documentType.enum';
 import { Case } from './case';
 
 export type Document = {

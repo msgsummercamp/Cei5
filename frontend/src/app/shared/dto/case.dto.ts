@@ -1,5 +1,5 @@
-import { DisruptionReason } from '../enums/disruptionReason.enum';
-import { Statuses } from '../enums/status.enum';
+import { DisruptionReason } from '../types/disruptionReason.enum';
+import { Statuses } from '../types/status.enum';
 import { UserDTO } from './user.dto';
 import { ReservationDTO } from './reservation.dto';
 

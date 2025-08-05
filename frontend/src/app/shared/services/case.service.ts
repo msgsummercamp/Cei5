@@ -8,7 +8,7 @@ import { CaseDTO } from '../dto/case.dto';
 @Injectable({ providedIn: 'root' })
 export class CaseService {
   private readonly _http = inject(HttpClient);
-  private readonly _apiUrl = environment.apiUrl;
+  private readonly _apiUrl = environment.API_URL;
 
   public createCase(caseData: CaseDTO): Observable<Case> {
     return this._http.post<Case>(`${this._apiUrl}/cases`, caseData);

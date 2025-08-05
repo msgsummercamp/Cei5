@@ -1,4 +1,4 @@
-import { Role } from '../enums/role.enum';
+import { Role } from '../types/role.enum';
 import { CaseDTO } from './case.dto';
 export type UserDTO = {
   id?: string;

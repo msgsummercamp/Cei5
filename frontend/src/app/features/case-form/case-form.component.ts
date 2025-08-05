@@ -2,16 +2,19 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
-import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
+import { FlightDetails, CaseFormComponent } from './views/flight-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
-import { StepNavigationService } from '../../services/step-navigation.service';
-import { ReservationInformation, ReservationService } from '../../services/reservation.service';
-import { FlightManagementService } from '../../services/flight-management.service';
+import { StepNavigationService } from '../../shared/services/step-navigation.service';
+import {
+  ReservationInformation,
+  ReservationService,
+} from '../../shared/services/reservation.service';
+import { FlightManagementService } from '../../shared/services/flight-management.service';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -20,13 +23,13 @@ import {
   FormsModule,
   FormArray,
 } from '@angular/forms';
-import { CaseService } from '../../services/case.service';
-import { CaseDTO } from '../../dto/case.dto';
-import { UserDTO } from '../../dto/user.dto';
-import { ReservationDTO } from '../../dto/reservation.dto';
-import { DisruptionReason } from '../../enums/disruptionReason.enum';
-import { Statuses } from '../../enums/status.enum';
-import { Role } from '../../enums/role.enum';
+import { CaseService } from '../../shared/services/case.service';
+import { CaseDTO } from '../../shared/dto/case.dto';
+import { UserDTO } from '../../shared/dto/user.dto';
+import { ReservationDTO } from '../../shared/dto/reservation.dto';
+import { DisruptionReason } from '../../shared/types/disruptionReason.enum';
+import { Statuses } from '../../shared/types/status.enum';
+import { Role } from '../../shared/types/role.enum';
 
 @Component({
   selector: 'app-case-start',
@@ -44,8 +47,8 @@ import { Role } from '../../enums/role.enum';
     FormsModule,
     TagModule,
   ],
-  templateUrl: './case-start.component.html',
-  styleUrl: './case-start.component.scss',
+  templateUrl: './case-form.component.html',
+  styleUrl: './case-form.component.scss',
 })
 export class CaseStartComponent {
   // CONSTANTS

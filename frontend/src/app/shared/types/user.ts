@@ -1,4 +1,4 @@
-import { Role } from '../enums/role.enum';
+import { Role } from './role.enum';
 import { UserDetails } from './userDetails';
 import { Case } from './case';
 
