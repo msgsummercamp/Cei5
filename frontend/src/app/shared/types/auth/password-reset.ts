@@ -1,5 +1,5 @@
 export type PasswordResetRequest = {
-  newPassword: string;
+  password: string;
   isFirstLogin: boolean;
 };
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"comments", "cases", "userDetails","flights", "caseEntity"})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

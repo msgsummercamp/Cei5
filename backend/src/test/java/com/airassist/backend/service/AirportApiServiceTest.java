@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
-public class TestAirportApiService {
+public class AirportApiServiceTest {
 
     @Autowired
     private AirportApiServiceImpl airportApiService;

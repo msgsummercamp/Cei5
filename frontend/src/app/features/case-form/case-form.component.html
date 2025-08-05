@@ -5,7 +5,8 @@
       <p-step [value]="1">Reservation Info</p-step>
       <p-step [value]="2">Flight Details</p-step>
       <p-step [value]="3">Connection Flights</p-step>
-      <p-step [value]="4">Disruption Info</p-step>
+      <p-step [value]="4">Submit</p-step>
+      <p-step [value]="5">Disruption Info</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -136,7 +137,7 @@
 
             <!-- Next Button -->
             <p-button
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               label="Next"
               severity="primary"
               (onClick)="onNext(nextCallback)"
@@ -271,13 +272,13 @@
               label="Back"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
             />
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!isNextButtonEnabled"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
             />
           </div>
@@ -325,20 +326,40 @@
               label="Back"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
             />
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!areAllConnectionFlightsValid()"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
           </div>
         </ng-template>
+        <!-- Step 4: Test Submit -->
       </p-step-panel>
-      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <app-disruption-form
+            #disruptionForm
+            (validityChange)="onDisruptionFormValidityChange($event)"
+          />
+
+          <p-button
+            label="Submit"
+            severity="secondary"
+            (onClick)="submitCase()"
+            styleClass="px-6"
+          />
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 5: Disruption Info -->
+      <p-step-panel [value]="5">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
@@ -348,7 +369,15 @@
             label="Back"
             severity="secondary"
             (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 h-2.5rem'"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="Next"
+            severity="primary"
+            [disabled]="!isDisruptionFormValid"
+            (onClick)="onNextFromDisruptionInfo(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
           />
         </ng-template>
       </p-step-panel>

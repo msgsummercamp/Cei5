@@ -1,0 +1,40 @@
+<div
+  class="page-container h-full flex flex-column justify-content-center align-items-center mt-8 pt-8 request-reset-form-wrapper"
+>
+  <h2 class="text-3xl"> {{ 'request-reset.title' | translate }} </h2>
+
+  <p>{{'request-reset.description' | translate}}</p>
+  <form novalidate [formGroup]="requestResetForm" class="flex flex-column gap-4 mt-6">
+    <!-- Email Input -->
+    <div>
+      <p-floatlabel variant="on">
+        <label for="email">{{ 'request-reset.email-label' | translate }}</label>
+        <input pInputText type="email" formControlName="email" id="email" class="w-25rem h-3rem" />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (requestResetForm.controls.email.touched && requestResetForm.controls.email.errors) {
+          @switch (true) {
+            @case (requestResetForm.controls.email.hasError('required')) {
+              <app-error-message text="{{ 'request-reset.email-required' | translate }}" />
+            }
+            @case (requestResetForm.controls.email.hasError('email')) {
+              <app-error-message text="{{ 'request-reset.email-invalid' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <p-button
+        label="{{ 'request-reset.submit-button' | translate }}"
+        type="submit"
+        [disabled]="requestResetForm.invalid"
+        (click)="onFormSubmit()"
+        class="w-25rem h-3rem"
+        size="large"
+      ></p-button>
+    </div>
+  </form>
+</div>

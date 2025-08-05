@@ -59,7 +59,7 @@ export class AuthService {
         this.saveTokenToSessionStorage(token);
         this.decodeTokenAndSetState(token);
         // #TODO replace with real routes
-        if (response.isFirstLogin) {
+        if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
           this._router.navigate(['/dashboard']);
@@ -165,7 +165,7 @@ export class AuthService {
     }
 
     const patchRequest: PasswordResetRequest = {
-      newPassword: newPassword,
+      password: newPassword,
       isFirstLogin: false,
     };
 

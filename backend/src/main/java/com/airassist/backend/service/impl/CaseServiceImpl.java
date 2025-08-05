@@ -3,12 +3,21 @@ package com.airassist.backend.service.impl;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
+import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.Case;
+import com.airassist.backend.model.Reservation;
+import com.airassist.backend.model.User;
+import com.airassist.backend.model.Flight;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.service.CaseService;
+import com.airassist.backend.repository.ReservationRepository;
+import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.CaseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,11 +31,18 @@ public class CaseServiceImpl implements CaseService {
     private final CaseRepository caseRepository;
     private final CaseMapper caseMapper;
     private static final Logger logger = LoggerFactory.getLogger(CaseServiceImpl.class);
+    @Autowired
+    private UserRepository userRepository;
+    private final ReservationMapper reservationMapper;
+    private ReservationRepository reservationRepository;
 
 
-    public CaseServiceImpl(CaseRepository caseRepository, CaseMapper caseMapper) {
+
+    public CaseServiceImpl(CaseRepository caseRepository, CaseMapper caseMapper, ReservationMapper reservationMapper) {
         this.caseRepository = caseRepository;
         this.caseMapper = caseMapper;
+        this.reservationMapper = reservationMapper;
+
     }
 
     @Override
@@ -41,24 +57,55 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.findById(id);
     }
 
-    @Override
     public Case createCase(CaseDTO caseDTO) {
-        Case newCase;
         Case caseToAdd = caseMapper.toEntity(caseDTO);
-        logger.info("Service - creating a new case: {}", caseToAdd);
-        if (checkEligibility(caseToAdd)) {
-            caseToAdd.setStatus(Statuses.VALID);
-        }else {
-            caseToAdd.setStatus(Statuses.INVALID);
+        Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
+
+        if (reservation.getFlights() != null) {
+            reservation.getFlights().forEach(flight -> flight.setReservation(reservation));
         }
-        newCase = caseRepository.save(caseToAdd);
-        return newCase;
+        caseToAdd.setReservation(reservation);
+
+        User client = userRepository.findById(caseDTO.getClientID())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        caseToAdd.setClient(client);
+
+        if (reservation.getId() != null) {
+            boolean exists = reservationRepository.existsById(reservation.getId());
+            if (exists) {
+                Reservation existingReservation = reservationRepository.findById(reservation.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+                caseToAdd.setReservation(existingReservation);
+            } else {
+                reservation.setId(null);
+                caseToAdd.setReservation(reservation);
+            }
+        }
+
+        if (reservation.getReservationNumber() == null || reservation.getReservationNumber().length() != 6) {
+            throw new IllegalArgumentException("Reservation number must be exactly 6 characters");
+        }
+        if (reservation.getFlights() != null) {
+            for (Flight flight : reservation.getFlights()) {
+                if (flight.getFlightDate() == null ||
+                        flight.getFlightNumber() == null ||
+                        flight.getDepartingAirport() == null ||
+                        flight.getDestinationAirport() == null ||
+                        flight.getDepartureTime() == null ||
+                        flight.getArrivalTime() == null ||
+                        flight.getAirLine() == null) {
+                    throw new IllegalArgumentException("Missing required flight field");
+                }
+            }
+        }
+
+        logger.info("Service - creating a new case: {}", caseToAdd);
+        caseToAdd.setStatus(checkEligibility(caseToAdd) ? Statuses.VALID : Statuses.INVALID);
+        return caseRepository.save(caseToAdd);
     }
 
     @Override
     public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
-        Case updatedCase;
-
         Case updateReqCase = caseMapper.toEntity(caseDTO);
         updateReqCase.setId(id);
         Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
@@ -67,7 +114,7 @@ public class CaseServiceImpl implements CaseService {
         });
         updateCaseFields(updateReqCase, caseToUpdate);
         logger.info("Service - updating case with ID: {}", id);
-        updatedCase = caseRepository.save(caseToUpdate);
+        Case updatedCase = caseRepository.save(caseToUpdate);
 
 
         return updatedCase;

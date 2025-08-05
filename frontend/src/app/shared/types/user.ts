@@ -1,4 +1,4 @@
-import { Roles } from './roles';
+import { Roles } from './enums/roles';
 import { UserDetails } from './user-details';
 
 export type User = {

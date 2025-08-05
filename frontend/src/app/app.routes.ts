@@ -17,4 +17,18 @@ export const routes: Routes = [
     path: 'sign-in',
     component: SignInComponent,
   },
+  {
+    path: 'change-password',
+    loadComponent: () =>
+      import('./features/password-reset/change-password-page/change-password-page.component').then(
+        (m) => m.ChangePasswordPageComponent
+      ),
+  },
+  {
+    path: 'request-password-reset',
+    loadComponent: () =>
+      import(
+        './features/password-reset/request-pass-reset-page/request-pass-reset-page.component'
+      ).then((m) => m.RequestPassResetPageComponent),
+  },
 ];
