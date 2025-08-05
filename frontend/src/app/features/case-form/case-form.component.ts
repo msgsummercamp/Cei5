@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -13,8 +13,8 @@ import {
   Validators,
   FormsModule,
   FormArray,
+  Form,
 } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -25,6 +25,7 @@ import {
 } from '../../shared/services/reservation.service';
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
+import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 
 @Component({
   selector: 'app-case-form',
@@ -41,6 +42,7 @@ import { AirportResponse, AirportsService } from '../../shared/services/airports
     ErrorMessageComponent,
     FormsModule,
     TagModule,
+    DisruptionFormComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -83,12 +85,10 @@ export class CaseFormComponent {
   });
 
   public isMainFlightValid = false;
+  public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
-
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
-
   public airportsSuggestion: AirportResponse[] = [];
-
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
@@ -160,7 +160,6 @@ export class CaseFormComponent {
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
     const allFlights = this._flightService.getAllFlights();
     this._navigationService.goBackFromDisruptionInfo(allFlights.length);
-    console.log(allFlights.length);
     if (prevCallback) {
       prevCallback();
     }
@@ -236,6 +235,16 @@ export class CaseFormComponent {
     }
   }
 
+  // Method to handle navigation from disruption info step
+  public onNextFromDisruptionInfo(nextCallback?: Function): void {
+    if (this.isDisruptionFormValid) {
+      this._navigationService.nextStep();
+      if (nextCallback) {
+        nextCallback();
+      }
+    }
+  }
+
   public addConnectionFlight(): void {
     if (this.airportsArray.length < this.MAXIMUM_CONNECTIONS) {
       const airportControl = this._formBuilder.control('', [
@@ -269,6 +278,10 @@ export class CaseFormComponent {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+  }
+
+  public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
+    this.isDisruptionFormValid = event?.valid ?? false;
   }
 
   public areAllConnectionFlightsValid(): boolean {

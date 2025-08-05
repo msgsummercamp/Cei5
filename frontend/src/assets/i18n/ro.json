@@ -1,5 +1,58 @@
 {
-  "Home": "Acasa",
+  "Home": "Acasă",
+  "disruption-form": {
+    "selectPlaceholder": "Selectează un tip de întrerupere",
+    "disruptionTypeRequired": "Este necesar un tip de întrerupere.",
+    "selection": {
+      "Cancellation": "Anulare",
+      "Delay": "Întârziere",
+      "Denied_Boarding": "Refuzul îmbarcării"
+    },
+    "cancellationQuestion": "Cu câte zile înainte de anulare v-a informat compania aeriană?",
+    "cancelRadioButton": {
+      ">14 days": ">14 zile",
+      "<14 days": "<14 zile",
+      "On flight day": "În ziua zborului"
+    },
+    "delayQuestion": "Cât ați întârziat la destinație?",
+    "delayRadioButton": {
+      ">3 hours": ">3 ore",
+      "<3 hours": "<3 ore",
+      "Never arrived": "Nu am ajuns niciodată"
+    },
+    "denialBoardingQuestion": "V-ați dat locul în mod voluntar?",
+    "denialBoardingRadioButton": {
+      "Yes": "Da",
+      "No": "Nu"
+    },
+    "reasonsBehindDenialQuestion": "Motivele din spatele refuzului îmbarcării:",
+    "reasonsBehindDenial": {
+      "overbookedFlight": "Zbor suprarezervat",
+      "aggressivePassenger": "Comportament agresiv cu personalul",
+      "intoxication": "Intoxicație",
+      "unspecified": "Motiv nespecificat"
+    },
+    "airlineMotive": {
+      "disruptingQuestion": "A menționat compania aeriană motivul întreruperii?",
+      "disruptingRadioButton": {
+        "Yes": "Da",
+        "No": "Nu",
+        "I don't know": "Nu știu"
+      },
+      "airlineMotiveQuestion": "Care a fost motivul comunicat de compania aeriană?",
+      "airlineMotives": {
+        "technicalProblems": "Probleme tehnice",
+        "badWeather": "Condiții meteorologice",
+        "strike": "Grevă",
+        "airportProblems": "Probleme cu aeroportul",
+        "crewProblems": "Probleme cu echipajul",
+        "other": "Alte motive"
+      }
+    },
+    "disruptionDescription": "Descriere",
+    "emptyDescription": "Descrierea nu ar trebui să fie goală.",
+    "maxLengthDescription": "Descrierea ar trebui să aibă mai puțin de 1000"
+  },
   "auth-service": {
     "email-required": "Adresa de email este obligatorie.",
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
