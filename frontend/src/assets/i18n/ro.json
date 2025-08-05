@@ -99,5 +99,49 @@
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola"
+  },
+  "stepper": {
+    "step1": "Informații despre rezervare",
+    "step2": "Informații despre zbor",
+    "step3": "Zboruri de conexiune",
+    "step4": "Informații despre perturbare"
+  },
+  "mainForm": {
+    "next": "Următorul",
+    "previous": "Anterior",
+    "reservationHeader": "Informații rezervare",
+    "reservationNumber": "Numărul rezervării",
+    "reservationNumberRequired": "Numărul rezervării este obligatoriu.",
+    "reservationLength": "Numărul rezervării trebuie să aibă exact 6 caractere.",
+    "departingAirport": "Aeroportul de plecare",
+    "departingAirportRequired": "Aeroportul de plecare este obligatoriu.",
+    "departingAirportLength": "Aeroportul de plecare trebuie să aibă exact 3 caractere",
+    "departingAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
+    "destinationAirport": "Aeroportul de destinație",
+    "destinationAirportRequired": "Aeroportul de destinație este obligatoriu.",
+    "destinationAirportLength": "Aeroportul de destinație trebuie să aibă exact 3 caractere",
+    "destinationAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
+    "flightDetailsTitle": "Detalii zbor",
+    "connectionFlightsHeader": "Zboruri de conexiune",
+    "connectionDepartingAirport": "Aeroportul de plecare:",
+    "connection": "Conexiune",
+    "connectionDestinationRequired": "Destinația conexiunii este obligatorie.",
+    "connectionDestinationLength": "Codul aeroportului trebuie să aibă exact 3 caractere.",
+    "connectionDestinationUpper": "Codul aeroportului trebuie să fie format din 3 litere mari."
+  },
+  "flightForm": {
+    "flightNumber": "Numărul zborului",
+    "flightNumberRequired": "Numărul zborului este obligatoriu.",
+    "flightNumberMinLength": "Numărul zborului trebuie să aibă cel puțin 3 caractere.",
+    "flightNumberMaxLength": "Numărul zborului trebuie să aibă cel mult 6 caractere.",
+    "airline": "Compania aeriană",
+    "airlineRequired": "Numele companiei aeriene este obligatoriu.",
+    "airlineMinLength": "Numele companiei aeriene trebuie să aibă cel puțin 3 caractere.",
+    "airlineMaxLength": "Numele companiei aeriene trebuie să aibă cel mult 50 de caractere.",
+    "plannedDepartureTime": "Ora planificată de plecare",
+    "plannedDepartureTimeRequired": "Ora planificată de plecare este obligatorie.",
+    "plannedArrivalTime": "Ora planificată de sosire",
+    "plannedArrivalTimeRequired": "Ora planificată de sosire este obligatorie.",
+    "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare."
   }
 }
