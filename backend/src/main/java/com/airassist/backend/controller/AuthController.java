@@ -11,6 +11,7 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.service.AuthService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +35,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserDTO userToRegister) throws DuplicateUserException, MessagingException {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserDTO userToRegister) throws DuplicateUserException, MessagingException, JsonProcessingException {
         User newUser = authService.register(userToRegister);
         UserResponseDTO userResponse = userMapper.userToUserResponseDTO(newUser);
         return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws MessagingException, UserNotFoundException {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws MessagingException, UserNotFoundException, JsonProcessingException {
         authService.resetPassword(request);
         return ResponseEntity.ok().build();
     }
