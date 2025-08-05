@@ -3,7 +3,8 @@
   right: 7rem;
   top: 1rem;
   height: auto;
-  background: #0c2c70;
+  background: #0C2C70;
+  background: linear-gradient(358deg, rgba(12, 44, 112, 1) 13%, rgba(65, 105, 225, 1) 90%);
   color: #fff;
   position: fixed;
   border-radius: 1rem;
@@ -75,7 +76,7 @@ a{
 .lang_dropdown_menu{
   display: flex;
   border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.9);
+  background: #0c2c70;
   flex-direction: column;
   padding: 0.5rem 0.25rem;
   position: absolute;
@@ -101,6 +102,20 @@ a{
 .lang_dropdown_img{
   margin-right: 0.2rem;
 
+}
+
+.active{
+}
+
+#loginButton{
+  display: flex;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  width: 100%;
 }
 
 

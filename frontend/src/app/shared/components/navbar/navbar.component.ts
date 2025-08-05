@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../services/language.service';
 
 export type Language = {
   code: string;
@@ -17,12 +18,7 @@ export type Language = {
 export class NavbarComponent {
   public isDropdownOpen = false;
   private translateService = inject(TranslateService);
-  private selectedLanguage = 'en';
-
-  public readonly languages: Language[] = [
-    { code: 'en', flag: 'assets/flags/en.png' },
-    { code: 'ro', flag: 'assets/flags/ro.png' },
-  ];
+  private languageService = inject(LanguageService);
 
   public toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -30,11 +26,15 @@ export class NavbarComponent {
 
   public selectLanguage(language: Language): void {
     this.translateService.use(language.code);
-    this.selectedLanguage = language.code;
+    this.languageService.setSelectedLanguage(language.code);
     this.isDropdownOpen = false;
   }
 
-  public getSelectedLanguageFlag(): string {
-    return this.languages.find((lang) => lang.code === this.selectedLanguage)?.flag || '';
+  public get selectedLanguageFlag(): string {
+    return this.languageService.getSelectedLanguageFlag();
+  }
+
+  public get languages(): Language[] {
+    return this.languageService.getLanguages();
   }
 }
