@@ -1,22 +1,26 @@
 package com.airassist.backend.service;
 
 import com.airassist.backend.dto.cases.CaseDTO;
+import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.model.Case;
+import com.airassist.backend.model.Reservation;
+import com.airassist.backend.model.User;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.model.enums.DisruptionReasons;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.repository.ReservationRepository;
 import com.airassist.backend.service.impl.CaseServiceImpl;
-import com.airassist.backend.testObjects.TestCaseFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,13 +29,88 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestCaseService {
+public class CaseServiceTest {
 
     private CaseRepository caseRepository;
     private UserRepository userRepository;
     private ReservationRepository reservationRepository;
     private CaseServiceImpl caseService;
     private CaseMapper caseMapper;
+
+    static User createTestUser() {
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setEmail("testuser@example.com");
+        user.setPassword("password123");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setRole(Roles.USER);
+        user.setFirstLogin(true);
+        return user;
+    }
+
+     static Reservation createTestReservation() {
+        Reservation reservation = new Reservation();
+        reservation.setId(UUID.randomUUID());
+        reservation.setReservationNumber("ABC123");
+        reservation.setFlights(List.of());
+        return reservation;
+    }
+
+     static Case createCase(Statuses status, DisruptionReasons reason) {
+        User client = createTestUser();
+        Reservation reservation = createTestReservation();
+        return Case.builder()
+                .id(UUID.randomUUID())
+                .status(status)
+                .disruptionReason(reason)
+                .disruptionInfo("DTO disruption info")
+                .date(LocalDate.now())
+                .client(client)
+                .assignedColleague(null)
+                .reservation(reservation)
+                .documentList(List.of())
+                .build();
+    }
+
+     static CaseDTO createCaseDTO(Statuses status, DisruptionReasons reason) {
+        User client = createTestUser();
+        Reservation reservation = createTestReservation();
+        CaseDTO dto = new CaseDTO();
+        dto.setStatus(status);
+        dto.setDisruptionReason(reason);
+        dto.setDisruptionInfo("DTO disruption info");
+        dto.setDate(LocalDate.now());
+        dto.setClient(client);
+        dto.setAssignedColleague(null);
+        dto.setReservation(reservation);
+        dto.setDocumentList(List.of());
+        return dto;
+    }
+
+     static CaseResponseDTO createCaseResponseDTO(Statuses status, DisruptionReasons reason) {
+        UUID id = UUID.randomUUID();
+        User client = createTestUser();
+        Reservation reservation = createTestReservation();
+        CaseResponseDTO dto = new CaseResponseDTO();
+        dto.setId(id);
+        dto.setStatus(status);
+        dto.setDisruptionReason(reason);
+        dto.setDisruptionInfo("Response disruption info");
+        dto.setDate(LocalDate.now());
+        dto.setClientId(client.getId());
+        dto.setAssignedColleagueId(null);
+        dto.setReservationId(reservation.getId());
+        dto.setDocumentIds(List.of());
+        return dto;
+    }
+
+     static List<Case> createCaseList() {
+        return List.of(
+                createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE),
+                createCase(Statuses.INVALID, DisruptionReasons.ARRIVED_3H_LATE)
+        );
+    }
 
     @BeforeEach
     void setUp() {
@@ -63,7 +142,7 @@ public class TestCaseService {
 
     @Test
     void getCases_ReturnsPaginatedCases() {
-        List<Case> cases = TestCaseFactory.createCaseList();
+        List<Case> cases = createCaseList();
         Pageable pageable = Pageable.unpaged();
         Page<Case> casePage = new org.springframework.data.domain.PageImpl<>(cases, pageable, cases.size());
 
@@ -76,7 +155,7 @@ public class TestCaseService {
 
     @Test
     void getCaseById_CaseExists_ReturnsCase() {
-        Case testCase = TestCaseFactory.createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
+        Case testCase = createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
         Mockito.when(caseRepository.findById(testCase.getId())).thenReturn(Optional.of(testCase));
 
         Optional<Case> result = caseService.getCaseById(testCase.getId());
@@ -97,8 +176,8 @@ public class TestCaseService {
 
     @Test
     void addCase_ValidCase_ReturnsSavedCase() {
-        CaseDTO caseDTO = TestCaseFactory.createCaseDTO(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
-        Case caseEntity = TestCaseFactory.createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
+        CaseDTO caseDTO = createCaseDTO(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
+        Case caseEntity = createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
 
         Mockito.when(caseRepository.save(Mockito.any(Case.class))).thenReturn(caseEntity);
 
@@ -111,8 +190,8 @@ public class TestCaseService {
 
     @Test
     void updateCase_CaseExists_ValidUpdate_ReturnsUpdatedCase() throws CaseNotFoundException {
-        CaseDTO updateDTO = TestCaseFactory.createCaseDTO(Statuses.VALID, DisruptionReasons.ARRIVED_3H_LATE);
-        Case dbCase = TestCaseFactory.createCase(Statuses.INVALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
+        CaseDTO updateDTO = createCaseDTO(Statuses.VALID, DisruptionReasons.ARRIVED_3H_LATE);
+        Case dbCase = createCase(Statuses.INVALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
 
         Mockito.when(caseRepository.findById(dbCase.getId())).thenReturn(Optional.of(dbCase));
         Mockito.when(caseRepository.save(Mockito.any(Case.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -126,7 +205,7 @@ public class TestCaseService {
 
     @Test
     void updateCase_CaseDoesNotExist_ThrowsCaseNotFoundException() {
-        CaseDTO updateDTO = TestCaseFactory.createCaseDTO(Statuses.VALID, DisruptionReasons.ARRIVED_3H_LATE);
+        CaseDTO updateDTO = createCaseDTO(Statuses.VALID, DisruptionReasons.ARRIVED_3H_LATE);
         UUID id = UUID.randomUUID();
 
         Mockito.when(caseRepository.findById(id)).thenReturn(Optional.empty());
