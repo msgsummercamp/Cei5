@@ -1,6 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
-import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -15,7 +14,6 @@ import {
   Validators,
   FormsModule,
   FormArray,
-  Form,
 } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -28,8 +26,8 @@ import { FlightManagementService } from '../../shared/services/flight-management
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
 import { ReservationDTO } from '../../shared/dto/reservation.dto';
 import { CaseDTO } from '../../shared/dto/case.dto';
-import { Statuses } from '../../shared/types/status.enum';
-import { DisruptionReason } from '../../shared/types/disruptionReason.enum';
+import { Statuses } from '../../shared/types/enums/status';
+import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 

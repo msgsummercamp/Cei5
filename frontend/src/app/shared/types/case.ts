@@ -1,5 +1,5 @@
-import { Statuses } from './status.enum';
-import { DisruptionReason } from './disruptionReason.enum';
+import { Statuses } from './enums/status';
+import { DisruptionReason } from './enums/disruption-reason';
 import { User } from './user';
 import { Reservation } from './reservation';
 import { Document } from './document';
