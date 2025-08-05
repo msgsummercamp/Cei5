@@ -3,6 +3,10 @@ package com.airassist.backend.testObjects;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.DisruptionReasons;
+import com.airassist.backend.model.enums.Roles;
+import com.airassist.backend.model.enums.Statuses;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
