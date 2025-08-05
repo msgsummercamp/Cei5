@@ -1,4 +1,4 @@
-import { Role } from '../types/role.enum';
+import { Roles } from '../types/enums/roles';
 import { CaseDTO } from './case.dto';
 export type UserDTO = {
   id?: string;
@@ -6,7 +6,7 @@ export type UserDTO = {
   password: string;
   firstName: string;
   lastName: string;
-  role: Role;
+  role: Roles;
   userDetails: {
     id?: string;
     phoneNumber: string;
