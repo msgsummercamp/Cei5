@@ -14,24 +14,24 @@ import { Language } from '../../types/language';
 export class NavbarComponent {
   public isLanguageDropdownOpen = false;
 
-  private translateService = inject(TranslateService);
-  private languageService = inject(LanguageService);
+  private readonly _translateService = inject(TranslateService);
+  private readonly _languageService = inject(LanguageService);
 
   public toggleLanguageMenu(): void {
     this.isLanguageDropdownOpen = !this.isLanguageDropdownOpen;
   }
 
   public selectLanguage(language: Language): void {
-    this.translateService.use(language.code);
-    this.languageService.setSelectedLanguage(language.code);
+    this._translateService.use(language.code);
+    this._languageService.setSelectedLanguage(language.code);
     this.isLanguageDropdownOpen = false;
   }
 
   public get selectedLanguageFlag(): string {
-    return this.languageService.getSelectedLanguageFlag();
+    return this._languageService.getSelectedLanguageFlag();
   }
 
   public get languages(): Language[] {
-    return this.languageService.getLanguages();
+    return this._languageService.getLanguages();
   }
 }
