@@ -1,4 +1,4 @@
-package com.airassist.backend.model;
+package com.airassist.backend.model.enums;
 
 public enum DocumentTypes {
     PDF,

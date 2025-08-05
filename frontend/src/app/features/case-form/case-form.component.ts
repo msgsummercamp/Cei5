@@ -1,16 +1,11 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
-import { FlightDetails, CaseFormComponent } from '../case-form/case-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
-import { StepNavigationService } from '../../services/step-navigation.service';
-import { ReservationInformation, ReservationService } from '../../services/reservation.service';
-import { FlightManagementService } from '../../services/flight-management.service';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -19,9 +14,20 @@ import {
   FormsModule,
   FormArray,
 } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
+import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
+import { StepNavigationService } from '../../shared/services/step-navigation.service';
+import {
+  ReservationInformation,
+  ReservationService,
+} from '../../shared/services/reservation.service';
+import { FlightManagementService } from '../../shared/services/flight-management.service';
+import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
 
 @Component({
-  selector: 'app-case-start',
+  selector: 'app-case-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     StepperModule,
@@ -30,16 +36,17 @@ import {
     AutoCompleteModule,
     ButtonModule,
     InputTextModule,
-    CaseFormComponent,
+    FlightFormComponent,
     MessageModule,
     ErrorMessageComponent,
     FormsModule,
     TagModule,
   ],
-  templateUrl: './case-start.component.html',
-  styleUrl: './case-start.component.scss',
+  templateUrl: './case-form.component.html',
+  styleUrl: './case-form.component.scss',
+  providers: [AirportsService],
 })
-export class CaseStartComponent {
+export class CaseFormComponent {
   // CONSTANTS
   public readonly MAXIMUM_CONNECTIONS = 4;
 
@@ -48,6 +55,7 @@ export class CaseStartComponent {
   private readonly _navigationService = inject(StepNavigationService);
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
+  private readonly _airportsService = inject(AirportsService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -77,11 +85,22 @@ export class CaseStartComponent {
   public isMainFlightValid = false;
   public flightData: FlightDetails | null = null;
 
-  // Getters
-  public get currentStep(): number {
-    return this._navigationService.getCurrentStep();
+  public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
+
+  public airportsSuggestion: AirportResponse[] = [];
+
+  public airports = toSignal(this._airportsService.airports$, {
+    initialValue: [] as AirportResponse[],
+  });
+
+  public search(event: AutoCompleteCompleteEvent): void {
+    const query = event.query;
+    this.airportsSuggestion = [...this.airports()].filter(
+      (airport) => !!airport.name && airport.name.toLowerCase().includes(query.toLowerCase())
+    );
   }
 
+  // Getters
   public get reservationInformation(): ReservationInformation {
     return this._reservationService.getReservationInformation();
   }

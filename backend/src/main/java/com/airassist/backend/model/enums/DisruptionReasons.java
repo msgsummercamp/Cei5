@@ -1,4 +1,4 @@
-package com.airassist.backend.model;
+package com.airassist.backend.model.enums;
 
 public enum DisruptionReasons {
     CANCELATION_NOTICE_UNDER_14_DAYS,
