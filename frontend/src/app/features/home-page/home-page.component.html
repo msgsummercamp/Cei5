@@ -5,7 +5,7 @@
     </h1>
 
     <div>
-      <p class="mb-4 line-height-3 text-base sm:text-lg md:text-lg">
+      <p class="mb-4 line-height-3 text-base sm:text-lg md:text-lg w-10">
         {{ 'homepage.claim-info' | translate }}
       </p>
 
@@ -39,15 +39,15 @@
     <img [src]="'flight_delayed.svg'" alt="Flight Delayed" class="w-full md:w-12 lg:w-16 h-auto" />
   </div>
 
-  <div class="info-cards flex flex-row my-8 gap-3 h-22rem">
-    <p-fieldset legend="{{'homepage.fieldsets.rights.title' | translate }}" class="w-4 h-full">
+  <div class="info-cards grid grid-nogutter mt-8 w-full">
+    <p-fieldset [legend]="'homepage.fieldsets.rights.title' | translate" class="col-12 lg:col">
       <div class="m-0 p-2 text-base text-justify line-height-3">
         {{ 'homepage.fieldsets.rights.text' | translate }}
 
         <p class="mt-4">{{ 'homepage.fieldsets.rights.goal' | translate }} </p>
       </div>
     </p-fieldset>
-    <p-fieldset legend="{{ 'homepage.fieldsets.when.title' | translate }}" class="w-4 h-full">
+    <p-fieldset legend="{{ 'homepage.fieldsets.when.title' | translate }}" class="col-12 lg:col mt-2 lg:mt-0 lg:ml-4">
       <div class="m-0 p-2 text-base text-justify line-height-3">
         <i class="pi pi-face-smile mr-2"></i> {{ 'homepage.fieldsets.when.point1' | translate }} <br />
         <i class="pi pi-face-smile mr-2"></i> {{ 'homepage.fieldsets.when.point2' | translate }} <br />
@@ -57,7 +57,7 @@
         </p>
       </div>
     </p-fieldset>
-    <p-fieldset legend="{{ 'homepage.fieldsets.compensation.title' | translate }}" class="w-4 h-full">
+    <p-fieldset legend="{{ 'homepage.fieldsets.compensation.title' | translate }}" class="col-12 lg:col mt-2 lg:mt-0 lg:ml-4">
       <div class="m-0 p-2 text-base text-justify line-height-3">
         {{ 'homepage.fieldsets.compensation.condition' | translate }}
 
@@ -87,3 +87,5 @@
     </p-fieldset>
   </div>
 </div>
+<router-outlet></router-outlet>
+<app-footer></app-footer>

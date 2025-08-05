@@ -1,0 +1,22 @@
+.footer-background {
+  z-index: 1;
+  background: url("../../../../../public/footer.svg") no-repeat center;
+  background-size: cover;
+  background-position: inherit;
+}
+
+.footer-text {
+  z-index: 100;
+  color: white;
+}
+
+::ng-deep {
+  .footer-background {
+    .p-button {
+      --p-button-primary-background: transparentize(#ffffff, 100%);
+      --p-button-text-primary-hover-background: transparentize(#ffffff, 100%);
+      --p-button-text-primary-active-background: transparentize(#ffffff, 100%);
+      --p-button-text-primary-color: white;
+    }
+  }
+}

@@ -36,5 +36,9 @@
         "amount": "Compensation"
       }
     }
+  },
+  "footer": {
+    "copyright": "© 2025 AirAssist. All rights reserved.",
+    "back_to_top": "Back to top"
   }
 }
