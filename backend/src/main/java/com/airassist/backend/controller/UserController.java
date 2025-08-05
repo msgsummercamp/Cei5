@@ -7,6 +7,7 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws DuplicateUserException {
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws DuplicateUserException, JsonProcessingException {
         User userToCreate = userMapper.userDTOToUser(userDTO);
         User createdUser = userService.addUser(userToCreate);
         UserResponseDTO response = userMapper.userToUserResponseDTO(createdUser);

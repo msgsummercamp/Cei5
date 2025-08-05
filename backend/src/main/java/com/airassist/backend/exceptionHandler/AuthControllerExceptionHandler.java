@@ -4,10 +4,12 @@ import com.airassist.backend.controller.AuthController;
 import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,27 +17,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AuthControllerExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<String> handleInvalidPassword(InvalidPasswordException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    public ProblemDetail handleInvalidPassword(InvalidPasswordException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<String> handleDuplicateUser(DuplicateUserException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
+    public ProblemDetail handleDuplicateUser(DuplicateUserException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "User already exists");
     }
 
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<String> handleInvalidToken(InvalidTokenException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    public ProblemDetail handleInvalidToken(InvalidTokenException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<String> handleMessagingException(MessagingException exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email: " + exception.getMessage());
+    public ProblemDetail handleMessagingException(MessagingException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send email: " + exception.getMessage());
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ProblemDetail handleJsonProcessingException(JsonProcessingException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process password JSON: " + exception.getMessage());
+    }
+
+    @ExceptionHandler(PasswordApiException.class)
+    public ProblemDetail handlePasswordApiException(PasswordApiException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to generate password: " + exception.getMessage());
     }
 }

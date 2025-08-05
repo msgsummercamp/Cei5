@@ -96,9 +96,7 @@ export class CaseFormComponent {
   public search(event: AutoCompleteCompleteEvent): void {
     const query = event.query;
     this.airportsSuggestion = [...this.airports()].filter(
-      (airport) =>
-        (!!airport.code && airport.code.toLowerCase().includes(query.toLowerCase())) ||
-        (!!airport.name && airport.name.toLowerCase().includes(query.toLowerCase()))
+      (airport) => !!airport.name && airport.name.toLowerCase().includes(query.toLowerCase())
     );
   }
 

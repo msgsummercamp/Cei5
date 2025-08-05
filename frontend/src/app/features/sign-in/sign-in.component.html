@@ -1,0 +1,77 @@
+<div
+  class="page-container h-full flex flex-column justify-content-center align-items-center mt-8 pt-8 sign-in-form-wrapper"
+>
+  <h2 class="text-3xl"> {{ 'sign-in.title' | translate }} </h2>
+  <form novalidate [formGroup]="signInForm" class="flex flex-column gap-4 mt-6">
+    <!-- Email Input -->
+    <div>
+      <p-floatlabel variant="on">
+        <label for="email">{{ 'sign-in.email-label' | translate }}</label>
+        <input pInputText type="email" formControlName="email" id="email" class="w-25rem h-3rem" />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (signInForm.controls.email.touched && signInForm.controls.email.errors) {
+          @switch (true) {
+            @case (signInForm.controls.email.hasError('required')) {
+              <app-error-message text="{{ 'sign-in.email-required' | translate }}" />
+            }
+            @case (signInForm.controls.email.hasError('email')) {
+              <app-error-message text="{{ 'sign-in.email-invalid' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Password Input -->
+    <div>
+      <p-floatlabel variant="on">
+        <label for="password">{{ 'sign-in.password-label' | translate }}</label>
+        <input
+          pInputText
+          type="password"
+          formControlName="password"
+          id="password"
+          class="w-25rem h-3rem"
+        />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (signInForm.controls.password.touched && signInForm.controls.password.errors) {
+          @switch (true) {
+            @case (signInForm.controls.password.hasError('required')) {
+              <app-error-message text="{{ 'sign-in.password-required' | translate }}" />
+            }
+            @case (signInForm.controls.password.hasError('minlength')) {
+              <app-error-message text="{{ 'sign-in.password-minlength' | translate }}" />
+            }
+            @case (signInForm.controls.password.hasError('maxlength')) {
+              <app-error-message text="{{ 'sign-in.password-maxlength' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Forgot Password Link -->
+    <div>
+      {{ 'sign-in.forgot-password' | translate
+      }}<p-button
+        label="{{ 'sign-in.here' | translate }}"
+        [link]="true"
+        class="custom-link-button pl-1"
+      />!
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <p-button
+        label="{{ 'sign-in.sign-in-button' | translate }}"
+        type="submit"
+        [disabled]="signInForm.invalid"
+        (click)="onFormSubmit()"
+        class="w-25rem h-3rem"
+        size="large"
+      ></p-button>
+    </div>
+  </form>
+</div>
