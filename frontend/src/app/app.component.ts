@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
-
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
