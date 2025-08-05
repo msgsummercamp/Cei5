@@ -16,7 +16,7 @@ public class AirportApiExceptionHandler {
 
     @ExceptionHandler(InvalidAirportDetailsException.class)
     public ProblemDetail handleAirportNotFound(InvalidAirportDetailsException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(JsonProcessingException.class)

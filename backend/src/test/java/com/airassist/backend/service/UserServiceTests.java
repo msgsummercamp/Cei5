@@ -2,11 +2,12 @@ package com.airassist.backend.service;
 
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
-import com.airassist.backend.model.Roles;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.airassist.backend.service.impl.UserServiceImpl;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
