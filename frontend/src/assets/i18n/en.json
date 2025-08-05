@@ -27,5 +27,23 @@
     "success": "Success",
     "info": "Info",
     "warning": "Warning"
+  },
+  "request-reset": {
+    "title": "Reset Password",
+    "description": "Enter your email address to receive a new temporary password. The first time you log in, you will be prompted to change your password.",
+    "email-label": "Email",
+    "email-required": "Email address is required.",
+    "email-invalid": "Please enter a valid email address.",
+    "submit-button": "Send Reset Mail"
+  },
+  "change-pass": {
+    "title": "Change Password",
+    "password-label": "New Password",
+    "password-required": "Password is required.",
+    "password-minlength": "Password must be at least 6 characters long.",
+    "password-maxlength": "Password cannot exceed 20 characters.",
+    "confirm-label": "Confirm Password",
+    "password-mismatch": "Passwords do not match.",
+    "submit-button": "Change Password"
   }
 }
