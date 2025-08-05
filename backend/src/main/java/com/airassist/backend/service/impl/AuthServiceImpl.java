@@ -7,6 +7,7 @@ import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
@@ -56,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException, JsonProcessingException {
+    public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException, JsonProcessingException, PasswordApiException {
         log.info("Registering user with email: {}", userDTO.getEmail());
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new DuplicateUserException();
@@ -72,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException {
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException, PasswordApiException {
         log.info("Resetting password for email: {}", resetPasswordRequest.getEmail());
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User with given email not found!"));

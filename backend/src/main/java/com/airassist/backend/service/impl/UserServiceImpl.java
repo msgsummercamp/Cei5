@@ -1,6 +1,7 @@
 package com.airassist.backend.service.impl;
 
 import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) throws DuplicateUserException, JsonProcessingException {
+    public User addUser(User user) throws DuplicateUserException, JsonProcessingException, PasswordApiException {
         String email = user.getEmail();
         logger.info("UserService - Attempting to add user: {}", email);
         checkForDuplicateEmail(email);

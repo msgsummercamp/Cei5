@@ -4,6 +4,7 @@ import com.airassist.backend.controller.AuthController;
 import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
@@ -43,5 +44,10 @@ public class AuthControllerExceptionHandler {
     @ExceptionHandler(JsonProcessingException.class)
     public ProblemDetail handleJsonProcessingException(JsonProcessingException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process password JSON: " + exception.getMessage());
+    }
+
+    @ExceptionHandler(PasswordApiException.class)
+    public ProblemDetail handlePasswordApiException(PasswordApiException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to generate password: " + exception.getMessage());
     }
 }
