@@ -43,6 +43,7 @@
     "password-minlength": "Password must be at least 6 characters long.",
     "password-maxlength": "Password cannot exceed 20 characters.",
     "confirm-label": "Confirm Password",
+    "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password"
   }

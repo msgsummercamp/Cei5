@@ -40,7 +40,9 @@ export class ChangePasswordPageComponent {
       newPassword: this._formBuilder.control('', {
         validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],
       }),
-      confirmPassword: this._formBuilder.control(''),
+      confirmPassword: this._formBuilder.control('', {
+        validators: [Validators.required],
+      }),
     },
     {
       validators: passwordsMatchValidator(),
@@ -48,7 +50,9 @@ export class ChangePasswordPageComponent {
   );
 
   protected onFormSubmit(): void {
-    const newPassword: string = this.changePasswordForm.get('newPassword')?.value || '';
-    this._authService.resetPassword(newPassword);
+    if (this.changePasswordForm.valid) {
+      const newPassword: string = this.changePasswordForm.get('newPassword')?.value || '';
+      this._authService.resetPassword(newPassword);
+    }
   }
 }
