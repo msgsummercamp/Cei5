@@ -95,7 +95,6 @@ export class CaseStartComponent {
     return this._reservationService.getReservationInformation();
   }
 
-
   public get connectionFlights(): [string, string][] {
     return this._flightService.getConnectionFlights();
   }
@@ -301,7 +300,7 @@ export class CaseStartComponent {
             error: (error) => {
               console.error('Error creating case:', error);
               // Add error handling here
-            }
+            },
           });
         } else {
           console.log('Client is not eligible for a case');
@@ -311,12 +310,11 @@ export class CaseStartComponent {
       error: (error) => {
         console.error('Error checking eligibility:', error);
         // Add error handling here
-      }
+      },
     });
   }
 
   private createReservationDTO(): ReservationDTO {
-
     return {
       reservationNumber: this.reservationInformation.reservationNumber,
       flights: this._flightService.getAllFlights().map((flight, index) => {
@@ -331,10 +329,10 @@ export class CaseStartComponent {
           departureTime: this.formatForLocalDateTime(departureDateTime), // Remove 'Z' for LocalDateTime
           arrivalTime: this.formatForLocalDateTime(arrivalDateTime), // Remove 'Z' for LocalDateTime
           airLine: flight.flightDetails.airline || 'UNKNOWN',
-          isProblematic: flight.isFlagged
+          isProblematic: flight.isFlagged,
         };
         return flightData;
-      })
+      }),
     };
   }
 

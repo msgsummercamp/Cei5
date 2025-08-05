@@ -1,6 +1,6 @@
-import {Role} from '../enums/role.enum';
-import {UserDetails} from './userDetails.interface';
-import {Case} from './case.interface';
+import { Role } from '../enums/role.enum';
+import { UserDetails } from './userDetails';
+import { Case } from './case';
 
 export type User = {
   id?: string;
@@ -13,4 +13,4 @@ export type User = {
   comments?: Comment[];
   cases: Case[];
   isFirstLogin?: boolean;
-}
+};

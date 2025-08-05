@@ -1,4 +1,4 @@
-import {Reservation} from './reservation.interface';
+import { Reservation } from './reservation';
 
 export type Flight = {
   id?: string;
@@ -11,4 +11,4 @@ export type Flight = {
   reservation: Reservation | null;
   airLine: string;
   isProblematic: boolean;
-}
+};

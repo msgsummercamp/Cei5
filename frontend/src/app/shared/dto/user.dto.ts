@@ -1,12 +1,12 @@
-import { Role } from "../enums/role.enum";
-import { CaseDTO } from "./case.dto";
+import { Role } from '../enums/role.enum';
+import { CaseDTO } from './case.dto';
 export type UserDTO = {
   id?: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-  role: Role; 
+  role: Role;
   userDetails: {
     id?: string;
     phoneNumber: string;
