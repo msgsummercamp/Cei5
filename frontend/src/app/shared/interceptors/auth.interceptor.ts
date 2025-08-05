@@ -12,6 +12,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const authToken = authService.jwtToken();
+  if (!authToken) {
+    return next(req);
+  }
 
   const clonedRequest = req.clone({
     setHeaders: {

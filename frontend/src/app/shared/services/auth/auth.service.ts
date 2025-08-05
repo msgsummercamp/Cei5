@@ -150,7 +150,7 @@ export class AuthService {
    * @param newPassword - The new password to set for the user.
    */
   public resetPassword(newPassword: string): void {
-    if (!this.isLoggedIn) {
+    if (!this.isLoggedIn()) {
       this._notificationService.showError(
         this._translationService.instant('auth-service.must-be-logged-for-reset')
       );
@@ -169,7 +169,7 @@ export class AuthService {
       isFirstLogin: false,
     };
 
-    this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId}`, patchRequest).subscribe({
+    this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId()}`, patchRequest).subscribe({
       next: () => {
         this._notificationService.showSuccess(
           this._translationService.instant('auth-service.password-reset-success')
@@ -224,6 +224,9 @@ export class AuthService {
         role: decodedToken.role,
       });
     } catch (error) {
+      this._notificationService.showError(
+        this._translationService.instant('auth-service.token-decode-error')
+      );
       this._authState.set(initialState);
     }
   }

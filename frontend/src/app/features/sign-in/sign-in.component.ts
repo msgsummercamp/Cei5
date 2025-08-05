@@ -37,7 +37,7 @@ export class SignInComponent {
 
   protected readonly signInForm = this._formBuilder.group<SignInForm>({
     email: this._formBuilder.control('', {
-      validators: [Validators.required, Validators.email, Validators.max(254)],
+      validators: [Validators.required, Validators.email, Validators.maxLength(254)],
     }),
     password: this._formBuilder.control('', {
       validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],

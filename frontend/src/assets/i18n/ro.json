@@ -6,7 +6,8 @@
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
-    "password-reset-success": "Resetarea parolei a fost realizată cu succes."
+    "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
+    "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou."
   },
   "sign-in": {
     "title": "Introduceți datele contului dvs.",

@@ -6,8 +6,6 @@ import { Injectable } from '@angular/core';
 export class AuthInterceptorConfigService {
   private readonly excludedRoutes = ['/auth/sign-in', '/auth/register', '/auth/reset-password'];
 
-  constructor() {}
-
   public isRouteExcluded(route: string): boolean {
     return this.excludedRoutes.some((excludedRoute) => route.includes(excludedRoute));
   }
