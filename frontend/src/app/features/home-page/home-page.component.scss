@@ -1,18 +1,20 @@
 ::ng-deep {
-  ::ng-deep .p-fieldset-legend {
-    color: #0c2c70;
-    font-size: 1.3rem;
-    text-align: center;
-    display: block;
-  }
+  .home-page-wrapper {
+    .p-fieldset-legend {
+      color: #0c2c70;
+      font-size: 1.3rem;
+      text-align: center;
+      display: block;
+    }
 
-  .p-fieldset {
-    transition: all 0.3s ease;
-    height: 100%;
-  }
+    .p-fieldset {
+      transition: all 0.3s ease;
+      height: 100%;
+    }
 
-  .p-fieldset:hover {
-    border-color: #0c2c70; /* PrimeFlex blue-900 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .p-fieldset:hover {
+      border-color: #0c2c70; /* PrimeFlex blue-900 */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
   }
 }
