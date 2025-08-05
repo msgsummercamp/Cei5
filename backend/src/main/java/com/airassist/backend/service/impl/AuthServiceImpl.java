@@ -11,6 +11,9 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.AuthService;
+import com.airassist.backend.service.MailSenderService;
+import com.airassist.backend.service.RandomPasswordGeneratorService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,7 +29,7 @@ import java.util.Date;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
