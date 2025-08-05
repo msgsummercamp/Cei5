@@ -39,9 +39,8 @@
   },
   "footer": {
     "copyright": "© 2025 AirAssist. Toate drepturile rezervate.",
-    "back_to_top": "Înapoi sus"
-  }
-  "Home": "Acasă",
+    "back-to-top": "Înapoi sus"
+  },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
     "disruptionTypeRequired": "Este necesar un tip de întrerupere.",

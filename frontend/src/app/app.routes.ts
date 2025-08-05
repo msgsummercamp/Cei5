@@ -12,7 +12,6 @@ export const routes: Routes = [
   {
     path: 'verify-case',
     redirectTo: '/form',
-    redirectTo: '/sign-in',
     pathMatch: 'full',
   },
   {

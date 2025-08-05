@@ -39,9 +39,8 @@
   },
   "footer": {
     "copyright": "© 2025 AirAssist. All rights reserved.",
-    "back_to_top": "Back to top"
-  }
-  "Home": "Home",
+    "back-to-top": "Back to top"
+  },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
     "disruptionTypeRequired": "A disruption type is required.",
