@@ -3,8 +3,7 @@
   right: 7rem;
   top: 1rem;
   height: auto;
-  background: #0C2C70;
-  background: linear-gradient(358deg, rgba(12, 44, 112, 1) 13%, rgba(65, 105, 225, 1) 90%);
+  background: rgba(36, 36, 36, 0.8);
   color: #fff;
   position: fixed;
   border-radius: 1rem;
@@ -12,7 +11,6 @@
 
 .navbar_items{
   display: flex;
-  margin-left: 2rem;
   width: 100%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -20,7 +18,8 @@
 }
 
 #navbar-logo{
-  margin-right: 2rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
   font-family: "Baloo", sans-serif;
   font-size: 1.2rem;
 }
@@ -55,7 +54,7 @@ a{
 .right_navbar_items{
   margin-left: auto;
   display: flex;
-  margin-right: 3.5rem;
+  margin-right: 1rem;
   align-items: center;
 }
 
@@ -70,7 +69,7 @@ a{
 
 #login_text{
   margin-right: 8rem;
-  margin-left: 0.2rem;
+  margin-left: 0.1rem;
 }
 
 .lang_dropdown_menu{
@@ -96,15 +95,10 @@ a{
   cursor: pointer;
   color: white;
   width: 100%;
-;
 }
 
 .lang_dropdown_img{
   margin-right: 0.2rem;
-
-}
-
-.active{
 }
 
 #loginButton{

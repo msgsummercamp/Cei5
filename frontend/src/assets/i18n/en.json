@@ -28,5 +28,7 @@
     "info": "Info",
     "warning": "Warning"
   },
-  "loginText": "Login"
+  "navbar": {
+    "login": "Login"
+  }
 }

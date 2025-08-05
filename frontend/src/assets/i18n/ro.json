@@ -27,5 +27,9 @@
     "success": "Succes",
     "info": "Info",
     "warning": "Avertisment"
+  },
+  "navbar": {
+    "login": "Loghează-te"
   }
+
 }

@@ -3,11 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
-
-export type Language = {
-  code: string;
-  flag: string;
-};
+import { Language } from '../../types/language';
 
 @Component({
   selector: 'app-navbar',
@@ -16,18 +12,19 @@ export type Language = {
   imports: [TranslateModule, RouterLink, RouterLinkActive, NgOptimizedImage, NgIf, NgForOf],
 })
 export class NavbarComponent {
-  public isDropdownOpen = false;
+  public isLanguageDropdownOpen = false;
+
   private translateService = inject(TranslateService);
   private languageService = inject(LanguageService);
 
-  public toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  public toggleLanguageMenu(): void {
+    this.isLanguageDropdownOpen = !this.isLanguageDropdownOpen;
   }
 
   public selectLanguage(language: Language): void {
     this.translateService.use(language.code);
     this.languageService.setSelectedLanguage(language.code);
-    this.isDropdownOpen = false;
+    this.isLanguageDropdownOpen = false;
   }
 
   public get selectedLanguageFlag(): string {

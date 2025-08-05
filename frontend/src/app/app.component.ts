@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   translateService = inject(TranslateService);
 
   ngOnInit() {
-    // Temporarily set the default language to Romanian
-    this.translateService.use('ro');
+    this.translateService.use('en');
   }
 }
