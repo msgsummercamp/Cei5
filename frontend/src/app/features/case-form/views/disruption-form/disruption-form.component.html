@@ -14,7 +14,7 @@
           <app-error-message text="A disruption type is required." />
         }
       </div>
-      <div>
+      <div class="mt-2">
         @if (this.disruptionForm.controls.disruptionType.value === 'Cancellation') {
           <p-message severity="secondary" variant="simple"
             >How many days before cancellation has the airline informed you?</p-message
@@ -65,11 +65,11 @@
           </div>
           <div>
             <p-radio-button
-              value="connection flight lost"
+              value="Never arrived"
               inputId="delay-answer3"
               formControlName="delayAnswer"
             ></p-radio-button>
-            <label for="delay-answer3">connection flight lost</label>
+            <label for="delay-answer3">Never arrived</label>
           </div>
         } @else if (this.disruptionForm.controls.disruptionType.value === 'Denied Boarding') {
           <p-message severity="secondary" variant="simple"
@@ -135,7 +135,7 @@
           }
         }
       </div>
-      <div>
+      <div class="mt-2">
         @if (
           this.disruptionForm.controls.disruptionType.value !== 'Denied Boarding' &&
           this.disruptionForm.controls.disruptionType.valid
@@ -170,68 +170,70 @@
             <label for="airline-motive-answer3">I don't know</label>
           </div>
 
-          @if (this.disruptionForm.controls.airlineMotiveAnswer.value === 'Yes') {
-            <p-message severity="secondary" variant="simple"
-              >What was the motive communicated by the airline?</p-message
-            >
+          <div class="mt-2">
+            @if (this.disruptionForm.controls.airlineMotiveAnswer.value === 'Yes') {
+              <p-message severity="secondary" variant="simple"
+                >What was the motive communicated by the airline?</p-message
+              >
 
-            <div>
-              <p-radio-button
-                value="Technical problems"
-                inputId="airline-motive-followup-answer1"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer1">Technical problems</label>
-            </div>
+              <div>
+                <p-radio-button
+                  value="Technical problems"
+                  inputId="airline-motive-followup-answer1"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer1">Technical problems</label>
+              </div>
 
-            <div>
-              <p-radio-button
-                value="Metereological conditions"
-                inputId="airline-motive-followup-answer2"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer2">Meteorological conditions</label>
-            </div>
+              <div>
+                <p-radio-button
+                  value="Metereological conditions"
+                  inputId="airline-motive-followup-answer2"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer2">Meteorological conditions</label>
+              </div>
 
-            <div>
-              <p-radio-button
-                value="Strike"
-                inputId="airline-motive-followup-answer3"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer3">Strike</label>
-            </div>
+              <div>
+                <p-radio-button
+                  value="Strike"
+                  inputId="airline-motive-followup-answer3"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer3">Strike</label>
+              </div>
 
-            <div>
-              <p-radio-button
-                value="Problems with airport"
-                inputId="airline-motive-followup-answer4"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer4">Problems with airport</label>
-            </div>
+              <div>
+                <p-radio-button
+                  value="Problems with airport"
+                  inputId="airline-motive-followup-answer4"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer4">Problems with airport</label>
+              </div>
 
-            <div>
-              <p-radio-button
-                value="Crew problems"
-                inputId="airline-motive-followup-answer5"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer5">Crew problems</label>
-            </div>
+              <div>
+                <p-radio-button
+                  value="Crew problems"
+                  inputId="airline-motive-followup-answer5"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer5">Crew problems</label>
+              </div>
 
-            <div>
-              <p-radio-button
-                value="Other motives"
-                inputId="airline-motive-followup-answer6"
-                formControlName="airlineMotiveFollowUpAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-followup-answer6">Other motives</label>
-            </div>
-          }
+              <div>
+                <p-radio-button
+                  value="Other motives"
+                  inputId="airline-motive-followup-answer6"
+                  formControlName="airlineMotiveFollowUpAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-followup-answer6">Other motives</label>
+              </div>
+            }
+          </div>
         }
       </div>
-      <div>
+      <div class="mt-2">
         @if (this.disruptionForm.controls.disruptionType.valid) {
           <p-floatlabel variant="on">
             <textarea

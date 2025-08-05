@@ -4,6 +4,7 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
+  ValueChangeEvent,
 } from '@angular/forms';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -40,6 +41,16 @@ type DisruptionForm = {
 export class DisruptionFormComponent {
   // CONSTANTS
   public readonly DISRUPTIONS = ['Cancellation', 'Delay', 'Denied Boarding'];
+  public readonly DISRUPTION_REASONS = [
+    'CANCELATION_NOTICE_UNDER_14_DAYS',
+    'CANCELATION_NOTICE_OVER_14_DAYS',
+    'CANCELATION_ON_DAY_OF_DEPARTURE',
+    'ARRIVED_3H_LATE',
+    'ARRIVED_EARLY',
+    'NEVER_ARRIVED',
+    'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY',
+    'DID_GIVE_THE_SEAT_VOLUNTARILY',
+  ];
 
   // Private State
   private readonly _formBuilder = inject(NonNullableFormBuilder);
@@ -58,4 +69,41 @@ export class DisruptionFormComponent {
       Validators.maxLength(1000),
     ]),
   });
+
+  /**
+   *
+   * @returns the text that is in the text box on the disruption form
+   */
+  public getDisruptionDescription(): string {
+    return this.disruptionForm.controls.disruptionInformation.value;
+  }
+
+  /**
+   *
+   * @returns the response from the disruption form that is needed for the backend
+   */
+  public getResponseForDisruption(): string {
+    const disruption = this.disruptionForm.controls;
+
+    if (disruption.disruptionType.value === 'Cancellation') {
+      if (disruption.cancellationAnswer.value === '>14 days') {
+        return this.DISRUPTION_REASONS[1];
+      } else if (disruption.cancellationAnswer.value === '<14 days') {
+        return this.DISRUPTION_REASONS[0];
+      }
+      return this.DISRUPTION_REASONS[2];
+    } else if (disruption.disruptionType.value === 'Delay') {
+      if (disruption.delayAnswer.value === '>3 hours') {
+        return this.DISRUPTION_REASONS[3];
+      } else if (disruption.delayAnswer.value === '<3 hours') {
+        return this.DISRUPTION_REASONS[4];
+      }
+      return this.DISRUPTION_REASONS[5];
+    } else {
+      if (disruption.deniedBoardingAnswer.value === 'No') {
+        return this.DISRUPTION_REASONS[6];
+      }
+      return this.DISRUPTION_REASONS[7];
+    }
+  }
 }

@@ -136,7 +136,7 @@
 
             <!-- Next Button -->
             <p-button
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               label="Next"
               severity="primary"
               (onClick)="onNext(nextCallback)"
@@ -271,13 +271,13 @@
               label="Back"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
             />
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!isNextButtonEnabled"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               (onClick)="onNextFromFlightDetails(nextCallback, mainFlightForm)"
             />
           </div>
@@ -325,13 +325,13 @@
               label="Back"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
             />
             <p-button
               label="Next"
               severity="primary"
               [disabled]="!areAllConnectionFlightsValid()"
-              [styleClass]="'px-6 h-2.5rem'"
+              [styleClass]="'px-6'"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
           </div>
@@ -350,7 +350,7 @@
             label="Back"
             severity="secondary"
             (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 h-2.5rem mt-8'"
+            [styleClass]="'px-6 mt-8'"
           />
         </ng-template>
       </p-step-panel>
