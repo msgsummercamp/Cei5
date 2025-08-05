@@ -1,5 +1,4 @@
 import { User } from './user';
-import { Timestamp } from 'rxjs';
 import { Case } from './case';
 
 export type Comment = {

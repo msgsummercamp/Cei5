@@ -56,22 +56,18 @@ public class CaseServiceImpl implements CaseService {
     }
 
     public Case createCase(CaseDTO caseDTO) {
-        // Map DTOs to entities
         Case caseToAdd = caseMapper.toEntity(caseDTO);
         Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
 
-        // Ensure each Flight has its parent Reservation set (if not handled by mapper)
         if (reservation.getFlights() != null) {
             reservation.getFlights().forEach(flight -> flight.setReservation(reservation));
         }
         caseToAdd.setReservation(reservation);
 
-        // Fetch client by ID
         User client = userRepository.findById(caseDTO.getClientID())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         caseToAdd.setClient(client);
 
-        // Handle existing reservation logic
         if (reservation.getId() != null) {
             boolean exists = reservationRepository.existsById(reservation.getId());
             if (exists) {
@@ -79,7 +75,7 @@ public class CaseServiceImpl implements CaseService {
                         .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
                 caseToAdd.setReservation(existingReservation);
             } else {
-                reservation.setId(null); // Treat as new entity
+                reservation.setId(null);
                 caseToAdd.setReservation(reservation);
             }
         }
@@ -108,8 +104,6 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
-        Case updatedCase;
-
         Case updateReqCase = caseMapper.toEntity(caseDTO);
         updateReqCase.setId(id);
         Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
@@ -118,7 +112,7 @@ public class CaseServiceImpl implements CaseService {
         });
         updateCaseFields(updateReqCase, caseToUpdate);
         logger.info("Service - updating case with ID: {}", id);
-        updatedCase = caseRepository.save(caseToUpdate);
+        Case updatedCase = caseRepository.save(caseToUpdate);
 
 
         return updatedCase;

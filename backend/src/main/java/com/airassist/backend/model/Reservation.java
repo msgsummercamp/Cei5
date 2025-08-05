@@ -1,6 +1,5 @@
 package com.airassist.backend.model;
 
-import com.airassist.backend.dto.flight.FlightDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"comments", "cases", "userDetails"})
+@ToString(exclude = {"comments", "cases", "userDetails","flights", "caseEntity"})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

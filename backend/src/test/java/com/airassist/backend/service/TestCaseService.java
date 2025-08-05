@@ -43,7 +43,6 @@ public class TestCaseService {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
-        caseService = new CaseServiceImpl(caseRepository, caseMapper,reservationMapper);
         userMapper = Mockito.mock(UserMapper.class);
         reservationMapper = Mockito.mock(ReservationMapper.class);
         caseService = new CaseServiceImpl(caseRepository,caseMapper,reservationMapper);
