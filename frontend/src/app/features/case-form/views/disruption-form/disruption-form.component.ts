@@ -1,4 +1,4 @@
-import { Component, inject, output, effect } from '@angular/core';
+import { Component, inject, output, effect, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -58,6 +58,8 @@ enum DisruptionsReasons {
 })
 export class DisruptionFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
+
+  private formValid = signal(false);
 
   protected readonly reasons = [
     Disruptions.Cancellation,
@@ -119,11 +121,15 @@ export class DisruptionFormComponent {
   }
 
   constructor() {
-    effect(() => {
-      this.disruptionForm.statusChanges.subscribe(() => {
-        const isValid = this.disruptionForm.valid;
-        this.validityChange.emit(isValid ? { valid: true } : null);
-      });
+    this.disruptionForm.statusChanges.subscribe(() => {
+      this.formValid.set(this.disruptionForm.valid);
     });
+
+    effect(() => {
+      const isValid = this.formValid();
+      this.validityChange.emit(isValid ? { valid: true } : null);
+    });
+
+    this.formValid.set(this.disruptionForm.valid);
   }
 }
