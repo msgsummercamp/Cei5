@@ -2,7 +2,7 @@ package com.airassist.backend.testObjects;
 
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserDetailsDTO;
-import com.airassist.backend.model.Roles;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 

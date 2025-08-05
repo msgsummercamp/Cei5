@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.auth.ResetPasswordRequest;
 import com.airassist.backend.dto.auth.SignInRequest;

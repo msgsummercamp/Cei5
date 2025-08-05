@@ -11,8 +11,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { DatePickerModule } from 'primeng/datepicker';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { arrivalAfterDepartureValidator } from '../../validators/arrivalAfterDepartureValidator';
+import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { arrivalAfterDepartureValidator } from '../../../../shared/validators/arrivalAfterDepartureValidator';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -33,7 +33,7 @@ type FlightDetailsForm = {
 };
 
 @Component({
-  selector: 'app-case-form',
+  selector: 'app-flight-form',
   imports: [
     CardModule,
     InputTextModule,
@@ -44,10 +44,10 @@ type FlightDetailsForm = {
     MessageModule,
     ErrorMessageComponent,
   ],
-  templateUrl: './case-form.component.html',
-  styleUrl: './case-form.component.scss',
+  templateUrl: './flight-form.component.html',
+  styleUrl: './flight-form.component.scss',
 })
-export class CaseFormComponent {
+export class FlightFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   // Date limits for flight date

@@ -56,7 +56,6 @@ public class MailSendingConfig {
     }
 
     @Bean
-    @Primary
     public ITemplateResolver thymeleafTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("templates/email/");
@@ -67,9 +66,9 @@ public class MailSendingConfig {
     }
 
     @Bean
-    public SpringTemplateEngine thymeleafTemplateEngine(ITemplateResolver templateResolver) {
+    public SpringTemplateEngine thymeleafTemplateEngine(ITemplateResolver thymeleafTemplateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.setTemplateResolver(thymeleafTemplateResolver);
         templateEngine.setTemplateEngineMessageSource(emailMessageSource());
         return templateEngine;
     }

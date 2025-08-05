@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
