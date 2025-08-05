@@ -1,18 +1,18 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { AuthState } from '../../models/auth/auth-state';
+import { AuthState } from '../../types/auth/auth-state';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import { DecodedToken } from '../../models/auth/decoded-token';
+import { DecodedToken } from '../../types/auth/decoded-token';
 import { jwtDecode } from 'jwt-decode';
-import { SignInRequest } from '../../models/auth/sign-in-request';
-import { SignInResponse } from '../../models/auth/sign-in-response';
-import { User } from '../../models/user';
+import { SignInRequest } from '../../types/auth/sign-in-request';
+import { SignInResponse } from '../../types/auth/sign-in-response';
+import { User } from '../../types/user';
 import { NotificationService } from '../toaster/notification.service';
 import {
   InitiatePasswordResetRequest,
   PasswordResetRequest,
-} from '../../models/auth/password-reset';
+} from '../../types/auth/password-reset';
 import { TranslateService } from '@ngx-translate/core';
 
 const initialState: AuthState = {
@@ -90,7 +90,7 @@ export class AuthService {
     this._httpClient.post<User>(`${this.API_URL}/auth/register`, req).subscribe({
       next: () => {
         this._notificationService.showSuccess(
-          this._translationService.instant('registration-success')
+          this._translationService.instant('auth-service.registration-success')
         );
         this._router.navigate(['/sign-in']);
       },
@@ -131,7 +131,7 @@ export class AuthService {
     this._httpClient.post<void>(`${this.API_URL}/auth/reset-password`, resetRequest).subscribe({
       next: () => {
         this._notificationService.showSuccess(
-          this._translationService.instant('password-reset-email-sent')
+          this._translationService.instant('auth-service.password-reset-email-sent')
         );
       },
       error: (error) => {
@@ -152,14 +152,14 @@ export class AuthService {
   public resetPassword(newPassword: string): void {
     if (!this.isLoggedIn) {
       this._notificationService.showError(
-        this._translationService.instant('must-be-logged-for-reset')
+        this._translationService.instant('auth-service.must-be-logged-for-reset')
       );
       return;
     }
 
     if (!newPassword) {
       this._notificationService.showError(
-        this._translationService.instant('password-null-or-empty')
+        this._translationService.instant('auth-service.password-null-or-empty')
       );
       return;
     }
@@ -172,7 +172,7 @@ export class AuthService {
     this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId}`, patchRequest).subscribe({
       next: () => {
         this._notificationService.showSuccess(
-          this._translationService.instant('password-reset-success')
+          this._translationService.instant('auth-service.password-reset-success')
         );
       },
       error: (error) => {

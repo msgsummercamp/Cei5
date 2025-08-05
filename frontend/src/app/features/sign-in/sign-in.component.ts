@@ -6,7 +6,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { SignInRequest } from '../../shared/models/auth/sign-in-request';
+import { SignInRequest } from '../../shared/types/auth/sign-in-request';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';

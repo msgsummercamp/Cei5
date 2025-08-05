@@ -1,6 +1,5 @@
 {
   "Home": "Acasa",
-  "Flight Date is required.": "Data zborului este obligatorie",
   "auth-service": {
     "email-required": "Adresa de email este obligatorie.",
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
