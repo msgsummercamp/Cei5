@@ -344,12 +344,23 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <app-disruption-form />
+          <app-disruption-form
+            #disruptionForm
+            (validityChange)="onDisruptionFormValidityChange($event)"
+          />
 
           <p-button
             label="Back"
             severity="secondary"
             (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="Next"
+            severity="primary"
+            [disabled]="!isDisruptionFormValid"
+            (onClick)="onNextFromDisruptionInfo(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />
         </ng-template>

@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output, effect } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
-  ValueChangeEvent,
 } from '@angular/forms';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -70,6 +69,8 @@ export class DisruptionFormComponent {
     ]),
   });
 
+  public readonly validityChange = output<{ valid: boolean } | null>();
+
   /**
    *
    * @returns the text that is in the text box on the disruption form
@@ -105,5 +106,14 @@ export class DisruptionFormComponent {
       }
       return this.DISRUPTION_REASONS[7];
     }
+  }
+
+  constructor() {
+    effect(() => {
+      this.disruptionForm.statusChanges.subscribe(() => {
+        const isValid = this.disruptionForm.valid;
+        this.validityChange.emit(isValid ? { valid: true } : null);
+      });
+    });
   }
 }
