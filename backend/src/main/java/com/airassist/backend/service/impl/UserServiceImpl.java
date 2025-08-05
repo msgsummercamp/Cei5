@@ -3,10 +3,11 @@ package com.airassist.backend.service.impl;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
+import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.service.RandomPasswordGeneratorService;
 import com.airassist.backend.service.UserService;
-import com.airassist.backend.utils.UserUtils;
+import com.airassist.backend.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +63,9 @@ public class UserServiceImpl implements UserService {
         logger.info("UserService - Attempting to update user: {}", id);
 
         /*Check for null values in non-nullable fields. This allows us to use the same dto for update and patch*/
-        if(user.getEmail() == null) {
-            logger.warn("Email cannot be null for user update");
-            throw new IllegalArgumentException("Email cannot be null");
-        }
-        if(user.getUserDetails() != null && user.getUserDetails().getPhoneNumber() == null) {
-            logger.warn("Phone number cannot be null for user update");
-            throw new IllegalArgumentException("Phone number cannot be null");
+        if(!UserValidator.userIsValidForUpdate(user)) {
+            logger.error("User with ID {} has invalid data for update", id);
+            throw new IllegalArgumentException("Invalid user data for update");
         }
 
         Optional<User> existingUserOpt = userRepository.findById(id);
@@ -81,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if(user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        UserUtils.updateUserFields(user, userToUpdate);
+        updateUserFields(user, userToUpdate);
         return userRepository.save(userToUpdate);
     }
 
@@ -100,7 +97,7 @@ public class UserServiceImpl implements UserService {
         if(user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        UserUtils.patchUserFields(user, userToPatch);
+        patchUserFields(user, userToPatch);
         return userRepository.save(userToPatch);
     }
 
@@ -122,4 +119,62 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Updates the fields of the target user with the values from the source user.
+     * Does not update the email field to prevent email changes.
+     * Does not update the role field to prevent role changes.
+     * It also updates the UserDetails associated with the user.
+     *
+     * @param source the source user containing updated fields
+     * @param target the target user to be updated
+     */
+    private void updateUserFields(User source, User target) {
+        target.setFirstName(source.getFirstName());
+        target.setLastName(source.getLastName());
+        target.setPassword(source.getPassword());
+        updateUserDetails(source.getUserDetails(), target.getUserDetails());
+    }
+
+    /**
+     * Updates the fields of the target UserDetails with the values from the source UserDetails.
+     *
+     * @param source the source UserDetails containing updated fields
+     * @param target the target UserDetails to be updated
+     */
+    private void updateUserDetails(UserDetails source, UserDetails target) {
+        target.setAddress(source.getAddress());
+        target.setPostalCode(source.getPostalCode());
+        target.setPhoneNumber(source.getPhoneNumber());
+        target.setBirthDate(source.getBirthDate());
+    }
+
+    /**
+     * Patches the target user with the values from the source user.
+     * This method allows partial updates to a user.
+     * It updates only the fields that are not null in the source user.
+     *
+     * @param source the source user containing new values
+     * @param target the target user to be patched
+     */
+    private void patchUserFields(User source, User target) {
+        if (source.getFirstName() != null) target.setFirstName(source.getFirstName());
+        if (source.getLastName() != null) target.setLastName(source.getLastName());
+        if (source.getPassword() != null) target.setPassword(source.getPassword());
+        if (source.getUserDetails() != null) {
+            patchUserDetails(source.getUserDetails(), target.getUserDetails());
+        }
+    }
+
+    /**
+     * Patches the target UserDetails with the values from the source UserDetails.
+     *
+     * @param source the source UserDetails containing new values
+     * @param target the target UserDetails to be patched
+     */
+    private void patchUserDetails(UserDetails source, UserDetails target) {
+        if (source.getAddress() != null) target.setAddress(source.getAddress());
+        if (source.getPostalCode() != null) target.setPostalCode(source.getPostalCode());
+        if (source.getPhoneNumber() != null) target.setPhoneNumber(source.getPhoneNumber());
+        if (source.getBirthDate() != null) target.setBirthDate(source.getBirthDate());
+    }
 }
