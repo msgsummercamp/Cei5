@@ -29,5 +29,8 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    MessageService,
+    importProvidersFrom(ToastModule),
   ],
 };

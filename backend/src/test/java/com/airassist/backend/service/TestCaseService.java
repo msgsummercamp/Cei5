@@ -12,6 +12,7 @@ import com.airassist.backend.model.DisruptionReasons;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.repository.ReservationRepository;
+import com.airassist.backend.service.impl.CaseServiceImpl;
 import com.airassist.backend.testObjects.TestCaseFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

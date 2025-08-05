@@ -1,5 +1,6 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
+import com.airassist.backend.service.MailSenderService;
 import jakarta.mail.*;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

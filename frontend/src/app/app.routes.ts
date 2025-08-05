@@ -12,4 +12,8 @@ export const routes: Routes = [
     path: 'form',
     component: CaseStartComponent,
   },
+  {
+    path: 'sign-in',
+    component: SignInComponent,
+  },
 ];

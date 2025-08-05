@@ -1,6 +1,7 @@
 package com.airassist.backend.service;
 
 import com.airassist.backend.exception.airport.InvalidAirportDetailsException;
+import com.airassist.backend.service.impl.AirportApiServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

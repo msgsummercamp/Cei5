@@ -1,4 +1,4 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
@@ -12,6 +12,7 @@ import com.airassist.backend.model.Flight;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.repository.ReservationRepository;
 import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.CaseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

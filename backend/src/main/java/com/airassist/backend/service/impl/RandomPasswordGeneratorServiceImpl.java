@@ -1,9 +1,10 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
+import com.airassist.backend.service.RandomPasswordGeneratorService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGeneratorService{
+public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGeneratorService {
 
     private final String SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
