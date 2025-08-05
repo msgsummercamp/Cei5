@@ -1,5 +1,6 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.service.impl.RandomPasswordGeneratorServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

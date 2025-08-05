@@ -1,5 +1,6 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.service.impl.AirportApiFetchServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

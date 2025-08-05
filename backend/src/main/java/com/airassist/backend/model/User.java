@@ -1,5 +1,6 @@
 package com.airassist.backend.model;
 
+import com.airassist.backend.model.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

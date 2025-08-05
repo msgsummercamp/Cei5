@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CaseFormComponent } from './features/case-form/case-form.component';
 import { CaseStartComponent } from './shared/components/case-start/case-start.component';
 import { NavbarTestComponent } from './shared/components/navbar-test/navbar.test.component';
 
@@ -11,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'form',
-    component: CaseStartComponent,
+    component: CaseFormComponent,
   },
   {
     path: 'navbar-test',

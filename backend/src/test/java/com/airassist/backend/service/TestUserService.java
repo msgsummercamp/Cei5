@@ -4,6 +4,7 @@ import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.impl.UserServiceImpl;
 import com.airassist.backend.testObjects.TestUserFactory;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
