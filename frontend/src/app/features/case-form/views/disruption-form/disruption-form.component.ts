@@ -11,6 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type DisruptionForm = {
   disruptionType: FormControl<string>;
@@ -23,6 +24,23 @@ type DisruptionForm = {
   disruptionInformation: FormControl<string>;
 };
 
+enum Disruptions {
+  Cancellation = 'Cancellation',
+  Delay = 'Delay',
+  Denied_Boarding = 'Denied_Boarding',
+}
+
+enum DisruptionsReasons {
+  CANCELATION_NOTICE_UNDER_14_DAYS = 'CANCELATION_NOTICE_UNDER_14_DAYS',
+  CANCELATION_NOTICE_OVER_14_DAYS = 'CANCELATION_NOTICE_OVER_14_DAYS',
+  CANCELATION_ON_DAY_OF_DEPARTURE = 'CANCELATION_ON_DAY_OF_DEPARTURE',
+  ARRIVED_3H_LATE = 'ARRIVED_3H_LATE',
+  ARRIVED_EARLY = 'ARRIVED_EARLY',
+  NEVER_ARRIVED = 'NEVER_ARRIVED',
+  DID_NOT_GIVE_THE_SEAT_VOLUNTARILY = 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY',
+  DID_GIVE_THE_SEAT_VOLUNTARILY = 'DID_GIVE_THE_SEAT_VOLUNTARILY',
+}
+
 @Component({
   selector: 'app-disruption-form',
   imports: [
@@ -33,28 +51,20 @@ type DisruptionForm = {
     MessageModule,
     TextareaModule,
     FloatLabelModule,
+    TranslatePipe,
   ],
   templateUrl: './disruption-form.component.html',
   styleUrl: './disruption-form.component.scss',
 })
 export class DisruptionFormComponent {
-  // CONSTANTS
-  public readonly DISRUPTIONS = ['Cancellation', 'Delay', 'Denied Boarding'];
-  public readonly DISRUPTION_REASONS = [
-    'CANCELATION_NOTICE_UNDER_14_DAYS',
-    'CANCELATION_NOTICE_OVER_14_DAYS',
-    'CANCELATION_ON_DAY_OF_DEPARTURE',
-    'ARRIVED_3H_LATE',
-    'ARRIVED_EARLY',
-    'NEVER_ARRIVED',
-    'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY',
-    'DID_GIVE_THE_SEAT_VOLUNTARILY',
-  ];
-
-  // Private State
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
-  // Protected State
+  protected readonly reasons = [
+    Disruptions.Cancellation,
+    Disruptions.Delay,
+    Disruptions.Denied_Boarding,
+  ];
+
   protected readonly disruptionForm = this._formBuilder.group<DisruptionForm>({
     disruptionType: this._formBuilder.control('', [Validators.required]),
     cancellationAnswer: this._formBuilder.control<string | null>(null),
@@ -86,25 +96,25 @@ export class DisruptionFormComponent {
   public getResponseForDisruption(): string {
     const disruption = this.disruptionForm.controls;
 
-    if (disruption.disruptionType.value === 'Cancellation') {
+    if (disruption.disruptionType.value === Disruptions.Cancellation) {
       if (disruption.cancellationAnswer.value === '>14 days') {
-        return this.DISRUPTION_REASONS[1];
+        return DisruptionsReasons.CANCELATION_NOTICE_OVER_14_DAYS;
       } else if (disruption.cancellationAnswer.value === '<14 days') {
-        return this.DISRUPTION_REASONS[0];
+        return DisruptionsReasons.CANCELATION_NOTICE_UNDER_14_DAYS;
       }
-      return this.DISRUPTION_REASONS[2];
-    } else if (disruption.disruptionType.value === 'Delay') {
+      return DisruptionsReasons.CANCELATION_ON_DAY_OF_DEPARTURE;
+    } else if (disruption.disruptionType.value === Disruptions.Delay) {
       if (disruption.delayAnswer.value === '>3 hours') {
-        return this.DISRUPTION_REASONS[3];
+        return DisruptionsReasons.ARRIVED_3H_LATE;
       } else if (disruption.delayAnswer.value === '<3 hours') {
-        return this.DISRUPTION_REASONS[4];
+        return DisruptionsReasons.ARRIVED_EARLY;
       }
-      return this.DISRUPTION_REASONS[5];
+      return DisruptionsReasons.NEVER_ARRIVED;
     } else {
       if (disruption.deniedBoardingAnswer.value === 'No') {
-        return this.DISRUPTION_REASONS[6];
+        return DisruptionsReasons.DID_NOT_GIVE_THE_SEAT_VOLUNTARILY;
       }
-      return this.DISRUPTION_REASONS[7];
+      return DisruptionsReasons.DID_GIVE_THE_SEAT_VOLUNTARILY;
     }
   }
 

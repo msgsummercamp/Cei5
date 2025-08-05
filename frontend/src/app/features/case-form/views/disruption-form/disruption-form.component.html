@@ -2,30 +2,39 @@
   <form novalidate [formGroup]="disruptionForm">
     <div>
       <p-select
-        [options]="DISRUPTIONS"
+        [options]="reasons"
         formControlName="disruptionType"
-        placeholder="Select a disruption type"
-      ></p-select>
+        placeholder="{{ 'disruption-form.selectPlaceholder' | translate }}"
+      >
+        <ng-template let-item pTemplate="item">
+          {{ 'disruption-form.selection.' + item | translate }}
+        </ng-template>
+        <ng-template let-item pTemplate="selectedItem">
+          {{ 'disruption-form.selection.' + item | translate }}
+        </ng-template>
+      </p-select>
       <div class="error-placeholder">
         @if (
           this.disruptionForm.controls.disruptionType.hasError('required') &&
           this.disruptionForm.controls.disruptionType.touched
         ) {
-          <app-error-message text="A disruption type is required." />
+          <app-error-message text="{{ 'disruption-form.disruptionTypeRequired' | translate }} " />
         }
       </div>
       <div class="mt-2">
         @if (this.disruptionForm.controls.disruptionType.value === 'Cancellation') {
-          <p-message severity="secondary" variant="simple"
-            >How many days before cancellation has the airline informed you?</p-message
-          >
+          <p-message severity="secondary" variant="simple">{{
+            'disruption-form.cancellationQuestion' | translate
+          }}</p-message>
           <div>
             <p-radio-button
               value=">14 days"
               inputId="cancellation-answer1"
               formControlName="cancellationAnswer"
             ></p-radio-button>
-            <label for="cancellation-answer1">>14 days</label>
+            <label for="cancellation-answer1">{{
+              'disruption-form.cancelRadioButton.>14 days' | translate
+            }}</label>
           </div>
           <div>
             <p-radio-button
@@ -33,7 +42,9 @@
               inputId="cancellation-answer2"
               formControlName="cancellationAnswer"
             ></p-radio-button>
-            <label for="cancellation-answer2"><14 days</label>
+            <label for="cancellation-answer2">{{
+              'disruption-form.cancelRadioButton.<14 days' | translate
+            }}</label>
           </div>
           <div>
             <p-radio-button
@@ -41,19 +52,23 @@
               inputId="cancellation-answer3"
               formControlName="cancellationAnswer"
             ></p-radio-button>
-            <label for="cancellation-answer3">On flight day</label>
+            <label for="cancellation-answer3">{{
+              'disruption-form.cancelRadioButton.On flight day' | translate
+            }}</label>
           </div>
         } @else if (this.disruptionForm.controls.disruptionType.value === 'Delay') {
-          <p-message severity="secondary" variant="simple"
-            >How late did you arrive to the destination?</p-message
-          >
+          <p-message severity="secondary" variant="simple">{{
+            'disruption-form.delayQuestion' | translate
+          }}</p-message>
           <div>
             <p-radio-button
               value=">3 hours"
               inputId="delay-answer1"
               formControlName="delayAnswer"
             ></p-radio-button>
-            <label for="delay-answer1">>3 hours</label>
+            <label for="delay-answer1">{{
+              'disruption-form.delayRadioButton.>3 hours' | translate
+            }}</label>
           </div>
           <div>
             <p-radio-button
@@ -61,7 +76,9 @@
               inputId="delay-answer2"
               formControlName="delayAnswer"
             ></p-radio-button>
-            <label for="delay-answer2"><3 hours</label>
+            <label for="delay-answer2">{{
+              'disruption-form.delayRadioButton.<3 hours' | translate
+            }}</label>
           </div>
           <div>
             <p-radio-button
@@ -69,19 +86,23 @@
               inputId="delay-answer3"
               formControlName="delayAnswer"
             ></p-radio-button>
-            <label for="delay-answer3">Never arrived</label>
+            <label for="delay-answer3">{{
+              'disruption-form.delayRadioButton.Never arrived' | translate
+            }}</label>
           </div>
         } @else if (this.disruptionForm.controls.disruptionType.value === 'Denied Boarding') {
-          <p-message severity="secondary" variant="simple"
-            >Did you give up your seat voluntarily?</p-message
-          >
+          <p-message severity="secondary" variant="simple">{{
+            'disruption-form.denialBoardingQuestion' | translate
+          }}</p-message>
           <div>
             <p-radio-button
               value="No"
               inputId="denied-boarding-answer1"
               formControlName="deniedBoardingAnswer"
             ></p-radio-button>
-            <label for="denied-boarding-answer1">No</label>
+            <label for="denied-boarding-answer1">{{
+              'disruption-form.denialBoardingRadioButton.No' | translate
+            }}</label>
           </div>
 
           <div>
@@ -90,20 +111,24 @@
               inputId="denied-boarding-answer2"
               formControlName="deniedBoardingAnswer"
             ></p-radio-button>
-            <label for="denied-boarding-answer2">Yes</label>
+            <label for="denied-boarding-answer2">{{
+              'disruption-form.denialBoardingRadioButton.Yes' | translate
+            }}</label>
           </div>
 
           @if (this.disruptionForm.controls.deniedBoardingAnswer.value === 'No') {
-            <p-message severity="secondary" variant="simple"
-              >Reasons behind denial of boarding:</p-message
-            >
+            <p-message severity="secondary" variant="simple">{{
+              'disruption-form.reasonsBehindDenialQuestion' | translate
+            }}</p-message>
             <div>
               <p-radio-button
                 value="Flight overbooked"
                 inputId="follow-up-answer-denied1"
                 formControlName="deniedBoardingFollowUpAnswer"
               ></p-radio-button>
-              <label for="follow-up-answer-denied1">Flight overbooked</label>
+              <label for="follow-up-answer-denied1">{{
+                'disruption-form.reasonsBehindDenial.overbookedFlight' | translate
+              }}</label>
             </div>
 
             <div>
@@ -112,7 +137,9 @@
                 inputId="follow-up-answer-denied2"
                 formControlName="deniedBoardingFollowUpAnswer"
               ></p-radio-button>
-              <label for="follow-up-answer-denied2">Aggressive behaviour with staff</label>
+              <label for="follow-up-answer-denied2">{{
+                'disruption-form.reasonsBehindDenial.aggressivePassenger' | translate
+              }}</label>
             </div>
 
             <div>
@@ -121,7 +148,9 @@
                 inputId="follow-up-answer-denied3"
                 formControlName="deniedBoardingFollowUpAnswer"
               ></p-radio-button>
-              <label for="follow-up-answer-denied3">Intoxication</label>
+              <label for="follow-up-answer-denied3">{{
+                'disruption-form.reasonsBehindDenial.intoxication' | translate
+              }}</label>
             </div>
 
             <div>
@@ -130,7 +159,9 @@
                 inputId="follow-up-answer-denied4"
                 formControlName="deniedBoardingFollowUpAnswer"
               ></p-radio-button>
-              <label for="follow-up-answer-denied4">Unspecified reason</label>
+              <label for="follow-up-answer-denied4">{{
+                'disruption-form.reasonsBehindDenial.unspecified' | translate
+              }}</label>
             </div>
           }
         }
@@ -140,16 +171,18 @@
           this.disruptionForm.controls.disruptionType.value !== 'Denied Boarding' &&
           this.disruptionForm.controls.disruptionType.valid
         ) {
-          <p-message severity="secondary" variant="simple"
-            >Did the airline mention disruption motive?</p-message
-          >
+          <p-message severity="secondary" variant="simple">{{
+            'disruption-form.airlineMotive.disruptingQuestion' | translate
+          }}</p-message>
           <div>
             <p-radio-button
               value="Yes"
               inputId="airline-motive-answer1"
               formControlName="airlineMotiveAnswer"
             ></p-radio-button>
-            <label for="airline-motive-answer1">Yes</label>
+            <label for="airline-motive-answer1">{{
+              'disruption-form.airlineMotive.disruptingRadioButton.Yes' | translate
+            }}</label>
           </div>
 
           <div>
@@ -158,7 +191,9 @@
               inputId="airline-motive-answer2"
               formControlName="airlineMotiveAnswer"
             ></p-radio-button>
-            <label for="airline-motive-answer2">No</label>
+            <label for="airline-motive-answer2">{{
+              'disruption-form.airlineMotive.disruptingRadioButton.No' | translate
+            }}</label>
           </div>
 
           <div>
@@ -167,14 +202,16 @@
               inputId="airline-motive-answer3"
               formControlName="airlineMotiveAnswer"
             ></p-radio-button>
-            <label for="airline-motive-answer3">I don't know</label>
+            <label for="airline-motive-answer3">{{
+              "disruption-form.airlineMotive.disruptingRadioButton.I don't know" | translate
+            }}</label>
           </div>
 
           <div class="mt-2">
             @if (this.disruptionForm.controls.airlineMotiveAnswer.value === 'Yes') {
-              <p-message severity="secondary" variant="simple"
-                >What was the motive communicated by the airline?</p-message
-              >
+              <p-message severity="secondary" variant="simple">{{
+                'disruption-form.airlineMotive.airlineMotiveQuestion' | translate
+              }}</p-message>
 
               <div>
                 <p-radio-button
@@ -182,7 +219,9 @@
                   inputId="airline-motive-followup-answer1"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer1">Technical problems</label>
+                <label for="airline-motive-followup-answer1">{{
+                  'disruption-form.airlineMotive.airlineMotives.technicalProblems' | translate
+                }}</label>
               </div>
 
               <div>
@@ -191,7 +230,9 @@
                   inputId="airline-motive-followup-answer2"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer2">Meteorological conditions</label>
+                <label for="airline-motive-followup-answer2">{{
+                  'disruption-form.airlineMotive.airlineMotives.badWeather' | translate
+                }}</label>
               </div>
 
               <div>
@@ -200,7 +241,9 @@
                   inputId="airline-motive-followup-answer3"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer3">Strike</label>
+                <label for="airline-motive-followup-answer3">{{
+                  'disruption-form.airlineMotive.airlineMotives.strike' | translate
+                }}</label>
               </div>
 
               <div>
@@ -209,7 +252,11 @@
                   inputId="airline-motive-followup-answer4"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer4">Problems with airport</label>
+                <label for="airline-motive-followup-answer4">
+                  {{
+                    'disruption-form.airlineMotive.airlineMotives.airportProblems' | translate
+                  }}</label
+                >
               </div>
 
               <div>
@@ -218,7 +265,9 @@
                   inputId="airline-motive-followup-answer5"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer5">Crew problems</label>
+                <label for="airline-motive-followup-answer5">{{
+                  'disruption-form.airlineMotive.airlineMotives.crewProblems' | translate
+                }}</label>
               </div>
 
               <div>
@@ -227,7 +276,9 @@
                   inputId="airline-motive-followup-answer6"
                   formControlName="airlineMotiveFollowUpAnswer"
                 ></p-radio-button>
-                <label for="airline-motive-followup-answer6">Other motives</label>
+                <label for="airline-motive-followup-answer6">{{
+                  'disruption-form.airlineMotive.airlineMotives.other' | translate
+                }}</label>
               </div>
             }
           </div>
@@ -243,7 +294,9 @@
               formControlName="disruptionInformation"
               id="disruptionInformation"
             ></textarea>
-            <label for="disruptionInformation">Description</label>
+            <label for="disruptionInformation">{{
+              'disruption-form.disruptionDescription' | translate
+            }}</label>
           </p-floatlabel>
           <div class="error-placeholder">
             @if (
@@ -252,11 +305,11 @@
             ) {
               @switch (true) {
                 @case (this.disruptionForm.controls.disruptionInformation.hasError('required')) {
-                  <app-error-message text="The description should not be empty." />
+                  <app-error-message text="{{ 'disruption-form.emptyDescription' | translate }}" />
                 }
                 @case (this.disruptionForm.controls.disruptionInformation.hasError('maxlength')) {
                   <app-error-message
-                    text="The description should have less than 1000 characters."
+                    text="{{ 'disruption-form.maxLengthDescription' | translate }}"
                   />
                 }
               }

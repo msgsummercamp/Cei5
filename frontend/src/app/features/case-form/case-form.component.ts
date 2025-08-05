@@ -162,7 +162,6 @@ export class CaseFormComponent {
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
     const allFlights = this._flightService.getAllFlights();
     this._navigationService.goBackFromDisruptionInfo(allFlights.length);
-    console.log(allFlights.length);
     if (prevCallback) {
       prevCallback();
     }
