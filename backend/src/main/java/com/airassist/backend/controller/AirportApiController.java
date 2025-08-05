@@ -1,8 +1,8 @@
 package com.airassist.backend.controller;
 
 import com.airassist.backend.model.Airport;
-import com.airassist.backend.service.AirportApiFetchServiceImpl;
-import com.airassist.backend.service.AirportApiServiceImpl;
+import com.airassist.backend.service.impl.AirportApiFetchServiceImpl;
+import com.airassist.backend.service.impl.AirportApiServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
