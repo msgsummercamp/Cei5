@@ -1,10 +1,12 @@
-package com.airassist.backend.service;
+package com.airassist.backend.service.impl;
 
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
 import com.airassist.backend.repository.UserRepository;
+import com.airassist.backend.service.RandomPasswordGeneratorService;
+import com.airassist.backend.service.UserService;
 import com.airassist.backend.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
