@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit, effect } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -30,6 +30,8 @@ import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CompensationService } from '../../shared/services/compensation.service';
 
 @Component({
   selector: 'app-case-form',
@@ -47,12 +49,13 @@ import { DisruptionFormComponent } from './views/disruption-form/disruption-form
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    TranslatePipe,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
   providers: [AirportsService],
 })
-export class CaseFormComponent {
+export class CaseFormComponent implements OnInit {
   // CONSTANTS
   public readonly MAXIMUM_CONNECTIONS = 4;
 
@@ -63,6 +66,7 @@ export class CaseFormComponent {
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _airportsService = inject(AirportsService);
+  private readonly _compensationService = inject(CompensationService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -97,6 +101,39 @@ export class CaseFormComponent {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
+  public compensation?: number;
+
+  public readonly departingAirportValue = toSignal(
+    this.reservationForm.controls.departingAirport.valueChanges
+  );
+  public readonly destinationAirportValue = toSignal(
+    this.reservationForm.controls.destinationAirport.valueChanges
+  );
+
+  constructor() {
+    effect(() => {
+      this.compensation = undefined;
+      const dep = this.departingAirportValue();
+      const dest = this.destinationAirportValue();
+      if (!!dep && !!dest) {
+        this._compensationService.calculateDistance(dep, dest);
+      }
+    });
+  }
+
+  public ngOnInit() {
+    this._compensationService.compensation$.subscribe((data) => {
+      this.compensation = data;
+    });
+  }
+
+  public calculateCompensation() {
+    const departingAirport = this.reservationForm.controls.departingAirport.value;
+    const destinationAirport = this.reservationForm.controls.destinationAirport.value;
+    if (!!departingAirport && !!destinationAirport) {
+      this._compensationService.calculateDistance(departingAirport, destinationAirport);
+    }
+  }
 
   public search(event: AutoCompleteCompleteEvent): void {
     const query = event.query;

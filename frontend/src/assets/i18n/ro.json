@@ -41,6 +41,10 @@
     "copyright": "© 2025 AirAssist. Toate drepturile rezervate.",
     "back-to-top": "Înapoi sus"
   },
+  "case-form": {
+    "compensation-start": "Felicitări! Poți câștiga până la €",
+    "compensation-end": ". Apasă next pentru a continua."
+  },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
     "disruptionTypeRequired": "Este necesar un tip de întrerupere.",
