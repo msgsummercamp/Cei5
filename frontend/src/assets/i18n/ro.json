@@ -80,5 +80,24 @@
     "success": "Succes",
     "info": "Info",
     "warning": "Avertisment"
+  },
+  "request-reset": {
+    "title": "Resetare parolă",
+    "description": "Introduceți adresa de email pentru a primi o nouă parolă temporară. La prima autentificare vi se va solicita să schimbați parola.",
+    "email-label": "Email",
+    "email-required": "Adresa de email este obligatorie.",
+    "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
+    "submit-button": "Trimite mail-ul de resetare"
+  },
+  "change-pass": {
+    "title": "Schimbă parola",
+    "password-label": "Parolă nouă",
+    "password-required": "Parola este obligatorie.",
+    "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
+    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "confirm-required": "Vă rugăm să confirmați parola.",
+    "confirm-label": "Confirmă parola",
+    "password-mismatch": "Parolele nu coincid.",
+    "submit-button": "Schimbă parola"
   }
 }

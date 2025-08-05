@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth/auth.service';
 import {
   FormControl,
@@ -33,6 +34,7 @@ type SignInForm = {
 })
 export class SignInComponent {
   private readonly _authService = inject(AuthService);
+  private readonly _router = inject(Router);
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   protected readonly signInForm = this._formBuilder.group<SignInForm>({
@@ -49,5 +51,9 @@ export class SignInComponent {
       const signInRequest: SignInRequest = this.signInForm.getRawValue();
       this._authService.logIn(signInRequest);
     }
+  }
+
+  protected navigateToPasswordReset(): void {
+    this._router.navigate(['/request-password-reset']);
   }
 }

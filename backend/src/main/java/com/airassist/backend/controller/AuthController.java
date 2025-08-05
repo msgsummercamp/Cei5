@@ -7,6 +7,7 @@ import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.dto.user.UserResponseDTO;
 import com.airassist.backend.exception.auth.InvalidPasswordException;
 import com.airassist.backend.exception.user.DuplicateUserException;
+import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
@@ -35,14 +36,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserDTO userToRegister) throws DuplicateUserException, MessagingException, JsonProcessingException {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserDTO userToRegister) throws DuplicateUserException, MessagingException, JsonProcessingException, PasswordApiException {
         User newUser = authService.register(userToRegister);
         UserResponseDTO userResponse = userMapper.userToUserResponseDTO(newUser);
         return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws MessagingException, UserNotFoundException, JsonProcessingException {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) throws MessagingException, UserNotFoundException, JsonProcessingException, PasswordApiException {
         authService.resetPassword(request);
         return ResponseEntity.ok().build();
     }
