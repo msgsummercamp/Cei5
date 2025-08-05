@@ -1,0 +1,14 @@
+import { Component } from '@angular/core';
+import { Button } from 'primeng/button';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { Fieldset } from 'primeng/fieldset';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
+
+@Component({
+  selector: 'app-home-page',
+  imports: [Button, RouterLink, Fieldset, TranslatePipe, FooterComponent, RouterOutlet],
+  templateUrl: './home-page.component.html',
+  styleUrl: './home-page.component.scss',
+})
+export class HomePageComponent {}

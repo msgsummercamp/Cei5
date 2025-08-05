@@ -1,5 +1,46 @@
 {
-  "Home": "Acasă",
+  "home": "Acasă",
+  "homepage": {
+    "question": "Zbor întârziat sau anulat? Obține compensația cuvenită!",
+    "claim-info": "Poți primi până la 600 € pentru întârzieri, anulări sau suprarezervări, conform reglementărilor UE și UK.",
+    "button-check-flight": "Verifică zborul",
+    "simple": {
+      "title": "E simplu",
+      "submit-details": "Completezi detaliile zborului.",
+      "check-eligibility": "Verificăm eligibilitatea.",
+      "get-paid": "Primești banii – noi ne ocupăm de compania aeriană."
+    },
+    "why": {
+      "title": "De ce să alegi platforma noastră?",
+      "point1": "Plătești doar dacă câștigi.",
+      "point2": "Revendicare rapidă, fără complicații.",
+      "point3": "Specialiști în compensații pentru zboruri."
+    },
+    "fieldsets": {
+      "rights": {
+        "title": "Drepturile tale conform legislației UE (EC 261/2004)",
+        "text": "Regulamentul (CE) nr. 261/2004 este o lege europeană care protejează pasagerii aerieni. Companiile aeriene sunt obligate să ofere compensații (până la 600 €) și asistență în caz de anulare, întârziere mai mare de 3 ore sau refuz la îmbarcare.",
+        "goal": "Scopul: pasagerii să fie tratați corect atunci când le sunt afectate planurile de călătorie."
+      },
+      "when": {
+        "title": "Când se aplică regulamentul EC 261/2004?",
+        "point1": "Pentru zboruri cu plecare dintr-un aeroport din UE.",
+        "point2": "Pentru zboruri care sosesc într-un aeroport din UE, operate de o companie aeriană din UE.",
+        "point3": "Te-ai prezentat la timp la check-in.",
+        "note": "Notă: Nu se acordă compensații în cazuri excepționale, precum condiții meteo extreme sau probleme de securitate."
+      },
+      "compensation": {
+        "title": "Valoarea compensațiilor",
+        "condition": "Dacă vina aparține companiei aeriene:",
+        "distance": "Distanța zborului",
+        "amount": "Valoarea compensației"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 AirAssist. Toate drepturile rezervate.",
+    "back-to-top": "Înapoi sus"
+  },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
     "disruptionTypeRequired": "Este necesar un tip de întrerupere.",

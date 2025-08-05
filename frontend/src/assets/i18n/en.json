@@ -1,5 +1,46 @@
 {
-  "Home": "Home",
+  "home": "Home",
+  "homepage": {
+    "question": "Delayed? Cancelled? Get the compensation you deserve!",
+    "claim-info": "You can claim up to €600 for delays, cancellations, or overbookings under EU and UK regulations.",
+    "button-check-flight": "Check your flight",
+    "simple": {
+      "title": "It’s Simple",
+      "submit-details": "Submit your flight details.",
+      "check-eligibility": "We check your eligibility.",
+      "get-paid": "You get paid – we handle the airline!"
+    },
+    "why": {
+      "title": "Why Choose Us?",
+      "point1": "No win, no fee.",
+      "point2": "Quick, hassle-free claims.",
+      "point3": "Experts in flight compensation law."
+    },
+    "fieldsets": {
+      "rights": {
+        "title": "Your Rights Under EU Law (EC 261/2004)",
+        "text": "Regulation (EC) No. 261/2004 is an EU law that protects air passengers. It requires airlines to offer compensation (up to €600) and assistance when flights are cancelled, delayed over 3 hours, or boarding is denied.",
+        "goal": "The goal: ensure passengers are fairly treated when their travel plans are disrupted."
+      },
+      "when": {
+        "title": "When Does EC 261/2004 Apply?",
+        "point1": "Flights departing from an EU airport.",
+        "point2": "Flights arriving at an EU airport with an EU airline.",
+        "point3": "You checked in on time.",
+        "note": "Note: Compensation is not applicable for extraordinary circumstances like severe weather or security issues."
+      },
+      "compensation": {
+        "title": "Compensation Amounts",
+        "condition": "If the airline is responsible for the disruption:",
+        "distance": "Flight Distance",
+        "amount": "Compensation"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 AirAssist. All rights reserved.",
+    "back-to-top": "Back to top"
+  },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
     "disruptionTypeRequired": "A disruption type is required.",
