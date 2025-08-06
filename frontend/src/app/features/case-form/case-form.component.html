@@ -307,6 +307,20 @@
                                         'mainForm.connectionsShouldBedifferent' | translate
                                       }}"
                                     />
+                                  } @else if (
+                                    airport.touched &&
+                                    reservationInformation.departingAirport === airport.value
+                                  ) {
+                                    <app-error-message
+                                      text="{{ 'mainForm.usedDepartingAirport' | translate }}"
+                                    />
+                                  } @else if (
+                                    airport.touched &&
+                                    reservationInformation.destinationAirport === airport.value
+                                  ) {
+                                    <app-error-message
+                                      text="{{ 'mainForm.usedDestinationAirport' | translate }}"
+                                    />
                                   }
                                 </div>
                               </div>
@@ -422,7 +436,7 @@
           />
         </ng-template>
       </p-step-panel>
-      <!-- Step 5: Disruption Info -->
+      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"

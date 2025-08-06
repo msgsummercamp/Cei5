@@ -175,7 +175,9 @@
     "connectionDestinationUpper": "Airport code must be 3 uppercase letters.",
     "reservationPattern": "Reservation number must be alphanumeric.",
     "destinationIsDeparting": "The departing airport cannot be the same as the destination airport.",
-    "connectionsShouldBedifferent": "Connections should be different."
+    "connectionsShouldBedifferent": "Connections should be different.",
+    "usedDepartingAirport": "Don't use the departing airport as connection.",
+    "usedDestinationAirport": "Don't use the destination airport as connection."
   },
   "flightForm": {
     "flightNumber": "Flight Number",
