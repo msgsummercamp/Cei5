@@ -1,29 +1,36 @@
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
-<nav class="navbar">
-  <div class="navbar_items">
-    <div class="navbar_item" id="navbar-logo">AIR ASSIST</div>
-    <a class="navbar_item" id="homeButton" routerLink="/navbar-test" routerLinkActive="active">{{ 'Home' | translate }}</a>
-    <div class="right_navbar_items">
-      <button class="navbar_item" id="loginButton">
-        <span class="navbar_item" id="profile" routerLink="/profile">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-          </svg>
-        </span>
-        <p class="navbar_item" id="login_text">{{ 'navbar.login' | translate }}</p>
-      </button>
-      <div class="navbar_item" id="language_dropdown">
-        <button class="selected_lang_btn" (click)="toggleLanguageMenu()">
-          <img [ngSrc]="selectedLanguageFlag" alt="Language Image" height="16" width="16"/>
+<div class="flex flex-wrap w-full top-0 left-0 right-0 fixed">
+  <p-menubar [model]="items" class="custom-navbar w-full">
+    <ng-template pTemplate="start">
+      <span class="font-bold text-xl" style="font-family: 'Baloo 2', sans-serif">AIR ASSIST</span>
+      <ng-template pTemplate="item" let-item>
+        <span>{{ item.label | translate }}</span>
+      </ng-template>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+      <div class="flex align-items-center gap-3">
+        <button pButton type="button" class="p-button-text" routerLink="/sign-in">
+          <i class="pi pi-user"></i>
+          {{ 'navbar.login' | translate }}
         </button>
-        <div class="lang_dropdown_menu" *ngIf="isLanguageDropdownOpen">
-          <button class="lang_dropdown_button" *ngFor="let language of languages" (click)="selectLanguage(language)">
-            <img class="lang_dropdown_img" ngSrc="{{language.flag}}" [alt]="language.code" width="20" height="20"/>
-            <span class="lang_dropdown_text">{{ language.code }}</span>
-          </button>
+        <div class="flex align-items-center">
+          <img [src]="selectedLanguageFlag" alt="Language" width="24" height="24" class="mr-2" />
+          <p-select
+            [options]="languages"
+            [ngModel]="_languageService.getSelectedLanguageCode()"
+            (ngModelChange)="selectLanguage($event)"
+            [placeholder]="_languageService.getSelectedLanguageCode()"
+          >
+            <ng-template pTemplate="item" let-language>
+              <img [src]="language.flag" alt="Language" width="24" height="24" class="mr-2" />
+              {{ language.code }}
+            </ng-template>
+            <ng-template pTemplate="selectedItem" let-language>
+              {{ language?.code }}
+            </ng-template>
+          </p-select>
         </div>
       </div>
-    </div>
-  </div>
-</nav>
-
+    </ng-template>
+  </p-menubar>
+</div>

@@ -1,13 +1,18 @@
 import { Routes } from '@angular/router';
 import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CaseFormComponent } from './features/case-form/case-form.component';
+import { TestNavbarComponent } from './test_navbar/test_navbar.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
   {
     path: '',
-    redirectTo: '/form',
+    redirectTo: '/test_navbar',
     pathMatch: 'full',
+  },
+  {
+    path: 'test_navbar',
+    component: TestNavbarComponent,
   },
   {
     path: 'form',

@@ -15,6 +15,10 @@ export class LanguageService {
     return this.languages.find((lang) => lang.code === this.selectedLanguage)?.flag || '';
   }
 
+  public getSelectedLanguageCode(): string {
+    return this.selectedLanguage;
+  }
+
   public setSelectedLanguage(languageCode: string): void {
     this.selectedLanguage = languageCode;
   }
