@@ -231,7 +231,7 @@
                   <div formArrayName="airports" class="flex flex-column gap-2">
                     @if (airportsArray.length > 0) {
                       <div class="align-self-center mt-2">
-                        @for (airport of airportsArray.controls; track $index) {
+                        @for (airport of airportsArray.controls; track airport; let i = $index) {
                           @if (airport !== null) {
                             <div class="grid justify-content-between align-items-center mb-4">
                               <div class="flex flex-column">
@@ -239,8 +239,8 @@
                                   <p-autocomplete
                                     [dropdown]="true"
                                     class="w-15rem h-2rem"
-                                    id="connectionFlight{{ $index }}"
-                                    [formControlName]="$index"
+                                    [id]="'connectionFlight' + i"
+                                    [formControlName]="i"
                                     [suggestions]="airportsSuggestion"
                                     (completeMethod)="search($event)"
                                     optionValue="code"
@@ -249,7 +249,7 @@
                                     [virtualScroll]="true"
                                     [virtualScrollItemSize]="50"
                                   />
-                                  <label for="connectionFlight{{ $index }}">{{
+                                  <label [for]="'connectionFlight' + i">{{
                                     'mainForm.connection' | translate
                                   }}</label>
                                 </p-floatlabel>
@@ -291,7 +291,7 @@
                               <p-button
                                 icon="pi pi-trash"
                                 severity="danger"
-                                (onClick)="removeConnectionFlight($index)"
+                                (onClick)="removeConnectionFlight(i)"
                                 [styleClass]="'px-1 py-1 text-xs'"
                                 class="ml-2 mb-1"
                               />
