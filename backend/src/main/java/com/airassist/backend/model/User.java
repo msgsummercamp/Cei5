@@ -56,6 +56,6 @@ public class User {
     @OneToMany(mappedBy = "assignedColleague")
     private List<Case> cases;
 
-    @Column(nullable = false,columnDefinition ="boolean default true")
-    private boolean isFirstLogin ;
+    @Column(columnDefinition ="boolean default true")
+    private Boolean isFirstLogin ;
 }
