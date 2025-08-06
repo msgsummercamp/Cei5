@@ -24,7 +24,7 @@
                   pInputText
                   id="reservationNumber"
                   formControlName="reservationNumber"
-                  class="w-25rem h-3rem inputclass"
+                  class="w-26rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
                   'mainForm.reservationNumber' | translate
@@ -60,7 +60,7 @@
             <div>
               <p-floatlabel variant="on">
                 <p-autocomplete
-                  [styleClass]="'w-25rem h-3rem'"
+                  [styleClass]="'w-26rem h-3rem'"
                   id="departingAirport"
                   formControlName="departingAirport"
                   [dropdown]="true"
@@ -111,7 +111,7 @@
                   id="destinationAirport"
                   formControlName="destinationAirport"
                   [dropdown]="true"
-                  [styleClass]="'w-25rem h-3rem'"
+                  [styleClass]="'w-26rem h-3rem'"
                   [suggestions]="airportsSuggestion"
                   (completeMethod)="search($event)"
                   optionValue="code"
@@ -151,6 +151,9 @@
                       />
                     }
                   }
+                }
+                @if (reservationForm.hasError('destinationIsDeparting')) {
+                  <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                 }
               </div>
             </div>

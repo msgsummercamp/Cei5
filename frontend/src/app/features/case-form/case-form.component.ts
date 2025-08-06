@@ -32,6 +32,7 @@ import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 import { CompensationService } from '../../shared/services/compensation.service';
+import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 
 @Component({
   selector: 'app-case-form',
@@ -69,26 +70,29 @@ export class CaseFormComponent implements OnInit {
   private readonly _compensationService = inject(CompensationService);
 
   // Form for reservation details
-  protected readonly reservationForm = this._formBuilder.group({
-    reservationNumber: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(6),
-      Validators.pattern(/^[a-zA-Z0-9]+$/),
-    ]),
-    departingAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-    destinationAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-  });
+  protected readonly reservationForm = this._formBuilder.group(
+    {
+      reservationNumber: new FormControl<string>('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6),
+        Validators.pattern(/^[a-zA-Z0-9]+$/),
+      ]),
+      departingAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+      destinationAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+    },
+    { validators: departingAirportIsDestinationAirport() }
+  );
 
   protected readonly airportFormArray = this._formBuilder.group({
     airports: this._formBuilder.array<string>([]),

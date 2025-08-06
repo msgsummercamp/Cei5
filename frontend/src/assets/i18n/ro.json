@@ -173,7 +173,8 @@
     "connectionDestinationRequired": "Destinația conexiunii este obligatorie.",
     "connectionDestinationLength": "Codul aeroportului trebuie să aibă exact 3 caractere.",
     "connectionDestinationUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
-    "reservationPattern": "Numărul rezervării trebuie să fie alfanumeric."
+    "reservationPattern": "Numărul rezervării trebuie să fie alfanumeric.",
+    "destinationIsDeparting": "Aeroportul de plecare nu poate fi același cu aeroportul de destinație."
   },
   "flightForm": {
     "flightNumber": "Numărul zborului",
