@@ -99,5 +99,32 @@
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola"
+  },
+  "user-details": {
+    "email-label": "Email",
+    "email-required": "Adresa de email este obligatorie.",
+    "email-invalid": "Adresă de email invalidă.",
+    "email-length": "Adresa de email este prea lungă.",
+    "firstname-label": "Prenume",
+    "firstname-required": "Prenumele este obligatoriu.",
+    "firstname-minlength": "Prenumele este prea scurt.",
+    "firstname-maxlength": "Prenumele este prea lung.",
+    "lastname-label": "Nume",
+    "lastname-required": "Numele este obligatoriu.",
+    "lastname-minlength": "Numele este prea scurt.",
+    "lastname-maxlength": "Numele este prea lung.",
+    "address-label": "Adresă",
+    "address-required": "Adresa este obligatorie.",
+    "address-maxlength": "Adresa este prea lungă.",
+    "phoneNumber-label": "Număr de telefon",
+    "phoneNumber-required": "Numărul de telefon este obligatoriu.",
+    "phoneNumber-invalid": "Număr de telefon invalid.",
+    "phoneNumber-minlength": "Numărul de telefon este prea scurt.",
+    "phoneNumber-invalidFormat": "Formatul numărului de telefon nu este corect.",
+    "postalCode-label": "Cod poștal",
+    "postalCode-required": "Codul poștal este obligatoriu.",
+    "postalCode-maxlength": "Codul poștal este prea lung.",
+    "postalCode-invalid": "Cod poștal invalid.",
+    "birthDate-required": "Data nașterii este obligatorie."
   }
 }

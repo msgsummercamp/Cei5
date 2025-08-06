@@ -30,6 +30,8 @@ import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
+import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
+import { User } from '../../shared/types/user';
 
 @Component({
   selector: 'app-case-form',
@@ -47,6 +49,7 @@ import { DisruptionFormComponent } from './views/disruption-form/disruption-form
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    UserRegistrationComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -92,6 +95,8 @@ export class CaseFormComponent {
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
+  public isUserRegistrationValid = false;
+  public userRegistrationData: User | null = null;
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
   public airportsSuggestion: AirportResponse[] = [];
   public airports = toSignal(this._airportsService.airports$, {
@@ -250,6 +255,15 @@ export class CaseFormComponent {
     }
   }
 
+  public onNextFromUserRegistration(nextCallback?: Function): void {
+    if (this.isUserRegistrationValid) {
+      this._navigationService.nextStep();
+      if (nextCallback) {
+        nextCallback();
+      }
+    }
+  }
+
   public addConnectionFlight(): void {
     if (this.airportsArray.length < this.MAXIMUM_CONNECTIONS) {
       const airportControl = this._formBuilder.control('', [
@@ -287,6 +301,11 @@ export class CaseFormComponent {
 
   public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
     this.isDisruptionFormValid = event?.valid ?? false;
+  }
+
+  public onUserRegistrationValidityChange(event: { valid: boolean; data: User | null }): void {
+    this.isUserRegistrationValid = event.valid;
+    this.userRegistrationData = event.data;
   }
 
   public areAllConnectionFlightsValid(): boolean {

@@ -99,5 +99,32 @@
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password"
+  },
+  "user-details": {
+    "email-label": "Email",
+    "email-required": "Email is required.",
+    "email-invalid": "Invalid email address.",
+    "email-length": "Email is too long.",
+    "firstname-label": "First Name",
+    "firstname-required": "First name is required.",
+    "firstname-minlength": "First name is too short.",
+    "firstname-maxlength": "First name is too long.",
+    "lastname-label": "Last Name",
+    "lastname-required": "Last name is required.",
+    "lastname-minlength": "Last name is too short.",
+    "lastname-maxlength": "Last name is too long.",
+    "address-label": "Address",
+    "address-required": "Address is required.",
+    "address-maxlength": "Address is too long.",
+    "phoneNumber-label": "Phone Number",
+    "phoneNumber-required": "Phone number is required.",
+    "phoneNumber-invalid": "Invalid phone number.",
+    "phoneNumber-minlength": "Phone number is too short.",
+    "phoneNumber-invalidFormat": "Phone number format is wrong.",
+    "postalCode-label": "Postal Code",
+    "postalCode-required": "Postal code is required.",
+    "postalCode-maxlength": "Postal code is too long.",
+    "postalCode-invalid": "Invalid postal code.",
+    "birthDate-required": "Birthdate is required."
   }
 }

@@ -62,7 +62,7 @@ export class AuthService {
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
-          this._router.navigate(['/dashboard']);
+          this._router.navigate(['/form']);
         }
       },
       error: (error) => {
