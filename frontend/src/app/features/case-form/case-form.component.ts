@@ -264,6 +264,10 @@ export class CaseFormComponent implements OnInit {
           reservation.departingAirport,
           reservation.destinationAirport
         );
+
+        if (this.flightData) {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
+        }
       }
 
       if (nextCallback) {
@@ -305,6 +309,11 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
+      if (this.flightData && this.airportsArray.length > 0) {
+        setTimeout(() => {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+        }, 100);
+      }
     }
   }
 
@@ -314,6 +323,12 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
+      } else {
+        if (this.flightData) {
+          setTimeout(() => {
+            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+          }, 100);
+        }
       }
     }
   }
@@ -329,6 +344,10 @@ export class CaseFormComponent implements OnInit {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+
+    if (data && this.airportsArray.length > 0) {
+      this._flightService.updateConnectionTimesFromMainFlight(data);
+    }
   }
 
   public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
@@ -431,23 +450,4 @@ export class CaseFormComponent implements OnInit {
     const airport = this.airports().find((a) => a.code === code);
     return airport ? `${airport.name} (${airport.code})` : code;
   }
-
-  // public ceva(airportLabel: string): boolean {
-  //   console.log(
-  //     'Checking airport:',
-  //     this.airportFormArray.hasError('connectionsShouldBeDifferent')
-  //   );
-  //   console.log(airportLabel);
-
-  //   if (this.airportFormArray.hasError('connectionsShouldBeDifferent')) {
-  //     const airports = this.airportsArray.value ?? [];
-  //     let hasError = false;
-  //     airports.forEach((element) => {
-  //       hasError = hasError || element === airportLabel;
-  //     });
-  //     console.log('Has error:', hasError);
-  //     return hasError;
-  //   }
-  //   return false;
-  // }
 }
