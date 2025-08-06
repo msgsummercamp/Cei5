@@ -11,7 +11,7 @@
     <!-- Flight Number -->
     <div>
       <p-floatlabel variant="on">
-        <label for="flightNumber">Flight Number</label>
+        <label for="flightNumber">{{ 'flightForm.flightNumber' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -28,13 +28,13 @@
         ) {
           @switch (true) {
             @case (flightDetailsForm.controls.flightNumber.hasError('required')) {
-              <app-error-message text="Flight Number is required." />
+              <app-error-message text="{{ 'flightForm.flightNumberRequired' | translate }}" />
             }
             @case (flightDetailsForm.controls.flightNumber.hasError('minlength')) {
-              <app-error-message text="Flight Number must be at least 3 characters." />
+              <app-error-message text="{{ 'flightForm.flightNumberMinLength' | translate }}" />
             }
             @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
-              <app-error-message text="Flight Number must be at most 6 characters." />
+              <app-error-message text="{{ 'flightForm.flightNumberMaxLength' | translate }}" />
             }
           }
         }
@@ -44,7 +44,7 @@
     <!-- Airline -->
     <div>
       <p-floatlabel variant="on">
-        <label for="airline">Airline</label>
+        <label for="airline">{{ 'flightForm.airline' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -60,13 +60,13 @@
         ) {
           @switch (true) {
             @case (flightDetailsForm.controls.airline.hasError('required')) {
-              <app-error-message text="Airline name is required." />
+              <app-error-message text="{{ 'flightForm.airlineRequired' | translate }}" />
             }
             @case (flightDetailsForm.controls.airline.hasError('minlength')) {
-              <app-error-message text="Airline name must be at least 3 characters." />
+              <app-error-message text="{{ 'flightForm.airlineMinLength' | translate }}" />
             }
             @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
-              <app-error-message text="Airline number must be at most 50 characters." />
+              <app-error-message text="{{ 'flightForm.airlineMaxLength' | translate }}" />
             }
             @default {}
           }
@@ -89,14 +89,16 @@
           (onSelect)="checkAndEmitValidity()"
           [styleClass]="'w-25rem h-3rem'"
         />
-        <label for="plannedDepartureTime">Planned Departure Time</label>
+        <label for="plannedDepartureTime">{{
+          'flightForm.plannedDepartureTime' | translate
+        }}</label>
       </p-floatlabel>
       <div class="error-placeholder">
         @if (
           flightDetailsForm.controls.plannedDepartureTime.hasError('required') &&
           flightDetailsForm.controls.plannedDepartureTime.touched
         ) {
-          <app-error-message text="Planned Departure Time is required." />
+          <app-error-message text="{{ 'flightForm.plannedDepartureTimeRequired' | translate }}" />
         }
       </div>
     </div>
@@ -116,21 +118,21 @@
           (onSelect)="checkAndEmitValidity()"
           [styleClass]="'w-25rem h-3rem'"
         />
-        <label for="plannedArrivalTime">Planned Arrival Time</label>
+        <label for="plannedArrivalTime">{{ 'flightForm.plannedArrivalTime' | translate }}</label>
       </p-floatlabel>
       <div class="error-placeholder">
         @if (
           flightDetailsForm.controls.plannedArrivalTime.hasError('required') &&
           flightDetailsForm.controls.plannedArrivalTime.touched
         ) {
-          <app-error-message text="Planned Arrival Time is required." />
+          <app-error-message text="{{ 'flightForm.plannedArrivalTimeRequired' | translate }}" />
         }
         @if (
           flightDetailsForm.hasError('arrivalBeforeDeparture') &&
           flightDetailsForm.controls.plannedArrivalTime.touched &&
           flightDetailsForm.controls.plannedDepartureTime.touched
         ) {
-          <app-error-message text="Arrival time must be after departure time." />
+          <app-error-message text="{{ 'flightForm.arrivalBeforeDeparture' | translate }}" />
         }
       </div>
     </div>

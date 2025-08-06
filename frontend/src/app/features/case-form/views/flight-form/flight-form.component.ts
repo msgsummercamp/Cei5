@@ -13,6 +13,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageModule } from 'primeng/message';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { arrivalAfterDepartureValidator } from '../../../../shared/validators/arrivalAfterDepartureValidator';
+import { TranslatePipe } from '@ngx-translate/core';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -43,6 +44,7 @@ type FlightDetailsForm = {
     AutoCompleteModule,
     MessageModule,
     ErrorMessageComponent,
+    TranslatePipe,
   ],
   templateUrl: './flight-form.component.html',
   styleUrl: './flight-form.component.scss',
