@@ -223,7 +223,9 @@ export class AuthService {
         sessionStorage.setItem('userDetails', JSON.stringify(user));
       },
       error: (error) => {
-        this._notificationService.showError('Failed to fetch user details: ' + error.message);
+        this._notificationService.showError(
+          this._translationService.instant('auth-service.fetch-user-details-error')
+        );
       },
     });
   }
