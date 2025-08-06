@@ -1,6 +1,8 @@
 <div
-  class="user-registration-container h-full flex flex-column justify-content-center align-items-center mt-3 pt-8"
+  class="user-registration-container h-full flex flex-column justify-content-center align-items-center mt-3 pt-3"
 >
+  <p-header class="text-3xl">{{ 'user-details.title' | translate }}</p-header>
+  <p>{{ 'user-details.subtitle' | translate }}</p>
   <form novalidate [formGroup]="userRegistrationForm" class="flex flex-column gap-4 mt-3">
     <!-- Email Input -->
     <div>
@@ -124,6 +126,7 @@
     <div>
       <p-intl-tel-input
         formControlName="phoneNumber"
+        [lang]="'en'"
         [favoriteCountries]="[countryISO.Romania, countryISO.UnitedStates]"
         [enableAutoCountrySelect]="true"
         [displayPlaceholder]="true"
@@ -201,10 +204,11 @@
           [showTime]="false"
           [minDate]="minDate"
           [maxDate]="maxDate"
+          [defaultDate]="maxDate"
           [readonlyInput]="true"
           [styleClass]="'w-25rem h-3rem'"
         />
-        <label for="birthDate">Birthdate</label>
+        <label for="birthDate">{{ 'user-details.birthDate-label' | translate }}</label>
       </p-floatlabel>
       <div class="error-placeholder">
         @if (
@@ -215,5 +219,7 @@
         }
       </div>
     </div>
+
   </form>
+  <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
 </div>

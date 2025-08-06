@@ -87,7 +87,8 @@
     "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
-    "submit-button": "Trimite mail-ul de resetare"
+    "submit-button": "Trimite mail-ul de resetare",
+    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară."
   },
   "change-pass": {
     "title": "Schimbă parola",
@@ -101,6 +102,8 @@
     "submit-button": "Schimbă parola"
   },
   "user-details": {
+    "title": "Detalii utilizator",
+    "subtitle": "Vă rugăm să completați detaliile dvs.",
     "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Adresă de email invalidă.",
@@ -118,13 +121,17 @@
     "address-maxlength": "Adresa este prea lungă.",
     "phoneNumber-label": "Număr de telefon",
     "phoneNumber-required": "Numărul de telefon este obligatoriu.",
-    "phoneNumber-invalid": "Număr de telefon invalid.",
     "phoneNumber-minlength": "Numărul de telefon este prea scurt.",
-    "phoneNumber-invalidFormat": "Formatul numărului de telefon nu este corect.",
+    "phoneNumber-invalidFormat": "Formatul numărului de telefon nu este valid.",
     "postalCode-label": "Cod poștal",
     "postalCode-required": "Codul poștal este obligatoriu.",
     "postalCode-maxlength": "Codul poștal este prea lung.",
     "postalCode-invalid": "Cod poștal invalid.",
-    "birthDate-required": "Data nașterii este obligatorie."
+    "birthDate-label": "Data nașterii",
+    "birthDate-required": "Data nașterii este obligatorie.",
+    "password-email": "Daca nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare."
+  },
+  "stepper": {
+    "step6": "Detalii utilizator"
   }
 }

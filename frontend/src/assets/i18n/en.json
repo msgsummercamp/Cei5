@@ -87,7 +87,8 @@
     "email-label": "Email",
     "email-required": "Email address is required.",
     "email-invalid": "Please enter a valid email address.",
-    "submit-button": "Send Reset Mail"
+    "submit-button": "Send Reset Mail",
+    "email-sent": "You will receive an email in a few minutes with your temporary password."
   },
   "change-pass": {
     "title": "Change Password",
@@ -101,6 +102,8 @@
     "submit-button": "Change Password"
   },
   "user-details": {
+    "title": "User Details",
+    "subtitle": "Please fill in your details.",
     "email-label": "Email",
     "email-required": "Email is required.",
     "email-invalid": "Invalid email address.",
@@ -118,13 +121,17 @@
     "address-maxlength": "Address is too long.",
     "phoneNumber-label": "Phone Number",
     "phoneNumber-required": "Phone number is required.",
-    "phoneNumber-invalid": "Invalid phone number.",
     "phoneNumber-minlength": "Phone number is too short.",
-    "phoneNumber-invalidFormat": "Phone number format is wrong.",
+    "phoneNumber-invalidFormat": "Phone number format is invalid.",
     "postalCode-label": "Postal Code",
     "postalCode-required": "Postal code is required.",
     "postalCode-maxlength": "Postal code is too long.",
     "postalCode-invalid": "Invalid postal code.",
-    "birthDate-required": "Birthdate is required."
+    "birthDate-label": "Birth Date",
+    "birthDate-required": "Birthdate is required.",
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+  },
+  "stepper": {
+    "step6": "User Details"
   }
 }

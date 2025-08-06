@@ -32,6 +32,8 @@ import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
 import { User } from '../../shared/types/user';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-case-form',
@@ -50,6 +52,7 @@ import { User } from '../../shared/types/user';
     TagModule,
     DisruptionFormComponent,
     UserRegistrationComponent,
+    TranslatePipe,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -66,6 +69,7 @@ export class CaseFormComponent {
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _airportsService = inject(AirportsService);
+  private readonly _userService = inject(UserService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group({
@@ -96,7 +100,8 @@ export class CaseFormComponent {
   public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
   public isUserRegistrationValid = false;
-  public userRegistrationData: User | null = null;
+  public loggedInUserData = this._userService.userDetails;
+  public userDetailsFormData: User | null = null;
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
   public airportsSuggestion: AirportResponse[] = [];
   public airports = toSignal(this._airportsService.airports$, {
@@ -303,9 +308,19 @@ export class CaseFormComponent {
     this.isDisruptionFormValid = event?.valid ?? false;
   }
 
-  public onUserRegistrationValidityChange(event: { valid: boolean; data: User | null }): void {
-    this.isUserRegistrationValid = event.valid;
-    this.userRegistrationData = event.data;
+  public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
+    this.isUserRegistrationValid = valid;
+    this.userDetailsFormData = data;
+  }
+
+  public get userRegistrationInitialData(): User | undefined {
+    if (this.loggedInUserData()) {
+      return this.loggedInUserData();
+    } else if (this.userDetailsFormData) {
+      return this.userDetailsFormData;
+    } else {
+      return undefined;
+    }
   }
 
   public areAllConnectionFlightsValid(): boolean {
@@ -313,12 +328,7 @@ export class CaseFormComponent {
   }
 
   public submitCase(): void {
-    // Add validation before submitting
-    console.log('Submit case called');
-    console.log('All flights:', this._flightService.getAllFlights());
-
     if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
-      console.error('No flights available');
       return;
     }
 
@@ -333,30 +343,25 @@ export class CaseFormComponent {
       documentList: [],
     };
 
-    console.log('Case data to submit:', caseData);
-
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
-        console.log('Eligibility check result:', isEligible);
         if (isEligible) {
           this._caseService.createCase(caseData).subscribe({
             next: (response) => {
-              console.log('Case created successfully', response);
-              // Add success handling here
+              // #TODO Add success handling here
             },
             error: (error) => {
-              console.error('Error creating case:', error);
-              // Add error handling here
+              // #TODO Add error handling here
             },
           });
         } else {
           console.log('Client is not eligible for a case');
-          // Add handling for ineligible case
+          // #TODO Add handling for ineligible case
         }
       },
       error: (error) => {
         console.error('Error checking eligibility:', error);
-        // Add error handling here
+        // #TODO Add error handling here
       },
     });
   }

@@ -15,12 +15,29 @@ import {
 } from '../../types/auth/password-reset';
 import { TranslateService } from '@ngx-translate/core';
 
+const defaultUser: User = {
+  id: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  role: undefined,
+  userDetails: {
+    id: '',
+    address: '',
+    phoneNumber: '',
+    postalCode: '',
+    birthDate: '',
+  },
+  isFirstLogin: false,
+};
+
 const initialState: AuthState = {
   isAuthenticated: false,
   id: '',
   email: '',
   token: '',
   role: '',
+  user: defaultUser,
 };
 
 @Injectable({
@@ -39,6 +56,7 @@ export class AuthService {
   public userEmail = computed(() => this._authState().email);
   public jwtToken = computed(() => this._authState().token);
   public userRole = computed(() => this._authState().role);
+  public user = computed(() => this._authState().user);
 
   constructor() {
     this.restoreAuthState();
@@ -58,6 +76,7 @@ export class AuthService {
         const token = response.token;
         this.saveTokenToSessionStorage(token);
         this.decodeTokenAndSetState(token);
+        this.fetchFullUserDetails();
         // #TODO replace with real routes
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
@@ -106,6 +125,7 @@ export class AuthService {
    */
   public logOut(): void {
     this.clearTokenFromSessionStorage();
+    sessionStorage.removeItem('userDetails');
     this._authState.set(initialState);
     this._router.navigate(['/sign-in']);
   }
@@ -118,9 +138,6 @@ export class AuthService {
    */
   public sendPasswordResetEmail(email: string): void {
     if (!email) {
-      this._notificationService.showError(
-        this._translationService.instant('auth-service.email-required')
-      );
       return;
     }
 
@@ -168,6 +185,13 @@ export class AuthService {
       password: newPassword,
       isFirstLogin: false,
     };
+    this._authState.update((state) => ({
+      ...state,
+      user: {
+        ...state.user,
+        isFirstLogin: false,
+      },
+    }));
 
     this._httpClient.patch<User>(`${this.API_URL}/users/${this.userId()}`, patchRequest).subscribe({
       next: () => {
@@ -177,6 +201,29 @@ export class AuthService {
       },
       error: (error) => {
         this._notificationService.showError('Password reset failed: ' + error.message);
+      },
+    });
+  }
+
+  /**
+   * Fetches the full user details from the server.
+   * This method is called after a successful login to ensure the user details are complete.
+   * If the user is not logged in, it shows an error notification.
+   * @private
+   */
+  private fetchFullUserDetails(): void {
+    if (!this.isLoggedIn()) {
+      this._notificationService.showError(
+        this._translationService.instant('auth-service.must-be-logged-for-details')
+      );
+      return;
+    }
+    this._httpClient.get<User>(`${this.API_URL}/users/${this.userId()}`).subscribe({
+      next: (user) => {
+        sessionStorage.setItem('userDetails', JSON.stringify(user));
+      },
+      error: (error) => {
+        this._notificationService.showError('Failed to fetch user details: ' + error.message);
       },
     });
   }
@@ -222,6 +269,7 @@ export class AuthService {
         email: decodedToken.email,
         token: token,
         role: decodedToken.role,
+        user: defaultUser,
       });
     } catch (error) {
       this._notificationService.showError(

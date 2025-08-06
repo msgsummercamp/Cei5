@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -13,6 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DatePicker } from 'primeng/datepicker';
 import { IntlInputTelComponent, CountryISO, SearchCountryField } from 'p-intl-input-tel';
 import { PhoneNumberFormat } from 'google-libphonenumber';
+import { PanelModule } from 'primeng/panel';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -21,7 +22,7 @@ type UserRegistrationForm = {
   address: FormControl<string>;
   phoneNumber: FormControl<string>;
   postalCode: FormControl<string>;
-  birthDate: FormControl<Date>;
+  birthDate: FormControl<Date | null>;
 };
 
 @Component({
@@ -34,15 +35,15 @@ type UserRegistrationForm = {
     TranslatePipe,
     DatePicker,
     IntlInputTelComponent,
+    PanelModule,
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',
 })
 export class UserRegistrationComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
-  private formValid = signal(false);
 
-  public readonly initialData = input<User | null>(null);
+  public readonly initialData = input<User | undefined>(undefined);
   public readonly validityChange = output<{ valid: boolean; data: User | null }>();
 
   public readonly searchCountryField = SearchCountryField;
@@ -90,19 +91,16 @@ export class UserRegistrationComponent {
       Validators.maxLength(10),
       Validators.pattern(/^[a-zA-Z0-9-]+$/),
     ]),
-    birthDate: this._formBuilder.control<Date>(this.maxDate, [Validators.required]),
+    birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });
 
   constructor() {
-    this.userRegistrationForm.statusChanges.subscribe(() => {
-      const isValid = this.userRegistrationForm.valid;
-      const data = isValid ? this.getUserFormDetails() : null;
-      this.validityChange.emit({ valid: isValid, data });
-    });
+    let hasInitialized = false;
 
     effect(() => {
       const data = this.initialData();
-      if (data) {
+      if (data && !hasInitialized) {
+        hasInitialized = true;
         this.userRegistrationForm.patchValue(
           {
             email: data.email || '',
@@ -117,28 +115,38 @@ export class UserRegistrationComponent {
           },
           { emitEvent: false }
         );
+
+        setTimeout(() => {
+          this.checkAndEmitValidity();
+        }, 0);
       }
     });
 
-    //this.formValid.set(this.userRegistrationForm.valid);
+    this.userRegistrationForm.statusChanges.subscribe(() => {
+      this.checkAndEmitValidity();
+    });
   }
 
-  public getUserFormDetails(): User {
-    return {
-      email: this.userRegistrationForm.get('email')?.value,
-      firstName: this.userRegistrationForm.get('firstName')?.value,
-      lastName: this.userRegistrationForm.get('lastName')?.value,
-      userDetails: {
-        address: this.userRegistrationForm.get('address')?.value,
-        phoneNumber: this.userRegistrationForm.get('phoneNumber')?.value,
-        postalCode: this.userRegistrationForm.get('postalCode')?.value,
-        birthDate: this.userRegistrationForm.get('birthDate')?.value.toDateString(),
-      },
-    };
+  public getUserFormDetails(): User | null {
+    if (this.userRegistrationForm.valid) {
+      const birthDateValue = this.userRegistrationForm.get('birthDate')?.value;
+      return {
+        email: this.userRegistrationForm.get('email')?.value,
+        firstName: this.userRegistrationForm.get('firstName')?.value,
+        lastName: this.userRegistrationForm.get('lastName')?.value,
+        userDetails: {
+          address: this.userRegistrationForm.get('address')?.value,
+          phoneNumber: this.userRegistrationForm.get('phoneNumber')?.value,
+          postalCode: this.userRegistrationForm.get('postalCode')?.value,
+          birthDate: birthDateValue ? birthDateValue.toDateString() : undefined,
+        },
+      };
+    }
+    return null;
   }
 
   private checkAndEmitValidity(): void {
-    const isValid = this.formValid();
+    const isValid = this.userRegistrationForm.valid;
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
   }

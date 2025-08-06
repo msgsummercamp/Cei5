@@ -7,7 +7,8 @@
       <p-step [value]="3">Connection Flights</p-step>
       <p-step [value]="4">Disruption Info</p-step>
       <p-step [value]="5">Summary</p-step>
-      <p-step [value]="6">User Details</p-step>
+      <p-step [value]="6">{{'stepper.step6' | translate}}</p-step>
+      <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -400,8 +401,8 @@
         >
           <app-user-registration
             #userRegistration
-            (validityChange)="onUserRegistrationValidityChange($event)"
-            [initialData]="userRegistrationData"
+            [initialData]="userRegistrationInitialData"
+            (validityChange)="onUserRegistrationValidityChange($event.valid, $event.data)"
           />
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
@@ -419,6 +420,30 @@
               [styleClass]="'px-6 mt-8'"
             />
           </div>
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 7: Summary -->
+      <p-step-panel [value]="7">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p>Summary yey</p>
+
+          <p-button
+            label="Back"
+            severity="secondary"
+            (onClick)="onPrevious(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="Next"
+            severity="primary"
+            (onClick)="onNext(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
         </ng-template>
       </p-step-panel>
     </p-step-panels>
