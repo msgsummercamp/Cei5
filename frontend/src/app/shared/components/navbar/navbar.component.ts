@@ -28,7 +28,7 @@ import { Select } from 'primeng/select';
 export class NavbarComponent implements OnInit {
   private readonly _translateService = inject(TranslateService);
   public readonly _languageService = inject(LanguageService);
-  private menuConfig = [{ translationKey: 'Home', routerLink: '/home' }];
+  private menuConfig = [{ translationKey: 'home', routerLink: '' }];
   public items: MenuItem[] = [];
 
   ngOnInit() {

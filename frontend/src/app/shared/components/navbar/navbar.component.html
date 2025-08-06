@@ -1,17 +1,24 @@
-<div class="flex flex-wrap w-full top-0 left-0 right-0 fixed">
+<div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
   <p-menubar [model]="items" class="custom-navbar w-full">
     <ng-template pTemplate="start">
-      <span class="font-bold text-xl" style="font-family: 'Baloo 2', sans-serif">AIR ASSIST</span>
-      <ng-template pTemplate="item" let-item>
-        <span>{{ item.label | translate }}</span>
-      </ng-template>
+      <span class="font-bold text-xl" style="font-family: 'Baloo 2', sans-serif; color: white"
+        >AIR ASSIST</span
+      >
     </ng-template>
-
+    <ng-template pTemplate="item" let-item>
+      <span>{{ item.label | translate }}</span>
+    </ng-template>
     <ng-template pTemplate="end">
       <div class="flex align-items-center gap-3">
-        <button pButton type="button" class="p-button-text" routerLink="/sign-in">
+        <button
+          pButton
+          type="button"
+          class="p-button-text"
+          style="color: white"
+          routerLink="/sign-in"
+        >
           <i class="pi pi-user"></i>
-          {{ 'navbar.login' | translate }}
+          <span>{{ 'navbar.login' | translate }}</span>
         </button>
         <div class="flex align-items-center">
           <img [src]="selectedLanguageFlag" alt="Language" width="24" height="24" class="mr-2" />
