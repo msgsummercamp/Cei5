@@ -138,6 +138,9 @@ export class AuthService {
    */
   public sendPasswordResetEmail(email: string): void {
     if (!email) {
+      this._notificationService.showError(
+        this._translationService.instant('auth-service.email-required')
+      );
       return;
     }
 

@@ -109,9 +109,7 @@ export class UserRegistrationComponent {
             address: data.userDetails?.address || '',
             phoneNumber: data.userDetails?.phoneNumber || '',
             postalCode: data.userDetails?.postalCode || '',
-            birthDate: data.userDetails?.birthDate
-              ? new Date(data.userDetails.birthDate)
-              : this.maxDate,
+            birthDate: data.userDetails?.birthDate ? new Date(data.userDetails.birthDate) : null,
           },
           { emitEvent: false }
         );
