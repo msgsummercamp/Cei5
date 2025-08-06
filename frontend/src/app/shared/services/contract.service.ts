@@ -23,6 +23,7 @@ export class ContractService {
       return this._httpClient.post<Blob>(
         endpoint,
         {
+          //TODO: take this details from form and make it a type
           caseId: 'C-20250731-001',
           contractDate: '2025-07-31',
           passengerName: 'Miruna Ionescu',
@@ -33,7 +34,7 @@ export class ContractService {
           travelDates: '2025-08-10 to 2025-08-20',
           destination: 'Bucharest, Romania',
         },
-        { headers: headers }
+        { headers: headers, responseType: 'blob' as 'json' }
       );
     }),
     catchError((error: Error) => {

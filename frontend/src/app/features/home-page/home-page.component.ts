@@ -5,6 +5,7 @@ import { Fieldset } from 'primeng/fieldset';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { ContractService } from '../../shared/services/contract.service';
+import FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-home-page',
@@ -13,9 +14,10 @@ import { ContractService } from '../../shared/services/contract.service';
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
+  //TODO move this in confirmation component
   ngOnInit(): void {
     this._contractService.contract$.subscribe((data) => {
-      console.log(data);
+      FileSaver.saveAs(data, 'contract');
     });
   }
   private _contractService = inject(ContractService);
