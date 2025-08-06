@@ -1,13 +1,27 @@
+body {
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.background {
+  background-color: rgb(213, 255, 255);
+}
+
 ::ng-deep {
   .home-page-wrapper {
     .p-fieldset-legend {
       color: #0c2c70;
+      background-color: transparent;
       font-size: 1.3rem;
       text-align: center;
       display: block;
     }
 
     .p-fieldset {
+      background-color: transparent;
+      border-color: powderblue;
       transition: all 0.3s ease;
       height: 100%;
     }

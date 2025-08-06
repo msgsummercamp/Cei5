@@ -27,15 +27,13 @@
                   class="w-25rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
-                  'mainForm.reservationNumber' | translate
-                }}</label>
+                    'mainForm.reservationNumber' | translate
+                  }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.reservationNumber.touched &&
-                  reservationForm.controls.reservationNumber.errors
-                ) {
+                @if (reservationForm.controls.reservationNumber.touched &&
+                reservationForm.controls.reservationNumber.errors) {
                   <!-- In case there is an error, it will display the first one that has value true-->
                   @switch (true) {
                     @case (reservationForm.controls.reservationNumber.hasError('required')) {
@@ -43,10 +41,8 @@
                         text="{{ 'mainForm.reservationNumberRequired' | translate }}"
                       />
                     }
-                    @case (
-                      reservationForm.controls.reservationNumber.hasError('minlength') ||
-                      reservationForm.controls.reservationNumber.hasError('maxlength')
-                    ) {
+                    @case (reservationForm.controls.reservationNumber.hasError('minlength') ||
+                    reservationForm.controls.reservationNumber.hasError('maxlength')) {
                       <app-error-message text="{{ 'mainForm.reservationLength' | translate }}" />
                     }
                   }
@@ -73,10 +69,8 @@
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.departingAirport.touched &&
-                  reservationForm.controls.departingAirport.errors
-                ) {
+                @if (reservationForm.controls.departingAirport.touched &&
+                reservationForm.controls.departingAirport.errors) {
                   <!-- In case there is an error, it will display the first one that has value true-->
                   @switch (true) {
                     @case (reservationForm.controls.departingAirport.hasError('required')) {
@@ -84,10 +78,8 @@
                         text="{{ 'mainForm.departingAirportRequired' | translate }}"
                       />
                     }
-                    @case (
-                      reservationForm.controls.departingAirport.hasError('minlength') ||
-                      reservationForm.controls.departingAirport.hasError('maxlength')
-                    ) {
+                    @case (reservationForm.controls.departingAirport.hasError('minlength') ||
+                    reservationForm.controls.departingAirport.hasError('maxlength')) {
                       <app-error-message
                         text="{{ 'mainForm.departingAirportLength' | translate }}"
                       />
@@ -118,15 +110,13 @@
                   [virtualScrollItemSize]="50"
                 />
                 <label for="destinationAirport">{{
-                  'mainForm.departingAirport' | translate
-                }}</label>
+                    'mainForm.departingAirport' | translate
+                  }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.destinationAirport.touched &&
-                  reservationForm.controls.destinationAirport.errors
-                ) {
+                @if (reservationForm.controls.destinationAirport.touched &&
+                reservationForm.controls.destinationAirport.errors) {
                   <!-- In case there is an error, it will display the first one that has value true-->
                   @switch (true) {
                     @case (reservationForm.controls.destinationAirport.hasError('required')) {
@@ -134,10 +124,8 @@
                         text="{{ 'mainForm.departingAirportRequired' | translate }}"
                       />
                     }
-                    @case (
-                      reservationForm.controls.destinationAirport.hasError('minlength') ||
-                      reservationForm.controls.destinationAirport.hasError('maxlength')
-                    ) {
+                    @case (reservationForm.controls.destinationAirport.hasError('minlength') ||
+                    reservationForm.controls.destinationAirport.hasError('maxlength')) {
                       <app-error-message
                         text="{{ 'mainForm.departingAirportLength' | translate }}"
                       />
@@ -155,9 +143,10 @@
             <!--Compensation level message-->
             <div>
               @if (reservationForm.controls.destinationAirport.valid &&
-                  reservationForm.controls.destinationAirport.valid && !!compensation)
-              {
-                <p-message severity="success">{{ 'case-form.compensation-start' | translate }}{{ compensation }}{{'case-form.compensation-end' | translate }}</p-message>
+              reservationForm.controls.destinationAirport.valid && !!compensation) {
+                <p-message
+                  severity="success">{{ 'case-form.compensation-start' | translate }}{{ compensation }}{{ 'case-form.compensation-end' | translate }}
+                </p-message>
               }
 
             </div>
@@ -196,8 +185,9 @@
             <div class="mr-8 col">
               <div class="flex flex-row justify-content-center align-items-center">
                 <p-header class="text-3xl">{{
-                  'mainForm.connectionFlightsHeader' | translate
-                }}</p-header>
+                    'mainForm.connectionFlightsHeader' | translate
+                  }}
+                </p-header>
                 <div class="ml-4">
                   <p-button
                     icon="pi pi-plus"
@@ -215,8 +205,9 @@
                   variant="outlined"
                   severity="primary"
                   class="w-15rem align-self-center mb-4"
-                  >{{ 'mainForm.connectionDepartingAirport' | translate }}
-                  {{ reservationInformation.departingAirport }}</p-message
+                >{{ 'mainForm.connectionDepartingAirport' | translate }}
+                  {{ reservationInformation.departingAirport }}
+                </p-message
                 >
 
                 <!-- Connection Flight Form -->
@@ -243,8 +234,8 @@
                                     [virtualScrollItemSize]="50"
                                   />
                                   <label for="connectionFlight{{ $index }}">{{
-                                    'mainForm.connection' | translate
-                                  }}</label>
+                                      'mainForm.connection' | translate
+                                    }}</label>
                                 </p-floatlabel>
 
                                 <!-- Error Messages -->
@@ -258,10 +249,8 @@
                                           }}"
                                         />
                                       }
-                                      @case (
-                                        airport.hasError('minlength') ||
-                                        airport.hasError('maxlength')
-                                      ) {
+                                      @case (airport.hasError('minlength') ||
+                                      airport.hasError('maxlength')) {
                                         <app-error-message
                                           text="{{
                                             'mainForm.connectionDestinationLength' | translate
@@ -298,8 +287,9 @@
 
                 <!-- Displaying the destination airport -->
                 <p-message variant="outlined" severity="primary" class="align-self-center w-15rem"
-                  >{{ 'mainForm.destinationAirport' | translate }}:
-                  {{ reservationInformation.destinationAirport }}</p-message
+                >{{ 'mainForm.destinationAirport' | translate }}:
+                  {{ reservationInformation.destinationAirport }}
+                </p-message
                 >
               </div>
             </div>
@@ -338,7 +328,7 @@
                   class="flex flex-column justify-content-center align-items-center p-3 border-round surface-card"
                 >
                   <h3 class="text-center mb-2"
-                    >{{ 'mainForm.connection' | translate }}: {{ connectionFlights[i][0] }} -
+                  >{{ 'mainForm.connection' | translate }}: {{ connectionFlights[i][0] }} -
                     {{ connectionFlights[i][1] }}</h3
                   >
                   <p-button
@@ -377,8 +367,8 @@
             />
           </div>
         </ng-template>
-        <!-- Step 4: Test Submit -->
       </p-step-panel>
+      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"
@@ -389,29 +379,23 @@
             #disruptionForm
             (validityChange)="onDisruptionFormValidityChange($event)"
           />
-        </ng-template>
-      </p-step-panel>
-      <!-- Step 5: Disruption Info -->
-      <p-step-panel [value]="4">
-        <ng-template
-          pTemplate="content"
-          let-prevCallback="prevCallback"
-          let-nextCallback="nextCallback"
-        >
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
 
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            [disabled]="!isDisruptionFormValid"
-            (onClick)="onNextFromDisruptionInfo(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+          <div class="justify-content-between flex flex-row gap-2">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isDisruptionFormValid"
+              (onClick)="onNextFromDisruptionInfo(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
     </p-step-panels>
