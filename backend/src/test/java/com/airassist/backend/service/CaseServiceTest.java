@@ -132,7 +132,6 @@ public class CaseServiceTest {
                     if (dto.getAssignedColleague() != null) {
                         assignedColleague = new User();
                         assignedColleague.setEmail(dto.getAssignedColleague().getEmail());
-                        // Set other fields if needed
                     }
 
                     Reservation reservation = reservationMapper.toEntity(dto.getReservation());
