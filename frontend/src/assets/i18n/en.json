@@ -174,7 +174,8 @@
     "connectionDestinationLength": "Airport code must be exactly 3 characters.",
     "connectionDestinationUpper": "Airport code must be 3 uppercase letters.",
     "reservationPattern": "Reservation number must be alphanumeric.",
-    "destinationIsDeparting": "The departing airport cannot be the same as the destination airport."
+    "destinationIsDeparting": "The departing airport cannot be the same as the destination airport.",
+    "connectionsShouldBedifferent": "Connections should be different."
   },
   "flightForm": {
     "flightNumber": "Flight Number",

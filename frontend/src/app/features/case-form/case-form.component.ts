@@ -33,6 +33,7 @@ import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
+import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 
 @Component({
   selector: 'app-case-form',
@@ -94,9 +95,12 @@ export class CaseFormComponent implements OnInit {
     { validators: departingAirportIsDestinationAirport() }
   );
 
-  protected readonly airportFormArray = this._formBuilder.group({
-    airports: this._formBuilder.array<string>([]),
-  });
+  protected readonly airportFormArray = this._formBuilder.group(
+    {
+      airports: this._formBuilder.array<string>([]),
+    },
+    { validators: connectionsShouldBeDifferent() }
+  );
 
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
@@ -427,4 +431,23 @@ export class CaseFormComponent implements OnInit {
     const airport = this.airports().find((a) => a.code === code);
     return airport ? `${airport.name} (${airport.code})` : code;
   }
+
+  // public ceva(airportLabel: string): boolean {
+  //   console.log(
+  //     'Checking airport:',
+  //     this.airportFormArray.hasError('connectionsShouldBeDifferent')
+  //   );
+  //   console.log(airportLabel);
+
+  //   if (this.airportFormArray.hasError('connectionsShouldBeDifferent')) {
+  //     const airports = this.airportsArray.value ?? [];
+  //     let hasError = false;
+  //     airports.forEach((element) => {
+  //       hasError = hasError || element === airportLabel;
+  //     });
+  //     console.log('Has error:', hasError);
+  //     return hasError;
+  //   }
+  //   return false;
+  // }
 }
