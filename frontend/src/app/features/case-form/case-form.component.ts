@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -30,6 +30,7 @@ import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
+import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
 
 @Component({
   selector: 'app-case-form',
@@ -47,6 +48,7 @@ import { DisruptionFormComponent } from './views/disruption-form/disruption-form
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    EligibilityPageComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -97,6 +99,8 @@ export class CaseFormComponent {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
+
+  @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
   public search(event: AutoCompleteCompleteEvent): void {
     const query = event.query;
@@ -340,6 +344,34 @@ export class CaseFormComponent {
         // Add error handling here
       },
     });
+  }
+
+  public getDisruptionInfo() {
+    return this.disruptionForm.getDisruptionDescription();
+  }
+
+  public getDisruptionReason() {
+    return this.disruptionForm.getResponseForDisruption();
+  }
+
+  public resetAllFormData(): void {
+    this.reservationForm.reset();
+
+    while (this.airportsArray.length !== 0) {
+      this.airportsArray.removeAt(0);
+    }
+
+    this.isMainFlightValid = false;
+    this.isDisruptionFormValid = false;
+    this.flightData = null;
+
+    if (this.disruptionForm) {
+      this.disruptionForm.resetForm();
+    }
+
+    this._reservationService.resetReservation();
+    this._flightService.resetAllData();
+    this._navigationService.resetToFirstStep();
   }
 
   private createReservationDTO(): ReservationDTO {

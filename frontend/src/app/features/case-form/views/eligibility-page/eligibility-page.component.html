@@ -1,0 +1,84 @@
+<div class="eligibility-container">
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <p-card>
+        <div class="text-center">
+          <p-progressSpinner />
+          <h3>Checking Eligibility</h3>
+          <p>Please wait while we analyze your case...</p>
+        </div>
+      </p-card>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (!isLoading && errorMessage) {
+    <div class="error-state">
+      <p-card>
+        <div class="text-center">
+          <p-message severity="error" [text]="errorMessage" />
+          <div class="mt-4">
+            <p-button label="Try Again" icon="pi pi-refresh" (click)="onRetryCheck()"> </p-button>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  }
+
+  <!-- Results -->
+  @if (!isLoading && !errorMessage && isEligible !== null) {
+    <div class="results-container">
+      <p-card>
+        <div class="text-center">
+          @if (isEligible === true) {
+            <div class="eligible-message">
+              <i class="pi pi-check-circle text-6xl text-green-500 mb-3"></i>
+              <h2 class="text-green-700">Congratulations!</h2>
+              <p-message
+                severity="success"
+                text="Your case is eligible for compensation."
+                [closable]="false"
+              >
+              </p-message>
+
+              <div class="mt-4">
+                <p-button
+                  label="Continue with your personal details"
+                  icon="pi pi-arrow-right"
+                  size="large"
+                  (click)="onContinueToSubmission()"
+                >
+                </p-button>
+              </div>
+            </div>
+          }
+
+          @if (isEligible === false) {
+            <div class="not-eligible-message">
+              <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
+              <h2 class="text-red-700">Sorry</h2>
+              <p-message
+                severity="warn"
+                text="Your case is not eligible for compensation under EU regulations."
+                [closable]="false"
+              >
+              </p-message>
+              <div class="mt-4">
+                <p-button
+                  id="restart-button"
+                  label="Restart from beginning"
+                  icon="pi pi-arrow-right"
+                  size="large"
+                  (click)="onStartOver()"
+                >
+                  <a id="restart-link" href="/form"></a>
+                </p-button>
+              </div>
+            </div>
+          }
+        </div>
+      </p-card>
+    </div>
+  }
+</div>

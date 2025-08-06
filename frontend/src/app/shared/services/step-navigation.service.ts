@@ -25,4 +25,8 @@ export class StepNavigationService {
       this.currentStepSubject.next(this.currentStepSubject.value - 1);
     }
   }
+
+  public resetToFirstStep(): void {
+    this.currentStepSubject.next(1);
+  }
 }

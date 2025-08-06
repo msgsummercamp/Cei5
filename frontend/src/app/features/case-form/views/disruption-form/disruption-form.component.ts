@@ -68,7 +68,7 @@ export class DisruptionFormComponent {
   ];
 
   protected readonly disruptionForm = this._formBuilder.group<DisruptionForm>({
-    disruptionType: this._formBuilder.control('', [Validators.required]),
+    disruptionType: this._formBuilder.control('', [Validators.required]), //disruption Reason
     cancellationAnswer: this._formBuilder.control<string | null>(null),
     delayAnswer: this._formBuilder.control<string | null>(null),
     deniedBoardingAnswer: this._formBuilder.control<string | null>(null),
@@ -81,6 +81,8 @@ export class DisruptionFormComponent {
     ]),
   });
 
+  public readonly disruptionReason = output<string>();
+  public readonly disruptionInfo = output<string>();
   public readonly validityChange = output<{ valid: boolean } | null>();
 
   /**
@@ -118,6 +120,10 @@ export class DisruptionFormComponent {
       }
       return DisruptionsReasons.DID_GIVE_THE_SEAT_VOLUNTARILY;
     }
+  }
+
+  public resetForm(): void {
+    this.disruptionForm.reset();
   }
 
   constructor() {
