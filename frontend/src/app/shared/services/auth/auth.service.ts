@@ -222,7 +222,7 @@ export class AuthService {
       next: (user) => {
         sessionStorage.setItem('userDetails', JSON.stringify(user));
       },
-      error: (error) => {
+      error: () => {
         this._notificationService.showError(
           this._translationService.instant('auth-service.fetch-user-details-error')
         );
