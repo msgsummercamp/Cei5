@@ -31,7 +31,6 @@ import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 
 @Component({
@@ -75,6 +74,7 @@ export class CaseFormComponent implements OnInit {
       Validators.required,
       Validators.minLength(6),
       Validators.maxLength(6),
+      Validators.pattern(/^[a-zA-Z0-9]+$/),
     ]),
     departingAirport: new FormControl<string>('', [
       Validators.pattern(/^[A-Z]{3}$/),
