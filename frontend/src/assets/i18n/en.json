@@ -99,5 +99,12 @@
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password"
+  },
+  "stepper": {
+    "step1": "Reservation Info",
+    "step2": "Flight Info",
+    "step3": "Connection Flights",
+    "step4": "Disruption Info",
+    "step5": "Eligibility Check"
   }
 }

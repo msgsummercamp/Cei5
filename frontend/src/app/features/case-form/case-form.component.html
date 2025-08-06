@@ -366,8 +366,9 @@
           />
         </ng-template>
       </p-step-panel>
-      <!-- Step 5 -->
-      <p-step-panel [value]="5">
+
+      <p-step-panel [value]="5"
+        >{{ 'stepper.step5' | translate }}
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"

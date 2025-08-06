@@ -99,5 +99,12 @@
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola"
+  },
+  "stepper": {
+    "step1": "Informații despre rezervare",
+    "step2": "Informații despre zbor",
+    "step3": "Zboruri de conexiune",
+    "step4": "Informații despre perturbare",
+    "step5": "Verificare eligibilitate"
   }
 }
