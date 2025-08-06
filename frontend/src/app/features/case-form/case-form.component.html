@@ -248,7 +248,14 @@
                                     [forceSelection]="true"
                                     [virtualScroll]="true"
                                     [virtualScrollItemSize]="50"
-                                  />
+                                  >
+                                    <ng-template let-airport pTemplate="selectedItem">
+                                      {{ getAirportDisplayName(airport) }}
+                                    </ng-template>
+                                    <ng-template let-airport pTemplate="item">
+                                      {{ airport.name }}
+                                    </ng-template></p-autocomplete
+                                  >
                                   <label [for]="'connectionFlight' + i">{{
                                     'mainForm.connection' | translate
                                   }}</label>

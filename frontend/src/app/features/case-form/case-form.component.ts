@@ -416,4 +416,11 @@ export class CaseFormComponent implements OnInit {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
+  public getAirportDisplayName(code: string): string {
+    if (!code) return '';
+
+    const airport = this.airports().find((a) => a.code === code);
+    return airport ? `${airport.name} (${airport.code})` : code;
+  }
 }
