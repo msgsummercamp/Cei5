@@ -56,19 +56,18 @@ export class EligibilityPageComponent implements OnInit {
         return;
       }
 
-      console.log('Checking eligibility with case data:', caseData);
       this._caseService.checkEligibility(caseData as CaseDTO).subscribe({
         next: (isEligible: boolean) => {
           this.isEligible = isEligible;
           this.isLoading = false;
-          console.log('Eligibility result:', isEligible);
+
           this._cdr.detectChanges();
         },
         error: (error) => {
           this.isEligible = false;
           this.isLoading = false;
           this.errorMessage = null;
-          console.error('Eligibility check failed:', error);
+
           this._cdr.detectChanges();
         },
       });
@@ -76,7 +75,7 @@ export class EligibilityPageComponent implements OnInit {
       this.errorMessage = 'Invalid case data. Please go back and complete all steps.';
       this.isEligible = false;
       this.isLoading = false;
-      console.error('Error creating case data:', error);
+
       this._cdr.detectChanges();
     }
   }
@@ -102,7 +101,7 @@ export class EligibilityPageComponent implements OnInit {
     this._navigationService.resetToFirstStep();
 
     this._router.navigate(['/form']).then(() => {
-      window.location.reload(); 
+      window.location.reload();
     });
   }
 
@@ -110,17 +109,15 @@ export class EligibilityPageComponent implements OnInit {
     const reservationInfo = this._reservationService.getReservationInformation();
     const allFlights = this._flightService.getAllFlights();
 
-    // add validations here instead of console.error
     if (!reservationInfo.reservationNumber || !allFlights || allFlights.length === 0) {
-      console.error('Missing required data:', { reservationInfo, allFlights });
       return {};
     }
 
     ///TODO: For now we have mock placeholder data, replace with new one after User Form is ready
     const caseData: CaseDTO = {
       status: Statuses.PENDING,
-      disruptionReason: this.disruptionReason(), 
-      disruptionInfo: this.disruptionInfo(), 
+      disruptionReason: this.disruptionReason(),
+      disruptionInfo: this.disruptionInfo(),
       date: new Date().toISOString(),
       clientID: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', ///TODO: Replace with actual client ID from user form
       assignedColleague: undefined,
