@@ -9,6 +9,7 @@ import { ButtonDirective } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ import { Select } from 'primeng/select';
     DropdownModule,
     FormsModule,
     Select,
+    NgOptimizedImage,
   ],
 })
 export class NavbarComponent implements OnInit {
