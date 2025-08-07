@@ -33,6 +33,7 @@ import { DisruptionFormComponent } from './views/disruption-form/disruption-form
 import { CompensationService } from '../../shared/services/compensation.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-case-form',
