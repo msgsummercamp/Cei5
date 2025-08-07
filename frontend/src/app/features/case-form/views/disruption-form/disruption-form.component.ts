@@ -120,9 +120,46 @@ export class DisruptionFormComponent {
     }
   }
 
+  private hasAllRequiredFields(): boolean {
+    const {
+      disruptionType,
+      disruptionInformation,
+      cancellationAnswer,
+      delayAnswer,
+      deniedBoardingAnswer,
+      deniedBoardingFollowUpAnswer,
+      airlineMotiveAnswer,
+      airlineMotiveFollowUpAnswer,
+    } = this.disruptionForm.controls;
+
+    if (!disruptionType.value || !disruptionInformation.value) return false;
+
+    // Conditional requirements based on what's visible
+    switch (disruptionType.value) {
+      case Disruptions.Cancellation:
+        if (!cancellationAnswer.value || !airlineMotiveAnswer.value) return false;
+        if (airlineMotiveAnswer.value === 'Yes' && !airlineMotiveFollowUpAnswer.value) return false;
+        break;
+
+      case Disruptions.Delay:
+        if (!delayAnswer.value || !airlineMotiveAnswer.value) return false;
+        if (airlineMotiveAnswer.value === 'Yes' && !airlineMotiveFollowUpAnswer.value) return false;
+        break;
+
+      case Disruptions.Denied_Boarding:
+        if (!deniedBoardingAnswer.value) return false;
+        if (deniedBoardingAnswer.value === 'No' && !deniedBoardingFollowUpAnswer.value)
+          return false;
+        break;
+    }
+
+    return true;
+  }
+
   constructor() {
     this.disruptionForm.statusChanges.subscribe(() => {
-      this.formValid.set(this.disruptionForm.valid);
+      const isValid = this.hasAllRequiredFields();
+      this.formValid.set(isValid);
     });
 
     effect(() => {
