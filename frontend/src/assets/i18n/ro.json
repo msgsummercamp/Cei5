@@ -129,7 +129,8 @@
     "warning": "Avertisment"
   },
   "navbar": {
-    "login": "Loghează-te"
+    "login": "Loghează-te",
+    "logout": "Deconectează-te"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -203,6 +204,7 @@
     "step2": "Informații despre zbor",
     "step3": "Zboruri de conexiune",
     "step4": "Informații despre perturbare",
+    "step5": "Verificare eligibilitate",
     "step6": "Detalii utilizator"
   },
   "mainForm": {
@@ -249,6 +251,16 @@
     "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare.",
     "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
+  },
+  "eligibilityForm":{
+    "checkEligibility": "Verificarea eligibilitati.",
+    "loading" : "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "congratulations": "Felicitari.",
+    "eligible": "Ești eligibil pentru compensație.",
+    "continueWithPersoinalDetails" : "Continua cu datele personale.",
+    "sorry": "Scuze",
+    "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulatiolor EU.",
+    "restart": "Reporniti de la inceput."
   },
   "lastForm": {
     "next": "Finalizează"

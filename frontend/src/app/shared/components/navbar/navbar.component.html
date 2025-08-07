@@ -1,8 +1,9 @@
 <div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
-  <p-menubar [model]="items" class="custom-navbar w-full">
+  <p-menubar [model]="items" class="navbar w-full">
     <ng-template pTemplate="start">
-      <span class="font-bold text-xl" style="font-family: 'Baloo 2', sans-serif; color: white"
-        >AIR ASSIST
+      <img ngSrc ="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
+      <span class="font-bold text-xl flex align-items-center mr-1" id="logo-text" style="font-family: 'Baloo 2', sans-serif; color: white"
+        >AIR-ASSIST.EU
       </span>
     </ng-template>
     <ng-template pTemplate="item" let-item>
@@ -35,16 +36,27 @@
               <span style="color: white">{{ language?.code }}</span>
             </ng-template>
           </p-select>
-          <button
-            pButton
-            type="button"
-            class="p-button-text"
-            style="color: white"
-            routerLink="/sign-in"
-          >
-            <i class="pi pi-user"></i>
-            <span>{{ 'navbar.login' | translate }}</span>
-          </button>
+            <button
+              pButton
+              type="button"
+              class="p-button-text"
+              style="color: white"
+              (click)="logout()"
+              *ifAuthenticated="isAuthenticated()"
+            >
+              <span>{{ 'navbar.logout' | translate }}</span>
+            </button>
+            <button
+              pButton
+              type="button"
+              class="p-button-text"
+              style="color: white"
+              routerLink="/sign-in"
+              *ifAuthenticated="!isAuthenticated()"
+            >
+              <i class="pi pi-user"></i>
+              <span>{{ 'navbar.login' | translate }}</span>
+            </button>
         </div>
       </div>
     </ng-template>

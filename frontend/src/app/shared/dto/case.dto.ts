@@ -13,7 +13,7 @@ type DocumentInfo = {
 export type CaseDTO = {
   id?: string;
   status?: Statuses;
-  disruptionReason: DisruptionReason;
+  disruptionReason: string;
   disruptionInfo: string;
   date: string | null;
   clientID: string;

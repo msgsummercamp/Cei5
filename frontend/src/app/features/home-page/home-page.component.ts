@@ -4,12 +4,19 @@ import { RouterLink } from '@angular/router';
 import { Fieldset } from 'primeng/fieldset';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Button, RouterLink, Fieldset, TranslatePipe, FooterComponent, NavbarComponent],
+  imports: [
+    Button,
+    RouterLink,
+    Fieldset,
+    TranslatePipe,
+    FooterComponent,
+    NavbarComponent,
+  ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })
