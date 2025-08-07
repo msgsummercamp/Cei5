@@ -129,7 +129,8 @@
     "warning": "Avertisment"
   },
   "navbar": {
-    "login": "Loghează-te"
+    "login": "Loghează-te",
+    "logout": "Deconectează-te"
   },
   "request-reset": {
     "title": "Resetare parolă",

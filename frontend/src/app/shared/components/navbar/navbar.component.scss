@@ -1,4 +1,4 @@
-.custom-navbar {
+.navbar {
   --p-menubar-background: rgba(15, 27, 88, 0.97);
   --p-menubar-item-color: #ffffff;
   --p-menubar-item-focus-background	: none;
@@ -36,7 +36,10 @@ p-select-list-container{
 .p-button-text:hover,{
   color: #ffffff !important;
   background: none !important;
+}
 
+#logo-text{
+  cursor: default;
 }
 
 

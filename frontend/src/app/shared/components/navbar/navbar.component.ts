@@ -10,6 +10,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { NgOptimizedImage } from '@angular/common';
+import {AuthService} from '../../services/auth/auth.service';
+import {IfAuthenticatedDirective} from '../../directives/if-authenticated.directive';
 
 @Component({
   selector: 'app-navbar',
@@ -25,12 +27,16 @@ import { NgOptimizedImage } from '@angular/common';
     FormsModule,
     Select,
     NgOptimizedImage,
+    IfAuthenticatedDirective,
   ],
 })
 export class NavbarComponent implements OnInit {
   private readonly _translateService = inject(TranslateService);
+  private readonly _authService = inject(AuthService);
   public readonly _languageService = inject(LanguageService);
-  private menuConfig = [{ translationKey: 'home', routerLink: '' }];
+
+  private _menuConfig = [{ translationKey: 'home', routerLink: '' }];
+
   public items: MenuItem[] = [];
 
   ngOnInit() {
@@ -55,13 +61,20 @@ export class NavbarComponent implements OnInit {
   }
 
   private translateMenuItems() {
-    const keys = this.menuConfig.map((item) => item.translationKey);
+    const keys = this._menuConfig.map((item) => item.translationKey);
 
     this._translateService.get(keys).subscribe((translations) => {
-      this.items = this.menuConfig.map((item) => ({
+      this.items = this._menuConfig.map((item) => ({
         label: translations[item.translationKey],
         routerLink: item.routerLink,
       }));
     });
+  }
+  public isAuthenticated(): boolean {
+    return this._authService.isLoggedIn();
+  }
+
+  public logout(): void {
+    this._authService.logOut();
   }
 }
