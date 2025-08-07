@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -37,7 +37,9 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _navigationService = inject(StepNavigationService);
-  private readonly _eligibilityDataService = inject(EligibilityDataService); // Add this
+  private readonly _eligibilityDataService = inject(EligibilityDataService);
+
+  private hasRunInitialCheck = false;
 
   public readonly disruptionReason = input<string>('');
   public readonly disruptionInfo = input<string>('');
@@ -63,12 +65,6 @@ export class EligibilityPageComponent implements OnInit {
     () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
 
-  // Add computed signal to detect when inputs change
-  private readonly inputsChanged = computed(() => ({
-    disruptionReason: this.disruptionReason(),
-    disruptionInfo: this.disruptionInfo(),
-  }));
-
   public getErrorMessage(): string | undefined {
     return this.eligibilityResult().errorMessage;
   }
@@ -86,39 +82,24 @@ export class EligibilityPageComponent implements OnInit {
   ngOnInit(): void {
     // Check if we already have a valid result
     if (this._eligibilityDataService.hasValidResult()) {
-      console.log('✅ Using cached eligibility result');
+      this.hasRunInitialCheck = true;
       return; // Don't re-check, use cached result
     }
 
-    // Run initial check only if no valid cached result
-    console.log('🔍 Running initial eligibility check');
-    this.checkEligibility();
+    // Only check if we have both inputs
+    if (this.disruptionReason() && this.disruptionInfo()) {
+      this.hasRunInitialCheck = true;
+      this.checkEligibility();
+    }
   }
 
-  constructor() {
-    // Add effect to re-check when inputs change (but only if inputs are meaningful)
-    effect(() => {
-      const inputs = this.inputsChanged();
-      const hasValidResult = this._eligibilityDataService.hasValidResult();
-
-      // Only re-check if:
-      // 1. We have valid inputs
-      // 2. We don't already have a valid cached result
-      // 3. Or if the inputs have actually changed from what was used before
-      if (inputs.disruptionReason && inputs.disruptionInfo && !hasValidResult) {
-        console.log('🔄 Re-checking eligibility due to input changes');
-        setTimeout(() => {
-          this.checkEligibility();
-        }, 100);
-      }
-    });
-  }
+  constructor() {}
 
   private checkEligibility(): void {
-    console.log('🔍 Checking eligibility with:', {
-      disruptionReason: this.disruptionReason(),
-      disruptionInfo: this.disruptionInfo(),
-    });
+    // Prevent multiple simultaneous checks
+    if (this.eligibilityResult().isLoading) {
+      return;
+    }
 
     // Update service state
     this._eligibilityDataService.setEligibilityResult({
@@ -135,13 +116,13 @@ export class EligibilityPageComponent implements OnInit {
           isLoading: false,
           errorMessage: 'Missing case information. Please complete all previous steps.',
           hasBeenChecked: true,
+          isEligible: false,
         });
         return;
       }
 
       this._caseService.checkEligibility(caseData as CaseDTO).subscribe({
         next: (isEligible: boolean) => {
-          console.log('✅ Eligibility result:', isEligible);
           this._eligibilityDataService.setEligibilityResult({
             isEligible: isEligible,
             isLoading: false,
@@ -150,7 +131,6 @@ export class EligibilityPageComponent implements OnInit {
           });
         },
         error: (error) => {
-          console.error('❌ Eligibility check failed:', error);
           this._eligibilityDataService.setEligibilityResult({
             isEligible: false,
             isLoading: false,
@@ -160,7 +140,6 @@ export class EligibilityPageComponent implements OnInit {
         },
       });
     } catch (error) {
-      console.error('❌ Error creating case data:', error);
       this._eligibilityDataService.setEligibilityResult({
         isEligible: false,
         isLoading: false,
@@ -172,6 +151,7 @@ export class EligibilityPageComponent implements OnInit {
 
   // Navigation/action methods
   public onRetryCheck(): void {
+    this._eligibilityDataService.resetEligibilityResult();
     this.checkEligibility();
   }
 
@@ -185,7 +165,6 @@ export class EligibilityPageComponent implements OnInit {
   }
 
   public onStartOver(): void {
-  
     this._eligibilityDataService.resetEligibilityResult();
     this._reservationService.resetReservation();
     this._flightService.resetAllData();

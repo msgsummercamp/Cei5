@@ -30,8 +30,8 @@
                   class="w-26rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
-                    'mainForm.reservationNumber' | translate
-                  }}</label>
+                  'mainForm.reservationNumber' | translate
+                }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
@@ -176,7 +176,6 @@
                   }}{{ 'case-form.compensation-end' | translate }}</p-message
                 >
               }
-
             </div>
 
             <!-- Next Button -->
@@ -472,7 +471,7 @@
           />
         </ng-template>
       </p-step-panel>
-      
+
       <!-- Step 6: User Registration -->
       <p-step-panel [value]="6">
         <ng-template
@@ -525,22 +524,6 @@
             (onClick)="onNext(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />
-          >>>>>>> main
-        </ng-template>
-      </p-step-panel>
-
-      <p-step-panel [value]="5"
-        >{{ 'stepper.step5' | translate }}
-        <ng-template
-          pTemplate="content"
-          let-prevCallback="prevCallback"
-          let-nextCallback="nextCallback"
-        >
-          <app-eligibility-page
-            [disruptionReason]="getDisruptionReason()"
-            [disruptionInfo]="getDisruptionInfo()"
-          >
-          </app-eligibility-page>
         </ng-template>
       </p-step-panel>
     </p-step-panels>
