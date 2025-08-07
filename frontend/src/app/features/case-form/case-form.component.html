@@ -155,11 +155,7 @@
 
             <!--Compensation level message-->
             <div>
-              @if (
-                reservationForm.controls.destinationAirport.valid &&
-                reservationForm.controls.destinationAirport.valid &&
-                !!compensation
-              ) {
+              @if (reservationForm.controls.destinationAirport.valid && !!compensation) {
                 <p-message severity="success"
                   >{{ 'case-form.compensation-start' | translate }}{{ compensation
                   }}{{ 'case-form.compensation-end' | translate }}</p-message

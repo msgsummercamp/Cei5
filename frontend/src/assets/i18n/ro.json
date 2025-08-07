@@ -189,5 +189,15 @@
     "plannedArrivalTime": "Ora planificată de sosire",
     "plannedArrivalTimeRequired": "Ora planificată de sosire este obligatorie.",
     "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare."
+  },
+  "eligibilityForm":{
+    "checkEligibility": "Verificarea eligibilitati.",
+    "loading" : "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "congratulations": "Felicitari.",
+    "eligible": "Ești eligibil pentru compensație.",
+    "continueWithPersoinalDetails" : "Continua cu datele personale.",
+    "sorry": "Scuze",
+    "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulatiolor EU.",
+    "restart": "Reporniti de la inceput."
   }
 }

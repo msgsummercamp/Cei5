@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -12,71 +12,90 @@ import { FlightManagementService } from '../../../../shared/services/flight-mana
 import { CaseDTO } from '../../../../shared/dto/case.dto';
 import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-eligibility-page',
-  imports: [CommonModule, CardModule, ButtonModule, MessageModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    ButtonModule,
+    MessageModule,
+    ProgressSpinnerModule,
+    TranslatePipe,
+  ],
   templateUrl: './eligibility-page.component.html',
   styleUrl: './eligibility-page.component.scss',
 })
 export class EligibilityPageComponent implements OnInit {
-  // Component logic goes here
   private readonly _caseService = inject(CaseService);
   private readonly _router = inject(Router);
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _navigationService = inject(StepNavigationService);
-  private readonly _cdr = inject(ChangeDetectorRef);
 
   public readonly disruptionReason = input<string>('');
   public readonly disruptionInfo = input<string>('');
 
-  public isLoading = true;
-  public isEligible: boolean | null = null;
-  public errorMessage: string | null = null;
+  //state signals
+  public readonly isLoading = signal<boolean>(true);
+  public readonly errorMessage = signal<string | undefined>(undefined);
+  public readonly isEligible = signal<boolean | null>(null);
+
+  public readonly shouldShowLoading = computed(() => this.isLoading());
+
+  public readonly shouldShowError = computed(() => !this.isLoading() && !!this.errorMessage());
+
+  public readonly shouldShowResults = computed(
+    () => !this.isLoading() && !this.errorMessage() && this.isEligible() !== null
+  );
+
+  public readonly shouldShowEligible = computed(
+    () => this.shouldShowResults() && this.isEligible() === true
+  );
+
+  public readonly shouldNotShowEligible = computed(
+    () => this.shouldShowResults() && this.isEligible() === false
+  );
+
+  public getErrorMessage(): string | undefined {
+    return this.errorMessage() ?? undefined;
+  }
 
   ngOnInit(): void {
     this.checkEligibility();
   }
 
   private checkEligibility(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-    this.isEligible = null;
-    this._cdr.detectChanges(); // Force change detection
+    this.isLoading.set(true);
+    this.errorMessage.set(undefined);
+    this.isEligible.set(null);
 
     try {
       const caseData = this.createCaseDTO();
 
       // Check if caseData is empty object (validation failed)
       if (!caseData || Object.keys(caseData).length === 0) {
-        this.errorMessage = 'Missing case information. Please complete all previous steps.';
-        this.isLoading = false;
-        this._cdr.detectChanges();
+        this.errorMessage.set('Missing case information. Please complete all previous steps.');
+        this.isLoading.set(false);
         return;
       }
 
       this._caseService.checkEligibility(caseData as CaseDTO).subscribe({
         next: (isEligible: boolean) => {
-          this.isEligible = isEligible;
-          this.isLoading = false;
-
-          this._cdr.detectChanges();
+          this.isEligible.set(isEligible);
+          this.isLoading.set(false);
         },
         error: (error) => {
-          this.isEligible = false;
-          this.isLoading = false;
-          this.errorMessage = null;
-
-          this._cdr.detectChanges();
+          this.isEligible.set(false);
+          this.isLoading.set(false);
+          this.errorMessage.set(undefined);
         },
       });
     } catch (error) {
-      this.errorMessage = 'Invalid case data. Please go back and complete all steps.';
-      this.isEligible = false;
-      this.isLoading = false;
-
-      this._cdr.detectChanges();
+      this.errorMessage.set(undefined);
+      this.isEligible.set(false);
+      this.isLoading.set(false);
     }
   }
 
@@ -87,7 +106,7 @@ export class EligibilityPageComponent implements OnInit {
 
   public onContinueToSubmission(nextCallback?: Function): void {
     // If eligible, proceed to submit the case
-    if (this.isEligible) {
+    if (this.isEligible()) {
       this._navigationService.nextStep();
       if (nextCallback) {
         nextCallback();
@@ -150,13 +169,18 @@ export class EligibilityPageComponent implements OnInit {
     };
   }
 
-  // Helper method to format date for Java LocalDateTime (without timezone)
+  /**
+   * Helper method to format date for Java LocalDateTime(without timezone).
+   * @returns {Date} Returns "2025-08-01T08:59:42.000" instead of "2025-08-01T08:59:42.000Z"
+   */
   private formatForLocalDateTime(date: Date): string {
-    // Convert to ISO string and remove the 'Z' at the end
-    return date.toISOString().slice(0, -1); // Removes the 'Z'
-    // This converts "2025-08-01T08:59:42.000Z" to "2025-08-01T08:59:42.000"
+    return date.toISOString().slice(0, -1);
   }
-  // Helper method to extract date only (YYYY-MM-DD format)
+
+  /**
+   * Helper method to extract date only (YYYY-MM-DD format).
+   * @returns {Date} Returns the date in "YYYY-MM-DD" format.
+   */
   private extractDateOnly(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
