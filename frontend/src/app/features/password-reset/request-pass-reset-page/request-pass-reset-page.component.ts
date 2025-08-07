@@ -10,7 +10,8 @@ import { Button } from 'primeng/button';
 import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../../../shared/services/toaster/notification.service';
 
 type RequestResetForm = {
   email: FormControl<string>;
@@ -31,6 +32,8 @@ type RequestResetForm = {
 })
 export class RequestPassResetPageComponent {
   private readonly _authService = inject(AuthService);
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translationService = inject(TranslateService);
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   protected readonly requestResetForm = this._formBuilder.group<RequestResetForm>({
@@ -43,6 +46,9 @@ export class RequestPassResetPageComponent {
     if (this.requestResetForm.valid) {
       const email: string = this.requestResetForm.get('email')?.value || '';
       this._authService.sendPasswordResetEmail(email);
+      this._notificationService.showInfo(
+        this._translationService.instant('request-reset.email-sent')
+      );
     }
   }
 }

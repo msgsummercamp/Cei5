@@ -13,5 +13,5 @@ public class UserResponseDTO {
     private String lastName;
     private Roles role;
     private UserDetailsResponseDTO userDetails;
-    private boolean isFirstLogin;
+    private Boolean isFirstLogin;
 }

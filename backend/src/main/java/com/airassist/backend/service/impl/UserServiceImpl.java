@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         checkForDuplicateEmail(email);
         user.setPassword(randomPasswordGenerator.generateRandomPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setIsFirstLogin(true);
         return userRepository.save(user);
     }
 
@@ -164,6 +165,9 @@ public class UserServiceImpl implements UserService {
         if (source.getPassword() != null) target.setPassword(source.getPassword());
         if (source.getUserDetails() != null) {
             patchUserDetails(source.getUserDetails(), target.getUserDetails());
+        }
+        if (source.getIsFirstLogin() != null) {
+            target.setIsFirstLogin(source.getIsFirstLogin());
         }
     }
 
