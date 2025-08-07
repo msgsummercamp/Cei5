@@ -56,6 +56,9 @@
             @case (userRegistrationForm.controls.firstName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.firstName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -88,6 +91,9 @@
             @case (userRegistrationForm.controls.lastName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.lastName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -116,6 +122,9 @@
             }
             @case (userRegistrationForm.controls.address.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
+            }
+            @case (userRegistrationForm.controls.address.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
             }
           }
         }
@@ -219,7 +228,6 @@
         }
       </div>
     </div>
-
   </form>
   <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
 </div>

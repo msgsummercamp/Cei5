@@ -179,7 +179,10 @@
     "postalCode-invalid": "Invalid postal code.",
     "birthDate-label": "Birth Date",
     "birthDate-required": "Birthdate is required.",
-    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering.",
+    "firstname-invalid": "First name can only contain letters.",
+    "lastname-invalid": "Last name can only contain letters.",
+    "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens."
   },
   "stepper": {
     "step1": "Reservation Info",
