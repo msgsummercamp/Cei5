@@ -266,12 +266,8 @@ export class CaseFormComponent implements OnInit {
       } else {
         // Connection flights
         const reservation = this._reservationService.getReservationInformation();
-        this._flightService.resetConnectionData();
-        this._flightService.setConnectionStrings(
-          this.getAirportValues(),
-          reservation.departingAirport,
-          reservation.destinationAirport
-        );
+
+        this.updateConnectionsIfChanged(reservation);
 
         if (this.flightData) {
           this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
@@ -282,6 +278,69 @@ export class CaseFormComponent implements OnInit {
         nextCallback();
       }
     }
+  }
+
+  private updateConnectionsIfChanged(reservation: ReservationInformation): void {
+    const currentAirports = this.getAirportValues();
+    const existingConnections = this._flightService.getConnectionFlights();
+
+    // Check if connections need to be updated
+    const needsUpdate = this.doConnectionsNeedUpdate(
+      existingConnections,
+      currentAirports,
+      reservation
+    );
+
+    if (needsUpdate) {
+      // Reset and recreate connections
+      this._flightService.resetConnectionData();
+      this._flightService.setConnectionStrings(
+        currentAirports,
+        reservation.departingAirport,
+        reservation.destinationAirport
+      );
+    }
+  }
+
+  private doConnectionsNeedUpdate(
+    existingConnections: [string, string][],
+    currentAirports: string[],
+    reservation: ReservationInformation
+  ): boolean {
+    // If no existing connections, we need to create them
+    if (existingConnections.length === 0) {
+      return true;
+    }
+
+    // Calculate expected connections based on current airports
+    const expectedConnections: [string, string][] = [];
+
+    if (currentAirports.length > 0) {
+      // First connection: departing -> first airport
+      expectedConnections.push([reservation.departingAirport, currentAirports[0]]);
+
+      // Intermediate connections
+      for (let i = 0; i < currentAirports.length - 1; i++) {
+        expectedConnections.push([currentAirports[i], currentAirports[i + 1]]);
+      }
+
+      // Final connection: last airport -> destination
+      expectedConnections.push([
+        currentAirports[currentAirports.length - 1],
+        reservation.destinationAirport,
+      ]);
+    }
+
+    // Compare existing vs expected
+    if (existingConnections.length !== expectedConnections.length) {
+      return true;
+    }
+
+    // Check if all connections match
+    return !existingConnections.every(
+      (conn, index) =>
+        conn[0] === expectedConnections[index][0] && conn[1] === expectedConnections[index][1]
+    );
   }
 
   // Method to handle navigation from connection flights step
@@ -326,11 +385,6 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
-      if (this.flightData && this.airportsArray.length > 0) {
-        setTimeout(() => {
-          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-        }, 100);
-      }
     }
   }
 
@@ -340,12 +394,6 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
-      } else {
-        if (this.flightData) {
-          setTimeout(() => {
-            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-          }, 100);
-        }
       }
     }
   }
