@@ -219,7 +219,8 @@
     "destinationIsDeparting": "Aeroportul de plecare nu poate fi același cu aeroportul de destinație.",
     "connectionsShouldBedifferent": "Conexiunile ar trebui să fie diferite.",
     "usedDepartingAirport": "Nu folosiți aeroportul de plecare ca și conexiune.",
-    "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune."
+    "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune.",
+    "dateOrder": "Datele zborurilor trebuie să fie în ordine cronologică."
   },
   "flightForm": {
     "flightNumber": "Numărul zborului",

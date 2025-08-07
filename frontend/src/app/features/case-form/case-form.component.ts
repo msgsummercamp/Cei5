@@ -185,6 +185,8 @@ export class CaseFormComponent implements OnInit {
   }
 
   public get isFlagged(): boolean[] {
+    console.log(this._flightService.getFlagStatus());
+
     return this._flightService.getFlagStatus();
   }
 
@@ -194,6 +196,10 @@ export class CaseFormComponent implements OnInit {
 
   public toggleFlag(index: number): void {
     this._flightService.toggleFlag(index);
+  }
+
+  public isFlagActive(index: number): boolean {
+    return this.isFlagged[index] === true;
   }
 
   public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
@@ -435,7 +441,7 @@ export class CaseFormComponent implements OnInit {
   }
 
   public areAllConnectionFlightsValid(): boolean {
-    return this._flightService.areAllConnectionFlightsValid();
+    return this._flightService.areAllConnectionFlightsValid() && this.areAllDatesValid();
   }
 
   public submitCase(): void {
@@ -519,5 +525,23 @@ export class CaseFormComponent implements OnInit {
 
     const airport = this.airports().find((a) => a.code === code);
     return airport ? `${airport.name} (${airport.code})` : code;
+  }
+
+  public areAllDatesValid(): boolean {
+    const connections = this._flightService.getConnectionFlights();
+
+    for (let i = 0; i < connections.length - 1; i++) {
+      const currentConnection = this._flightService.getConnectionInitialData(i) || null;
+      const nextConnection = this._flightService.getConnectionInitialData(i + 1) || null;
+
+      if (
+        currentConnection?.plannedArrivalTime != null &&
+        nextConnection?.plannedDepartureTime != null &&
+        currentConnection.plannedArrivalTime > nextConnection.plannedDepartureTime
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }

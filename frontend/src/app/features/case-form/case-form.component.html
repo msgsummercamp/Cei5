@@ -385,8 +385,9 @@
                   <p-button
                     icon="pi pi-flag"
                     severity="success"
+                    [class.disabled-button]="isFlagActive(i)"
                     (onClick)="toggleFlag(i)"
-                    [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
+                    [disabled]="isFlagged[i] !== false"
                   ></p-button>
                   <app-flight-form
                     [title]="''"
@@ -409,6 +410,13 @@
               (onClick)="onPrevious(prevCallback)"
               [styleClass]="'px-6'"
             />
+
+            @if (!areAllConnectionFlightsValid()) {
+              <p-message severity="error" class="mb-2">
+                {{ 'mainForm.dateOrder' | translate }}
+              </p-message>
+            }
+
             <p-button
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"

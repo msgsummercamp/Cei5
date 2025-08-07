@@ -84,14 +84,16 @@ export class FlightManagementService {
     return true;
   }
 
-  public toggleFlag(index: number): boolean {
-    if (this.flags === this.MAX_FLAGS && !this.isFlagged[index]) {
-      return false; // Cannot add more flags
-    }
+  public toggleFlag(index: number): void {
+    // if (this.flags === this.MAX_FLAGS && !this.isFlagged[index]) {
+    //   return false; // Cannot add more flags
+    // }
 
-    this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
-    this.isFlagged[index] = !this.isFlagged[index];
-    return true;
+    // this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
+    // this.isFlagged[index] = !this.isFlagged[index];
+    // return true;
+
+    this.isFlagged = this.isFlagged.map((flagged, i) => (flagged = i === index ? true : false));
   }
 
   public getFlags(): number {
