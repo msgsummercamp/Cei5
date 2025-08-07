@@ -117,7 +117,8 @@
     "password-label": "Parolă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
-    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "password-maxlength": "Parola nu poate depăși 30 de caractere.",
+    "password-invalid": "Parola trebuie să conțină litere, cifre și caractere speciale.",
     "forgot-password": "Ați uitat parola? Resetați",
     "here": "aici",
     "sign-in-button": "Autentificare"
@@ -145,7 +146,7 @@
     "password-label": "Parolă nouă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
-    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "password-maxlength": "Parola nu poate depăși 30 de caractere.",
     "confirm-required": "Vă rugăm să confirmați parola.",
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",

@@ -47,6 +47,9 @@
             @case (signInForm.controls.password.hasError('maxlength')) {
               <app-error-message text="{{ 'sign-in.password-maxlength' | translate }}" />
             }
+            @case (signInForm.controls.password.hasError('pattern')) {
+              <app-error-message text="{{ 'sign-in.password-invalid' | translate }}" />
+            }
           }
         }
       </div>
