@@ -13,6 +13,7 @@ import { InputText } from 'primeng/inputtext';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { Button } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
 
 type SignInForm = {
   email: FormControl<string>;
@@ -28,6 +29,7 @@ type SignInForm = {
     ErrorMessageComponent,
     Button,
     TranslatePipe,
+    CardModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',

@@ -139,10 +139,11 @@
     "email-required": "Email address is required.",
     "email-invalid": "Please enter a valid email address.",
     "submit-button": "Send Reset Mail",
-    "email-sent": "You will receive an email in a few minutes with your temporary password."
+    "email-sent": "You will receive an email in a few minutes with your temporary password.",
+    "panel-header": "Details"
   },
   "change-pass": {
-    "title": "Change Password",
+    "title": "Change Your Password",
     "password-label": "New Password",
     "password-required": "Password is required.",
     "password-minlength": "Password must be at least 6 characters long.",
@@ -151,7 +152,10 @@
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password",
-    "password-invalid": "Password must contain letters, numbers, and special characters."
+    "password-invalid": "Password must contain letters, numbers, and special characters.",
+    "panel-header": "Your password must contain:",
+    "password-length": "At least 6 characters and at most 30 characters.",
+    "password-invalid-reset": "Password must contain letters, numbers, or special characters."
   },
   "user-details": {
     "title": "User Details",

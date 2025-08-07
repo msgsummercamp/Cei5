@@ -139,10 +139,11 @@
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
     "submit-button": "Trimite mail-ul de resetare",
-    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară."
+    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară.",
+    "panel-header": "Detalii"
   },
   "change-pass": {
-    "title": "Schimbă parola",
+    "title": "Schimbă-ți parola",
     "password-label": "Parolă nouă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
@@ -151,7 +152,10 @@
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola",
-    "password-invalid": "Parola trebuie să conțină litere, cifre și caractere speciale."
+    "password-invalid": "Parola trebuie să conțină litere, cifre și caractere speciale.",
+    "panel-header": "Parola dvs. trebuie să conțină:",
+    "password-length": "Cel puțin 6 caractere și cel mult 30 de caractere.",
+    "password-invalid-reset": "Parola trebuie să conțină litere, cifre sau caractere speciale."
   },
   "user-details": {
     "title": "Detalii utilizator",
