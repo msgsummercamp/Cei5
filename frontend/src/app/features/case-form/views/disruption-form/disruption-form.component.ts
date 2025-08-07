@@ -1,4 +1,4 @@
-import { Component, inject, output, effect, signal } from '@angular/core';
+import { Component, inject, output, effect, signal, input } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -22,6 +22,17 @@ type DisruptionForm = {
   airlineMotiveAnswer: FormControl<string | null>;
   airlineMotiveFollowUpAnswer: FormControl<string | null>;
   disruptionInformation: FormControl<string>;
+};
+
+export type DisruptionFormData = {
+  disruptionType: string;
+  cancellationAnswer: string | null;
+  delayAnswer: string | null;
+  deniedBoardingAnswer: string | null;
+  deniedBoardingFollowUpAnswer: string | null;
+  airlineMotiveAnswer: string | null;
+  airlineMotiveFollowUpAnswer: string | null;
+  disruptionInformation: string;
 };
 
 enum Disruptions {
@@ -59,6 +70,8 @@ enum DisruptionsReasons {
 export class DisruptionFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
+  public readonly initialData = input<DisruptionFormData | null>(null);
+
   private formValid = signal(false);
 
   protected readonly reasons = [
@@ -68,7 +81,7 @@ export class DisruptionFormComponent {
   ];
 
   protected readonly disruptionForm = this._formBuilder.group<DisruptionForm>({
-    disruptionType: this._formBuilder.control('', [Validators.required]),
+    disruptionType: this._formBuilder.control('', [Validators.required]), //disruption Reason
     cancellationAnswer: this._formBuilder.control<string | null>(null),
     delayAnswer: this._formBuilder.control<string | null>(null),
     deniedBoardingAnswer: this._formBuilder.control<string | null>(null),
@@ -81,7 +94,13 @@ export class DisruptionFormComponent {
     ]),
   });
 
+  public readonly disruptionReason = output<string>();
+  public readonly disruptionInfo = output<string>();
   public readonly validityChange = output<{ valid: boolean } | null>();
+  public readonly validityChangeData = output<{
+    valid: boolean;
+    data?: DisruptionFormData | null;
+  }>();
 
   /**
    *
@@ -156,17 +175,62 @@ export class DisruptionFormComponent {
     return true;
   }
 
+  public resetForm(): void {
+    this.disruptionForm.reset();
+  }
+
   constructor() {
+    let hasInitialized = false;
     this.disruptionForm.statusChanges.subscribe(() => {
-      const isValid = this.hasAllRequiredFields();
-      this.formValid.set(isValid);
+      this.formValid.set(this.disruptionForm.valid);
+      this.checkAndEmitValidity();
     });
 
     effect(() => {
       const isValid = this.formValid();
+      const data = this.initialData();
       this.validityChange.emit(isValid ? { valid: true } : null);
+      if (data && !hasInitialized) {
+        hasInitialized = true;
+        this.disruptionForm.patchValue(
+          {
+            disruptionType: data.disruptionType || '',
+            cancellationAnswer: data.cancellationAnswer || null,
+            delayAnswer: data.delayAnswer || null,
+            deniedBoardingAnswer: data.deniedBoardingAnswer || null,
+            deniedBoardingFollowUpAnswer: data.deniedBoardingFollowUpAnswer || null,
+            airlineMotiveAnswer: data.airlineMotiveAnswer || null,
+            airlineMotiveFollowUpAnswer: data.airlineMotiveFollowUpAnswer || null,
+            disruptionInformation: data.disruptionInformation || '',
+          },
+          { emitEvent: false }
+        );
+
+        setTimeout(() => {
+          this.checkAndEmitValidity();
+        }, 0);
+      }
     });
 
     this.formValid.set(this.disruptionForm.valid);
+  }
+
+  private checkAndEmitValidity(): void {
+    const isValid = this.disruptionForm.valid;
+    const data = isValid ? this.getDisruptionFormDetails() : null;
+    this.validityChangeData.emit({ valid: isValid, data: data });
+  }
+
+  private getDisruptionFormDetails(): DisruptionFormData {
+    return {
+      disruptionType: this.disruptionForm.controls.disruptionType.value,
+      cancellationAnswer: this.disruptionForm.controls.cancellationAnswer.value,
+      delayAnswer: this.disruptionForm.controls.delayAnswer.value,
+      deniedBoardingAnswer: this.disruptionForm.controls.deniedBoardingAnswer.value,
+      deniedBoardingFollowUpAnswer: this.disruptionForm.controls.deniedBoardingFollowUpAnswer.value,
+      airlineMotiveAnswer: this.disruptionForm.controls.airlineMotiveAnswer.value,
+      airlineMotiveFollowUpAnswer: this.disruptionForm.controls.airlineMotiveFollowUpAnswer.value,
+      disruptionInformation: this.disruptionForm.controls.disruptionInformation.value,
+    };
   }
 }

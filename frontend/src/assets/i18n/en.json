@@ -130,7 +130,8 @@
     "warning": "Warning"
   },
   "navbar": {
-    "login": "Login"
+    "login": "Login",
+    "logout": "Logout"
   },
   "request-reset": {
     "title": "Reset Password",
@@ -195,6 +196,7 @@
     "step2": "Flight Info",
     "step3": "Connection Flights",
     "step4": "Disruption Info",
+    "step5": "Eligibility Check",
     "step6": "User Details"
   },
   "mainForm": {
@@ -242,5 +244,15 @@
     "arrivalBeforeDeparture": "Arrival time must be after departure time.",
     "flightNumberPattern": "Flight number must be alphanumeric.",
     "airlinePattern": "Airline must contain only letters."
+  },
+    "eligibilityForm":{
+    "checkEligibility": "Eligibility check.",
+    "loading" : "Please wait while we verify the eligibility of your case.",
+    "congratulations": "Congratulations.",
+    "eligible": "You are eligible for compensation.",
+    "sorry": "Sorry.",
+    "notEligible": "Your case is not eligible for compensation under EU regulations.",
+    "restart": "Start over from the beginning."
+
   }
 }

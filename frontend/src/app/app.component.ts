@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LanguageService } from './shared/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  translateService = inject(TranslateService);
+  private _translateService = inject(TranslateService);
+  private _languageService = inject(LanguageService);
 
   ngOnInit() {
-    // Temporarily set the default language to Romanian
-    this.translateService.use('en');
+    this._translateService.use(this._languageService.getSelectedLanguageCode());
   }
 }
