@@ -130,6 +130,9 @@
     "info": "Info",
     "warning": "Warning"
   },
+  "navbar": {
+    "login": "Login"
+  },
   "request-reset": {
     "title": "Reset Password",
     "description": "Enter your email address to receive a new temporary password. The first time you log in, you will be prompted to change your password.",
