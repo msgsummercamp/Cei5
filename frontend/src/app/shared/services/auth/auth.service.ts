@@ -77,11 +77,10 @@ export class AuthService {
         this.saveTokenToSessionStorage(token);
         this.decodeTokenAndSetState(token);
         this.fetchFullUserDetails();
-        // #TODO replace with real routes
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
-          this._router.navigate(['/form']);
+          this._router.navigate(['/']);
         }
       },
       error: (error) => {
@@ -127,7 +126,6 @@ export class AuthService {
     this.clearTokenFromSessionStorage();
     sessionStorage.removeItem('userDetails');
     this._authState.set(initialState);
-    this._router.navigate(['/sign-in']);
   }
 
   /**
@@ -201,6 +199,8 @@ export class AuthService {
         this._notificationService.showSuccess(
           this._translationService.instant('auth-service.password-reset-success')
         );
+        this.logOut();
+        this._router.navigate(['/sign-in']);
       },
       error: (error) => {
         this._notificationService.showError('Password reset failed: ' + error.message);
