@@ -153,13 +153,15 @@
                         text="{{ 'mainForm.departingAirportUpper' | translate }}"
                       />
                     }
+                    @case (
+                      reservationForm.hasError('destinationIsDeparting') &&
+                      reservationForm.controls.departingAirport.touched
+                    ) {
+                      <app-error-message
+                        text="{{ 'mainForm.destinationIsDeparting' | translate }}"
+                      />
+                    }
                   }
-                }
-                @if (
-                  reservationForm.hasError('destinationIsDeparting') &&
-                  reservationForm.controls.departingAirport.touched
-                ) {
-                  <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                 }
               </div>
             </div>
