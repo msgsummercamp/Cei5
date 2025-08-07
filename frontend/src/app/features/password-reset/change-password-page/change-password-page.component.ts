@@ -12,6 +12,8 @@ import { ErrorMessageComponent } from '../../../shared/components/error-message/
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 type ChangePasswordForm = {
   newPassword: FormControl<string>;
@@ -27,6 +29,8 @@ type ChangePasswordForm = {
     InputText,
     ReactiveFormsModule,
     TranslatePipe,
+    CardModule,
+    PanelModule,
   ],
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.scss',
@@ -38,7 +42,12 @@ export class ChangePasswordPageComponent {
   protected readonly changePasswordForm = this._formBuilder.group<ChangePasswordForm>(
     {
       newPassword: this._formBuilder.control('', {
-        validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],
+        validators: [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(30),
+          Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+{}:"\'<>?|[\\];,./`~]{6,30}$'),
+        ],
       }),
       confirmPassword: this._formBuilder.control('', {
         validators: [Validators.required],
@@ -54,5 +63,20 @@ export class ChangePasswordPageComponent {
       const newPassword: string = this.changePasswordForm.get('newPassword')?.value || '';
       this._authService.resetPassword(newPassword);
     }
+  }
+
+  protected hasNewPasswordPatternError(): boolean {
+    return (
+      !this.changePasswordForm.controls.newPassword.hasError('pattern') &&
+      !this.changePasswordForm.controls.newPassword.hasError('required')
+    );
+  }
+
+  protected hasNewPasswordGoodLength(): boolean {
+    return (
+      !this.changePasswordForm.controls.newPassword.hasError('minlength') &&
+      !this.changePasswordForm.controls.newPassword.hasError('maxlength') &&
+      !this.changePasswordForm.controls.newPassword.hasError('required')
+    );
   }
 }

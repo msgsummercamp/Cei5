@@ -80,15 +80,18 @@ export class UserRegistrationComponent {
       Validators.required,
       Validators.minLength(1),
       Validators.maxLength(50),
+      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
     ]),
     lastName: this._formBuilder.control<string>('', [
       Validators.required,
       Validators.minLength(1),
       Validators.maxLength(50),
+      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
     ]),
     address: this._formBuilder.control<string>('', [
       Validators.required,
       Validators.maxLength(100),
+      Validators.pattern(/^[a-zA-Z0-9\s,.'-]+$/),
     ]),
     phoneNumber: this._formBuilder.control<string>('', [
       Validators.required,
@@ -97,7 +100,7 @@ export class UserRegistrationComponent {
     postalCode: this._formBuilder.control<string>('', [
       Validators.required,
       Validators.maxLength(10),
-      Validators.pattern(/^[a-zA-Z0-9-]+$/),
+      Validators.pattern(/^[a-zA-Z0-9- ]+$/),
     ]),
     birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });

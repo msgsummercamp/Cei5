@@ -12,6 +12,8 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../../shared/services/toaster/notification.service';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 type RequestResetForm = {
   email: FormControl<string>;
@@ -26,6 +28,8 @@ type RequestResetForm = {
     InputText,
     ReactiveFormsModule,
     TranslatePipe,
+    CardModule,
+    PanelModule,
   ],
   templateUrl: './request-pass-reset-page.component.html',
   styleUrl: './request-pass-reset-page.component.scss',

@@ -5,7 +5,6 @@ import {
   ViewChild,
   OnInit,
   effect,
-  input,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -33,9 +32,6 @@ import {
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
 import { ReservationDTO } from '../../shared/dto/reservation.dto';
-import { CaseDTO } from '../../shared/dto/case.dto';
-import { Statuses } from '../../shared/types/enums/status';
-import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import {
   DisruptionFormComponent,
@@ -224,8 +220,16 @@ export class CaseFormComponent implements OnInit {
     return this._flightService.getMaxFlags();
   }
 
+  public get flagged(): boolean {
+    return this._flightService.isAnyFlag();
+  }
+
   public toggleFlag(index: number): void {
     this._flightService.toggleFlag(index);
+  }
+
+  public isFlagActive(index: number): boolean {
+    return this.isFlagged[index] === true;
   }
 
   public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
@@ -251,6 +255,14 @@ export class CaseFormComponent implements OnInit {
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
     const allFlights = this._flightService.getAllFlights();
     this._navigationService.goBackFromDisruptionInfo(allFlights.length);
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
+  public onPreviousFromEligibiltyCheck(prevCallback?: Function) {
+    this._eligibilityService.resetEligibilityResult();
+    this._navigationService.previousStep();
     if (prevCallback) {
       prevCallback();
     }
@@ -305,12 +317,8 @@ export class CaseFormComponent implements OnInit {
       } else {
         // Connection flights
         const reservation = this._reservationService.getReservationInformation();
-        this._flightService.resetConnectionData();
-        this._flightService.setConnectionStrings(
-          this.getAirportValues(),
-          reservation.departingAirport,
-          reservation.destinationAirport
-        );
+
+        this.updateConnectionsIfChanged(reservation);
 
         if (this.flightData) {
           this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
@@ -321,6 +329,69 @@ export class CaseFormComponent implements OnInit {
         nextCallback();
       }
     }
+  }
+
+  private updateConnectionsIfChanged(reservation: ReservationInformation): void {
+    const currentAirports = this.getAirportValues();
+    const existingConnections = this._flightService.getConnectionFlights();
+
+    // Check if connections need to be updated
+    const needsUpdate = this.doConnectionsNeedUpdate(
+      existingConnections,
+      currentAirports,
+      reservation
+    );
+
+    if (needsUpdate) {
+      // Reset and recreate connections
+      this._flightService.resetConnectionData();
+      this._flightService.setConnectionStrings(
+        currentAirports,
+        reservation.departingAirport,
+        reservation.destinationAirport
+      );
+    }
+  }
+
+  private doConnectionsNeedUpdate(
+    existingConnections: [string, string][],
+    currentAirports: string[],
+    reservation: ReservationInformation
+  ): boolean {
+    // If no existing connections, we need to create them
+    if (existingConnections.length === 0) {
+      return true;
+    }
+
+    // Calculate expected connections based on current airports
+    const expectedConnections: [string, string][] = [];
+
+    if (currentAirports.length > 0) {
+      // First connection: departing -> first airport
+      expectedConnections.push([reservation.departingAirport, currentAirports[0]]);
+
+      // Intermediate connections
+      for (let i = 0; i < currentAirports.length - 1; i++) {
+        expectedConnections.push([currentAirports[i], currentAirports[i + 1]]);
+      }
+
+      // Final connection: last airport -> destination
+      expectedConnections.push([
+        currentAirports[currentAirports.length - 1],
+        reservation.destinationAirport,
+      ]);
+    }
+
+    // Compare existing vs expected
+    if (existingConnections.length !== expectedConnections.length) {
+      return true;
+    }
+
+    // Check if all connections match
+    return !existingConnections.every(
+      (conn, index) =>
+        conn[0] === expectedConnections[index][0] && conn[1] === expectedConnections[index][1]
+    );
   }
 
   // Method to handle navigation from connection flights step
@@ -365,11 +436,6 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
-      if (this.flightData && this.airportsArray.length > 0) {
-        setTimeout(() => {
-          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-        }, 100);
-      }
     }
   }
 
@@ -379,12 +445,6 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
-      } else {
-        if (this.flightData) {
-          setTimeout(() => {
-            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-          }, 100);
-        }
       }
     }
   }
@@ -420,6 +480,11 @@ export class CaseFormComponent implements OnInit {
     return this.disruptionFormData;
   }
 
+  public get isEligibilityCheckValid(): boolean {
+    const result = this._eligibilityService.eligibilityResult();
+    return result.hasBeenChecked && result.isEligible === true;
+  }
+
   public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
     this.isUserRegistrationValid = valid;
     this.userDetailsFormData = data;
@@ -436,46 +501,7 @@ export class CaseFormComponent implements OnInit {
   }
 
   public areAllConnectionFlightsValid(): boolean {
-    return this._flightService.areAllConnectionFlightsValid();
-  }
-
-  public submitCase(): void {
-    if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
-      return;
-    }
-
-    const caseData: CaseDTO = {
-      status: Statuses.PENDING,
-      disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
-      disruptionInfo: 'Flight was delayed by 3 hours',
-      date: new Date().toISOString(),
-      clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      assignedColleague: undefined,
-      reservation: this.createReservationDTO(),
-      documentList: [],
-    };
-
-    this._caseService.checkEligibility(caseData).subscribe({
-      next: (isEligible) => {
-        if (isEligible) {
-          this._caseService.createCase(caseData).subscribe({
-            next: (response) => {
-              // #TODO Add success handling here
-            },
-            error: (error) => {
-              // #TODO Add error handling here
-            },
-          });
-        } else {
-          console.log('Client is not eligible for a case');
-          // #TODO Add handling for ineligible case
-        }
-      },
-      error: (error) => {
-        console.error('Error checking eligibility:', error);
-        // #TODO Add error handling here
-      },
-    });
+    return this._flightService.areAllConnectionFlightsValid() && this.areAllDatesValid();
   }
 
   public getDisruptionInfo() {
@@ -566,5 +592,23 @@ export class CaseFormComponent implements OnInit {
 
     const airport = this.airports().find((a) => a.code === code);
     return airport ? `${airport.name} (${airport.code})` : code;
+  }
+
+  public areAllDatesValid(): boolean {
+    const connections = this._flightService.getConnectionFlights();
+
+    for (let i = 0; i < connections.length - 1; i++) {
+      const currentConnection = this._flightService.getConnectionInitialData(i) || null;
+      const nextConnection = this._flightService.getConnectionInitialData(i + 1) || null;
+
+      if (
+        currentConnection?.plannedArrivalTime != null &&
+        nextConnection?.plannedDepartureTime != null &&
+        currentConnection.plannedArrivalTime > nextConnection.plannedDepartureTime
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }

@@ -153,13 +153,15 @@
                         text="{{ 'mainForm.departingAirportUpper' | translate }}"
                       />
                     }
+                    @case (
+                      reservationForm.hasError('destinationIsDeparting') &&
+                      reservationForm.controls.departingAirport.touched
+                    ) {
+                      <app-error-message
+                        text="{{ 'mainForm.destinationIsDeparting' | translate }}"
+                      />
+                    }
                   }
-                }
-                @if (
-                  reservationForm.hasError('destinationIsDeparting') &&
-                  reservationForm.controls.departingAirport.touched
-                ) {
-                  <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                 }
               </div>
             </div>
@@ -385,8 +387,9 @@
                   <p-button
                     icon="pi pi-flag"
                     severity="success"
+                    [class.disabled-button]="isFlagActive(i)"
                     (onClick)="toggleFlag(i)"
-                    [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
+                    [disabled]="isFlagged[i] !== false"
                   ></p-button>
                   <app-flight-form
                     [title]="''"
@@ -409,10 +412,17 @@
               (onClick)="onPrevious(prevCallback)"
               [styleClass]="'px-6'"
             />
+
+            @if (!areAllConnectionFlightsValid()) {
+              <p-message severity="error" class="mb-2">
+                {{ 'mainForm.dateOrder' | translate }}
+              </p-message>
+            }
+
             <p-button
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
-              [disabled]="!areAllConnectionFlightsValid() || this.flags !== this.MAX_FLAGS"
+              [disabled]="!areAllConnectionFlightsValid() || this.flagged === false"
               [styleClass]="'px-6'"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
@@ -441,6 +451,7 @@
           <p-button
             label="{{ 'mainForm.next' | translate }}"
             severity="primary"
+            [disabled]="!isDisruptionFormValid"
             (onClick)="onNextFromDisruptionInfo(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />
@@ -468,6 +479,7 @@
           <p-button
             label="{{ 'mainForm.next' | translate }}"
             severity="primary"
+            [disabled]="!isEligibilityCheckValid"
             (onClick)="onNext(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />

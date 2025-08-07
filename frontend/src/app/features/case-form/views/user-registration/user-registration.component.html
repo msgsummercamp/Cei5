@@ -56,6 +56,9 @@
             @case (userRegistrationForm.controls.firstName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.firstName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -88,6 +91,9 @@
             @case (userRegistrationForm.controls.lastName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.lastName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -116,6 +122,9 @@
             }
             @case (userRegistrationForm.controls.address.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
+            }
+            @case (userRegistrationForm.controls.address.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
             }
           }
         }
@@ -228,9 +237,13 @@
     ></p-checkbox>
     <span class="accept-terms-label">
       {{ 'user-details.accept-terms' | translate }}
-      <a href="assets/docs/terms.docx" download="terms.docx" class="doc-link">Terms</a>
-      and
-      <a href="assets/docs/privacy.docx" download="privacy.docx" class="doc-link">Privacy Policy</a>
+      <a href="assets/docs/terms.pdf" download="terms.pdf" class="doc-link">{{
+        'user-details.terms' | translate
+      }}</a>
+      {{ 'user-details.and' | translate }}
+      <a href="assets/docs/privacy.pdf" download="privacy.pdf" class="doc-link">{{
+        'user-details.privacy-policy' | translate
+      }}</a>
     </span>
   </div>
 </div>

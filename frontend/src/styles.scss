@@ -2,7 +2,11 @@
 @import 'primeicons/primeicons.css';
 
 body {
-  font-family: "Candara", serif;
+  font-family: 'Candara', serif;
   font-style: normal;
   margin: 0;
+}
+
+.disabled-button .p-button:disabled {
+  background-color: red;
 }

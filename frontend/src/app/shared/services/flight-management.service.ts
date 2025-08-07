@@ -14,6 +14,7 @@ export class FlightManagementService {
   private allFlights: { flightDetails: FlightDetails; isFlagged: boolean }[] = [];
   private isFlagged: boolean[] = [];
   private flags = 0;
+  public flagged = false;
 
   // Public methods
   public getConnectionFlights(): [string, string][] {
@@ -84,14 +85,9 @@ export class FlightManagementService {
     return true;
   }
 
-  public toggleFlag(index: number): boolean {
-    if (this.flags === this.MAX_FLAGS && !this.isFlagged[index]) {
-      return false; // Cannot add more flags
-    }
-
-    this.flags = this.isFlagged[index] ? this.flags - 1 : this.flags + 1;
-    this.isFlagged[index] = !this.isFlagged[index];
-    return true;
+  public toggleFlag(index: number): void {
+    this.flagged = true;
+    this.isFlagged = this.isFlagged.map((flagged, i) => (flagged = i === index ? true : false));
   }
 
   public getFlags(): number {
@@ -104,6 +100,10 @@ export class FlightManagementService {
 
   public getMaxFlags(): number {
     return this.MAX_FLAGS;
+  }
+
+  public isAnyFlag(): boolean {
+    return this.flagged;
   }
 
   public initializeFlagsArray(length: number): void {
