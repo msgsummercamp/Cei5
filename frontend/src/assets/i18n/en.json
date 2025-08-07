@@ -192,7 +192,10 @@
     "firstname-invalid": "First name can only contain letters.",
     "lastname-invalid": "Last name can only contain letters.",
     "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
-    "accept-terms": "I have read and agree to the"
+    "accept-terms": "I have read and agree to the",
+    "terms": "terms",
+    "privacy-policy": "privacy-policy.",
+    "and": "and"
   },
   "confirmation": {
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
@@ -264,15 +267,14 @@
     "flightNumberPattern": "Flight number must be alphanumeric.",
     "airlinePattern": "Airline must contain only letters."
   },
-    "eligibilityForm":{
+  "eligibilityForm": {
     "checkEligibility": "Eligibility check.",
-    "loading" : "Please wait while we verify the eligibility of your case.",
+    "loading": "Please wait while we verify the eligibility of your case.",
     "congratulations": "Congratulations.",
     "eligible": "You are eligible for compensation.",
     "sorry": "Sorry.",
     "notEligible": "Your case is not eligible for compensation under EU regulations.",
     "restart": "Start over from the beginning."
-
   },
   "lastForm": {
     "next": "Finish"

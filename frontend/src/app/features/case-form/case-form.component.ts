@@ -5,7 +5,6 @@ import {
   ViewChild,
   OnInit,
   effect,
-  input,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -33,9 +32,6 @@ import {
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
 import { ReservationDTO } from '../../shared/dto/reservation.dto';
-import { CaseDTO } from '../../shared/dto/case.dto';
-import { Statuses } from '../../shared/types/enums/status';
-import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import {
   DisruptionFormComponent,
@@ -264,6 +260,14 @@ export class CaseFormComponent implements OnInit {
     }
   }
 
+  public onPreviousFromEligibiltyCheck(prevCallback?: Function) {
+    this._eligibilityService.resetEligibilityResult();
+    this._navigationService.previousStep();
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
   public onPreviousFromUserRegistration(prevCallback?: Function) {
     this._navigationService.previousStep();
     if (prevCallback) {
@@ -476,6 +480,11 @@ export class CaseFormComponent implements OnInit {
     return this.disruptionFormData;
   }
 
+  public get isEligibilityCheckValid(): boolean {
+    const result = this._eligibilityService.eligibilityResult();
+    return result.hasBeenChecked && result.isEligible === true;
+  }
+
   public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
     this.isUserRegistrationValid = valid;
     this.userDetailsFormData = data;
@@ -493,45 +502,6 @@ export class CaseFormComponent implements OnInit {
 
   public areAllConnectionFlightsValid(): boolean {
     return this._flightService.areAllConnectionFlightsValid() && this.areAllDatesValid();
-  }
-
-  public submitCase(): void {
-    if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
-      return;
-    }
-
-    const caseData: CaseDTO = {
-      status: Statuses.PENDING,
-      disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
-      disruptionInfo: 'Flight was delayed by 3 hours',
-      date: new Date().toISOString(),
-      clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-      assignedColleague: undefined,
-      reservation: this.createReservationDTO(),
-      documentList: [],
-    };
-
-    this._caseService.checkEligibility(caseData).subscribe({
-      next: (isEligible) => {
-        if (isEligible) {
-          this._caseService.createCase(caseData).subscribe({
-            next: (response) => {
-              // #TODO Add success handling here
-            },
-            error: (error) => {
-              // #TODO Add error handling here
-            },
-          });
-        } else {
-          console.log('Client is not eligible for a case');
-          // #TODO Add handling for ineligible case
-        }
-      },
-      error: (error) => {
-        console.error('Error checking eligibility:', error);
-        // #TODO Add error handling here
-      },
-    });
   }
 
   public getDisruptionInfo() {

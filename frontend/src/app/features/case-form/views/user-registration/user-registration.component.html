@@ -237,9 +237,13 @@
     ></p-checkbox>
     <span class="accept-terms-label">
       {{ 'user-details.accept-terms' | translate }}
-      <a href="assets/docs/terms.docx" download="terms.docx" class="doc-link">Terms</a>
-      and
-      <a href="assets/docs/privacy.docx" download="privacy.docx" class="doc-link">Privacy Policy</a>
+      <a href="assets/docs/terms.pdf" download="terms.pdf" class="doc-link">{{
+        'user-details.terms' | translate
+      }}</a>
+      {{ 'user-details.and' | translate }}
+      <a href="assets/docs/privacy.pdf" download="privacy.pdf" class="doc-link">{{
+        'user-details.privacy-policy' | translate
+      }}</a>
     </span>
   </div>
 </div>

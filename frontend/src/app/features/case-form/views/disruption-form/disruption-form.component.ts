@@ -12,6 +12,7 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DisruptionReasons } from '../../../../shared/types/enums/disruption-reason';
 
 type DisruptionForm = {
   disruptionType: FormControl<string>;
@@ -39,17 +40,6 @@ enum Disruptions {
   Cancellation = 'Cancellation',
   Delay = 'Delay',
   Denied_Boarding = 'Denied_Boarding',
-}
-
-enum DisruptionsReasons {
-  CANCELATION_NOTICE_UNDER_14_DAYS = 'CANCELATION_NOTICE_UNDER_14_DAYS',
-  CANCELATION_NOTICE_OVER_14_DAYS = 'CANCELATION_NOTICE_OVER_14_DAYS',
-  CANCELATION_ON_DAY_OF_DEPARTURE = 'CANCELATION_ON_DAY_OF_DEPARTURE',
-  ARRIVED_3H_LATE = 'ARRIVED_3H_LATE',
-  ARRIVED_EARLY = 'ARRIVED_EARLY',
-  NEVER_ARRIVED = 'NEVER_ARRIVED',
-  DID_NOT_GIVE_THE_SEAT_VOLUNTARILY = 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY',
-  DID_GIVE_THE_SEAT_VOLUNTARILY = 'DID_GIVE_THE_SEAT_VOLUNTARILY',
 }
 
 @Component({
@@ -119,23 +109,23 @@ export class DisruptionFormComponent {
 
     if (disruption.disruptionType.value === Disruptions.Cancellation) {
       if (disruption.cancellationAnswer.value === '>14 days') {
-        return DisruptionsReasons.CANCELATION_NOTICE_OVER_14_DAYS;
+        return DisruptionReasons.CANCELATION_NOTICE_OVER_14_DAYS;
       } else if (disruption.cancellationAnswer.value === '<14 days') {
-        return DisruptionsReasons.CANCELATION_NOTICE_UNDER_14_DAYS;
+        return DisruptionReasons.CANCELATION_NOTICE_UNDER_14_DAYS;
       }
-      return DisruptionsReasons.CANCELATION_ON_DAY_OF_DEPARTURE;
+      return DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE;
     } else if (disruption.disruptionType.value === Disruptions.Delay) {
       if (disruption.delayAnswer.value === '>3 hours') {
-        return DisruptionsReasons.ARRIVED_3H_LATE;
+        return DisruptionReasons.ARRIVED_3H_LATE;
       } else if (disruption.delayAnswer.value === '<3 hours') {
-        return DisruptionsReasons.ARRIVED_EARLY;
+        return DisruptionReasons.ARRIVED_EARLY;
       }
-      return DisruptionsReasons.NEVER_ARRIVED;
+      return DisruptionReasons.NEVER_ARRIVED;
     } else {
       if (disruption.deniedBoardingAnswer.value === 'No') {
-        return DisruptionsReasons.DID_NOT_GIVE_THE_SEAT_VOLUNTARILY;
+        return DisruptionReasons.DID_NOT_GIVE_THE_SEAT_VOLUNTARILY;
       }
-      return DisruptionsReasons.DID_GIVE_THE_SEAT_VOLUNTARILY;
+      return DisruptionReasons.DID_GIVE_THE_SEAT_VOLUNTARILY;
     }
   }
 
@@ -182,7 +172,8 @@ export class DisruptionFormComponent {
   constructor() {
     let hasInitialized = false;
     this.disruptionForm.statusChanges.subscribe(() => {
-      this.formValid.set(this.disruptionForm.valid);
+      const isValid = this.hasAllRequiredFields();
+      this.formValid.set(isValid);
       this.checkAndEmitValidity();
     });
 

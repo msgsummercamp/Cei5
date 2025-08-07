@@ -479,6 +479,7 @@
           <p-button
             label="{{ 'mainForm.next' | translate }}"
             severity="primary"
+            [disabled]="!isEligibilityCheckValid"
             (onClick)="onNext(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -13,10 +13,7 @@ import { CaseDTO } from '../../../../shared/dto/case.dto';
 import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  EligibilityDataService,
-  EligibilityResult,
-} from '../../../../shared/services/eligibility-data.service';
+import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -31,7 +28,7 @@ import {
   templateUrl: './eligibility-page.component.html',
   styleUrl: './eligibility-page.component.scss',
 })
-export class EligibilityPageComponent implements OnInit {
+export class EligibilityPageComponent {
   private readonly _caseService = inject(CaseService);
   private readonly _router = inject(Router);
   private readonly _reservationService = inject(ReservationService);
@@ -79,21 +76,27 @@ export class EligibilityPageComponent implements OnInit {
     return this.eligibilityResult().isLoading;
   }
 
-  ngOnInit(): void {
-    // Check if we already have a valid result
-    if (this._eligibilityDataService.hasValidResult()) {
-      this.hasRunInitialCheck = true;
-      return; // Don't re-check, use cached result
-    }
+  // ngOnInit(): void {
+  //   // Check if we already have a valid result
+  //   if (this._eligibilityDataService.hasValidResult()) {
+  //     this.hasRunInitialCheck = true;
+  //     return; // Don't re-check, use cached result
+  //   }
+  //
+  //   // Only check if we have both inputs
+  //   if (this.disruptionReason() && this.disruptionInfo()) {
+  //     this.hasRunInitialCheck = true;
+  //     this.checkEligibility();
+  //   }
+  // }
 
-    // Only check if we have both inputs
-    if (this.disruptionReason() && this.disruptionInfo()) {
-      this.hasRunInitialCheck = true;
-      this.checkEligibility();
-    }
+  constructor() {
+    effect(() => {
+      if (this.disruptionReason() && this.disruptionInfo() && !this.eligibilityResult().isLoading) {
+        this.checkEligibility();
+      }
+    });
   }
-
-  constructor() {}
 
   private checkEligibility(): void {
     // Prevent multiple simultaneous checks

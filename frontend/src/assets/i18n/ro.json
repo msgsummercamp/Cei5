@@ -192,7 +192,10 @@
     "firstname-invalid": "Prenumele poate conține doar litere.",
     "lastname-invalid": "Numele de familie poate conține doar litere.",
     "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
-    "accept-terms": "Am citit și accept"
+    "accept-terms": "Am citit și accept",
+    "terms": "termenii",
+    "privacy-policy": "politica de confidențialitate",
+    "and": "și"
   },
   "confirmation": {
     "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
@@ -209,8 +212,7 @@
       "title": "Pasul 3",
       "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
     }
-  }
-,
+  },
   "stepper": {
     "step1": "Informații despre rezervare",
     "step2": "Informații despre zbor",
@@ -265,14 +267,14 @@
     "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
   },
-  "eligibilityForm":{
+  "eligibilityForm": {
     "checkEligibility": "Verificarea eligibilitati.",
-    "loading" : "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
     "congratulations": "Felicitari.",
     "eligible": "Ești eligibil pentru compensație.",
-    "continueWithPersoinalDetails" : "Continua cu datele personale.",
+    "continueWithPersoinalDetails": "Continua cu datele personale.",
     "sorry": "Scuze",
-    "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulatiolor EU.",
+    "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulațiilor UE.",
     "restart": "Reporniti de la inceput."
   },
   "lastForm": {
