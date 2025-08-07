@@ -49,10 +49,10 @@ export class RequestPassResetPageComponent {
   protected onFormSubmit(): void {
     if (this.requestResetForm.valid) {
       const email: string = this.requestResetForm.get('email')?.value || '';
-      this._authService.sendPasswordResetEmail(email);
       this._notificationService.showInfo(
         this._translationService.instant('request-reset.email-sent')
       );
+      this._authService.sendPasswordResetEmail(email);
     }
   }
 }

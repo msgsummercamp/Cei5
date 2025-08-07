@@ -102,10 +102,12 @@
     "email-required": "Email is required.",
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
+    "failed-to-send-email": "Failed to send email",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
     "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
+    "password-reset-failed": "Password reset failed",
     "token-decode-error": "Error decoding token. Please try again",
     "fetch-user-details-error": "Error fetching user details. Please try again."
   },
@@ -189,7 +191,24 @@
     "password-email": "If you do not have an account, you will receive an email with your temporary password after registering.",
     "firstname-invalid": "First name can only contain letters.",
     "lastname-invalid": "Last name can only contain letters.",
-    "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens."
+    "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
+    "accept-terms": "I have read and agree to the"
+  },
+  "confirmation": {
+    "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
+    "step1": {
+      "title": "Step 1",
+      "text": "Click the button below to download the contract. Read it and sign it.",
+      "button": "Download contract"
+    },
+    "step2": {
+      "title": "Step 2",
+      "text": "After entering your account, upload all necessary documents for your case. You can enter your account by clicking the <strong>Finish</strong> button below."
+    },
+    "step3": {
+      "title": "Step 3",
+      "text": "Wait for an employee to process your case and check your email for possible updates."
+    }
   },
   "stepper": {
     "step1": "Reservation Info",
@@ -254,5 +273,8 @@
     "notEligible": "Your case is not eligible for compensation under EU regulations.",
     "restart": "Start over from the beginning."
 
+  },
+  "lastForm": {
+    "next": "Finish"
   }
 }

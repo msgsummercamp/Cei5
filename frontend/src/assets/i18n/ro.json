@@ -103,9 +103,11 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
+    "failed-to-send-email": "Eroare la trimiterea emailului",
     "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
+    "password-reset-failed": "Eroare la resetarea parolei",
     "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
     "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
   },
@@ -189,8 +191,26 @@
     "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare.",
     "firstname-invalid": "Prenumele poate conține doar litere.",
     "lastname-invalid": "Numele de familie poate conține doar litere.",
-    "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime."
+    "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
+    "accept-terms": "Am citit și accept"
   },
+  "confirmation": {
+    "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
+    "step1": {
+      "title": "Pasul 1",
+      "text": "Apasă butonul de mai jos pentru a descărca contractul. Citește-l cu atenție și semnează-l.",
+      "button": "Descarcă contractul"
+    },
+    "step2": {
+      "title": "Pasul 2",
+      "text": "După ce te autentifici în cont, încarcă toate documentele necesare pentru cazul tău. Poți accesa contul apăsând butonul <strong>Finalizează</strong> de mai jos."
+    },
+    "step3": {
+      "title": "Pasul 3",
+      "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
+    }
+  }
+,
   "stepper": {
     "step1": "Informații despre rezervare",
     "step2": "Informații despre zbor",
@@ -254,5 +274,8 @@
     "sorry": "Scuze",
     "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulatiolor EU.",
     "restart": "Reporniti de la inceput."
+  },
+  "lastForm": {
+    "next": "Finalizează"
   }
 }

@@ -1,6 +1,7 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import {
   FormControl,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -14,6 +15,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { IntlInputTelComponent, CountryISO, SearchCountryField } from 'p-intl-input-tel';
 import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
+import { Checkbox } from 'primeng/checkbox';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -36,19 +38,25 @@ type UserRegistrationForm = {
     DatePicker,
     IntlInputTelComponent,
     PanelModule,
+    Checkbox,
+    FormsModule,
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegistrationComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   public readonly initialData = input<User | undefined>(undefined);
+  public readonly isUserReadOnly = input(false);
+
   public readonly validityChange = output<{ valid: boolean; data: User | null }>();
 
   public readonly searchCountryField = SearchCountryField;
   public readonly countryISO = CountryISO;
   public readonly phoneNumberFormat = PhoneNumberFormat;
+  public acceptedTerms = false;
 
   // Date limits for birth date
   protected readonly maxDate = (() => {
@@ -98,10 +106,15 @@ export class UserRegistrationComponent {
   });
 
   constructor() {
+    this.userRegistrationForm.statusChanges.subscribe(() => {
+      this.checkAndEmitValidity();
+    });
     let hasInitialized = false;
 
     effect(() => {
       const data = this.initialData();
+      const readOnly = this.isUserReadOnly();
+
       if (data && !hasInitialized) {
         hasInitialized = true;
         this.userRegistrationForm.patchValue(
@@ -121,10 +134,10 @@ export class UserRegistrationComponent {
           this.checkAndEmitValidity();
         }, 0);
       }
-    });
 
-    this.userRegistrationForm.statusChanges.subscribe(() => {
-      this.checkAndEmitValidity();
+      if (readOnly) {
+        this.userRegistrationForm.disable();
+      }
     });
   }
 
@@ -146,8 +159,9 @@ export class UserRegistrationComponent {
     return null;
   }
 
-  private checkAndEmitValidity(): void {
-    const isValid = this.userRegistrationForm.valid;
+  public checkAndEmitValidity(): void {
+    const isFormValid = this.userRegistrationForm.valid;
+    const isValid = isFormValid && this.acceptedTerms;
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
   }

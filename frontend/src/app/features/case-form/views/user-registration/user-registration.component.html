@@ -147,7 +147,7 @@
         [formControl]="userRegistrationForm.controls.phoneNumber"
         cssClass="custom"
         id="phoneNumber"
-        class="w-25rem h-3rem"
+        class="w-25rem"
       ></p-intl-tel-input>
       <div class="error-placeholder">
         @if (
@@ -214,7 +214,6 @@
           [minDate]="minDate"
           [maxDate]="maxDate"
           [defaultDate]="maxDate"
-          [readonlyInput]="true"
           [styleClass]="'w-25rem h-3rem'"
         />
         <label for="birthDate">{{ 'user-details.birthDate-label' | translate }}</label>
@@ -230,4 +229,17 @@
     </div>
   </form>
   <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
+  <div class="flex">
+    <p-checkbox
+      binary="true"
+      [(ngModel)]="acceptedTerms"
+      (onChange)="checkAndEmitValidity()"
+    ></p-checkbox>
+    <span class="accept-terms-label">
+      {{ 'user-details.accept-terms' | translate }}
+      <a href="assets/docs/terms.docx" download="terms.docx" class="doc-link">Terms</a>
+      and
+      <a href="assets/docs/privacy.docx" download="privacy.docx" class="doc-link">Privacy Policy</a>
+    </span>
+  </div>
 </div>

@@ -61,6 +61,7 @@ type DisruptionForm = {
   airlineMotiveFollowUpAnswer: string | null;
   disruptionInformation: string;
 };
+import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 
 @Component({
   selector: 'app-case-form',
@@ -81,6 +82,7 @@ type DisruptionForm = {
     EligibilityPageComponent,
     UserRegistrationComponent,
     TranslatePipe,
+    ConfirmationFormComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -146,6 +148,7 @@ export class CaseFormComponent implements OnInit {
     initialValue: [] as AirportResponse[],
   });
   public compensation?: number;
+  public readonly isUserReadOnly = this._userService.isUserReadOnly;
 
   public readonly departingAirportValue = toSignal(
     this.reservationForm.controls.departingAirport.valueChanges
