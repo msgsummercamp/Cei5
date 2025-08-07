@@ -484,8 +484,10 @@
           <app-user-registration
             #userRegistration
             [initialData]="userRegistrationInitialData"
+            [isUserReadOnly]="isUserReadOnly()"
             (validityChange)="onUserRegistrationValidityChange($event.valid, $event.data)"
           />
+
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
               label="{{ 'mainForm.previous' | translate }}"

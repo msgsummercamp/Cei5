@@ -102,10 +102,12 @@
     "email-required": "Email is required.",
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
+    "failed-to-send-email": "Failed to send email",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
     "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
+    "password-reset-failed": "Password reset failed",
     "token-decode-error": "Error decoding token. Please try again",
     "fetch-user-details-error": "Error fetching user details. Please try again."
   },
@@ -180,7 +182,8 @@
     "postalCode-invalid": "Invalid postal code.",
     "birthDate-label": "Birth Date",
     "birthDate-required": "Birthdate is required.",
-    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering.",
+    "accept-terms": "I have read and agree to the"
   },
   "confirmation": {
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",

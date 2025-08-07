@@ -103,9 +103,11 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
+    "failed-to-send-email": "Eroare la trimiterea emailului",
     "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
+    "password-reset-failed": "Eroare la resetarea parolei",
     "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
     "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
   },
@@ -180,7 +182,8 @@
     "postalCode-invalid": "Cod poștal invalid.",
     "birthDate-label": "Data nașterii",
     "birthDate-required": "Data nașterii este obligatorie.",
-    "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare."
+    "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare.",
+    "accept-terms": "Am citit și accept"
   },
   "confirmation": {
     "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
