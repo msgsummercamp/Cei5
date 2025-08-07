@@ -7,7 +7,7 @@
       <p-step [value]="3">{{ 'stepper.step3' | translate }}</p-step>
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
       <p-step [value]="5">Summary</p-step>
-      <p-step [value]="6">{{'stepper.step6' | translate}}</p-step>
+      <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
       <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
     <p-step-panels>
@@ -157,12 +157,16 @@
 
             <!--Compensation level message-->
             <div>
-              @if (reservationForm.controls.destinationAirport.valid &&
-                  reservationForm.controls.destinationAirport.valid && !!compensation)
-              {
-                <p-message severity="success">{{ 'case-form.compensation-start' | translate }}{{ compensation }}{{'case-form.compensation-end' | translate }}</p-message>
+              @if (
+                reservationForm.controls.destinationAirport.valid &&
+                reservationForm.controls.destinationAirport.valid &&
+                !!compensation
+              ) {
+                <p-message severity="success"
+                  >{{ 'case-form.compensation-start' | translate }}{{ compensation
+                  }}{{ 'case-form.compensation-end' | translate }}</p-message
+                >
               }
-
             </div>
 
             <!-- Next Button -->
@@ -380,7 +384,7 @@
             />
           </div>
         </ng-template>
-        <!-- Step 4: Test Submit -->
+        <!-- Step 4: Disruption Info -->
       </p-step-panel>
       <p-step-panel [value]="4">
         <ng-template
@@ -391,6 +395,20 @@
           <app-disruption-form
             #disruptionForm
             (validityChange)="onDisruptionFormValidityChange($event)"
+          />
+
+          <p-button
+            label="{{ 'mainForm.previous' | translate }}"
+            severity="secondary"
+            (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="{{ 'mainForm.next' | translate }}"
+            severity="primary"
+            (onClick)="onNextFromDisruptionInfo(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
           />
         </ng-template>
       </p-step-panel>
