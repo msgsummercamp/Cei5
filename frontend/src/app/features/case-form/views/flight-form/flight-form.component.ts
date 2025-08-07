@@ -66,11 +66,13 @@ export class FlightFormComponent {
         Validators.minLength(3),
         Validators.maxLength(6),
         Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9]+$/),
       ]),
       airline: this._formBuilder.control<string>('', [
         Validators.minLength(3),
         Validators.maxLength(50),
         Validators.required,
+        Validators.pattern(/^[a-zA-Z]+$/),
       ]),
       plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
       plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),

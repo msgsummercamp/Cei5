@@ -4,6 +4,7 @@ import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
+import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Reservation;
 import com.airassist.backend.model.User;
@@ -36,6 +37,7 @@ public class CaseServiceTest {
     private ReservationRepository reservationRepository;
     private CaseServiceImpl caseService;
     private CaseMapper caseMapper;
+    private ReservationMapper reservationMapper;
 
     static User createTestUser() {
         User user = new User();
@@ -73,7 +75,7 @@ public class CaseServiceTest {
                 .build();
     }
 
-     static CaseDTO createCaseDTO(Statuses status, DisruptionReasons reason) {
+    CaseDTO createCaseDTO(Statuses status, DisruptionReasons reason) {
         User client = createTestUser();
         Reservation reservation = createTestReservation();
         CaseDTO dto = new CaseDTO();
@@ -81,9 +83,9 @@ public class CaseServiceTest {
         dto.setDisruptionReason(reason);
         dto.setDisruptionInfo("DTO disruption info");
         dto.setDate(LocalDate.now());
-        dto.setClient(client);
+        dto.setClientID(client.getId());
         dto.setAssignedColleague(null);
-        dto.setReservation(reservation);
+        dto.setReservation(reservationMapper.toDTO(reservation));
         dto.setDocumentList(List.of());
         return dto;
     }
@@ -118,20 +120,31 @@ public class CaseServiceTest {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
-        caseService = new CaseServiceImpl(caseRepository, caseMapper);
+        caseService = new CaseServiceImpl(caseRepository, caseMapper,reservationMapper);
 
         Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
                 .thenAnswer(inv -> {
                     CaseDTO dto = inv.getArgument(0);
+                    User client = new User();
+                    client.setId(dto.getClientID());
+
+                    User assignedColleague = null;
+                    if (dto.getAssignedColleague() != null) {
+                        assignedColleague = new User();
+                        assignedColleague.setEmail(dto.getAssignedColleague().getEmail());
+                    }
+
+                    Reservation reservation = reservationMapper.toEntity(dto.getReservation());
+
                     return Case.builder()
                             .id(UUID.randomUUID())
                             .status(dto.getStatus())
                             .disruptionReason(dto.getDisruptionReason())
                             .disruptionInfo(dto.getDisruptionInfo())
                             .date(dto.getDate())
-                            .client(dto.getClient())
-                            .assignedColleague(dto.getAssignedColleague())
-                            .reservation(dto.getReservation())
+                            .client(client)
+                            .assignedColleague(assignedColleague)
+                            .reservation(reservation)
                             .documentList(dto.getDocumentList())
                             .build();
                 });

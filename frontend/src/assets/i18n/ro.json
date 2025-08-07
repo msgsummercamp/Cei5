@@ -172,7 +172,12 @@
     "connection": "Conexiune",
     "connectionDestinationRequired": "Destinația conexiunii este obligatorie.",
     "connectionDestinationLength": "Codul aeroportului trebuie să aibă exact 3 caractere.",
-    "connectionDestinationUpper": "Codul aeroportului trebuie să fie format din 3 litere mari."
+    "connectionDestinationUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
+    "reservationPattern": "Numărul rezervării trebuie să fie alfanumeric.",
+    "destinationIsDeparting": "Aeroportul de plecare nu poate fi același cu aeroportul de destinație.",
+    "connectionsShouldBedifferent": "Conexiunile ar trebui să fie diferite.",
+    "usedDepartingAirport": "Nu folosiți aeroportul de plecare ca și conexiune.",
+    "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune."
   },
   "flightForm": {
     "flightNumber": "Numărul zborului",
@@ -187,6 +192,8 @@
     "plannedDepartureTimeRequired": "Ora planificată de plecare este obligatorie.",
     "plannedArrivalTime": "Ora planificată de sosire",
     "plannedArrivalTimeRequired": "Ora planificată de sosire este obligatorie.",
-    "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare."
+    "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare.",
+    "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
+    "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
   }
 }
