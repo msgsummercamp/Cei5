@@ -103,9 +103,11 @@
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
+    "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
-    "token-decode-error": "Error decoding token. Please try again"
+    "token-decode-error": "Error decoding token. Please try again",
+    "fetch-user-details-error": "Error fetching user details. Please try again."
   },
   "sign-in": {
     "title": "Enter your account's data",
@@ -132,7 +134,8 @@
     "email-label": "Email",
     "email-required": "Email address is required.",
     "email-invalid": "Please enter a valid email address.",
-    "submit-button": "Send Reset Mail"
+    "submit-button": "Send Reset Mail",
+    "email-sent": "You will receive an email in a few minutes with your temporary password."
   },
   "change-pass": {
     "title": "Change Password",
@@ -145,12 +148,43 @@
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password"
   },
+  "user-details": {
+    "title": "User Details",
+    "subtitle": "Please fill in your details.",
+    "email-label": "Email",
+    "email-required": "Email is required.",
+    "email-invalid": "Invalid email address.",
+    "email-length": "Email is too long.",
+    "firstname-label": "First Name",
+    "firstname-required": "First name is required.",
+    "firstname-minlength": "First name is too short.",
+    "firstname-maxlength": "First name is too long.",
+    "lastname-label": "Last Name",
+    "lastname-required": "Last name is required.",
+    "lastname-minlength": "Last name is too short.",
+    "lastname-maxlength": "Last name is too long.",
+    "address-label": "Address",
+    "address-required": "Address is required.",
+    "address-maxlength": "Address is too long.",
+    "phoneNumber-label": "Phone Number",
+    "phoneNumber-required": "Phone number is required.",
+    "phoneNumber-minlength": "Phone number is too short.",
+    "phoneNumber-invalidFormat": "Phone number format is invalid.",
+    "postalCode-label": "Postal Code",
+    "postalCode-required": "Postal code is required.",
+    "postalCode-maxlength": "Postal code is too long.",
+    "postalCode-invalid": "Invalid postal code.",
+    "birthDate-label": "Birth Date",
+    "birthDate-required": "Birthdate is required.",
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+  },
   "stepper": {
     "step1": "Reservation Info",
     "step2": "Flight Info",
     "step3": "Connection Flights",
     "step4": "Disruption Info",
-    "step5": "Eligibility Check"
+    "step5": "Eligibility Check",
+    "step6": "User Details"
   },
   "mainForm": {
     "next": "Next",
@@ -173,7 +207,12 @@
     "connection": "Connection",
     "connectionDestinationRequired": "Connection destination is required.",
     "connectionDestinationLength": "Airport code must be exactly 3 characters.",
-    "connectionDestinationUpper": "Airport code must be 3 uppercase letters."
+    "connectionDestinationUpper": "Airport code must be 3 uppercase letters.",
+    "reservationPattern": "Reservation number must be alphanumeric.",
+    "destinationIsDeparting": "The departing airport cannot be the same as the destination airport.",
+    "connectionsShouldBedifferent": "Connections should be different.",
+    "usedDepartingAirport": "Don't use the departing airport as connection.",
+    "usedDestinationAirport": "Don't use the destination airport as connection."
   },
   "flightForm": {
     "flightNumber": "Flight Number",
@@ -188,16 +227,18 @@
     "plannedDepartureTimeRequired": "Planned departure time is required.",
     "plannedArrivalTime": "Planned Arrival Time",
     "plannedArrivalTimeRequired": "Planned arrival time is required.",
-    "arrivalBeforeDeparture": "Arrival time must be after departure time."
+    "arrivalBeforeDeparture": "Arrival time must be after departure time.",
+    "flightNumberPattern": "Flight number must be alphanumeric.",
+    "airlinePattern": "Airline must contain only letters."
   },
     "eligibilityForm":{
     "checkEligibility": "Eligibility check.",
     "loading" : "Please wait while we verify the eligibility of your case.",
     "congratulations": "Congratulations.",
     "eligible": "You are eligible for compensation.",
-    "continueWithPersoinalDetails" : "Continue with personal details.",
     "sorry": "Sorry.",
     "notEligible": "Your case is not eligible for compensation under EU regulations.",
     "restart": "Start over from the beginning."
+
   }
 }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,10 @@ import { CaseDTO } from '../../../../shared/dto/case.dto';
 import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import {
+  EligibilityDataService,
+  EligibilityResult,
+} from '../../../../shared/services/eligibility-data.service';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -33,69 +37,136 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _navigationService = inject(StepNavigationService);
+  private readonly _eligibilityDataService = inject(EligibilityDataService); // Add this
 
   public readonly disruptionReason = input<string>('');
   public readonly disruptionInfo = input<string>('');
 
-  //state signals
-  public readonly isLoading = signal<boolean>(true);
-  public readonly errorMessage = signal<string | undefined>(undefined);
-  public readonly isEligible = signal<boolean | null>(null);
+  // Update these to use the service
+  public readonly eligibilityResult = this._eligibilityDataService.eligibilityResult;
 
-  public readonly shouldShowLoading = computed(() => this.isLoading());
-
-  public readonly shouldShowError = computed(() => !this.isLoading() && !!this.errorMessage());
-
+  // Computed signals based on service data
+  public readonly shouldShowLoading = computed(() => this.eligibilityResult().isLoading);
+  public readonly shouldShowError = computed(
+    () => !this.eligibilityResult().isLoading && !!this.eligibilityResult().errorMessage
+  );
   public readonly shouldShowResults = computed(
-    () => !this.isLoading() && !this.errorMessage() && this.isEligible() !== null
+    () =>
+      !this.eligibilityResult().isLoading &&
+      !this.eligibilityResult().errorMessage &&
+      this.eligibilityResult().isEligible !== null
   );
-
   public readonly shouldShowEligible = computed(
-    () => this.shouldShowResults() && this.isEligible() === true
+    () => this.shouldShowResults() && this.eligibilityResult().isEligible === true
+  );
+  public readonly shouldNotShowEligible = computed(
+    () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
 
-  public readonly shouldNotShowEligible = computed(
-    () => this.shouldShowResults() && this.isEligible() === false
-  );
+  // Add computed signal to detect when inputs change
+  private readonly inputsChanged = computed(() => ({
+    disruptionReason: this.disruptionReason(),
+    disruptionInfo: this.disruptionInfo(),
+  }));
 
   public getErrorMessage(): string | undefined {
-    return this.errorMessage() ?? undefined;
+    return this.eligibilityResult().errorMessage;
+  }
+
+  // Expose isEligible for parent component
+  public isEligible(): boolean | null {
+    return this.eligibilityResult().isEligible;
+  }
+
+  // Expose isLoading for parent component
+  public isLoading(): boolean {
+    return this.eligibilityResult().isLoading;
   }
 
   ngOnInit(): void {
+    // Check if we already have a valid result
+    if (this._eligibilityDataService.hasValidResult()) {
+      console.log('✅ Using cached eligibility result');
+      return; // Don't re-check, use cached result
+    }
+
+    // Run initial check only if no valid cached result
+    console.log('🔍 Running initial eligibility check');
     this.checkEligibility();
   }
 
+  constructor() {
+    // Add effect to re-check when inputs change (but only if inputs are meaningful)
+    effect(() => {
+      const inputs = this.inputsChanged();
+      const hasValidResult = this._eligibilityDataService.hasValidResult();
+
+      // Only re-check if:
+      // 1. We have valid inputs
+      // 2. We don't already have a valid cached result
+      // 3. Or if the inputs have actually changed from what was used before
+      if (inputs.disruptionReason && inputs.disruptionInfo && !hasValidResult) {
+        console.log('🔄 Re-checking eligibility due to input changes');
+        setTimeout(() => {
+          this.checkEligibility();
+        }, 100);
+      }
+    });
+  }
+
   private checkEligibility(): void {
-    this.isLoading.set(true);
-    this.errorMessage.set(undefined);
-    this.isEligible.set(null);
+    console.log('🔍 Checking eligibility with:', {
+      disruptionReason: this.disruptionReason(),
+      disruptionInfo: this.disruptionInfo(),
+    });
+
+    // Update service state
+    this._eligibilityDataService.setEligibilityResult({
+      isLoading: true,
+      errorMessage: undefined,
+      isEligible: null,
+    });
 
     try {
       const caseData = this.createCaseDTO();
 
-      // Check if caseData is empty object (validation failed)
       if (!caseData || Object.keys(caseData).length === 0) {
-        this.errorMessage.set('Missing case information. Please complete all previous steps.');
-        this.isLoading.set(false);
+        this._eligibilityDataService.setEligibilityResult({
+          isLoading: false,
+          errorMessage: 'Missing case information. Please complete all previous steps.',
+          hasBeenChecked: true,
+        });
         return;
       }
 
       this._caseService.checkEligibility(caseData as CaseDTO).subscribe({
         next: (isEligible: boolean) => {
-          this.isEligible.set(isEligible);
-          this.isLoading.set(false);
+          console.log('✅ Eligibility result:', isEligible);
+          this._eligibilityDataService.setEligibilityResult({
+            isEligible: isEligible,
+            isLoading: false,
+            errorMessage: undefined,
+            hasBeenChecked: true,
+          });
         },
         error: (error) => {
-          this.isEligible.set(false);
-          this.isLoading.set(false);
-          this.errorMessage.set(undefined);
+          console.error('❌ Eligibility check failed:', error);
+          this._eligibilityDataService.setEligibilityResult({
+            isEligible: false,
+            isLoading: false,
+            errorMessage: undefined,
+            hasBeenChecked: true,
+          });
         },
       });
     } catch (error) {
-      this.errorMessage.set(undefined);
-      this.isEligible.set(false);
-      this.isLoading.set(false);
+      console.error('❌ Error creating case data:', error);
+      this._eligibilityDataService.setEligibilityResult({
+        isEligible: false,
+        isLoading: false,
+        errorMessage: undefined,
+        hasBeenChecked: true,
+      });
     }
   }
 
@@ -105,8 +176,7 @@ export class EligibilityPageComponent implements OnInit {
   }
 
   public onContinueToSubmission(nextCallback?: Function): void {
-    // If eligible, proceed to submit the case
-    if (this.isEligible()) {
+    if (this.eligibilityResult().isEligible) {
       this._navigationService.nextStep();
       if (nextCallback) {
         nextCallback();
@@ -115,6 +185,8 @@ export class EligibilityPageComponent implements OnInit {
   }
 
   public onStartOver(): void {
+  
+    this._eligibilityDataService.resetEligibilityResult();
     this._reservationService.resetReservation();
     this._flightService.resetAllData();
     this._navigationService.resetToFirstStep();

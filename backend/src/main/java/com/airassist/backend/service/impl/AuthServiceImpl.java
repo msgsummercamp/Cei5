@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidPasswordException("Invalid password for user: " + signInRequest.getEmail());
         }
         String token = generateToken(foundUser);
-        return new SignInResponse(token, foundUser.isFirstLogin());
+        return new SignInResponse(token, foundUser.getIsFirstLogin().booleanValue());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userMapper.userDTOToUser(userDTO);
         String userPassword = randomPasswordGenerator.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(userPassword));
-        user.setFirstLogin(true);
+        user.setIsFirstLogin(true);
         user = userRepository.save(user);
         log.info("User registered successfully with email: {}", user.getEmail());
         mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), userPassword);
@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User with given email not found!"));
         String newPassword = randomPasswordGenerator.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setFirstLogin(true);
+        user.setIsFirstLogin(true);
         userRepository.save(user);
         log.info("Password reset successfully for email: {}", user.getEmail());
         mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), newPassword);

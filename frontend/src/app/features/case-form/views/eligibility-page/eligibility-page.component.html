@@ -41,16 +41,6 @@
                 [closable]="false"
               >
               </p-message>
-
-              <div class="mt-4">
-                <p-button
-                  label="{{ 'eligibilityForm.continueWithPersoinalDetails' | translate }}"
-                  icon="pi pi-arrow-right"
-                  size="large"
-                  (click)="onContinueToSubmission()"
-                >
-                </p-button>
-              </div>
             </div>
           }
 
@@ -64,17 +54,6 @@
                 [closable]="false"
               >
               </p-message>
-              <div class="mt-4">
-                <p-button
-                  id="restart-button"
-                  label="{{ 'eligibilityForm.restart' | translate }}"
-                  icon="pi pi-arrow-right"
-                  size="large"
-                  (click)="onStartOver()"
-                >
-                  <a id="restart-link" href="/form"></a>
-                </p-button>
-              </div>
             </div>
           }
         </div>
