@@ -3,6 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, Subject, switchMap, throwError } from 'rxjs';
 
+type ContractDetails = {
+  caseId: string;
+  caseDate: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  postalCode: string;
+  reservationNumber: string;
+  email: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,14 +36,13 @@ export class ContractService {
         {
           //TODO: take this details from form and make it a type
           caseId: 'C-20250731-001',
-          contractDate: '2025-07-31',
-          passengerName: 'Miruna Ionescu',
-          passportNumber: 'RO987654321',
-          passengerEmail: 'maria.ionescu@example.com',
-          passengerPhone: '+40 712 345 678',
+          caseDate: '2025-07-31',
+          firstName: 'Miruna',
+          lastName: 'Popescu',
+          address: 'Str. Plopilor, Cluj',
+          postalCode: '567890',
           reservationNumber: 'RES-2025-1234',
-          travelDates: '2025-08-10 to 2025-08-20',
-          destination: 'Bucharest, Romania',
+          email: 'miruna.popescu@gmail.com',
         },
         { headers: headers, responseType: 'blob' as 'json' }
       );

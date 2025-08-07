@@ -181,6 +181,22 @@
     "birthDate-required": "Birthdate is required.",
     "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
   },
+  "confirmation": {
+    "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
+    "step1": {
+      "title": "Step 1",
+      "text": "Click the button below to download the contract. Read it and sign it.",
+      "button": "Download contract"
+    },
+    "step2": {
+      "title": "Step 2",
+      "text": "After entering your account, upload all necessary documents for your case. You can enter your account by clicking the <strong>Finish</strong> button below."
+    },
+    "step3": {
+      "title": "Step 3",
+      "text": "Wait for an employee to process your case and check your email for possible updates."
+    }
+  },
   "stepper": {
     "step1": "Reservation Info",
     "step2": "Flight Info",
@@ -232,5 +248,8 @@
     "arrivalBeforeDeparture": "Arrival time must be after departure time.",
     "flightNumberPattern": "Flight number must be alphanumeric.",
     "airlinePattern": "Airline must contain only letters."
+  },
+  "lastForm": {
+    "next": "Finish"
   }
 }

@@ -181,6 +181,23 @@
     "birthDate-required": "Data nașterii este obligatorie.",
     "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare."
   },
+  "confirmation": {
+    "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
+    "step1": {
+      "title": "Pasul 1",
+      "text": "Apasă butonul de mai jos pentru a descărca contractul. Citește-l cu atenție și semnează-l.",
+      "button": "Descarcă contractul"
+    },
+    "step2": {
+      "title": "Pasul 2",
+      "text": "După ce te autentifici în cont, încarcă toate documentele necesare pentru cazul tău. Poți accesa contul apăsând butonul <strong>Finalizează</strong> de mai jos."
+    },
+    "step3": {
+      "title": "Pasul 3",
+      "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
+    }
+  }
+,
   "stepper": {
     "step1": "Informații despre rezervare",
     "step2": "Informații despre zbor",
@@ -232,5 +249,8 @@
     "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare.",
     "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
+  },
+  "lastForm": {
+    "next": "Finalizează"
   }
 }
