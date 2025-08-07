@@ -117,20 +117,4 @@ export class UserService {
       return null;
     }
   }
-
-  /**
-   * Updates the current user details in memory and storage
-   */
-  public updateUserDetails(user: User): void {
-    this._userDetails.set(user);
-    sessionStorage.setItem('userDetails', JSON.stringify(user));
-  }
-
-  /**
-   * Clears user details from memory and storage
-   */
-  public clearUserDetails(): void {
-    this._userDetails.set(undefined);
-    sessionStorage.removeItem('userDetails');
-  }
 }

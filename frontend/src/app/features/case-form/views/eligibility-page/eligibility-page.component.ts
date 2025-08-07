@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, effect } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -28,7 +28,7 @@ import { EligibilityDataService } from '../../../../shared/services/eligibility-
   templateUrl: './eligibility-page.component.html',
   styleUrl: './eligibility-page.component.scss',
 })
-export class EligibilityPageComponent {
+export class EligibilityPageComponent implements OnInit {
   private readonly _caseService = inject(CaseService);
   private readonly _router = inject(Router);
   private readonly _reservationService = inject(ReservationService);
@@ -76,26 +76,18 @@ export class EligibilityPageComponent {
     return this.eligibilityResult().isLoading;
   }
 
-  // ngOnInit(): void {
-  //   // Check if we already have a valid result
-  //   if (this._eligibilityDataService.hasValidResult()) {
-  //     this.hasRunInitialCheck = true;
-  //     return; // Don't re-check, use cached result
-  //   }
-  //
-  //   // Only check if we have both inputs
-  //   if (this.disruptionReason() && this.disruptionInfo()) {
-  //     this.hasRunInitialCheck = true;
-  //     this.checkEligibility();
-  //   }
-  // }
+  ngOnInit(): void {
+    // Check if we already have a valid result
+    if (this._eligibilityDataService.hasValidResult()) {
+      this.hasRunInitialCheck = true;
+      return; // Don't re-check, use cached result
+    }
 
-  constructor() {
-    effect(() => {
-      if (this.disruptionReason() && this.disruptionInfo() && !this.eligibilityResult().isLoading) {
-        this.checkEligibility();
-      }
-    });
+    // Only check if we have both inputs
+    if (this.disruptionReason() && this.disruptionInfo()) {
+      this.hasRunInitialCheck = true;
+      this.checkEligibility();
+    }
   }
 
   private checkEligibility(): void {
