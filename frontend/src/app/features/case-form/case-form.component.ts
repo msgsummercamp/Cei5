@@ -32,6 +32,11 @@ import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
+import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
+import { User } from '../../shared/types/user';
+import { UserService } from '../../shared/services/user.service';
+import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
+import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 
 @Component({
   selector: 'app-case-form',
@@ -49,6 +54,7 @@ import { CompensationService } from '../../shared/services/compensation.service'
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    UserRegistrationComponent,
     TranslatePipe,
   ],
   templateUrl: './case-form.component.html',
@@ -66,36 +72,47 @@ export class CaseFormComponent implements OnInit {
   private readonly _reservationService = inject(ReservationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _airportsService = inject(AirportsService);
+  private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
 
   // Form for reservation details
-  protected readonly reservationForm = this._formBuilder.group({
-    reservationNumber: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(6),
-    ]),
-    departingAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-    destinationAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-  });
+  protected readonly reservationForm = this._formBuilder.group(
+    {
+      reservationNumber: new FormControl<string>('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6),
+        Validators.pattern(/^[a-zA-Z0-9]+$/),
+      ]),
+      departingAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+      destinationAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+    },
+    { validators: departingAirportIsDestinationAirport() }
+  );
 
-  protected readonly airportFormArray = this._formBuilder.group({
-    airports: this._formBuilder.array<string>([]),
-  });
+  protected readonly airportFormArray = this._formBuilder.group(
+    {
+      airports: this._formBuilder.array<string>([]),
+    },
+    { validators: connectionsShouldBeDifferent() }
+  );
 
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
+  public isUserRegistrationValid = false;
+  public loggedInUserData = this._userService.userDetails;
+  public userDetailsFormData: User | null = null;
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
   public airportsSuggestion: AirportResponse[] = [];
   public airports = toSignal(this._airportsService.airports$, {
@@ -255,6 +272,10 @@ export class CaseFormComponent implements OnInit {
           reservation.departingAirport,
           reservation.destinationAirport
         );
+
+        if (this.flightData) {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
+        }
       }
 
       if (nextCallback) {
@@ -287,6 +308,15 @@ export class CaseFormComponent implements OnInit {
     }
   }
 
+  public onNextFromUserRegistration(nextCallback?: Function): void {
+    if (this.isUserRegistrationValid) {
+      this._navigationService.nextStep();
+      if (nextCallback) {
+        nextCallback();
+      }
+    }
+  }
+
   public addConnectionFlight(): void {
     if (this.airportsArray.length < this.MAXIMUM_CONNECTIONS) {
       const airportControl = this._formBuilder.control('', [
@@ -296,6 +326,11 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
+      if (this.flightData && this.airportsArray.length > 0) {
+        setTimeout(() => {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+        }, 100);
+      }
     }
   }
 
@@ -305,6 +340,12 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
+      } else {
+        if (this.flightData) {
+          setTimeout(() => {
+            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+          }, 100);
+        }
       }
     }
   }
@@ -320,10 +361,29 @@ export class CaseFormComponent implements OnInit {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+
+    if (data && this.airportsArray.length > 0) {
+      this._flightService.updateConnectionTimesFromMainFlight(data);
+    }
   }
 
   public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
     this.isDisruptionFormValid = event?.valid ?? false;
+  }
+
+  public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
+    this.isUserRegistrationValid = valid;
+    this.userDetailsFormData = data;
+  }
+
+  public get userRegistrationInitialData(): User | undefined {
+    if (this.loggedInUserData()) {
+      return this.loggedInUserData();
+    } else if (this.userDetailsFormData) {
+      return this.userDetailsFormData;
+    } else {
+      return undefined;
+    }
   }
 
   public areAllConnectionFlightsValid(): boolean {
@@ -331,12 +391,7 @@ export class CaseFormComponent implements OnInit {
   }
 
   public submitCase(): void {
-    // Add validation before submitting
-    console.log('Submit case called');
-    console.log('All flights:', this._flightService.getAllFlights());
-
     if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
-      console.error('No flights available');
       return;
     }
 
@@ -351,30 +406,25 @@ export class CaseFormComponent implements OnInit {
       documentList: [],
     };
 
-    console.log('Case data to submit:', caseData);
-
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
-        console.log('Eligibility check result:', isEligible);
         if (isEligible) {
           this._caseService.createCase(caseData).subscribe({
             next: (response) => {
-              console.log('Case created successfully', response);
-              // Add success handling here
+              // #TODO Add success handling here
             },
             error: (error) => {
-              console.error('Error creating case:', error);
-              // Add error handling here
+              // #TODO Add error handling here
             },
           });
         } else {
           console.log('Client is not eligible for a case');
-          // Add handling for ineligible case
+          // #TODO Add handling for ineligible case
         }
       },
       error: (error) => {
         console.error('Error checking eligibility:', error);
-        // Add error handling here
+        // #TODO Add error handling here
       },
     });
   }
@@ -414,5 +464,12 @@ export class CaseFormComponent implements OnInit {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  public getAirportDisplayName(code: string): string {
+    if (!code) return '';
+
+    const airport = this.airports().find((a) => a.code === code);
+    return airport ? `${airport.name} (${airport.code})` : code;
   }
 }
