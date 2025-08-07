@@ -92,7 +92,7 @@ export class UserRegistrationComponent {
     postalCode: this._formBuilder.control<string>('', [
       Validators.required,
       Validators.maxLength(10),
-      Validators.pattern(/^[a-zA-Z0-9-]+$/),
+      Validators.pattern(/^[a-zA-Z0-9- ]+$/),
     ]),
     birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });
