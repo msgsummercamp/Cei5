@@ -197,6 +197,7 @@ export class AuthService {
       password: newPassword,
       isFirstLogin: false,
     };
+    console.log(patchRequest);
     this._authState.update((state) => ({
       ...state,
       user: {

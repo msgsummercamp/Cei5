@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import {
   FormControl,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -14,6 +15,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { IntlInputTelComponent, CountryISO, SearchCountryField } from 'p-intl-input-tel';
 import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
+import { Checkbox } from 'primeng/checkbox';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -36,6 +38,8 @@ type UserRegistrationForm = {
     DatePicker,
     IntlInputTelComponent,
     PanelModule,
+    Checkbox,
+    FormsModule,
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',
@@ -52,6 +56,7 @@ export class UserRegistrationComponent {
   public readonly searchCountryField = SearchCountryField;
   public readonly countryISO = CountryISO;
   public readonly phoneNumberFormat = PhoneNumberFormat;
+  public acceptedTerms = false;
 
   // Date limits for birth date
   protected readonly maxDate = (() => {
@@ -97,42 +102,40 @@ export class UserRegistrationComponent {
     birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });
 
-  private readonly _effectFn = () => {
-    let hasInitialized = false;
-    const data = this.initialData();
-    const readOnly = this.isUserReadOnly();
-
-    if (data && !hasInitialized) {
-      hasInitialized = true;
-      this.userRegistrationForm.patchValue(
-        {
-          email: data.email || '',
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          address: data.userDetails?.address || '',
-          phoneNumber: data.userDetails?.phoneNumber || '',
-          postalCode: data.userDetails?.postalCode || '',
-          birthDate: data.userDetails?.birthDate ? new Date(data.userDetails.birthDate) : null,
-        },
-        { emitEvent: false }
-      );
-
-      setTimeout(() => {
-        this.checkAndEmitValidity();
-      }, 0);
-    }
-
-    if (readOnly) {
-      this.userRegistrationForm.disable();
-    }
-  };
-
   constructor() {
     this.userRegistrationForm.statusChanges.subscribe(() => {
       this.checkAndEmitValidity();
     });
+    let hasInitialized = false;
 
-    effect(this._effectFn);
+    effect(() => {
+      const data = this.initialData();
+      const readOnly = this.isUserReadOnly();
+
+      if (data && !hasInitialized) {
+        hasInitialized = true;
+        this.userRegistrationForm.patchValue(
+          {
+            email: data.email || '',
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            address: data.userDetails?.address || '',
+            phoneNumber: data.userDetails?.phoneNumber || '',
+            postalCode: data.userDetails?.postalCode || '',
+            birthDate: data.userDetails?.birthDate ? new Date(data.userDetails.birthDate) : null,
+          },
+          { emitEvent: false }
+        );
+
+        setTimeout(() => {
+          this.checkAndEmitValidity();
+        }, 0);
+      }
+
+      if (readOnly) {
+        this.userRegistrationForm.disable();
+      }
+    });
   }
 
   public getUserFormDetails(): User | null {
@@ -153,8 +156,10 @@ export class UserRegistrationComponent {
     return null;
   }
 
-  private checkAndEmitValidity(): void {
-    const isValid = this.userRegistrationForm.valid || this.isUserReadOnly();
+  public checkAndEmitValidity(): void {
+    const isFormValid = this.userRegistrationForm.valid;
+    const isValid = isFormValid && this.acceptedTerms;
+    console.log(isValid);
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
   }

@@ -178,7 +178,8 @@
     "postalCode-invalid": "Invalid postal code.",
     "birthDate-label": "Birth Date",
     "birthDate-required": "Birthdate is required.",
-    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering.",
+    "accept-terms": "I have read and agree to the"
   },
   "stepper": {
     "step1": "Reservation Info",
