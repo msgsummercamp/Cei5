@@ -37,7 +37,6 @@ import { User } from '../../shared/types/user';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-case-form',
