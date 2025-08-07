@@ -40,4 +40,6 @@ export class EligibilityDataService {
     const result = this._eligibilityResult();
     return result.hasBeenChecked && !result.isLoading && result.errorMessage === undefined;
   }
+
+  
 }

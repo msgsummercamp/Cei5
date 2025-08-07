@@ -63,6 +63,7 @@ export class DisruptionFormComponent {
   public readonly initialData = input<DisruptionFormData | null>(null);
 
   private formValid = signal(false);
+  private hasInitialized = signal(false);
 
   protected readonly reasons = [
     Disruptions.Cancellation,
@@ -168,40 +169,39 @@ export class DisruptionFormComponent {
   public resetForm(): void {
     this.disruptionForm.reset();
   }
+  private formEffect = () => {
+    const isValid = this.formValid();
+    const data = this.initialData();
+    this.validityChange.emit(isValid ? { valid: true } : null);
+    if (data && !this.hasInitialized()) {
+      this.hasInitialized.set(true);
+      this.disruptionForm.patchValue(
+        {
+          disruptionType: data.disruptionType || '',
+          cancellationAnswer: data.cancellationAnswer || null,
+          delayAnswer: data.delayAnswer || null,
+          deniedBoardingAnswer: data.deniedBoardingAnswer || null,
+          deniedBoardingFollowUpAnswer: data.deniedBoardingFollowUpAnswer || null,
+          airlineMotiveAnswer: data.airlineMotiveAnswer || null,
+          airlineMotiveFollowUpAnswer: data.airlineMotiveFollowUpAnswer || null,
+          disruptionInformation: data.disruptionInformation || '',
+        },
+        { emitEvent: false }
+      );
+
+      setTimeout(() => {
+        this.checkAndEmitValidity();
+      }, 0);
+    }
+  };
 
   constructor() {
-    let hasInitialized = false;
     this.disruptionForm.statusChanges.subscribe(() => {
       const isValid = this.hasAllRequiredFields();
       this.formValid.set(isValid);
       this.checkAndEmitValidity();
     });
-
-    effect(() => {
-      const isValid = this.formValid();
-      const data = this.initialData();
-      this.validityChange.emit(isValid ? { valid: true } : null);
-      if (data && !hasInitialized) {
-        hasInitialized = true;
-        this.disruptionForm.patchValue(
-          {
-            disruptionType: data.disruptionType || '',
-            cancellationAnswer: data.cancellationAnswer || null,
-            delayAnswer: data.delayAnswer || null,
-            deniedBoardingAnswer: data.deniedBoardingAnswer || null,
-            deniedBoardingFollowUpAnswer: data.deniedBoardingFollowUpAnswer || null,
-            airlineMotiveAnswer: data.airlineMotiveAnswer || null,
-            airlineMotiveFollowUpAnswer: data.airlineMotiveFollowUpAnswer || null,
-            disruptionInformation: data.disruptionInformation || '',
-          },
-          { emitEvent: false }
-        );
-
-        setTimeout(() => {
-          this.checkAndEmitValidity();
-        }, 0);
-      }
-    });
+    effect(this.formEffect);
 
     this.formValid.set(this.disruptionForm.valid);
   }
@@ -209,6 +209,7 @@ export class DisruptionFormComponent {
   private checkAndEmitValidity(): void {
     const isValid = this.disruptionForm.valid;
     const data = isValid ? this.getDisruptionFormDetails() : null;
+
     this.validityChangeData.emit({ valid: isValid, data: data });
   }
 
