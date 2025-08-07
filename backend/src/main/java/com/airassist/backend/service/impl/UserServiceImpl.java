@@ -5,6 +5,7 @@ import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.UserDetails;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.service.RandomPasswordGeneratorService;
 import com.airassist.backend.service.UserService;
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
         logger.info("UserService - Attempting to add user: {}", email);
         checkForDuplicateEmail(email);
         user.setPassword(randomPasswordGenerator.generateRandomPassword());
+        user.setRole(Roles.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setIsFirstLogin(true);
         return userRepository.save(user);

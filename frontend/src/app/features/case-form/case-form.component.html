@@ -426,8 +426,8 @@
         >
           <app-disruption-form
             #disruptionForm
-            (validityChange)="onDisruptionFormValidityChange($event)"
             [initialData]="disruptionInitialData"
+            (validityChangeData)="onDisruptionFormValidityChange($event)"
           />
           <p-button
             label="{{ 'mainForm.previous' | translate }}"
@@ -519,9 +519,9 @@
           />
 
           <p-button
-            label="{{ 'mainForm.next' | translate }}"
+            label="Submit"
             severity="primary"
-            (onClick)="onNext(nextCallback)"
+            (onClick)="submitCase()"
             [styleClass]="'px-6 mt-8'"
           />
         </ng-template>

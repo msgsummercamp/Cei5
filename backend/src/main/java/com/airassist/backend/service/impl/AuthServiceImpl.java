@@ -11,6 +11,7 @@ import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
 import com.airassist.backend.model.User;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.airassist.backend.service.AuthService;
@@ -63,6 +64,9 @@ public class AuthServiceImpl implements AuthService {
             throw new DuplicateUserException();
         }
         User user = userMapper.userDTOToUser(userDTO);
+        if(user.getRole() == null){
+            user.setRole(Roles.USER);
+        }
         String userPassword = randomPasswordGenerator.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(userPassword));
         user.setIsFirstLogin(true);
