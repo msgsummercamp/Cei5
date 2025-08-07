@@ -31,8 +31,9 @@ import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
 import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
+import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
+import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 
 @Component({
   selector: 'app-case-form',
@@ -70,29 +71,36 @@ export class CaseFormComponent implements OnInit {
   private readonly _compensationService = inject(CompensationService);
 
   // Form for reservation details
-  protected readonly reservationForm = this._formBuilder.group({
-    reservationNumber: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(6),
-    ]),
-    departingAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-    destinationAirport: new FormControl<string>('', [
-      Validators.pattern(/^[A-Z]{3}$/),
-      Validators.minLength(3),
-      Validators.maxLength(3),
-      Validators.required,
-    ]),
-  });
+  protected readonly reservationForm = this._formBuilder.group(
+    {
+      reservationNumber: new FormControl<string>('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6),
+        Validators.pattern(/^[a-zA-Z0-9]+$/),
+      ]),
+      departingAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+      destinationAirport: new FormControl<string>('', [
+        Validators.pattern(/^[A-Z]{3}$/),
+        Validators.minLength(3),
+        Validators.maxLength(3),
+        Validators.required,
+      ]),
+    },
+    { validators: departingAirportIsDestinationAirport() }
+  );
 
-  protected readonly airportFormArray = this._formBuilder.group({
-    airports: this._formBuilder.array<string>([]),
-  });
+  protected readonly airportFormArray = this._formBuilder.group(
+    {
+      airports: this._formBuilder.array<string>([]),
+    },
+    { validators: connectionsShouldBeDifferent() }
+  );
 
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
@@ -256,6 +264,10 @@ export class CaseFormComponent implements OnInit {
           reservation.departingAirport,
           reservation.destinationAirport
         );
+
+        if (this.flightData) {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
+        }
       }
 
       if (nextCallback) {
@@ -297,6 +309,11 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
+      if (this.flightData && this.airportsArray.length > 0) {
+        setTimeout(() => {
+          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+        }, 100);
+      }
     }
   }
 
@@ -306,6 +323,12 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
+      } else {
+        if (this.flightData) {
+          setTimeout(() => {
+            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
+          }, 100);
+        }
       }
     }
   }
@@ -321,6 +344,10 @@ export class CaseFormComponent implements OnInit {
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
     this.isMainFlightValid = isValid;
     this.flightData = data;
+
+    if (data && this.airportsArray.length > 0) {
+      this._flightService.updateConnectionTimesFromMainFlight(data);
+    }
   }
 
   public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
@@ -415,5 +442,12 @@ export class CaseFormComponent implements OnInit {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  public getAirportDisplayName(code: string): string {
+    if (!code) return '';
+
+    const airport = this.airports().find((a) => a.code === code);
+    return airport ? `${airport.name} (${airport.code})` : code;
   }
 }
