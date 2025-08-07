@@ -1,0 +1,43 @@
+.custom-navbar {
+  --p-menubar-background: rgba(15, 27, 88, 0.97);
+  --p-menubar-item-color: #ffffff;
+  --p-menubar-item-focus-background	: none;
+  --p-menubar-item-focus-color: #ffffff;
+  --p-menubar-border-color: rgba(15, 27, 88, 0.97);
+  --p-menubar-border-radius: 0;
+}
+
+.p-select{
+  background: transparent;
+  border: none;
+  --p-select-placeholder-color: #ffffff;
+}
+
+p-select-label{
+  color: #ffffff;
+}
+
+::ng-deep .no-arrow .p-select-dropdown{
+  display: none !important; ;
+}
+
+.no-arrow {
+  margin-left: -0.2rem;
+}
+
+.selectedLanguageFlag{
+  cursor: pointer;
+}
+
+p-select-list-container{
+  margin-right: 2rem;
+}
+
+.p-button-text:hover,{
+  color: #ffffff !important;
+  background: none !important;
+
+}
+
+
+
