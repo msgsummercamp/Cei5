@@ -61,6 +61,7 @@ type DisruptionForm = {
   airlineMotiveFollowUpAnswer: string | null;
   disruptionInformation: string;
 };
+import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 
 @Component({
   selector: 'app-case-form',
@@ -81,6 +82,7 @@ type DisruptionForm = {
     EligibilityPageComponent,
     UserRegistrationComponent,
     TranslatePipe,
+    ConfirmationFormComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',

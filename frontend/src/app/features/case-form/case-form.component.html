@@ -1,4 +1,4 @@
-<div class="caseFormWrapper">
+<div class="caseFormWrapper m-4">
   <p-stepper [value]="currentStep()" [linear]="true" class="text-pink-500">
     <p-step-list>
       <!-- Step indicators -->
@@ -225,9 +225,11 @@
                 </div>
               </div>
 
-              <div class="flex flex-column align-items-start align-content-center px-auto mt-4">
+              <div
+                class="flex flex-column flex-wrap align-items-start align-content-center px-auto mt-4"
+              >
                 <!-- Displaying the departing airport -->
-                <p-message variant="outlined" severity="primary" class="w-25rem mb-4"
+                <p-message variant="outlined" severity="primary" class="w-25rem mb-2"
                   >{{ 'mainForm.connectionDepartingAirport' | translate }}
                   {{ reservationInformation.departingAirport }}</p-message
                 >
@@ -238,7 +240,7 @@
                     @if (airportsArray.length > 0) {
                       @for (airport of airportsArray.controls; track airport; let i = $index) {
                         @if (airport !== null) {
-                          <div class="flex flex-row align-items-center mb-4">
+                          <div class="flex flex-row align-items-center my-2">
                             <div>
                               <p-floatlabel variant="on">
                                 <p-autocomplete
@@ -336,7 +338,7 @@
                 </form>
 
                 <!-- Displaying the destination airport -->
-                <p-message variant="outlined" severity="primary" class="w-25rem"
+                <p-message variant="outlined" severity="primary" class="mt-2 w-25rem"
                   >{{ 'mainForm.destinationAirport' | translate }}:
                   {{ reservationInformation.destinationAirport }}</p-message
                 >
@@ -502,28 +504,29 @@
           </div>
         </ng-template>
       </p-step-panel>
-      <!-- Step 7: Summary -->
+      <!-- Step 7: Confirmation -->
       <p-step-panel [value]="7">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p>Summary yey</p>
+          <app-confirmation-form></app-confirmation-form>
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPrevious(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
-
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            (onClick)="onNext(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'lastForm.next' | translate }}"
+              severity="primary"
+              (onClick)="onNext(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
     </p-step-panels>
