@@ -163,7 +163,7 @@ export class AuthService {
       error: (error) => {
         const apiError: ApiError = error?.error;
         this._notificationService.showError(
-          this._translationService.instant('auth-service.failed-to-send-mail') +
+          this._translationService.instant('auth-service.failed-to-send-email') +
             ': ' +
             apiError.detail
         );
@@ -197,7 +197,7 @@ export class AuthService {
       password: newPassword,
       isFirstLogin: false,
     };
-    console.log(patchRequest);
+
     this._authState.update((state) => ({
       ...state,
       user: {

@@ -159,7 +159,6 @@ export class UserRegistrationComponent {
   public checkAndEmitValidity(): void {
     const isFormValid = this.userRegistrationForm.valid;
     const isValid = isFormValid && this.acceptedTerms;
-    console.log(isValid);
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
   }
