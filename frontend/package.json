@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
+    "clean-install": "npm ci --no-audit --no-fund",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -20,6 +21,7 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@primeng/themes": "^19.1.4",
+    "file-saver": "^2.0.5",
     "jwt-decode": "^4.0.0",
     "p-intl-input-tel": "^19.0.6",
     "primeflex": "^4.0.0",
@@ -34,6 +36,7 @@
     "@angular/cli": "^19.2.10",
     "@angular/compiler-cli": "^19.2.0",
     "@types/google-libphonenumber": "^7.4.30",
+    "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~5.1.0",
     "@types/jwt-decode": "^2.2.1",
     "jasmine-core": "~5.6.0",
