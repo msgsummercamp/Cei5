@@ -38,7 +38,12 @@ export class ChangePasswordPageComponent {
   protected readonly changePasswordForm = this._formBuilder.group<ChangePasswordForm>(
     {
       newPassword: this._formBuilder.control('', {
-        validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],
+        validators: [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(30),
+          Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+{}:"\'<>?|[\\];,./`~]{6,30}$'),
+        ],
       }),
       confirmPassword: this._formBuilder.control('', {
         validators: [Validators.required],

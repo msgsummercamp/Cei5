@@ -150,7 +150,8 @@
     "confirm-label": "Confirm Password",
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
-    "submit-button": "Change Password"
+    "submit-button": "Change Password",
+    "password-invalid": "Password must contain letters, numbers, and special characters."
   },
   "user-details": {
     "title": "User Details",
