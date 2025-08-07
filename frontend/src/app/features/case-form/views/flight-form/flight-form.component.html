@@ -36,6 +36,9 @@
             @case (flightDetailsForm.controls.flightNumber.hasError('maxlength')) {
               <app-error-message text="{{ 'flightForm.flightNumberMaxLength' | translate }}" />
             }
+            @case (flightDetailsForm.controls.flightNumber.hasError('pattern')) {
+              <app-error-message text="{{ 'flightForm.flightNumberPattern' | translate }}" />
+            }
           }
         }
       </div>
@@ -68,7 +71,9 @@
             @case (flightDetailsForm.controls.airline.hasError('maxlength')) {
               <app-error-message text="{{ 'flightForm.airlineMaxLength' | translate }}" />
             }
-            @default {}
+            @case (flightDetailsForm.controls.airline.hasError('pattern')) {
+              <app-error-message text="{{ 'flightForm.airlinePattern' | translate }}" />
+            }
           }
         }
       </div>

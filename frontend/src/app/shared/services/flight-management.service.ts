@@ -27,6 +27,7 @@ export class FlightManagementService {
   ): void {
     // Clear existing connections
     this.connectionFlights = [];
+    this.connectionFlightData = {};
 
     if (airports.length === 0) {
       return;
@@ -45,10 +46,21 @@ export class FlightManagementService {
     // Create final connection: last connection airport -> destination
     this.connectionFlights.push([airports[airports.length - 1], destinationAirport]);
 
-    // Initialize flags array if empty
-    if (this.isFlagged.length === 0) {
-      this.isFlagged = Array(this.connectionFlights.length).fill(false);
-    }
+    // Initialize flags array
+    this.isFlagged = Array(this.connectionFlights.length).fill(false);
+
+    // Initialize connection data with basic info
+    this.connectionFlights.forEach((connection, index) => {
+      this.connectionFlightData[index] = {
+        flightNumber: '',
+        airline: '',
+        reservationNumber: '',
+        departingAirport: connection[0],
+        destinationAirport: connection[1],
+        plannedDepartureTime: null,
+        plannedArrivalTime: null,
+      };
+    });
   }
 
   public clearConnectionFlights(): void {
@@ -61,10 +73,6 @@ export class FlightManagementService {
 
   public updateConnectionFlightData(connectionIndex: number, data: FlightDetails | null): void {
     this.connectionFlightData[connectionIndex] = data;
-  }
-
-  public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
-    return this.connectionFlightData[connectionIndex] || null;
   }
 
   public areAllConnectionFlightsValid(): boolean {
@@ -155,5 +163,62 @@ export class FlightManagementService {
 
   public getConnectionFlightCount(): number {
     return this.connectionFlights.length;
+  }
+
+  public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
+    const baseData = this.connectionFlightData[connectionIndex] || null;
+
+    // If no base data exists, create an empty one
+    if (!baseData) {
+      return this.createInitialConnectionData(connectionIndex);
+    }
+
+    return baseData;
+  }
+
+  private createInitialConnectionData(connectionIndex: number): FlightDetails | null {
+    if (this.connectionFlights.length === 0) return null;
+
+    const connection = this.connectionFlights[connectionIndex];
+    if (!connection) return null;
+
+    return {
+      flightNumber: '',
+      airline: '',
+      reservationNumber: '',
+      departingAirport: connection[0],
+      destinationAirport: connection[1],
+      plannedDepartureTime: null,
+      plannedArrivalTime: null,
+    };
+  }
+
+  public updateConnectionTimesFromMainFlight(mainFlightData: FlightDetails | null): void {
+    if (!mainFlightData || this.connectionFlights.length === 0) return;
+
+    if (this.connectionFlightData[0]) {
+      this.connectionFlightData[0] = {
+        ...this.connectionFlightData[0],
+        plannedDepartureTime: mainFlightData.plannedDepartureTime,
+      };
+    } else {
+      this.connectionFlightData[0] = this.createInitialConnectionData(0);
+      if (this.connectionFlightData[0]) {
+        this.connectionFlightData[0].plannedDepartureTime = mainFlightData.plannedDepartureTime;
+      }
+    }
+
+    const lastIndex = this.connectionFlights.length - 1;
+    if (this.connectionFlightData[lastIndex]) {
+      this.connectionFlightData[lastIndex] = {
+        ...this.connectionFlightData[lastIndex],
+        plannedArrivalTime: mainFlightData.plannedArrivalTime,
+      };
+    } else {
+      this.connectionFlightData[lastIndex] = this.createInitialConnectionData(lastIndex);
+      if (this.connectionFlightData[lastIndex]) {
+        this.connectionFlightData[lastIndex].plannedArrivalTime = mainFlightData.plannedArrivalTime;
+      }
+    }
   }
 }
