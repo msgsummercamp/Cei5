@@ -1,4 +1,12 @@
-import { Component, inject, ChangeDetectionStrategy, OnInit, effect } from '@angular/core';
+import {
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+  ViewChild,
+  OnInit,
+  effect,
+  input,
+} from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -29,7 +37,11 @@ import { CaseDTO } from '../../shared/dto/case.dto';
 import { Statuses } from '../../shared/types/enums/status';
 import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
-import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
+import {
+  DisruptionFormComponent,
+  DisruptionFormData,
+} from './views/disruption-form/disruption-form.component';
+import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
@@ -37,6 +49,18 @@ import { User } from '../../shared/types/user';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
+import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
+
+type DisruptionForm = {
+  disruptionType: string;
+  cancellationAnswer: string | null;
+  delayAnswer: string | null;
+  deniedBoardingAnswer: string | null;
+  deniedBoardingFollowUpAnswer: string | null;
+  airlineMotiveAnswer: string | null;
+  airlineMotiveFollowUpAnswer: string | null;
+  disruptionInformation: string;
+};
 
 @Component({
   selector: 'app-case-form',
@@ -54,6 +78,7 @@ import { connectionsShouldBeDifferent } from '../../shared/validators/connection
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    EligibilityPageComponent,
     UserRegistrationComponent,
     TranslatePipe,
   ],
@@ -74,6 +99,7 @@ export class CaseFormComponent implements OnInit {
   private readonly _airportsService = inject(AirportsService);
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
+  private readonly _eligibilityService = inject(EligibilityDataService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -107,6 +133,7 @@ export class CaseFormComponent implements OnInit {
     { validators: connectionsShouldBeDifferent() }
   );
 
+  public disruptionFormData: DisruptionFormData | null = null;
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
@@ -151,6 +178,8 @@ export class CaseFormComponent implements OnInit {
       this._compensationService.calculateDistance(departingAirport, destinationAirport);
     }
   }
+
+  @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
   public search(event: AutoCompleteCompleteEvent): void {
     const query = event.query;
@@ -219,6 +248,13 @@ export class CaseFormComponent implements OnInit {
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
     const allFlights = this._flightService.getAllFlights();
     this._navigationService.goBackFromDisruptionInfo(allFlights.length);
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
+  public onPreviousFromUserRegistration(prevCallback?: Function) {
+    this._navigationService.previousStep();
     if (prevCallback) {
       prevCallback();
     }
@@ -367,8 +403,18 @@ export class CaseFormComponent implements OnInit {
     }
   }
 
-  public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
+  public onDisruptionFormValidityChange(
+    event: { valid: boolean; data?: DisruptionFormData | null } | null
+  ): void {
     this.isDisruptionFormValid = event?.valid ?? false;
+
+    if (event?.data) {
+      this.disruptionFormData = event.data;
+    }
+  }
+
+  public get disruptionInitialData(): DisruptionFormData | null {
+    return this.disruptionFormData;
   }
 
   public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
@@ -427,6 +473,52 @@ export class CaseFormComponent implements OnInit {
         // #TODO Add error handling here
       },
     });
+  }
+
+  public getDisruptionInfo() {
+    // First try to get from saved data, then fallback to form
+    if (this.disruptionFormData?.disruptionInformation) {
+      return this.disruptionFormData.disruptionInformation;
+    }
+
+    // Fallback to form if available
+    if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
+      return this.disruptionForm.getDisruptionDescription();
+    }
+
+    return '';
+  }
+
+  public getDisruptionReason() {
+    // If form is available, use it
+    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
+      return this.disruptionForm.getResponseForDisruption();
+    }
+
+    // Fallback to saved data if form is not available
+    return this.disruptionFormData?.disruptionType || '';
+  }
+
+  public resetAllFormData(): void {
+    this.reservationForm.reset();
+
+    while (this.airportsArray.length !== 0) {
+      this.airportsArray.removeAt(0);
+    }
+
+    this.isMainFlightValid = false;
+    this.isDisruptionFormValid = false;
+    this.flightData = null;
+    this.disruptionFormData = null;
+
+    if (this.disruptionForm) {
+      this.disruptionForm.resetForm();
+    }
+
+    this._eligibilityService.resetEligibilityResult();
+    this._reservationService.resetReservation();
+    this._flightService.resetAllData();
+    this._navigationService.resetToFirstStep();
   }
 
   private createReservationDTO(): ReservationDTO {

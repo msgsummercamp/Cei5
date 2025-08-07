@@ -6,7 +6,7 @@
       <p-step [value]="2">{{ 'stepper.step2' | translate }}</p-step>
       <p-step [value]="3">{{ 'stepper.step3' | translate }}</p-step>
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
-      <p-step [value]="5">Summary</p-step>
+      <p-step [value]="5">{{ 'stepper.step5' | translate }}</p-step>
       <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
       <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
@@ -30,8 +30,8 @@
                   class="w-26rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
-                    'mainForm.reservationNumber' | translate
-                  }}</label>
+                  'mainForm.reservationNumber' | translate
+                }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
@@ -168,7 +168,7 @@
             <div>
               @if (
                 reservationForm.controls.destinationAirport.valid &&
-                reservationForm.controls.destinationAirport.valid &&
+                reservationForm.controls.departingAirport.valid &&
                 !!compensation
               ) {
                 <p-message severity="success"
@@ -176,7 +176,6 @@
                   }}{{ 'case-form.compensation-end' | translate }}</p-message
                 >
               }
-
             </div>
 
             <!-- Next Button -->
@@ -417,8 +416,8 @@
             />
           </div>
         </ng-template>
-        <!-- Step 4: Disruption Info -->
       </p-step-panel>
+      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"
@@ -428,8 +427,8 @@
           <app-disruption-form
             #disruptionForm
             (validityChange)="onDisruptionFormValidityChange($event)"
+            [initialData]="disruptionInitialData"
           />
-
           <p-button
             label="{{ 'mainForm.previous' | translate }}"
             severity="secondary"
@@ -445,15 +444,18 @@
           />
         </ng-template>
       </p-step-panel>
-      <!-- Step 5: Summary -->
+      <!-- Step 5: Eligibility Check -->
       <p-step-panel [value]="5">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p>Summary yey</p>
-
+          <app-eligibility-page
+            [disruptionReason]="getDisruptionReason()"
+            [disruptionInfo]="getDisruptionInfo()"
+          >
+          </app-eligibility-page>
           <p-button
             label="{{ 'mainForm.previous' | translate }}"
             severity="secondary"
@@ -469,6 +471,7 @@
           />
         </ng-template>
       </p-step-panel>
+
       <!-- Step 6: User Registration -->
       <p-step-panel [value]="6">
         <ng-template
@@ -485,7 +488,7 @@
             <p-button
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
-              (onClick)="onPrevious(prevCallback)"
+              (onClick)="onPreviousFromUserRegistration(prevCallback)"
               [styleClass]="'px-6 mt-8'"
             />
 
