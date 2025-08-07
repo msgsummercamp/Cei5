@@ -6,10 +6,19 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { ContractService } from '../../shared/services/contract.service';
 import FileSaver from 'file-saver';
+import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Button, RouterLink, Fieldset, TranslatePipe, FooterComponent, RouterOutlet],
+  imports: [
+    Button,
+    RouterLink,
+    Fieldset,
+    TranslatePipe,
+    FooterComponent,
+    RouterOutlet,
+    NavbarComponent,
+  ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })

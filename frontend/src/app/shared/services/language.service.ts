@@ -5,7 +5,7 @@ import { Language } from '../types/language';
   providedIn: 'root',
 })
 export class LanguageService {
-  private selectedLanguage = 'en';
+  private selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
   private languages: Language[] = [
     { code: 'en', flag: 'assets/flags/en.png' },
     { code: 'ro', flag: 'assets/flags/ro.png' },
@@ -20,6 +20,7 @@ export class LanguageService {
   }
 
   public setSelectedLanguage(languageCode: string): void {
+    localStorage.setItem('selectedLanguage', languageCode);
     this.selectedLanguage = languageCode;
   }
 
