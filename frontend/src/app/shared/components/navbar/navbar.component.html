@@ -1,0 +1,52 @@
+<div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
+  <p-menubar [model]="items" class="custom-navbar w-full">
+    <ng-template pTemplate="start">
+      <span class="font-bold text-xl" style="font-family: 'Baloo 2', sans-serif; color: white"
+        >AIR ASSIST
+      </span>
+    </ng-template>
+    <ng-template pTemplate="item" let-item>
+      <span>{{ item.label | translate }}</span>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <div class="flex align-items-center gap-2">
+        <div class="flex align-items-center">
+          <img
+            class="selectedLanguageFlag"
+            [ngSrc]="selectedLanguageFlag"
+            (click)="langSelect.show()"
+            alt="Language"
+            width="24"
+            height="24"
+          />
+          <p-select
+            #langSelect
+            class="no-arrow"
+            [options]="languages"
+            [ngModel]="_languageService.getSelectedLanguageCode()"
+            (ngModelChange)="selectLanguage($event)"
+            [placeholder]="_languageService.getSelectedLanguageCode()"
+          >
+            <ng-template pTemplate="item" let-language>
+              <img [ngSrc]="language.flag" alt="Language" width="24" height="24" class="mr-2" />
+              {{ language.code }}
+            </ng-template>
+            <ng-template pTemplate="selectedItem" let-language>
+              <span style="color: white">{{ language?.code }}</span>
+            </ng-template>
+          </p-select>
+          <button
+            pButton
+            type="button"
+            class="p-button-text"
+            style="color: white"
+            routerLink="/sign-in"
+          >
+            <i class="pi pi-user"></i>
+            <span>{{ 'navbar.login' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>

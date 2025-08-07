@@ -7,6 +7,8 @@
       <p-step [value]="3">{{ 'stepper.step3' | translate }}</p-step>
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
       <p-step [value]="5">{{ 'stepper.step5' | translate }}</p-step>
+      <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
+      <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -28,8 +30,8 @@
                   class="w-26rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
-                  'mainForm.reservationNumber' | translate
-                }}</label>
+                    'mainForm.reservationNumber' | translate
+                  }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
@@ -174,6 +176,7 @@
                   }}{{ 'case-form.compensation-end' | translate }}</p-message
                 >
               }
+
             </div>
 
             <!-- Next Button -->
@@ -223,12 +226,9 @@
                 </div>
               </div>
 
-              <div class="flex flex-column mt-4">
+              <div class="flex flex-column align-items-start align-content-center px-auto mt-4">
                 <!-- Displaying the departing airport -->
-                <p-message
-                  variant="outlined"
-                  severity="primary"
-                  class="w-15rem align-self-center mb-4"
+                <p-message variant="outlined" severity="primary" class="w-25rem mb-4"
                   >{{ 'mainForm.connectionDepartingAirport' | translate }}
                   {{ reservationInformation.departingAirport }}</p-message
                 >
@@ -237,113 +237,107 @@
                 <form novalidate [formGroup]="airportFormArray">
                   <div formArrayName="airports" class="flex flex-column gap-2">
                     @if (airportsArray.length > 0) {
-                      <div class="align-self-center mt-2">
-                        @for (airport of airportsArray.controls; track airport; let i = $index) {
-                          @if (airport !== null) {
-                            <div class="grid justify-content-between align-items-center mb-4">
-                              <div class="flex flex-column">
-                                <p-floatlabel variant="on">
-                                  <p-autocomplete
-                                    [dropdown]="true"
-                                    class="w-15rem h-2rem"
-                                    [id]="'connectionFlight' + i"
-                                    [formControlName]="i"
-                                    [suggestions]="airportsSuggestion"
-                                    (completeMethod)="search($event)"
-                                    optionValue="code"
-                                    optionLabel="name"
-                                    [forceSelection]="true"
-                                    [virtualScroll]="true"
-                                    [virtualScrollItemSize]="50"
-                                  >
-                                    <ng-template let-airport pTemplate="selectedItem">
-                                      {{ getAirportDisplayName(airport) }}
-                                    </ng-template>
-                                    <ng-template let-airport pTemplate="item">
-                                      {{ airport.name }}
-                                    </ng-template></p-autocomplete
-                                  >
-                                  <label [for]="'connectionFlight' + i">{{
-                                    'mainForm.connection' | translate
-                                  }}</label>
-                                </p-floatlabel>
+                      @for (airport of airportsArray.controls; track airport; let i = $index) {
+                        @if (airport !== null) {
+                          <div class="flex flex-row align-items-center mb-4">
+                            <div>
+                              <p-floatlabel variant="on">
+                                <p-autocomplete
+                                  [dropdown]="true"
+                                  [id]="'connectionFlight' + i"
+                                  [formControlName]="i"
+                                  [suggestions]="airportsSuggestion"
+                                  (completeMethod)="search($event)"
+                                  optionValue="code"
+                                  optionLabel="name"
+                                  [forceSelection]="true"
+                                  [virtualScroll]="true"
+                                  [virtualScrollItemSize]="50"
+                                  [styleClass]="'w-22rem h-full'"
+                                >
+                                  <ng-template let-airport pTemplate="selectedItem">
+                                    {{ getAirportDisplayName(airport) }}
+                                  </ng-template>
+                                  <ng-template let-airport pTemplate="item">
+                                    {{ airport.name }}
+                                  </ng-template></p-autocomplete
+                                >
+                                <label [for]="'connectionFlight' + i">{{
+                                  'mainForm.connection' | translate
+                                }}</label>
+                              </p-floatlabel>
 
-                                <!-- Error Messages -->
-                                <div class="error-placeholder">
-                                  @if (airport.touched && airport.errors) {
-                                    @switch (true) {
-                                      @case (airport.hasError('required')) {
-                                        <app-error-message
-                                          text="{{
-                                            'mainForm.connectionDestinationRequired' | translate
-                                          }}"
-                                        />
-                                      }
-                                      @case (
-                                        airport.hasError('minlength') ||
-                                        airport.hasError('maxlength')
-                                      ) {
-                                        <app-error-message
-                                          text="{{
-                                            'mainForm.connectionDestinationLength' | translate
-                                          }}"
-                                        />
-                                      }
-                                      @case (airport.hasError('pattern')) {
-                                        <app-error-message
-                                          text="{{
-                                            'mainForm.connectionDestinationUpper' | translate
-                                          }}"
-                                        />
-                                      }
+                              <!-- Error Messages -->
+                              <div class="error-placeholder">
+                                @if (airport.touched && airport.errors) {
+                                  @switch (true) {
+                                    @case (airport.hasError('required')) {
+                                      <app-error-message
+                                        text="{{
+                                          'mainForm.connectionDestinationRequired' | translate
+                                        }}"
+                                      />
+                                    }
+                                    @case (
+                                      airport.hasError('minlength') || airport.hasError('maxlength')
+                                    ) {
+                                      <app-error-message
+                                        text="{{
+                                          'mainForm.connectionDestinationLength' | translate
+                                        }}"
+                                      />
+                                    }
+                                    @case (airport.hasError('pattern')) {
+                                      <app-error-message
+                                        text="{{
+                                          'mainForm.connectionDestinationUpper' | translate
+                                        }}"
+                                      />
                                     }
                                   }
+                                }
 
-                                  @if (
-                                    airport.hasError('connectionsShouldBeDifferent') &&
-                                    airport.touched
-                                  ) {
-                                    <app-error-message
-                                      text="{{
-                                        'mainForm.connectionsShouldBedifferent' | translate
-                                      }}"
-                                    />
-                                  } @else if (
-                                    airport.touched &&
-                                    reservationInformation.departingAirport === airport.value
-                                  ) {
-                                    <app-error-message
-                                      text="{{ 'mainForm.usedDepartingAirport' | translate }}"
-                                    />
-                                  } @else if (
-                                    airport.touched &&
-                                    reservationInformation.destinationAirport === airport.value
-                                  ) {
-                                    <app-error-message
-                                      text="{{ 'mainForm.usedDestinationAirport' | translate }}"
-                                    />
-                                  }
-                                </div>
+                                @if (
+                                  airport.hasError('connectionsShouldBeDifferent') &&
+                                  airport.touched
+                                ) {
+                                  <app-error-message
+                                    text="{{ 'mainForm.connectionsShouldBedifferent' | translate }}"
+                                  />
+                                } @else if (
+                                  airport.touched &&
+                                  reservationInformation.departingAirport === airport.value
+                                ) {
+                                  <app-error-message
+                                    text="{{ 'mainForm.usedDepartingAirport' | translate }}"
+                                  />
+                                } @else if (
+                                  airport.touched &&
+                                  reservationInformation.destinationAirport === airport.value
+                                ) {
+                                  <app-error-message
+                                    text="{{ 'mainForm.usedDestinationAirport' | translate }}"
+                                  />
+                                }
                               </div>
-
-                              <!-- Remove Button -->
-                              <p-button
-                                icon="pi pi-trash"
-                                severity="danger"
-                                (onClick)="removeConnectionFlight(i)"
-                                [styleClass]="'px-1 py-1 text-xs'"
-                                class="ml-2 mb-1"
-                              />
                             </div>
-                          }
+
+                            <!-- Remove Button -->
+                            <p-button
+                              icon="pi pi-trash"
+                              severity="danger"
+                              (onClick)="removeConnectionFlight(i)"
+                              [styleClass]="'ml-2 h-full'"
+                            />
+                          </div>
                         }
-                      </div>
+                      }
                     }
                   </div>
                 </form>
 
                 <!-- Displaying the destination airport -->
-                <p-message variant="outlined" severity="primary" class="align-self-center w-15rem"
+                <p-message variant="outlined" severity="primary" class="w-25rem"
                   >{{ 'mainForm.destinationAirport' | translate }}:
                   {{ reservationInformation.destinationAirport }}</p-message
                 >
@@ -445,8 +439,62 @@
           <p-button
             label="{{ 'mainForm.next' | translate }}"
             severity="primary"
-            [disabled]="!isDisruptionFormValid"
             (onClick)="onNextFromDisruptionInfo(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+        </ng-template>
+      </p-step-panel>
+      
+      <!-- Step 6: User Registration -->
+      <p-step-panel [value]="6">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <app-user-registration
+            #userRegistration
+            [initialData]="userRegistrationInitialData"
+            (validityChange)="onUserRegistrationValidityChange($event.valid, $event.data)"
+          />
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isUserRegistrationValid"
+              (onClick)="onNextFromUserRegistration(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 7: Summary -->
+      <p-step-panel [value]="7">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p>Summary yey</p>
+
+          <p-button
+            label="{{ 'mainForm.previous' | translate }}"
+            severity="secondary"
+            (onClick)="onPrevious(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="{{ 'mainForm.next' | translate }}"
+            severity="primary"
+            (onClick)="onNext(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />
         </ng-template>

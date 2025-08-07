@@ -103,9 +103,11 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
+    "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
-    "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou."
+    "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
+    "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
   },
   "sign-in": {
     "title": "Introduceți datele contului dvs.",
@@ -126,13 +128,17 @@
     "info": "Info",
     "warning": "Avertisment"
   },
+  "navbar": {
+    "login": "Loghează-te"
+  },
   "request-reset": {
     "title": "Resetare parolă",
     "description": "Introduceți adresa de email pentru a primi o nouă parolă temporară. La prima autentificare vi se va solicita să schimbați parola.",
     "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
-    "submit-button": "Trimite mail-ul de resetare"
+    "submit-button": "Trimite mail-ul de resetare",
+    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară."
   },
   "change-pass": {
     "title": "Schimbă parola",
@@ -145,12 +151,43 @@
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola"
   },
+  "user-details": {
+    "title": "Detalii utilizator",
+    "subtitle": "Vă rugăm să completați detaliile dvs.",
+    "email-label": "Email",
+    "email-required": "Adresa de email este obligatorie.",
+    "email-invalid": "Adresă de email invalidă.",
+    "email-length": "Adresa de email este prea lungă.",
+    "firstname-label": "Prenume",
+    "firstname-required": "Prenumele este obligatoriu.",
+    "firstname-minlength": "Prenumele este prea scurt.",
+    "firstname-maxlength": "Prenumele este prea lung.",
+    "lastname-label": "Nume",
+    "lastname-required": "Numele este obligatoriu.",
+    "lastname-minlength": "Numele este prea scurt.",
+    "lastname-maxlength": "Numele este prea lung.",
+    "address-label": "Adresă",
+    "address-required": "Adresa este obligatorie.",
+    "address-maxlength": "Adresa este prea lungă.",
+    "phoneNumber-label": "Număr de telefon",
+    "phoneNumber-required": "Numărul de telefon este obligatoriu.",
+    "phoneNumber-minlength": "Numărul de telefon este prea scurt.",
+    "phoneNumber-invalidFormat": "Formatul numărului de telefon nu este valid.",
+    "postalCode-label": "Cod poștal",
+    "postalCode-required": "Codul poștal este obligatoriu.",
+    "postalCode-maxlength": "Codul poștal este prea lung.",
+    "postalCode-invalid": "Cod poștal invalid.",
+    "birthDate-label": "Data nașterii",
+    "birthDate-required": "Data nașterii este obligatorie.",
+    "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare."
+  },
   "stepper": {
     "step1": "Informații despre rezervare",
     "step2": "Informații despre zbor",
     "step3": "Zboruri de conexiune",
     "step4": "Informații despre perturbare",
     "step5": "Verificare eligibilitate"
+    "step6": "Detalii utilizator"
   },
   "mainForm": {
     "next": "Următorul",
