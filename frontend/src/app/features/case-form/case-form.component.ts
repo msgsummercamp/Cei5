@@ -493,14 +493,7 @@ export class CaseFormComponent implements OnInit {
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
         if (isEligible) {
-          this._caseService.createCase(caseData).subscribe({
-            next: (response) => {
-              // TODO: Add success handling here - maybe show success message
-            },
-            error: (error) => {
-              // TODO: Add error handling here - show error message to user
-            },
-          });
+          this._caseService.createCase(caseData);
         } else {
           // TODO: Add handling for ineligible case - show message to user
         }
