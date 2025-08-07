@@ -206,7 +206,12 @@
     "connection": "Connection",
     "connectionDestinationRequired": "Connection destination is required.",
     "connectionDestinationLength": "Airport code must be exactly 3 characters.",
-    "connectionDestinationUpper": "Airport code must be 3 uppercase letters."
+    "connectionDestinationUpper": "Airport code must be 3 uppercase letters.",
+    "reservationPattern": "Reservation number must be alphanumeric.",
+    "destinationIsDeparting": "The departing airport cannot be the same as the destination airport.",
+    "connectionsShouldBedifferent": "Connections should be different.",
+    "usedDepartingAirport": "Don't use the departing airport as connection.",
+    "usedDestinationAirport": "Don't use the destination airport as connection."
   },
   "flightForm": {
     "flightNumber": "Flight Number",
@@ -221,6 +226,8 @@
     "plannedDepartureTimeRequired": "Planned departure time is required.",
     "plannedArrivalTime": "Planned Arrival Time",
     "plannedArrivalTimeRequired": "Planned arrival time is required.",
-    "arrivalBeforeDeparture": "Arrival time must be after departure time."
+    "arrivalBeforeDeparture": "Arrival time must be after departure time.",
+    "flightNumberPattern": "Flight number must be alphanumeric.",
+    "airlinePattern": "Airline must contain only letters."
   }
 }
