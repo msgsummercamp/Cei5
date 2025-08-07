@@ -129,7 +129,8 @@
     "warning": "Warning"
   },
   "navbar": {
-    "login": "Login"
+    "login": "Login",
+    "logout": "Logout"
   },
   "request-reset": {
     "title": "Reset Password",
