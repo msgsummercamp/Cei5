@@ -6,6 +6,9 @@
       <p-step [value]="2">{{ 'stepper.step2' | translate }}</p-step>
       <p-step [value]="3">{{ 'stepper.step3' | translate }}</p-step>
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
+      <p-step [value]="5">Summary</p-step>
+      <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
+      <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -413,7 +416,7 @@
             />
           </div>
         </ng-template>
-        <!-- Step 4: Test Submit -->
+        <!-- Step 4: Disruption Info -->
       </p-step-panel>
       <p-step-panel [value]="4">
         <ng-template
@@ -425,15 +428,7 @@
             #disruptionForm
             (validityChange)="onDisruptionFormValidityChange($event)"
           />
-        </ng-template>
-      </p-step-panel>
-      <!-- Step 4: Disruption Info -->
-      <p-step-panel [value]="4">
-        <ng-template
-          pTemplate="content"
-          let-prevCallback="prevCallback"
-          let-nextCallback="nextCallback"
-        >
+
           <p-button
             label="{{ 'mainForm.previous' | translate }}"
             severity="secondary"
@@ -444,8 +439,85 @@
           <p-button
             label="{{ 'mainForm.next' | translate }}"
             severity="primary"
-            [disabled]="!isDisruptionFormValid"
             (onClick)="onNextFromDisruptionInfo(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 5: Summary -->
+      <p-step-panel [value]="5">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p>Summary yey</p>
+
+          <p-button
+            label="{{ 'mainForm.previous' | translate }}"
+            severity="secondary"
+            (onClick)="onPrevious(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="{{ 'mainForm.next' | translate }}"
+            severity="primary"
+            (onClick)="onNext(nextCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 6: User Registration -->
+      <p-step-panel [value]="6">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <app-user-registration
+            #userRegistration
+            [initialData]="userRegistrationInitialData"
+            (validityChange)="onUserRegistrationValidityChange($event.valid, $event.data)"
+          />
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isUserRegistrationValid"
+              (onClick)="onNextFromUserRegistration(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
+        </ng-template>
+      </p-step-panel>
+      <!-- Step 7: Summary -->
+      <p-step-panel [value]="7">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+        >
+          <p>Summary yey</p>
+
+          <p-button
+            label="{{ 'mainForm.previous' | translate }}"
+            severity="secondary"
+            (onClick)="onPrevious(prevCallback)"
+            [styleClass]="'px-6 mt-8'"
+          />
+
+          <p-button
+            label="{{ 'mainForm.next' | translate }}"
+            severity="primary"
+            (onClick)="onNext(nextCallback)"
             [styleClass]="'px-6 mt-8'"
           />
         </ng-template>
