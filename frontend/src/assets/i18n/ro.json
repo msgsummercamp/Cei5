@@ -128,6 +128,9 @@
     "info": "Info",
     "warning": "Avertisment"
   },
+  "navbar": {
+    "login": "Loghează-te"
+  },
   "request-reset": {
     "title": "Resetare parolă",
     "description": "Introduceți adresa de email pentru a primi o nouă parolă temporară. La prima autentificare vi se va solicita să schimbați parola.",

@@ -22,13 +22,13 @@ export class CompensationService {
   }
 
   public compensation$ = this._calculateDistance.pipe(
-    switchMap((obj) => {
+    switchMap((airportData) => {
       const endpoint =
         this.URL +
         '?departingAirportCode=' +
-        obj.departureCode +
+        airportData.departureCode +
         '&destinationAirportCode=' +
-        obj.destinationCode;
+        airportData.destinationCode;
 
       return this._httpClient.post<number>(endpoint, {});
     }),
