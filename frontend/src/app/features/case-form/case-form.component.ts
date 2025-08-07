@@ -474,12 +474,9 @@ export class CaseFormComponent implements OnInit {
     event: { valid: boolean; data?: DisruptionFormData | null } | null
   ): void {
     this.isDisruptionFormValid = event?.valid ?? false;
-    console.log(this.isDisruptionFormValid);
-    console.log(event);
 
     if (event?.data) {
       this.disruptionFormData = event.data; // This will now actually save the data!
-      console.log(this.disruptionFormData);
 
       // Reset eligibility when disruption data changes
       if (this._eligibilityService) {

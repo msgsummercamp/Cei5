@@ -206,7 +206,6 @@ export class DisruptionFormComponent {
     const isValid = this.disruptionForm.valid && this.hasAllRequiredFields();
     const data = isValid ? this.getDisruptionFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
-    console.log(data);
   }
 
   private getDisruptionFormDetails(): DisruptionFormData {
