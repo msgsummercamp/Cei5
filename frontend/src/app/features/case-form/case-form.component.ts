@@ -185,13 +185,15 @@ export class CaseFormComponent implements OnInit {
   }
 
   public get isFlagged(): boolean[] {
-    console.log(this._flightService.getFlagStatus());
-
     return this._flightService.getFlagStatus();
   }
 
   public get MAX_FLAGS(): number {
     return this._flightService.getMaxFlags();
+  }
+
+  public get flagged(): boolean {
+    return this._flightService.isAnyFlag();
   }
 
   public toggleFlag(index: number): void {

@@ -420,7 +420,7 @@
             <p-button
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
-              [disabled]="!areAllConnectionFlightsValid() || this.flags !== this.MAX_FLAGS"
+              [disabled]="!areAllConnectionFlightsValid() || this.flagged === false"
               [styleClass]="'px-6'"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
