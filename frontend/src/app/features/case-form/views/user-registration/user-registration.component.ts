@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -39,11 +39,14 @@ type UserRegistrationForm = {
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegistrationComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   public readonly initialData = input<User | undefined>(undefined);
+  public readonly isUserReadOnly = input(false);
+
   public readonly validityChange = output<{ valid: boolean; data: User | null }>();
 
   public readonly searchCountryField = SearchCountryField;
@@ -94,35 +97,42 @@ export class UserRegistrationComponent {
     birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
   });
 
-  constructor() {
+  private readonly _effectFn = () => {
     let hasInitialized = false;
+    const data = this.initialData();
+    const readOnly = this.isUserReadOnly();
 
-    effect(() => {
-      const data = this.initialData();
-      if (data && !hasInitialized) {
-        hasInitialized = true;
-        this.userRegistrationForm.patchValue(
-          {
-            email: data.email || '',
-            firstName: data.firstName || '',
-            lastName: data.lastName || '',
-            address: data.userDetails?.address || '',
-            phoneNumber: data.userDetails?.phoneNumber || '',
-            postalCode: data.userDetails?.postalCode || '',
-            birthDate: data.userDetails?.birthDate ? new Date(data.userDetails.birthDate) : null,
-          },
-          { emitEvent: false }
-        );
+    if (data && !hasInitialized) {
+      hasInitialized = true;
+      this.userRegistrationForm.patchValue(
+        {
+          email: data.email || '',
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          address: data.userDetails?.address || '',
+          phoneNumber: data.userDetails?.phoneNumber || '',
+          postalCode: data.userDetails?.postalCode || '',
+          birthDate: data.userDetails?.birthDate ? new Date(data.userDetails.birthDate) : null,
+        },
+        { emitEvent: false }
+      );
 
-        setTimeout(() => {
-          this.checkAndEmitValidity();
-        }, 0);
-      }
-    });
+      setTimeout(() => {
+        this.checkAndEmitValidity();
+      }, 0);
+    }
 
+    if (readOnly) {
+      this.userRegistrationForm.disable();
+    }
+  };
+
+  constructor() {
     this.userRegistrationForm.statusChanges.subscribe(() => {
       this.checkAndEmitValidity();
     });
+
+    effect(this._effectFn);
   }
 
   public getUserFormDetails(): User | null {
@@ -144,7 +154,7 @@ export class UserRegistrationComponent {
   }
 
   private checkAndEmitValidity(): void {
-    const isValid = this.userRegistrationForm.valid;
+    const isValid = this.userRegistrationForm.valid || this.isUserReadOnly();
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });
   }

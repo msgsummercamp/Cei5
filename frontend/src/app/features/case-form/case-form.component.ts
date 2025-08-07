@@ -119,6 +119,7 @@ export class CaseFormComponent implements OnInit {
     initialValue: [] as AirportResponse[],
   });
   public compensation?: number;
+  public readonly isUserReadOnly = this._userService.isUserReadOnly;
 
   public readonly departingAirportValue = toSignal(
     this.reservationForm.controls.departingAirport.valueChanges
