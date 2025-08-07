@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { User } from '../types/user';
 import { environment } from '../../../environments/environment';
+import { Roles } from '../types/enums/roles';
 
 @Injectable({
   providedIn: 'root',
@@ -50,8 +51,7 @@ export class UserService {
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
-      // Don't include password - backend generates it and sends via email
-      // role: 'USER', // Default role for new users
+      role: Roles.USER,
       isFirstLogin: true,
       userDetails: userData.userDetails
         ? {

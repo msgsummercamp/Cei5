@@ -56,7 +56,9 @@ public class UserServiceImpl implements UserService {
         logger.info("UserService - Attempting to add user: {}", email);
         checkForDuplicateEmail(email);
         user.setPassword(randomPasswordGenerator.generateRandomPassword());
-        user.setRole(Roles.USER);
+        if (user.getRole() == null) {
+            user.setRole(Roles.USER);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setIsFirstLogin(true);
         return userRepository.save(user);
