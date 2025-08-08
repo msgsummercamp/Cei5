@@ -1,7 +1,7 @@
-import { Injectable, signal, inject, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { User } from '../types/user';
 import { environment } from '../../../environments/environment';
 import { Roles } from '../types/enums/roles';
@@ -49,12 +49,7 @@ export class UserService {
   public createUser(userData: User): Observable<User> {
     const transformedData = this.transformUserDataForBackend(userData);
 
-    return this._httpClient.post<User>(`${this.API_URL}/users`, transformedData).pipe(
-      tap((createdUser) => {
-        // Optionally store the created user details
-        this._userDetails.set(createdUser);
-        sessionStorage.setItem('userDetails', JSON.stringify(createdUser));
-      }),
+    return this._httpClient.post<User>(`${this.API_URL}/auth/register`, transformedData).pipe(
       catchError((error) => {
         const apiError: ApiError = error?.error;
         this._notificationService.showError(

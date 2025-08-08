@@ -1,10 +1,10 @@
 import {
-  Component,
-  inject,
   ChangeDetectionStrategy,
-  ViewChild,
-  OnInit,
+  Component,
   effect,
+  inject,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -15,12 +15,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import {
+  FormArray,
   FormControl,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormsModule,
-  FormArray,
 } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -47,6 +47,9 @@ import { departingAirportIsDestinationAirport } from '../../shared/validators/de
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
 import { AuthService } from '../../shared/services/auth/auth.service';
+import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
+import { Statuses } from '../../shared/types/enums/status';
+import { CaseDTO } from '../../shared/dto/case.dto';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -58,9 +61,6 @@ type DisruptionForm = {
   airlineMotiveFollowUpAnswer: string | null;
   disruptionInformation: string;
 };
-import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
-import { Statuses } from '../../shared/types/enums/status';
-import { CaseDTO } from '../../shared/dto/case.dto';
 
 @Component({
   selector: 'app-case-form',
@@ -527,6 +527,9 @@ export class CaseFormComponent implements OnInit {
           next: (createdUser) => {
             // Check if the created user has an ID and retry case submission
             if (createdUser?.id) {
+              if (this.userDetailsFormData) {
+                this.userDetailsFormData.id = createdUser?.id;
+              }
               this.submitCase(); // Retry submission with the new user
             } else {
               // Handle the case where user is created but needs to sign in

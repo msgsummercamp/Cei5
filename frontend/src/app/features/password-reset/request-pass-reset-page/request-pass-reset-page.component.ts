@@ -46,6 +46,13 @@ export class RequestPassResetPageComponent {
     }),
   });
 
+  ngOnInit(): void {
+    const emailFormState = window.history.state.email || '';
+    if (emailFormState) {
+      this.requestResetForm.get('email')?.setValue(emailFormState);
+    }
+  }
+
   protected onFormSubmit(): void {
     if (this.requestResetForm.valid) {
       const email: string = this.requestResetForm.get('email')?.value || '';

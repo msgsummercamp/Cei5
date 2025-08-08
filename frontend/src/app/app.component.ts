@@ -4,10 +4,11 @@ import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from './shared/services/language.service';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonModule, Toast, TranslateModule],
+  imports: [RouterOutlet, ButtonModule, Toast, TranslateModule, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
