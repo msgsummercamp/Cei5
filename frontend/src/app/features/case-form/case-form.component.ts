@@ -1,10 +1,10 @@
 import {
-  Component,
-  inject,
   ChangeDetectionStrategy,
-  ViewChild,
-  OnInit,
+  Component,
   effect,
+  inject,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -15,12 +15,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import {
+  FormArray,
   FormControl,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormsModule,
-  FormArray,
 } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -46,6 +46,10 @@ import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
+import { AuthService } from '../../shared/services/auth/auth.service';
+import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
+import { Statuses } from '../../shared/types/enums/status';
+import { CaseDTO } from '../../shared/dto/case.dto';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -57,7 +61,6 @@ type DisruptionForm = {
   airlineMotiveFollowUpAnswer: string | null;
   disruptionInformation: string;
 };
-import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 
 @Component({
   selector: 'app-case-form',
@@ -98,6 +101,7 @@ export class CaseFormComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
+  private readonly _authService = inject(AuthService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -472,7 +476,12 @@ export class CaseFormComponent implements OnInit {
     this.isDisruptionFormValid = event?.valid ?? false;
 
     if (event?.data) {
-      this.disruptionFormData = event.data;
+      this.disruptionFormData = event.data; // This will now actually save the data!
+
+      // Reset eligibility when disruption data changes
+      if (this._eligibilityService) {
+        this._eligibilityService.resetEligibilityResult();
+      }
     }
   }
 
@@ -504,28 +513,135 @@ export class CaseFormComponent implements OnInit {
     return this._flightService.areAllConnectionFlightsValid() && this.areAllDatesValid();
   }
 
-  public getDisruptionInfo() {
-    // First try to get from saved data, then fallback to form
+  public submitCase(): void {
+    if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
+      return;
+    }
+
+    const clientID = this.getClientId();
+
+    if (!clientID) {
+      if (this.userDetailsFormData) {
+        // ✅ FIX: Subscribe to the Observable to actually execute the HTTP request
+        this._userService.createUser(this.userDetailsFormData).subscribe({
+          next: (createdUser) => {
+            // Check if the created user has an ID and retry case submission
+            if (createdUser?.id) {
+              if (this.userDetailsFormData) {
+                this.userDetailsFormData.id = createdUser?.id;
+              }
+              this.submitCase(); // Retry submission with the new user
+            } else {
+              // Handle the case where user is created but needs to sign in
+            }
+          },
+          error: (error) => {
+            // TODO: Show error message to user
+          },
+        });
+
+        return; // Exit early since we're handling registration
+      } else {
+        return;
+      }
+    }
+
+    // Continue with case submission if we have a client ID
+    this.createAndSubmitCase(clientID);
+  }
+
+  private createAndSubmitCase(clientID: string): void {
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+
+    const caseData: CaseDTO = {
+      status: Statuses.PENDING,
+      disruptionReason: this.getDisruptionReason(),
+      disruptionInfo: this.getDisruptionInfo(),
+      date: formattedDate,
+      clientID: clientID,
+      assignedColleague: undefined,
+      reservation: this.createReservationDTO(),
+      documentList: [],
+    };
+
+    this._caseService.checkEligibility(caseData).subscribe({
+      next: (isEligible) => {
+        if (isEligible) {
+          this._caseService.createCase(caseData);
+        } else {
+          // TODO: Add handling for ineligible case - show message to user
+        }
+      },
+      error: (error) => {
+        // TODO: Add error handling here - show error message to user
+      },
+    });
+  }
+
+  private getClientId(): string | null {
+    const loggedInUser = this.loggedInUserData();
+    const userDetails = this.userDetailsFormData;
+    if (loggedInUser?.id) {
+      return loggedInUser.id;
+    }
+
+    if (this.userDetailsFormData?.id) {
+      return this.userDetailsFormData.id;
+    }
+
+    return null;
+  }
+
+  public getDisruptionReason(): string {
+    // First try saved data (this should be available when on step 7)
+    if (this.disruptionFormData?.disruptionType) {
+      // Map the disruption type to the proper reason using the same logic as DisruptionFormComponent
+      if (this.disruptionFormData.disruptionType === 'Cancellation') {
+        if (this.disruptionFormData.cancellationAnswer === '>14 days') {
+          return 'CANCELATION_NOTICE_OVER_14_DAYS';
+        } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
+          return 'CANCELATION_NOTICE_UNDER_14_DAYS';
+        }
+        return 'CANCELATION_ON_DAY_OF_DEPARTURE';
+      } else if (this.disruptionFormData.disruptionType === 'Delay') {
+        if (this.disruptionFormData.delayAnswer === '>3 hours') {
+          return 'ARRIVED_3H_LATE';
+        } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
+          return 'ARRIVED_EARLY';
+        }
+        return 'NEVER_ARRIVED';
+      } else if (this.disruptionFormData.disruptionType === 'Denied_Boarding') {
+        if (this.disruptionFormData.deniedBoardingAnswer === 'No') {
+          return 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY';
+        }
+        return 'DID_GIVE_THE_SEAT_VOLUNTARILY';
+      }
+    }
+
+    // Fallback to form if available (when actually on the disruption form step)
+    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
+      return this.disruptionForm.getResponseForDisruption();
+    }
+
+    return '';
+  }
+
+  // Fix getDisruptionInfo method
+  public getDisruptionInfo(): string {
+    // First try saved data
     if (this.disruptionFormData?.disruptionInformation) {
       return this.disruptionFormData.disruptionInformation;
     }
 
     // Fallback to form if available
     if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
-      return this.disruptionForm.getDisruptionDescription();
+      const formInfo = this.disruptionForm.getDisruptionDescription();
+
+      return formInfo;
     }
 
     return '';
-  }
-
-  public getDisruptionReason() {
-    // If form is available, use it
-    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
-      return this.disruptionForm.getResponseForDisruption();
-    }
-
-    // Fallback to saved data if form is not available
-    return this.disruptionFormData?.disruptionType || '';
   }
 
   public resetAllFormData(): void {

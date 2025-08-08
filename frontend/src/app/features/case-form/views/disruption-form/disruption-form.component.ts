@@ -86,11 +86,10 @@ export class DisruptionFormComponent {
 
   public readonly disruptionReason = output<string>();
   public readonly disruptionInfo = output<string>();
-  public readonly validityChange = output<{ valid: boolean } | null>();
-  public readonly validityChangeData = output<{
+  public readonly validityChange = output<{
     valid: boolean;
     data?: DisruptionFormData | null;
-  }>();
+  } | null>();
 
   /**
    *
@@ -170,17 +169,14 @@ export class DisruptionFormComponent {
   }
 
   constructor() {
-    let hasInitialized = false;
     this.disruptionForm.statusChanges.subscribe(() => {
-      const isValid = this.hasAllRequiredFields();
-      this.formValid.set(isValid);
       this.checkAndEmitValidity();
     });
+    let hasInitialized = false;
 
     effect(() => {
-      const isValid = this.formValid();
       const data = this.initialData();
-      this.validityChange.emit(isValid ? { valid: true } : null);
+
       if (data && !hasInitialized) {
         hasInitialized = true;
         this.disruptionForm.patchValue(
@@ -207,9 +203,9 @@ export class DisruptionFormComponent {
   }
 
   private checkAndEmitValidity(): void {
-    const isValid = this.disruptionForm.valid;
+    const isValid = this.disruptionForm.valid && this.hasAllRequiredFields();
     const data = isValid ? this.getDisruptionFormDetails() : null;
-    this.validityChangeData.emit({ valid: isValid, data: data });
+    this.validityChange.emit({ valid: isValid, data: data });
   }
 
   private getDisruptionFormDetails(): DisruptionFormData {

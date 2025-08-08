@@ -12,7 +12,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DatePicker } from 'primeng/datepicker';
-import { IntlInputTelComponent, CountryISO, SearchCountryField } from 'p-intl-input-tel';
+import { CountryISO, IntlInputTelComponent, SearchCountryField } from 'p-intl-input-tel';
 import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
@@ -160,7 +160,7 @@ export class UserRegistrationComponent {
   }
 
   public checkAndEmitValidity(): void {
-    const isFormValid = this.userRegistrationForm.valid;
+    const isFormValid = this.userRegistrationForm.valid || this.userRegistrationForm.disabled;
     const isValid = isFormValid && this.acceptedTerms;
     const data = isValid ? this.getUserFormDetails() : null;
     this.validityChange.emit({ valid: isValid, data: data });

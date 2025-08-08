@@ -1,4 +1,4 @@
-<div class="caseFormWrapper m-4">
+<div class="caseFormWrapper m-4 pt-5">
   <p-stepper [value]="currentStep()" [linear]="true" class="text-pink-500">
     <p-step-list>
       <!-- Step indicators -->
@@ -441,20 +441,22 @@
             (validityChange)="onDisruptionFormValidityChange($event)"
             [initialData]="disruptionInitialData"
           />
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            [disabled]="!isDisruptionFormValid"
-            (onClick)="onNextFromDisruptionInfo(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isDisruptionFormValid"
+              (onClick)="onNextFromDisruptionInfo(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
       <!-- Step 5: Eligibility Check -->
@@ -469,20 +471,22 @@
             [disruptionInfo]="getDisruptionInfo()"
           >
           </app-eligibility-page>
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPrevious(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            [disabled]="!isEligibilityCheckValid"
-            (onClick)="onNext(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isEligibilityCheckValid"
+              (onClick)="onNext(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
 
@@ -537,7 +541,7 @@
             <p-button
               label="{{ 'lastForm.next' | translate }}"
               severity="primary"
-              (onClick)="onNext(nextCallback)"
+              (onClick)="submitCase()"
               [styleClass]="'px-6 mt-8'"
             />
           </div>

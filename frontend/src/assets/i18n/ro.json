@@ -274,10 +274,13 @@
     "eligible": "Ești eligibil pentru compensație.",
     "continueWithPersoinalDetails": "Continua cu datele personale.",
     "sorry": "Scuze",
-    "notEligible": "Cazul tau nu este eligibil pentru compensare conform regulațiilor UE.",
+    "notEligible": "Cazul tau nu este eligibil pentru compensare conform reglementărilor UE.",
     "restart": "Reporniti de la inceput."
   },
   "lastForm": {
     "next": "Finalizează"
+  },
+  "user-service": {
+    "error": "Eroare"
   }
 }

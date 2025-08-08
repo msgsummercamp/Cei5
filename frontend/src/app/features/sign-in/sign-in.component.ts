@@ -4,8 +4,8 @@ import { AuthService } from '../../shared/services/auth/auth.service';
 import {
   FormControl,
   NonNullableFormBuilder,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { SignInRequest } from '../../shared/types/auth/sign-in-request';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -61,6 +61,7 @@ export class SignInComponent {
   }
 
   protected navigateToPasswordReset(): void {
-    this._router.navigate(['/request-password-reset']);
+    const email = this.signInForm.get('email')?.value || '';
+    this._router.navigate(['/request-password-reset'], { state: { email } });
   }
 }
