@@ -5,6 +5,9 @@ import { tap, catchError } from 'rxjs/operators';
 import { User } from '../types/user';
 import { environment } from '../../../environments/environment';
 import { Roles } from '../types/enums/roles';
+import { NotificationService } from './toaster/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiError } from '../types/api-error';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,8 @@ import { Roles } from '../types/enums/roles';
 export class UserService {
   private readonly _httpClient = inject(HttpClient);
   private readonly API_URL = environment.API_URL;
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translationService = inject(TranslateService);
 
   private readonly _userDetails = signal<User | undefined>(undefined);
   public readonly userDetails = this._userDetails.asReadonly();
@@ -51,6 +56,10 @@ export class UserService {
         sessionStorage.setItem('userDetails', JSON.stringify(createdUser));
       }),
       catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(
+          this._translationService.instant('user-service.error') + ': ' + apiError.detail
+        );
         throw error;
       })
     );

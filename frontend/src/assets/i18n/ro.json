@@ -279,5 +279,8 @@
   },
   "lastForm": {
     "next": "Finalizează"
+  },
+  "user-service": {
+    "error": "Eroare"
   }
 }

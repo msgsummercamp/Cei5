@@ -84,7 +84,7 @@ export class AuthService {
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
-          this._router.navigate(['/form']);
+          this._router.navigate(['/']);
         }
       },
       error: (error) => {
@@ -133,7 +133,7 @@ export class AuthService {
     sessionStorage.removeItem('userDetails');
     this._userService.clearUserDetails();
     this._authState.set(initialState);
-    this._router.navigate(['/sign-in']);
+    this._router.navigate(['/']);
   }
 
   /**
