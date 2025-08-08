@@ -1,18 +1,20 @@
 <div class="flex flex-column align-items-center m-0">
   <form novalidate [formGroup]="disruptionForm">
     <div>
-      <p-select
-        [options]="reasons"
-        formControlName="disruptionType"
-        placeholder="{{ 'disruption-form.selectPlaceholder' | translate }}"
-      >
-        <ng-template let-item pTemplate="item">
-          {{ 'disruption-form.selection.' + item | translate }}
-        </ng-template>
-        <ng-template let-item pTemplate="selectedItem">
-          {{ 'disruption-form.selection.' + item | translate }}
-        </ng-template>
-      </p-select>
+      <div class="flex justify-content-center">
+        <p-select
+          [options]="reasons"
+          formControlName="disruptionType"
+          placeholder="{{ 'disruption-form.selectPlaceholder' | translate }}"
+        >
+          <ng-template let-item pTemplate="item">
+            {{ 'disruption-form.selection.' + item | translate }}
+          </ng-template>
+          <ng-template let-item pTemplate="selectedItem">
+            {{ 'disruption-form.selection.' + item | translate }}
+          </ng-template>
+        </p-select>
+      </div>
       <div class="error-placeholder">
         @if (
           this.disruptionForm.controls.disruptionType.hasError('required') &&
@@ -153,19 +155,8 @@
                   formControlName="deniedBoardingFollowUpAnswer"
                 ></p-radio-button>
                 <label for="follow-up-answer-denied2">
-                  &nbsp;{{
-                    'disruption-form.reasonsBehindDenial.aggressivePassenger' | translate
-                  }}</label
-                >
-              </div>
-              <div class="pb-1">
-                <p-radio-button
-                  value="Intoxication"
-                  inputId="follow-up-answer-denied3"
-                  formControlName="deniedBoardingFollowUpAnswer"
-                ></p-radio-button>
-                <label for="follow-up-answer-denied3">
-                  &nbsp; {{ 'disruption-form.reasonsBehindDenial.intoxication' | translate }}</label
+                  &nbsp;
+                  {{ 'disruption-form.reasonsBehindDenial.aggressivePassenger' | translate }}</label
                 >
               </div>
               <div class="pb-1">
