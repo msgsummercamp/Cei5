@@ -1,5 +1,6 @@
 package com.airassist.backend.dto.cases;
 
+import com.airassist.backend.dto.beneficiary.BeneficiaryDTO;
 import com.airassist.backend.dto.reservation.ReservationDTO;
 import com.airassist.backend.dto.user.UserDTO;
 import com.airassist.backend.model.*;
@@ -33,6 +34,8 @@ public class CaseDTO {
     private UserDTO assignedColleague;
 
     private ReservationDTO reservation;
+
+    private BeneficiaryDTO beneficiary;
 
     /// TODO: create Document DTO and use it instead of Document class
     private List<Document> documentList;
