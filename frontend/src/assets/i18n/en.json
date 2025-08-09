@@ -43,7 +43,8 @@
   },
   "case-form": {
     "compensation-start": "Congratulations! You could earn up to €",
-    "compensation-end": ". Click next to continue."
+    "compensation-end": ". Click next to continue.",
+    "submission-in-progress": "Your case is being submitted."
   },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",

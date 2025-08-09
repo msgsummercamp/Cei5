@@ -38,18 +38,18 @@ import {
   DisruptionFormData,
 } from './views/disruption-form/disruption-form.component';
 import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
-import { AuthService } from '../../shared/services/auth/auth.service';
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
+import { NotificationService } from '../../shared/services/toaster/notification.service';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -101,7 +101,8 @@ export class CaseFormComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
-  private readonly _authService = inject(AuthService);
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translateService = inject(TranslateService);
 
   private _lastUserRegistrationData?: CaseFormUserData;
   private _lastUser?: any;
@@ -501,7 +502,6 @@ export class CaseFormComponent implements OnInit {
   public onUserRegistrationValidityChange(valid: boolean, data: CaseFormUserData | null): void {
     this.isUserRegistrationValid = valid;
     this.userDetailsFormData = data;
-    console.log(data);
   }
 
   public get userRegistrationInitialData(): CaseFormUserData | undefined {
@@ -529,6 +529,9 @@ export class CaseFormComponent implements OnInit {
       return;
     }
 
+    this._notificationService.showInfo(
+      this._translateService.instant('case-form.submission-in-progress')
+    );
     const clientID = this.getClientId();
 
     if (!clientID) {
@@ -598,8 +601,8 @@ export class CaseFormComponent implements OnInit {
       return loggedInUser.id;
     }
 
-    if (this.userDetailsFormData?.completedBy.id) {
-      return this.userDetailsFormData.completedBy.id;
+    if (userDetails?.id) {
+      return userDetails.id;
     }
 
     return null;

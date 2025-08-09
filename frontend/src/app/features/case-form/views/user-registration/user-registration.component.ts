@@ -113,30 +113,12 @@ export class UserRegistrationComponent {
       Validators.pattern(/^[a-zA-Z0-9- ]+$/),
     ]),
     birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
-    completingForSomeoneElse: this._formBuilder.control<boolean>(false, Validators.required),
-    someoneElseFirstName: this._formBuilder.control<string>('', [
-      Validators.required,
-      Validators.minLength(1),
-      Validators.maxLength(50),
-      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
-    ]),
-    someoneElseLastName: this._formBuilder.control<string>('', [
-      Validators.required,
-      Validators.minLength(1),
-      Validators.maxLength(50),
-      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
-    ]),
-    someoneElseAddress: this._formBuilder.control<string>('', [
-      Validators.required,
-      Validators.maxLength(100),
-      Validators.pattern(/^[a-zA-Z0-9\s,.'-]+$/),
-    ]),
-    someoneElsePostalCode: this._formBuilder.control<string>('', [
-      Validators.required,
-      Validators.maxLength(10),
-      Validators.pattern(/^[a-zA-Z0-9- ]+$/),
-    ]),
-    someoneElseIsUnderage: this._formBuilder.control<boolean>(false, Validators.required),
+    completingForSomeoneElse: this._formBuilder.control<boolean>(false),
+    someoneElseFirstName: this._formBuilder.control<string>(''),
+    someoneElseLastName: this._formBuilder.control<string>(''),
+    someoneElseAddress: this._formBuilder.control<string>(''),
+    someoneElsePostalCode: this._formBuilder.control<string>(''),
+    someoneElseIsUnderage: this._formBuilder.control<boolean>(false),
   });
 
   constructor() {
@@ -144,29 +126,7 @@ export class UserRegistrationComponent {
       this.checkAndEmitValidity();
     });
 
-    this.userRegistrationForm
-      .get('completingForSomeoneElse')
-      ?.valueChanges.subscribe((isCompleting) => {
-        const fields = [
-          'someoneElseFirstName',
-          'someoneElseLastName',
-          'someoneElseAddress',
-          'someoneElsePostalCode',
-          'someoneElseIsUnderage',
-        ];
-
-        fields.forEach((field) => {
-          const control = this.userRegistrationForm.get(field);
-          if (control) {
-            if (isCompleting) {
-              control.setValidators(this.getValidatorsForField(field));
-            } else {
-              control.clearValidators();
-            }
-            control.updateValueAndValidity();
-          }
-        });
-      });
+    this.setDynamicValidators();
 
     effect(() => {
       const data = this.initialData();
@@ -274,17 +234,13 @@ export class UserRegistrationComponent {
       };
     }
 
-    console.log(result);
     return result;
   }
 
   public checkAndEmitValidity(): void {
     const isFormValid = this.userRegistrationForm.valid;
-    console.log('validity', isFormValid);
     const isValid = isFormValid && this.acceptedTerms;
-    console.log('isValid', isValid);
     const data = isValid ? this.getUserFormDetails() : null;
-    console.log('data', data);
     if (
       !this.lastEmitted ||
       this.lastEmitted.valid !== isValid ||
@@ -312,5 +268,31 @@ export class UserRegistrationComponent {
         control.disable();
       }
     });
+  }
+
+  private setDynamicValidators(): void {
+    this.userRegistrationForm
+      .get('completingForSomeoneElse')
+      ?.valueChanges.subscribe((isCompleting) => {
+        const fields = [
+          'someoneElseFirstName',
+          'someoneElseLastName',
+          'someoneElseAddress',
+          'someoneElsePostalCode',
+          'someoneElseIsUnderage',
+        ];
+
+        fields.forEach((field) => {
+          const control = this.userRegistrationForm.get(field);
+          if (control) {
+            if (isCompleting) {
+              control.setValidators(this.getValidatorsForField(field));
+            } else {
+              control.clearValidators();
+            }
+            control.updateValueAndValidity();
+          }
+        });
+      });
   }
 }
