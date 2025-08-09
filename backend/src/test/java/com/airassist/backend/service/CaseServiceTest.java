@@ -1,10 +1,13 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.dto.beneficiary.BeneficiaryDTO;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
+import com.airassist.backend.model.Beneficiary;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Reservation;
 import com.airassist.backend.model.User;
@@ -17,6 +20,7 @@ import com.airassist.backend.repository.ReservationRepository;
 import com.airassist.backend.service.impl.CaseServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +42,7 @@ public class CaseServiceTest {
     private CaseServiceImpl caseService;
     private CaseMapper caseMapper;
     private ReservationMapper reservationMapper;
+    private BeneficiaryMapper beneficiaryMapper;
 
     static User createTestUser() {
         User user = new User();
@@ -47,8 +52,19 @@ public class CaseServiceTest {
         user.setFirstName("Test");
         user.setLastName("User");
         user.setRole(Roles.USER);
-        user.setFirstLogin(true);
+        user.setIsFirstLogin(true);
         return user;
+    }
+
+    static Beneficiary createTestBeneficiary() {
+        Beneficiary beneficiary = new Beneficiary();
+        beneficiary.setId(UUID.randomUUID());
+        beneficiary.setFirstName("Test");
+        beneficiary.setLastName("Beneficiary");
+        beneficiary.setAddress("some address");
+        beneficiary.setPostalCode("12345");
+        beneficiary.setIsUnderage(true);
+        return beneficiary;
     }
 
      static Reservation createTestReservation() {
@@ -62,6 +78,7 @@ public class CaseServiceTest {
      static Case createCase(Statuses status, DisruptionReasons reason) {
         User client = createTestUser();
         Reservation reservation = createTestReservation();
+        Beneficiary beneficiary = createTestBeneficiary();
         return Case.builder()
                 .id(UUID.randomUUID())
                 .status(status)
@@ -72,12 +89,14 @@ public class CaseServiceTest {
                 .assignedColleague(null)
                 .reservation(reservation)
                 .documentList(List.of())
+                .beneficiary(beneficiary)
                 .build();
     }
 
     CaseDTO createCaseDTO(Statuses status, DisruptionReasons reason) {
         User client = createTestUser();
         Reservation reservation = createTestReservation();
+        Beneficiary beneficiary = createTestBeneficiary();
         CaseDTO dto = new CaseDTO();
         dto.setStatus(status);
         dto.setDisruptionReason(reason);
@@ -94,6 +113,7 @@ public class CaseServiceTest {
         UUID id = UUID.randomUUID();
         User client = createTestUser();
         Reservation reservation = createTestReservation();
+        Beneficiary beneficiary = createTestBeneficiary();
         CaseResponseDTO dto = new CaseResponseDTO();
         dto.setId(id);
         dto.setStatus(status);
@@ -104,6 +124,14 @@ public class CaseServiceTest {
         dto.setAssignedColleagueId(null);
         dto.setReservationId(reservation.getId());
         dto.setDocumentIds(List.of());
+        dto.setBeneficiary(new BeneficiaryDTO(
+                beneficiary.getId(),
+                beneficiary.getFirstName(),
+                beneficiary.getLastName(),
+                beneficiary.getAddress(),
+                beneficiary.getPostalCode(),
+                beneficiary.getIsUnderage()
+        ));
         return dto;
     }
 
@@ -120,7 +148,9 @@ public class CaseServiceTest {
         userRepository = Mockito.mock(UserRepository.class);
         reservationRepository = Mockito.mock(ReservationRepository.class);
         caseMapper = Mockito.mock(CaseMapper.class);
-        caseService = new CaseServiceImpl(caseRepository, caseMapper,reservationMapper);
+        reservationMapper = Mappers.getMapper(ReservationMapper.class);
+        beneficiaryMapper = Mappers.getMapper(BeneficiaryMapper.class);
+        caseService = new CaseServiceImpl(caseRepository, userRepository, caseMapper,reservationMapper, beneficiaryMapper);
 
         Mockito.when(caseMapper.toEntity(Mockito.any(CaseDTO.class)))
                 .thenAnswer(inv -> {
@@ -135,6 +165,7 @@ public class CaseServiceTest {
                     }
 
                     Reservation reservation = reservationMapper.toEntity(dto.getReservation());
+                    Beneficiary beneficiary = beneficiaryMapper.toEntity(dto.getBeneficiary());
 
                     return Case.builder()
                             .id(UUID.randomUUID())
@@ -146,11 +177,20 @@ public class CaseServiceTest {
                             .assignedColleague(assignedColleague)
                             .reservation(reservation)
                             .documentList(dto.getDocumentList())
+                            .beneficiary(beneficiary)
                             .build();
                 });
 
         Mockito.when(caseRepository.save(Mockito.any(Case.class)))
                 .thenAnswer(inv -> inv.getArgument(0));
+
+        Mockito.when(userRepository.findById(Mockito.any(UUID.class)))
+                .thenAnswer(inv -> {
+                    UUID id = inv.getArgument(0);
+                    User user = createTestUser();
+                    user.setId(id);
+                    return Optional.of(user);
+                });
     }
 
     @Test

@@ -3,6 +3,7 @@ import { DisruptionReasons } from './enums/disruption-reason';
 import { User } from './user';
 import { Reservation } from './reservation';
 import { Document } from './document';
+import { Beneficiary } from './beneficiary';
 
 export type Case = {
   id?: string;
@@ -14,4 +15,5 @@ export type Case = {
   assignedColleague?: User | null;
   reservation: Reservation;
   documentList?: Document[];
+  beneficiary?: Beneficiary | null;
 };

@@ -1,6 +1,7 @@
 import { Statuses } from '../types/enums/status';
 import { UserDTO } from './user.dto';
 import { ReservationDTO } from './reservation.dto';
+import { Beneficiary } from '../types/beneficiary';
 
 type DocumentInfo = {
   id?: string;
@@ -19,4 +20,5 @@ export type CaseDTO = {
   assignedColleague?: UserDTO;
   reservation: ReservationDTO;
   documentList?: DocumentInfo[];
+  beneficiary?: Beneficiary | null;
 };

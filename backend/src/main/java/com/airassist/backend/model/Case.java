@@ -51,4 +51,8 @@ public class Case {
 
     @OneToMany(mappedBy = "caseEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Document> documentList;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(referencedColumnName = "id")
+    private Beneficiary beneficiary;
 }

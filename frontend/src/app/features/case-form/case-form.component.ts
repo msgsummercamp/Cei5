@@ -38,18 +38,18 @@ import {
   DisruptionFormData,
 } from './views/disruption-form/disruption-form.component';
 import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
-import { User } from '../../shared/types/user';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
-import { AuthService } from '../../shared/services/auth/auth.service';
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
+import { CaseFormUserData } from '../../shared/types/case-form-userdata';
+import { NotificationService } from '../../shared/services/toaster/notification.service';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -101,7 +101,12 @@ export class CaseFormComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
-  private readonly _authService = inject(AuthService);
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translateService = inject(TranslateService);
+
+  private _lastUserRegistrationData?: CaseFormUserData;
+  private _lastUser?: any;
+  private _lastCompletedFor?: any;
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -141,7 +146,7 @@ export class CaseFormComponent implements OnInit {
   public flightData: FlightDetails | null = null;
   public isUserRegistrationValid = false;
   public loggedInUserData = this._userService.userDetails;
-  public userDetailsFormData: User | null = null;
+  public userDetailsFormData: CaseFormUserData | null = null;
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
   public airportsSuggestion: AirportResponse[] = [];
   public airports = toSignal(this._airportsService.airports$, {
@@ -494,19 +499,25 @@ export class CaseFormComponent implements OnInit {
     return result.hasBeenChecked && result.isEligible === true;
   }
 
-  public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
+  public onUserRegistrationValidityChange(valid: boolean, data: CaseFormUserData | null): void {
     this.isUserRegistrationValid = valid;
     this.userDetailsFormData = data;
   }
 
-  public get userRegistrationInitialData(): User | undefined {
-    if (this.loggedInUserData()) {
-      return this.loggedInUserData();
-    } else if (this.userDetailsFormData) {
-      return this.userDetailsFormData;
-    } else {
-      return undefined;
+  public get userRegistrationInitialData(): CaseFormUserData | undefined {
+    const user = this.loggedInUserData();
+    const completedFor = this.userDetailsFormData?.completedFor;
+
+    if (user !== this._lastUser || completedFor !== this._lastCompletedFor) {
+      this._lastUser = user;
+      this._lastCompletedFor = completedFor;
+      this._lastUserRegistrationData = user
+        ? { completedBy: { ...user }, completedFor: completedFor ? { ...completedFor } : null }
+        : this.userDetailsFormData
+          ? { ...this.userDetailsFormData }
+          : undefined;
     }
+    return this._lastUserRegistrationData;
   }
 
   public areAllConnectionFlightsValid(): boolean {
@@ -518,17 +529,20 @@ export class CaseFormComponent implements OnInit {
       return;
     }
 
+    this._notificationService.showInfo(
+      this._translateService.instant('case-form.submission-in-progress')
+    );
     const clientID = this.getClientId();
 
     if (!clientID) {
       if (this.userDetailsFormData) {
         // ✅ FIX: Subscribe to the Observable to actually execute the HTTP request
-        this._userService.createUser(this.userDetailsFormData).subscribe({
+        this._userService.createUser(this.userDetailsFormData.completedBy).subscribe({
           next: (createdUser) => {
             // Check if the created user has an ID and retry case submission
             if (createdUser?.id) {
               if (this.userDetailsFormData) {
-                this.userDetailsFormData.id = createdUser?.id;
+                this.userDetailsFormData.completedBy.id = createdUser?.id;
               }
               this.submitCase(); // Retry submission with the new user
             } else {
@@ -563,6 +577,7 @@ export class CaseFormComponent implements OnInit {
       assignedColleague: undefined,
       reservation: this.createReservationDTO(),
       documentList: [],
+      beneficiary: this.userDetailsFormData?.completedFor,
     };
 
     this._caseService.checkEligibility(caseData).subscribe({
@@ -581,13 +596,13 @@ export class CaseFormComponent implements OnInit {
 
   private getClientId(): string | null {
     const loggedInUser = this.loggedInUserData();
-    const userDetails = this.userDetailsFormData;
+    const userDetails = this.userDetailsFormData?.completedBy;
     if (loggedInUser?.id) {
       return loggedInUser.id;
     }
 
-    if (this.userDetailsFormData?.id) {
-      return this.userDetailsFormData.id;
+    if (userDetails?.id) {
+      return userDetails.id;
     }
 
     return null;
