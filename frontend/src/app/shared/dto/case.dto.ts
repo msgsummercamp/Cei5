@@ -1,4 +1,3 @@
-import { DisruptionReason } from '../types/enums/disruption-reason';
 import { Statuses } from '../types/enums/status';
 import { UserDTO } from './user.dto';
 import { ReservationDTO } from './reservation.dto';
@@ -13,7 +12,7 @@ type DocumentInfo = {
 export type CaseDTO = {
   id?: string;
   status?: Statuses;
-  disruptionReason: DisruptionReason;
+  disruptionReason: string;
   disruptionInfo: string;
   date: string | null;
   clientID: string;

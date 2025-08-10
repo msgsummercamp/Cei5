@@ -102,10 +102,12 @@
     "email-required": "Email is required.",
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
+    "failed-to-send-email": "Failed to send email",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
     "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
+    "password-reset-failed": "Password reset failed",
     "token-decode-error": "Error decoding token. Please try again",
     "fetch-user-details-error": "Error fetching user details. Please try again."
   },
@@ -117,7 +119,8 @@
     "password-label": "Password",
     "password-required": "Password is required.",
     "password-minlength": "Password must be at least 6 characters long.",
-    "password-maxlength": "Password cannot exceed 20 characters.",
+    "password-maxlength": "Password cannot exceed 30 characters.",
+    "password-invalid": "Password must contain letters, numbers, and special characters.",
     "forgot-password": "Forgot your password? Reset",
     "here": "here",
     "sign-in-button": "Sign In"
@@ -139,18 +142,23 @@
     "email-required": "Email address is required.",
     "email-invalid": "Please enter a valid email address.",
     "submit-button": "Send Reset Mail",
-    "email-sent": "You will receive an email in a few minutes with your temporary password."
+    "email-sent": "You will receive an email in a few minutes with your temporary password.",
+    "panel-header": "Details"
   },
   "change-pass": {
-    "title": "Change Password",
+    "title": "Change Your Password",
     "password-label": "New Password",
     "password-required": "Password is required.",
     "password-minlength": "Password must be at least 6 characters long.",
-    "password-maxlength": "Password cannot exceed 20 characters.",
+    "password-maxlength": "Password cannot exceed 30 characters.",
     "confirm-label": "Confirm Password",
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
-    "submit-button": "Change Password"
+    "submit-button": "Change Password",
+    "password-invalid": "Password must contain letters, numbers, and special characters.",
+    "panel-header": "Your password must contain:",
+    "password-length": "At least 6 characters and at most 30 characters.",
+    "password-invalid-reset": "Password must contain letters, numbers, or special characters."
   },
   "user-details": {
     "title": "User Details",
@@ -180,13 +188,37 @@
     "postalCode-invalid": "Invalid postal code.",
     "birthDate-label": "Birth Date",
     "birthDate-required": "Birthdate is required.",
-    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering."
+    "password-email": "If you do not have an account, you will receive an email with your temporary password after registering.",
+    "firstname-invalid": "First name can only contain letters.",
+    "lastname-invalid": "Last name can only contain letters.",
+    "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
+    "accept-terms": "I have read and agree to the",
+    "terms": "terms",
+    "privacy-policy": "privacy-policy.",
+    "and": "and"
+  },
+  "confirmation": {
+    "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
+    "step1": {
+      "title": "Step 1",
+      "text": "Click the button below to download the contract. Read it and sign it.",
+      "button": "Download contract"
+    },
+    "step2": {
+      "title": "Step 2",
+      "text": "After entering your account, upload all necessary documents for your case. You can enter your account by clicking the <strong>Finish</strong> button below."
+    },
+    "step3": {
+      "title": "Step 3",
+      "text": "Wait for an employee to process your case and check your email for possible updates."
+    }
   },
   "stepper": {
     "step1": "Reservation Info",
     "step2": "Flight Info",
     "step3": "Connection Flights",
     "step4": "Disruption Info",
+    "step5": "Eligibility Check",
     "step6": "User Details"
   },
   "mainForm": {
@@ -215,7 +247,8 @@
     "destinationIsDeparting": "The departing airport cannot be the same as the destination airport.",
     "connectionsShouldBedifferent": "Connections should be different.",
     "usedDepartingAirport": "Don't use the departing airport as connection.",
-    "usedDestinationAirport": "Don't use the destination airport as connection."
+    "usedDestinationAirport": "Don't use the destination airport as connection.",
+    "dateOrder": "Flight times must be in chronological order"
   },
   "flightForm": {
     "flightNumber": "Flight Number",
@@ -233,5 +266,20 @@
     "arrivalBeforeDeparture": "Arrival time must be after departure time.",
     "flightNumberPattern": "Flight number must be alphanumeric.",
     "airlinePattern": "Airline must contain only letters."
+  },
+  "eligibilityForm": {
+    "checkEligibility": "Eligibility check.",
+    "loading": "Please wait while we verify the eligibility of your case.",
+    "congratulations": "Congratulations.",
+    "eligible": "You are eligible for compensation.",
+    "sorry": "Sorry.",
+    "notEligible": "Your case is not eligible for compensation under EU regulations.",
+    "restart": "Start over from the beginning."
+  },
+  "lastForm": {
+    "next": "Finish"
+  },
+  "user-service": {
+    "error": "Error"
   }
 }

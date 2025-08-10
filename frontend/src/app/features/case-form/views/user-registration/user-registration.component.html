@@ -56,6 +56,9 @@
             @case (userRegistrationForm.controls.firstName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.firstName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -88,6 +91,9 @@
             @case (userRegistrationForm.controls.lastName.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.lastName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -117,6 +123,9 @@
             @case (userRegistrationForm.controls.address.hasError('maxlength')) {
               <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
             }
+            @case (userRegistrationForm.controls.address.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
+            }
           }
         }
       </div>
@@ -138,7 +147,7 @@
         [formControl]="userRegistrationForm.controls.phoneNumber"
         cssClass="custom"
         id="phoneNumber"
-        class="w-25rem h-3rem"
+        class="w-25rem"
       ></p-intl-tel-input>
       <div class="error-placeholder">
         @if (
@@ -205,7 +214,6 @@
           [minDate]="minDate"
           [maxDate]="maxDate"
           [defaultDate]="maxDate"
-          [readonlyInput]="true"
           [styleClass]="'w-25rem h-3rem'"
         />
         <label for="birthDate">{{ 'user-details.birthDate-label' | translate }}</label>
@@ -219,7 +227,23 @@
         }
       </div>
     </div>
-
   </form>
   <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
+  <div class="flex">
+    <p-checkbox
+      binary="true"
+      [(ngModel)]="acceptedTerms"
+      (onChange)="checkAndEmitValidity()"
+    ></p-checkbox>
+    <span class="accept-terms-label">
+      {{ 'user-details.accept-terms' | translate }}
+      <a href="assets/docs/terms.pdf" download="terms.pdf" class="doc-link">{{
+        'user-details.terms' | translate
+      }}</a>
+      {{ 'user-details.and' | translate }}
+      <a href="assets/docs/privacy.pdf" download="privacy.pdf" class="doc-link">{{
+        'user-details.privacy-policy' | translate
+      }}</a>
+    </span>
+  </div>
 </div>

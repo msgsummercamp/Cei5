@@ -103,9 +103,11 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
+    "failed-to-send-email": "Eroare la trimiterea emailului",
     "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
+    "password-reset-failed": "Eroare la resetarea parolei",
     "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
     "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
   },
@@ -117,7 +119,8 @@
     "password-label": "Parolă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
-    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "password-maxlength": "Parola nu poate depăși 30 de caractere.",
+    "password-invalid": "Parola trebuie să conțină litere, cifre și caractere speciale.",
     "forgot-password": "Ați uitat parola? Resetați",
     "here": "aici",
     "sign-in-button": "Autentificare"
@@ -139,18 +142,23 @@
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
     "submit-button": "Trimite mail-ul de resetare",
-    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară."
+    "email-sent": "Veți primi un email în câteva minute cu parola dvs. temporară.",
+    "panel-header": "Detalii"
   },
   "change-pass": {
-    "title": "Schimbă parola",
+    "title": "Schimbă-ți parola",
     "password-label": "Parolă nouă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
-    "password-maxlength": "Parola nu poate depăși 20 de caractere.",
+    "password-maxlength": "Parola nu poate depăși 30 de caractere.",
     "confirm-required": "Vă rugăm să confirmați parola.",
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
-    "submit-button": "Schimbă parola"
+    "submit-button": "Schimbă parola",
+    "password-invalid": "Parola trebuie să conțină litere, cifre și caractere speciale.",
+    "panel-header": "Parola dvs. trebuie să conțină:",
+    "password-length": "Cel puțin 6 caractere și cel mult 30 de caractere.",
+    "password-invalid-reset": "Parola trebuie să conțină litere, cifre sau caractere speciale."
   },
   "user-details": {
     "title": "Detalii utilizator",
@@ -180,13 +188,37 @@
     "postalCode-invalid": "Cod poștal invalid.",
     "birthDate-label": "Data nașterii",
     "birthDate-required": "Data nașterii este obligatorie.",
-    "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare."
+    "password-email": "Dacă nu aveți un cont, veți primi un email cu parola dvs. temporară după înregistrare.",
+    "firstname-invalid": "Prenumele poate conține doar litere.",
+    "lastname-invalid": "Numele de familie poate conține doar litere.",
+    "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
+    "accept-terms": "Am citit și accept",
+    "terms": "termenii",
+    "privacy-policy": "politica de confidențialitate",
+    "and": "și"
+  },
+  "confirmation": {
+    "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
+    "step1": {
+      "title": "Pasul 1",
+      "text": "Apasă butonul de mai jos pentru a descărca contractul. Citește-l cu atenție și semnează-l.",
+      "button": "Descarcă contractul"
+    },
+    "step2": {
+      "title": "Pasul 2",
+      "text": "După ce te autentifici în cont, încarcă toate documentele necesare pentru cazul tău. Poți accesa contul apăsând butonul <strong>Finalizează</strong> de mai jos."
+    },
+    "step3": {
+      "title": "Pasul 3",
+      "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
+    }
   },
   "stepper": {
     "step1": "Informații despre rezervare",
     "step2": "Informații despre zbor",
     "step3": "Zboruri de conexiune",
     "step4": "Informații despre perturbare",
+    "step5": "Verificare eligibilitate",
     "step6": "Detalii utilizator"
   },
   "mainForm": {
@@ -215,7 +247,8 @@
     "destinationIsDeparting": "Aeroportul de plecare nu poate fi același cu aeroportul de destinație.",
     "connectionsShouldBedifferent": "Conexiunile ar trebui să fie diferite.",
     "usedDepartingAirport": "Nu folosiți aeroportul de plecare ca și conexiune.",
-    "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune."
+    "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune.",
+    "dateOrder": "Datele zborurilor trebuie să fie în ordine cronologică."
   },
   "flightForm": {
     "flightNumber": "Numărul zborului",
@@ -233,5 +266,21 @@
     "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare.",
     "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
+  },
+  "eligibilityForm": {
+    "checkEligibility": "Verificarea eligibilitati.",
+    "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "congratulations": "Felicitari.",
+    "eligible": "Ești eligibil pentru compensație.",
+    "continueWithPersoinalDetails": "Continua cu datele personale.",
+    "sorry": "Scuze",
+    "notEligible": "Cazul tau nu este eligibil pentru compensare conform reglementărilor UE.",
+    "restart": "Reporniti de la inceput."
+  },
+  "lastForm": {
+    "next": "Finalizează"
+  },
+  "user-service": {
+    "error": "Eroare"
   }
 }

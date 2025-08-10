@@ -4,8 +4,8 @@ import { AuthService } from '../../shared/services/auth/auth.service';
 import {
   FormControl,
   NonNullableFormBuilder,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { SignInRequest } from '../../shared/types/auth/sign-in-request';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -13,6 +13,7 @@ import { InputText } from 'primeng/inputtext';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { Button } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CardModule } from 'primeng/card';
 
 type SignInForm = {
   email: FormControl<string>;
@@ -28,6 +29,7 @@ type SignInForm = {
     ErrorMessageComponent,
     Button,
     TranslatePipe,
+    CardModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',
@@ -42,7 +44,12 @@ export class SignInComponent {
       validators: [Validators.required, Validators.email, Validators.maxLength(254)],
     }),
     password: this._formBuilder.control('', {
-      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)],
+      validators: [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30),
+        Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+{}:"\'<>?|[\\];,./`~]{6,30}$'),
+      ],
     }),
   });
 
@@ -54,6 +61,7 @@ export class SignInComponent {
   }
 
   protected navigateToPasswordReset(): void {
-    this._router.navigate(['/request-password-reset']);
+    const email = this.signInForm.get('email')?.value || '';
+    this._router.navigate(['/request-password-reset'], { state: { email } });
   }
 }

@@ -1,4 +1,4 @@
-<div class="caseFormWrapper">
+<div class="caseFormWrapper m-4 pt-5">
   <p-stepper [value]="currentStep()" [linear]="true" class="text-pink-500">
     <p-step-list>
       <!-- Step indicators -->
@@ -6,7 +6,7 @@
       <p-step [value]="2">{{ 'stepper.step2' | translate }}</p-step>
       <p-step [value]="3">{{ 'stepper.step3' | translate }}</p-step>
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
-      <p-step [value]="5">Summary</p-step>
+      <p-step [value]="5">{{ 'stepper.step5' | translate }}</p-step>
       <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
       <p-step [value]="7">Confirmation</p-step>
     </p-step-list>
@@ -30,8 +30,8 @@
                   class="w-26rem h-3rem inputclass"
                 />
                 <label for="reservationNumber">{{
-                    'mainForm.reservationNumber' | translate
-                  }}</label>
+                  'mainForm.reservationNumber' | translate
+                }}</label>
               </p-floatlabel>
               <!-- Error Messages -->
               <div class="error-placeholder">
@@ -153,13 +153,15 @@
                         text="{{ 'mainForm.departingAirportUpper' | translate }}"
                       />
                     }
+                    @case (
+                      reservationForm.hasError('destinationIsDeparting') &&
+                      reservationForm.controls.departingAirport.touched
+                    ) {
+                      <app-error-message
+                        text="{{ 'mainForm.destinationIsDeparting' | translate }}"
+                      />
+                    }
                   }
-                }
-                @if (
-                  reservationForm.hasError('destinationIsDeparting') &&
-                  reservationForm.controls.departingAirport.touched
-                ) {
-                  <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                 }
               </div>
             </div>
@@ -168,7 +170,7 @@
             <div>
               @if (
                 reservationForm.controls.destinationAirport.valid &&
-                reservationForm.controls.destinationAirport.valid &&
+                reservationForm.controls.departingAirport.valid &&
                 !!compensation
               ) {
                 <p-message severity="success"
@@ -176,7 +178,6 @@
                   }}{{ 'case-form.compensation-end' | translate }}</p-message
                 >
               }
-
             </div>
 
             <!-- Next Button -->
@@ -226,9 +227,11 @@
                 </div>
               </div>
 
-              <div class="flex flex-column align-items-start align-content-center px-auto mt-4">
+              <div
+                class="flex flex-column flex-wrap align-items-start align-content-center px-auto mt-4"
+              >
                 <!-- Displaying the departing airport -->
-                <p-message variant="outlined" severity="primary" class="w-25rem mb-4"
+                <p-message variant="outlined" severity="primary" class="w-25rem mb-2"
                   >{{ 'mainForm.connectionDepartingAirport' | translate }}
                   {{ reservationInformation.departingAirport }}</p-message
                 >
@@ -239,7 +242,7 @@
                     @if (airportsArray.length > 0) {
                       @for (airport of airportsArray.controls; track airport; let i = $index) {
                         @if (airport !== null) {
-                          <div class="flex flex-row align-items-center mb-4">
+                          <div class="flex flex-row align-items-center my-2">
                             <div>
                               <p-floatlabel variant="on">
                                 <p-autocomplete
@@ -337,7 +340,7 @@
                 </form>
 
                 <!-- Displaying the destination airport -->
-                <p-message variant="outlined" severity="primary" class="w-25rem"
+                <p-message variant="outlined" severity="primary" class="mt-2 w-25rem"
                   >{{ 'mainForm.destinationAirport' | translate }}:
                   {{ reservationInformation.destinationAirport }}</p-message
                 >
@@ -384,8 +387,9 @@
                   <p-button
                     icon="pi pi-flag"
                     severity="success"
+                    [class.disabled-button]="isFlagActive(i)"
                     (onClick)="toggleFlag(i)"
-                    [disabled]="this.flags === this.MAX_FLAGS && !isFlagged[i]"
+                    [disabled]="isFlagged[i] !== false"
                   ></p-button>
                   <app-flight-form
                     [title]="''"
@@ -408,17 +412,24 @@
               (onClick)="onPrevious(prevCallback)"
               [styleClass]="'px-6'"
             />
+
+            @if (!areAllConnectionFlightsValid()) {
+              <p-message severity="error" class="mb-2">
+                {{ 'mainForm.dateOrder' | translate }}
+              </p-message>
+            }
+
             <p-button
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
-              [disabled]="!areAllConnectionFlightsValid() || this.flags !== this.MAX_FLAGS"
+              [disabled]="!areAllConnectionFlightsValid() || this.flagged === false"
               [styleClass]="'px-6'"
               (onClick)="onNextFromConnectionFlights(nextCallback)"
             />
           </div>
         </ng-template>
-        <!-- Step 4: Disruption Info -->
       </p-step-panel>
+      <!-- Step 4: Disruption Info -->
       <p-step-panel [value]="4">
         <ng-template
           pTemplate="content"
@@ -428,47 +439,57 @@
           <app-disruption-form
             #disruptionForm
             (validityChange)="onDisruptionFormValidityChange($event)"
+            [initialData]="disruptionInitialData"
           />
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
-
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            (onClick)="onNextFromDisruptionInfo(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isDisruptionFormValid"
+              (onClick)="onNextFromDisruptionInfo(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
-      <!-- Step 5: Summary -->
+      <!-- Step 5: Eligibility Check -->
       <p-step-panel [value]="5">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p>Summary yey</p>
+          <app-eligibility-page
+            [disruptionReason]="getDisruptionReason()"
+            [disruptionInfo]="getDisruptionInfo()"
+          >
+          </app-eligibility-page>
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPrevious(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
-
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            (onClick)="onNext(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'mainForm.next' | translate }}"
+              severity="primary"
+              [disabled]="!isEligibilityCheckValid"
+              (onClick)="onNext(nextCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
+
       <!-- Step 6: User Registration -->
       <p-step-panel [value]="6">
         <ng-template
@@ -479,13 +500,15 @@
           <app-user-registration
             #userRegistration
             [initialData]="userRegistrationInitialData"
+            [isUserReadOnly]="isUserReadOnly()"
             (validityChange)="onUserRegistrationValidityChange($event.valid, $event.data)"
           />
+
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
-              (onClick)="onPrevious(prevCallback)"
+              (onClick)="onPreviousFromUserRegistration(prevCallback)"
               [styleClass]="'px-6 mt-8'"
             />
 
@@ -499,28 +522,29 @@
           </div>
         </ng-template>
       </p-step-panel>
-      <!-- Step 7: Summary -->
+      <!-- Step 7: Confirmation -->
       <p-step-panel [value]="7">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p>Summary yey</p>
+          <app-confirmation-form></app-confirmation-form>
+          <div class="justify-content-center flex flex-row gap-6">
+            <p-button
+              label="{{ 'mainForm.previous' | translate }}"
+              severity="secondary"
+              (onClick)="onPrevious(prevCallback)"
+              [styleClass]="'px-6 mt-8'"
+            />
 
-          <p-button
-            label="{{ 'mainForm.previous' | translate }}"
-            severity="secondary"
-            (onClick)="onPrevious(prevCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
-
-          <p-button
-            label="{{ 'mainForm.next' | translate }}"
-            severity="primary"
-            (onClick)="onNext(nextCallback)"
-            [styleClass]="'px-6 mt-8'"
-          />
+            <p-button
+              label="{{ 'lastForm.next' | translate }}"
+              severity="primary"
+              (onClick)="submitCase()"
+              [styleClass]="'px-6 mt-8'"
+            />
+          </div>
         </ng-template>
       </p-step-panel>
     </p-step-panels>

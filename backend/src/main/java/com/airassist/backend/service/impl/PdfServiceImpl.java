@@ -26,6 +26,7 @@ public class PdfServiceImpl implements PdfService {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfRendererBuilder builder = new PdfRendererBuilder();
+
         builder.withHtmlContent(htmlContent, null);
 
         builder.toStream(outputStream);

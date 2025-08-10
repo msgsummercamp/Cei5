@@ -16,7 +16,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"comments", "cases", "userDetails","flights", "caseEntity"})
+@ToString(exclude = {"flights", "caseEntity"})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

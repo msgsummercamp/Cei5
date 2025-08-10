@@ -10,8 +10,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { NgOptimizedImage } from '@angular/common';
-import {AuthService} from '../../services/auth/auth.service';
-import {IfAuthenticatedDirective} from '../../directives/if-authenticated.directive';
+import { AuthService } from '../../services/auth/auth.service';
+import { IfAuthenticatedDirective } from '../../directives/if-authenticated.directive';
 
 @Component({
   selector: 'app-navbar',
@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
   private readonly _authService = inject(AuthService);
   public readonly _languageService = inject(LanguageService);
 
-  private _menuConfig = [{ translationKey: 'home', routerLink: '' }];
+  private _menuConfig = [{ translationKey: 'home', routerLink: '/' }];
 
   public items: MenuItem[] = [];
 

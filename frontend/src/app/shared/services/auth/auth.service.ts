@@ -14,6 +14,8 @@ import {
   PasswordResetRequest,
 } from '../../types/auth/password-reset';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../user.service';
+import { ApiError } from '../../types/api-error';
 
 const defaultUser: User = {
   id: '',
@@ -48,6 +50,7 @@ export class AuthService {
   private readonly _router = inject(Router);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translationService = inject(TranslateService);
+  private readonly _userService = inject(UserService);
   private readonly API_URL: string = environment.API_URL;
 
   private readonly _authState = signal<AuthState>(initialState);
@@ -81,11 +84,12 @@ export class AuthService {
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
-          this._router.navigate(['/form']);
+          this._router.navigate(['/']);
         }
       },
       error: (error) => {
-        this._notificationService.showError('Login failed: ' + error.message);
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(apiError.detail);
         this._authState.set(initialState);
         this.clearTokenFromSessionStorage();
       },
@@ -114,7 +118,8 @@ export class AuthService {
         this._router.navigate(['/sign-in']);
       },
       error: (error) => {
-        this._notificationService.showError('Registration failed: ' + error.message);
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(apiError.detail);
       },
     });
   }
@@ -126,8 +131,9 @@ export class AuthService {
   public logOut(): void {
     this.clearTokenFromSessionStorage();
     sessionStorage.removeItem('userDetails');
+    this._userService.clearUserDetails();
     this._authState.set(initialState);
-    this._router.navigate(['/sign-in']);
+    this._router.navigate(['/']);
   }
 
   /**
@@ -155,8 +161,11 @@ export class AuthService {
         );
       },
       error: (error) => {
+        const apiError: ApiError = error?.error;
         this._notificationService.showError(
-          'Failed to send password reset email: ' + error.message
+          this._translationService.instant('auth-service.failed-to-send-email') +
+            ': ' +
+            apiError.detail
         );
       },
     });
@@ -188,6 +197,7 @@ export class AuthService {
       password: newPassword,
       isFirstLogin: false,
     };
+
     this._authState.update((state) => ({
       ...state,
       user: {
@@ -203,7 +213,12 @@ export class AuthService {
         );
       },
       error: (error) => {
-        this._notificationService.showError('Password reset failed: ' + error.message);
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(
+          this._translationService.instant('auth-service.password-reset-failed') +
+            ': ' +
+            apiError.detail
+        );
       },
     });
   }
@@ -223,7 +238,8 @@ export class AuthService {
     }
     this._httpClient.get<User>(`${this.API_URL}/users/${this.userId()}`).subscribe({
       next: (user) => {
-        sessionStorage.setItem('userDetails', JSON.stringify(user));
+        sessionStorage.setItem(environment.userDetailsSessionStorageKey, JSON.stringify(user));
+        this._userService.loadUserDetails();
       },
       error: () => {
         this._notificationService.showError(
@@ -239,7 +255,7 @@ export class AuthService {
    * @private
    */
   private saveTokenToSessionStorage(token: string): void {
-    sessionStorage.setItem('authToken', token);
+    sessionStorage.setItem(environment.tokenSessionStorageKey, token);
   }
 
   /**
@@ -248,7 +264,7 @@ export class AuthService {
    * @private
    */
   private getTokenFromSessionStorage(): string | null {
-    return sessionStorage.getItem('authToken');
+    return sessionStorage.getItem(environment.tokenSessionStorageKey);
   }
 
   /**
@@ -257,7 +273,7 @@ export class AuthService {
    * @private
    */
   private clearTokenFromSessionStorage(): void {
-    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem(environment.tokenSessionStorageKey);
   }
 
   /**

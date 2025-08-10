@@ -1,132 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8"/>
     <title>Contract</title>
     <style>
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: 'DejaVu', sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
         }
-        .contract-box {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        }
-        .contract-box table {
-            width: 100%;
-            line-height: inherit;
-            text-align: left;
-            border-collapse: collapse;
-        }
-        .contract-box table td {
-            padding: 8px;
-            vertical-align: top;
-            border: 1px solid #ddd;
-        }
-        .contract-box table tr.top td {
-            border: none;
-            padding-bottom: 20px;
-        }
-        .contract-box table tr.information td {
-            border: none;
-            padding-bottom: 40px;
-        }
-        .contract-box h2 {
-            margin: 0;
-            font-weight: normal;
-        }
-        .contract-box .section-title {
-            background: #eee;
+
+        .title {
+            text-align: center;
+            font-size: 18px;
             font-weight: bold;
-            padding: 10px;
-            border: 1px solid #ddd;
         }
-        .contract-box .no-border {
-            border: none;
-            padding: 0;
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 5px;
+        }
+
+        .signature td {
+            width: 30%;
+            height: 130px;
+            margin-top: 20px;
+            text-align: left;
+            border: 1px solid black;
+        }
+
+        .footer {
+            font-size: 11px;
         }
     </style>
 </head>
 <body>
-<div class="contract-box">
+<div class="contract-file">
+    <img src="logo.png" alt="Logo" style="width: 140px; height: auto; margin-bottom: 20px;" />
+
+    <div class="title">
+        <p>TRANSFER FORM (AGREEMENT) / FORMULAR DE CESIUNE (ACORD)</p>
+        <p>No. <span th:text="${caseId}">123456789</span> / From <span th:text="${caseDate}">2025-07-31</span></p>
+    </div>
+
     <table>
-        <tr class="top">
-            <td colspan="2">
-                <table>
-                    <tr>
-                        <td class="no-border">
-                            <h2>Contract Agreement</h2>
-                        </td>
-                        <td class="no-border" style="text-align:right;">
-                            Case ID: <span th:text="${caseId}">123456789</span><br/>
-                            Date: <span th:text="${contractDate}">2025-07-31</span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr class="information">
-            <td colspan="2">
-                <table>
-                    <tr>
-                        <td colspan="2" class="section-title">Passenger Details</td>
-                    </tr>
-                    <tr>
-                        <td>Name:</td>
-                        <td><span th:text="${passengerName}">John Doe</span></td>
-                    </tr>
-                    <tr>
-                        <td>Passport Number:</td>
-                        <td><span th:text="${passportNumber}">A1234567</span></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><span th:text="${passengerEmail}">john.doe@example.com</span></td>
-                    </tr>
-                    <tr>
-                        <td>Phone:</td>
-                        <td><span th:text="${passengerPhone}">+1 234 567 8900</span></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr class="information">
-            <td colspan="2">
-                <table>
-                    <tr>
-                        <td colspan="2" class="section-title">Reservation Details</td>
-                    </tr>
-                    <tr>
-                        <td>Reservation Number:</td>
-                        <td><span th:text="${reservationNumber}">RES-2025-0001</span></td>
-                    </tr>
-                    <tr>
-                        <td>Travel Dates:</td>
-                        <td><span th:text="${travelDates}">2025-08-15 to 2025-08-20</span></td>
-                    </tr>
-                    <tr>
-                        <td>Destination:</td>
-                        <td><span th:text="${destination}">Paris, France</span></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
         <tr>
-            <td colspan="2" class="section-title">Contract Terms</td>
-        </tr>
-        <tr>
-            <td colspan="2" style="border:1px solid #ddd; padding: 15px;">
-                <span>
-                    By signing this contract, the passenger agrees to abide by the terms and conditions of the travel reservation, including cancellation policies and travel requirements.
-                </span>
+            <td>
+                <p><strong>First and Last name of the passenger (the “Client”)</strong>
+                    / Prenume și nume pasager („Client”):<br/>
+                    <span th:text="${firstName}">John</span> <span th:text="${lastName}">Doe</span></p>
+
+                <p><strong>Address (with postal code)</strong>
+                    / Adresă (<u>Atenție: adăugați și codul poștal!</u>):<br/>
+                    <span th:text="${address}">Str. Exemplu 123</span>, <span th:text="${postalcode}">400000</span></p>
+            </td>
+
+            <td >
+                <p><strong>Booking reference</strong> / Cod rezervare:<br/>
+                    <span th:text="${reservationNumber}">RES-2025-0001</span></p>
+
+                <p><strong>Email address</strong> / Adresă de email:<br/>
+                    <span th:text="${email}">john.doe@example.com</span></p>
             </td>
         </tr>
     </table>
+
+    <table>
+        <tr>
+            <td>
+                <p>
+                    The client hereby agrees to transmit all rights and obligations relating to the flights under the reservation identified above as defined in Regulation (EC) no. 261/2004 and the Montreal Convention of 1999, consisting of requesting and receiving the compensation provided for in the present Regulation to Passanger Services S.R.L, (“Air-Assist”).<br/>
+                    The client undertakes not to take any act or action to prevent Air-Assist from exercising its right from the date of signature of the present agreement, not to surrender the rights and obligations set out above to other natural or legal persons, not to approach, either directly or indirectly, the airline in relation to taking advantage of the right to compensation, and not to accept any contact or direct payment from the airline.<br/>
+                    The client declares that he/she is the sole holder of the rights and obligations submitted and has not transferred such rights and obligations to other natural or legal persons, so far there has been no cause for extinction of the right to compensation, and that there did not exist and do not exist any proceedings before the courts in relation to the rights and obligations transmitted.<br/>
+                    The client acknowledged that, based on this agreement, Air-Assist has the exclusive right:<br/>
+                    - To make any necessary action in front of any third party for the purpose of exercising the right to compensation<br/>
+                    - To obtain any kind of necessary information, as well as to initiate requests for information on any civil, administrative, etc. procedures, and to initiate any judicial or administrative actions before the bodies responsible for the enforcement of the legislation on passenger rights<br/>
+                    - To initiate, direct and undertake any type of negotiation, judicial or extrajudicial procedures for the receipt of compensation<br/>
+                    - To request from the airline not to process the client's personal data, but solely for the purpose of verifying the claim for compensation<br/>
+                    - To receive payments in connection with the claim for compensation<br/>
+                    The client confirms by signing and by the present act that he/she has read and accepted the Air-Assist General Terms as published on their Air-Assist website.
+                </p>
+            </td>
+            <td>
+                <p>
+                    Prin prezenta, clientul este de acord să transmită toate drepturile și obligațiile aferente zborurilor cu nr. de rezervare identificat mai sus, conferite de Regulamentul (CE) nr. 261/2004 și Convenția de la Montreal din 1999, constând în solicitarea și încasarea compensației prevăzute de acest Regulament, către Societatea Passanger Services S.R.L. („Air-Assist”).<br/>
+                    Clientul se obligă ca, de la data semnării prezentului, să nu întreprindă niciun act sau fapt prin care să o împiedice pe Air-Assist în realizarea dreptului său, să nu mai transmită drepturile și obligațiile prevăzute mai sus altor persoane fizice sau juridice, să nu facă niciun demers direct sau indirect la compania aeriană în vederea valorificării dreptului la compensație și să nu accepte niciun contact sau plată directă de la compania aeriană.<br/>
+                    Clientul declară că este unicul titular al drepturilor și obligațiilor transmise și că nu a mai transmis aceste drepturi și obligații altor persoane fizice sau juridice, că, până în prezent, nu a intervenit nicio cauză de stingere a dreptului la compensație și că nu a existat și nu există niciun proces pe rolul instanțelor judecătorești în legătură cu drepturile și obligațiile transmise.<br/>
+                    Clientul a luat la cunoștință că, pe baza prezentului acord, Air-Assist are drept exclusiv:<br/>
+                    - De a face orice demers necesar în fața oricărei terțe persoane în vederea valorificării dreptului la compensație<br/>
+                    - De a obține orice tip de informații necesare, precum și de a iniția solicitări de informare cu privire la orice procedeu civil, administrativ etc. și de a iniția orice demers judiciar sau administrativ în fața organelor responsabile de aplicarea legislației referitoare la drepturile pasagerilor<br/>
+                    - De a iniția, dirija și întreprinde orice tip de negociere, procedee judiciare sau extrajudiciare pentru încasarea compensației<br/>
+                    - De a solicita companiei aeriene să nu proceseze datele personale ale clientului decât exclusiv în scopul verificării cererii de compensație<br/>
+                    - De a încasa plăți în legătură cu cererea de compensație<br/>
+                    Clientul confirmă, prin semnare și prin actul de față, că a citit și a acceptat Condițiile generale ale Air-Assist, așa cum au fost publicate pe site-ul Air-Assist - air-assist.eu.
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="signature">
+        <tr>
+            <td><strong>Passenger Services S.R.L.</strong><br/>Előd Imreh-Racz - Administrator</td>
+            <td><strong>Client signature</strong> / Semnătură Client</td>
+            <td><strong>Date</strong> / Data</td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        <strong>For any questions, please write on the following e-mail address</strong> / Pentru orice întrebări, scrieți-ne pe adresa: <strong>help@air-assist.eu</strong><br/>
+        <strong>Corporate address / Sediu social:</strong> Societatea Passanger Services S.R.L, str. Suceava nr. 8, Cluj-Napoca, 400219, jud. Cluj, Romania
+    </div>
 </div>
 </body>
 </html>

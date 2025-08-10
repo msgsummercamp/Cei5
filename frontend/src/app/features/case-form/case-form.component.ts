@@ -1,4 +1,11 @@
-import { Component, inject, ChangeDetectionStrategy, OnInit, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -8,12 +15,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import {
+  FormArray,
   FormControl,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormsModule,
-  FormArray,
 } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
@@ -25,11 +32,12 @@ import {
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
 import { ReservationDTO } from '../../shared/dto/reservation.dto';
-import { CaseDTO } from '../../shared/dto/case.dto';
-import { Statuses } from '../../shared/types/enums/status';
-import { DisruptionReason } from '../../shared/types/enums/disruption-reason';
 import { CaseService } from '../../shared/services/case.service';
-import { DisruptionFormComponent } from './views/disruption-form/disruption-form.component';
+import {
+  DisruptionFormComponent,
+  DisruptionFormData,
+} from './views/disruption-form/disruption-form.component';
+import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
@@ -37,6 +45,22 @@ import { User } from '../../shared/types/user';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
+import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
+import { AuthService } from '../../shared/services/auth/auth.service';
+import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
+import { Statuses } from '../../shared/types/enums/status';
+import { CaseDTO } from '../../shared/dto/case.dto';
+
+type DisruptionForm = {
+  disruptionType: string;
+  cancellationAnswer: string | null;
+  delayAnswer: string | null;
+  deniedBoardingAnswer: string | null;
+  deniedBoardingFollowUpAnswer: string | null;
+  airlineMotiveAnswer: string | null;
+  airlineMotiveFollowUpAnswer: string | null;
+  disruptionInformation: string;
+};
 
 @Component({
   selector: 'app-case-form',
@@ -54,8 +78,10 @@ import { connectionsShouldBeDifferent } from '../../shared/validators/connection
     FormsModule,
     TagModule,
     DisruptionFormComponent,
+    EligibilityPageComponent,
     UserRegistrationComponent,
     TranslatePipe,
+    ConfirmationFormComponent,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -74,6 +100,8 @@ export class CaseFormComponent implements OnInit {
   private readonly _airportsService = inject(AirportsService);
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
+  private readonly _eligibilityService = inject(EligibilityDataService);
+  private readonly _authService = inject(AuthService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -107,6 +135,7 @@ export class CaseFormComponent implements OnInit {
     { validators: connectionsShouldBeDifferent() }
   );
 
+  public disruptionFormData: DisruptionFormData | null = null;
   public isMainFlightValid = false;
   public isDisruptionFormValid = false;
   public flightData: FlightDetails | null = null;
@@ -119,6 +148,7 @@ export class CaseFormComponent implements OnInit {
     initialValue: [] as AirportResponse[],
   });
   public compensation?: number;
+  public readonly isUserReadOnly = this._userService.isUserReadOnly;
 
   public readonly departingAirportValue = toSignal(
     this.reservationForm.controls.departingAirport.valueChanges
@@ -151,6 +181,8 @@ export class CaseFormComponent implements OnInit {
       this._compensationService.calculateDistance(departingAirport, destinationAirport);
     }
   }
+
+  @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
   public search(event: AutoCompleteCompleteEvent): void {
     const query = event.query;
@@ -192,8 +224,16 @@ export class CaseFormComponent implements OnInit {
     return this._flightService.getMaxFlags();
   }
 
+  public get flagged(): boolean {
+    return this._flightService.isAnyFlag();
+  }
+
   public toggleFlag(index: number): void {
     this._flightService.toggleFlag(index);
+  }
+
+  public isFlagActive(index: number): boolean {
+    return this.isFlagged[index] === true;
   }
 
   public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
@@ -219,6 +259,21 @@ export class CaseFormComponent implements OnInit {
   public onPreviousFromDisruptionInfo(prevCallback?: Function) {
     const allFlights = this._flightService.getAllFlights();
     this._navigationService.goBackFromDisruptionInfo(allFlights.length);
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
+  public onPreviousFromEligibiltyCheck(prevCallback?: Function) {
+    this._eligibilityService.resetEligibilityResult();
+    this._navigationService.previousStep();
+    if (prevCallback) {
+      prevCallback();
+    }
+  }
+
+  public onPreviousFromUserRegistration(prevCallback?: Function) {
+    this._navigationService.previousStep();
     if (prevCallback) {
       prevCallback();
     }
@@ -266,12 +321,8 @@ export class CaseFormComponent implements OnInit {
       } else {
         // Connection flights
         const reservation = this._reservationService.getReservationInformation();
-        this._flightService.resetConnectionData();
-        this._flightService.setConnectionStrings(
-          this.getAirportValues(),
-          reservation.departingAirport,
-          reservation.destinationAirport
-        );
+
+        this.updateConnectionsIfChanged(reservation);
 
         if (this.flightData) {
           this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
@@ -282,6 +333,69 @@ export class CaseFormComponent implements OnInit {
         nextCallback();
       }
     }
+  }
+
+  private updateConnectionsIfChanged(reservation: ReservationInformation): void {
+    const currentAirports = this.getAirportValues();
+    const existingConnections = this._flightService.getConnectionFlights();
+
+    // Check if connections need to be updated
+    const needsUpdate = this.doConnectionsNeedUpdate(
+      existingConnections,
+      currentAirports,
+      reservation
+    );
+
+    if (needsUpdate) {
+      // Reset and recreate connections
+      this._flightService.resetConnectionData();
+      this._flightService.setConnectionStrings(
+        currentAirports,
+        reservation.departingAirport,
+        reservation.destinationAirport
+      );
+    }
+  }
+
+  private doConnectionsNeedUpdate(
+    existingConnections: [string, string][],
+    currentAirports: string[],
+    reservation: ReservationInformation
+  ): boolean {
+    // If no existing connections, we need to create them
+    if (existingConnections.length === 0) {
+      return true;
+    }
+
+    // Calculate expected connections based on current airports
+    const expectedConnections: [string, string][] = [];
+
+    if (currentAirports.length > 0) {
+      // First connection: departing -> first airport
+      expectedConnections.push([reservation.departingAirport, currentAirports[0]]);
+
+      // Intermediate connections
+      for (let i = 0; i < currentAirports.length - 1; i++) {
+        expectedConnections.push([currentAirports[i], currentAirports[i + 1]]);
+      }
+
+      // Final connection: last airport -> destination
+      expectedConnections.push([
+        currentAirports[currentAirports.length - 1],
+        reservation.destinationAirport,
+      ]);
+    }
+
+    // Compare existing vs expected
+    if (existingConnections.length !== expectedConnections.length) {
+      return true;
+    }
+
+    // Check if all connections match
+    return !existingConnections.every(
+      (conn, index) =>
+        conn[0] === expectedConnections[index][0] && conn[1] === expectedConnections[index][1]
+    );
   }
 
   // Method to handle navigation from connection flights step
@@ -326,11 +440,6 @@ export class CaseFormComponent implements OnInit {
         Validators.pattern(/^[A-Z]{3}$/),
       ]);
       this.airportsArray.push(airportControl);
-      if (this.flightData && this.airportsArray.length > 0) {
-        setTimeout(() => {
-          this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-        }, 100);
-      }
     }
   }
 
@@ -340,12 +449,6 @@ export class CaseFormComponent implements OnInit {
 
       if (this.airportsArray.length === 0) {
         this._flightService.resetConnectionData();
-      } else {
-        if (this.flightData) {
-          setTimeout(() => {
-            this._flightService.updateConnectionTimesFromMainFlight(this.flightData!);
-          }, 100);
-        }
       }
     }
   }
@@ -367,8 +470,28 @@ export class CaseFormComponent implements OnInit {
     }
   }
 
-  public onDisruptionFormValidityChange(event: { valid: boolean } | null): void {
+  public onDisruptionFormValidityChange(
+    event: { valid: boolean; data?: DisruptionFormData | null } | null
+  ): void {
     this.isDisruptionFormValid = event?.valid ?? false;
+
+    if (event?.data) {
+      this.disruptionFormData = event.data; // This will now actually save the data!
+
+      // Reset eligibility when disruption data changes
+      if (this._eligibilityService) {
+        this._eligibilityService.resetEligibilityResult();
+      }
+    }
+  }
+
+  public get disruptionInitialData(): DisruptionFormData | null {
+    return this.disruptionFormData;
+  }
+
+  public get isEligibilityCheckValid(): boolean {
+    const result = this._eligibilityService.eligibilityResult();
+    return result.hasBeenChecked && result.isEligible === true;
   }
 
   public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
@@ -387,7 +510,7 @@ export class CaseFormComponent implements OnInit {
   }
 
   public areAllConnectionFlightsValid(): boolean {
-    return this._flightService.areAllConnectionFlightsValid();
+    return this._flightService.areAllConnectionFlightsValid() && this.areAllDatesValid();
   }
 
   public submitCase(): void {
@@ -395,12 +518,48 @@ export class CaseFormComponent implements OnInit {
       return;
     }
 
+    const clientID = this.getClientId();
+
+    if (!clientID) {
+      if (this.userDetailsFormData) {
+        // ✅ FIX: Subscribe to the Observable to actually execute the HTTP request
+        this._userService.createUser(this.userDetailsFormData).subscribe({
+          next: (createdUser) => {
+            // Check if the created user has an ID and retry case submission
+            if (createdUser?.id) {
+              if (this.userDetailsFormData) {
+                this.userDetailsFormData.id = createdUser?.id;
+              }
+              this.submitCase(); // Retry submission with the new user
+            } else {
+              // Handle the case where user is created but needs to sign in
+            }
+          },
+          error: (error) => {
+            // TODO: Show error message to user
+          },
+        });
+
+        return; // Exit early since we're handling registration
+      } else {
+        return;
+      }
+    }
+
+    // Continue with case submission if we have a client ID
+    this.createAndSubmitCase(clientID);
+  }
+
+  private createAndSubmitCase(clientID: string): void {
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+
     const caseData: CaseDTO = {
       status: Statuses.PENDING,
-      disruptionReason: DisruptionReason.ARRIVED_3H_LATE,
-      disruptionInfo: 'Flight was delayed by 3 hours',
-      date: new Date().toISOString(),
-      clientID: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      disruptionReason: this.getDisruptionReason(),
+      disruptionInfo: this.getDisruptionInfo(),
+      date: formattedDate,
+      clientID: clientID,
       assignedColleague: undefined,
       reservation: this.createReservationDTO(),
       documentList: [],
@@ -409,24 +568,102 @@ export class CaseFormComponent implements OnInit {
     this._caseService.checkEligibility(caseData).subscribe({
       next: (isEligible) => {
         if (isEligible) {
-          this._caseService.createCase(caseData).subscribe({
-            next: (response) => {
-              // #TODO Add success handling here
-            },
-            error: (error) => {
-              // #TODO Add error handling here
-            },
-          });
+          this._caseService.createCase(caseData);
         } else {
-          console.log('Client is not eligible for a case');
-          // #TODO Add handling for ineligible case
+          // TODO: Add handling for ineligible case - show message to user
         }
       },
       error: (error) => {
-        console.error('Error checking eligibility:', error);
-        // #TODO Add error handling here
+        // TODO: Add error handling here - show error message to user
       },
     });
+  }
+
+  private getClientId(): string | null {
+    const loggedInUser = this.loggedInUserData();
+    const userDetails = this.userDetailsFormData;
+    if (loggedInUser?.id) {
+      return loggedInUser.id;
+    }
+
+    if (this.userDetailsFormData?.id) {
+      return this.userDetailsFormData.id;
+    }
+
+    return null;
+  }
+
+  public getDisruptionReason(): string {
+    // First try saved data (this should be available when on step 7)
+    if (this.disruptionFormData?.disruptionType) {
+      // Map the disruption type to the proper reason using the same logic as DisruptionFormComponent
+      if (this.disruptionFormData.disruptionType === 'Cancellation') {
+        if (this.disruptionFormData.cancellationAnswer === '>14 days') {
+          return 'CANCELATION_NOTICE_OVER_14_DAYS';
+        } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
+          return 'CANCELATION_NOTICE_UNDER_14_DAYS';
+        }
+        return 'CANCELATION_ON_DAY_OF_DEPARTURE';
+      } else if (this.disruptionFormData.disruptionType === 'Delay') {
+        if (this.disruptionFormData.delayAnswer === '>3 hours') {
+          return 'ARRIVED_3H_LATE';
+        } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
+          return 'ARRIVED_EARLY';
+        }
+        return 'NEVER_ARRIVED';
+      } else if (this.disruptionFormData.disruptionType === 'Denied_Boarding') {
+        if (this.disruptionFormData.deniedBoardingAnswer === 'No') {
+          return 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY';
+        }
+        return 'DID_GIVE_THE_SEAT_VOLUNTARILY';
+      }
+    }
+
+    // Fallback to form if available (when actually on the disruption form step)
+    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
+      return this.disruptionForm.getResponseForDisruption();
+    }
+
+    return '';
+  }
+
+  // Fix getDisruptionInfo method
+  public getDisruptionInfo(): string {
+    // First try saved data
+    if (this.disruptionFormData?.disruptionInformation) {
+      return this.disruptionFormData.disruptionInformation;
+    }
+
+    // Fallback to form if available
+    if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
+      const formInfo = this.disruptionForm.getDisruptionDescription();
+
+      return formInfo;
+    }
+
+    return '';
+  }
+
+  public resetAllFormData(): void {
+    this.reservationForm.reset();
+
+    while (this.airportsArray.length !== 0) {
+      this.airportsArray.removeAt(0);
+    }
+
+    this.isMainFlightValid = false;
+    this.isDisruptionFormValid = false;
+    this.flightData = null;
+    this.disruptionFormData = null;
+
+    if (this.disruptionForm) {
+      this.disruptionForm.resetForm();
+    }
+
+    this._eligibilityService.resetEligibilityResult();
+    this._reservationService.resetReservation();
+    this._flightService.resetAllData();
+    this._navigationService.resetToFirstStep();
   }
 
   private createReservationDTO(): ReservationDTO {
@@ -471,5 +708,23 @@ export class CaseFormComponent implements OnInit {
 
     const airport = this.airports().find((a) => a.code === code);
     return airport ? `${airport.name} (${airport.code})` : code;
+  }
+
+  public areAllDatesValid(): boolean {
+    const connections = this._flightService.getConnectionFlights();
+
+    for (let i = 0; i < connections.length - 1; i++) {
+      const currentConnection = this._flightService.getConnectionInitialData(i) || null;
+      const nextConnection = this._flightService.getConnectionInitialData(i + 1) || null;
+
+      if (
+        currentConnection?.plannedArrivalTime != null &&
+        nextConnection?.plannedDepartureTime != null &&
+        currentConnection.plannedArrivalTime > nextConnection.plannedDepartureTime
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 }

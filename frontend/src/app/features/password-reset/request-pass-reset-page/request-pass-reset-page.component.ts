@@ -12,6 +12,8 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../../shared/services/toaster/notification.service';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 type RequestResetForm = {
   email: FormControl<string>;
@@ -26,6 +28,8 @@ type RequestResetForm = {
     InputText,
     ReactiveFormsModule,
     TranslatePipe,
+    CardModule,
+    PanelModule,
   ],
   templateUrl: './request-pass-reset-page.component.html',
   styleUrl: './request-pass-reset-page.component.scss',
@@ -42,13 +46,20 @@ export class RequestPassResetPageComponent {
     }),
   });
 
+  ngOnInit(): void {
+    const emailFormState = window.history.state.email || '';
+    if (emailFormState) {
+      this.requestResetForm.get('email')?.setValue(emailFormState);
+    }
+  }
+
   protected onFormSubmit(): void {
     if (this.requestResetForm.valid) {
       const email: string = this.requestResetForm.get('email')?.value || '';
-      this._authService.sendPasswordResetEmail(email);
       this._notificationService.showInfo(
         this._translationService.instant('request-reset.email-sent')
       );
+      this._authService.sendPasswordResetEmail(email);
     }
   }
 }
