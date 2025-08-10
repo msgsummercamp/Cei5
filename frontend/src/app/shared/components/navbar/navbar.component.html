@@ -3,13 +3,15 @@
     <p-menubar [model]="items" class="navbar w-full">
       <!--This section contains the elements that appear before the links in the middle of the navbar -->
       <ng-template pTemplate="start">
-        <img class="logo" ngSrc="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
-        <span
-          class="logo-text font-bold text-xl flex align-items-center mr-1"
-          id="logo-text"
-          style="font-family: 'Baloo 2', sans-serif; color: white"
-          >AIR-ASSIST.EU
-        </span>
+        <div class="logo flex" routerLink="/">
+          <img ngSrc="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
+          <span
+            class="font-bold text-xl flex align-items-center mr-1"
+            id="logo-text"
+            style="font-family: 'Baloo 2', sans-serif; color: white"
+            >AIR-ASSIST.EU
+          </span>
+        </div>
       </ng-template>
       <!--This section contains the links in the middle of the navbar -->
       <ng-template pTemplate="item" let-item>

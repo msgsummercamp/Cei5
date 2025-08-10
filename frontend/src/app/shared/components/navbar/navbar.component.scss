@@ -35,9 +35,6 @@ p-select-list-container{
   background: none !important;
 }
 
-#logo-text{
-  cursor: default;
-}
 
 ::ng-deep .navbar-wrapper .p-button{
   --p-button-primary-background: transparent;
@@ -48,6 +45,9 @@ p-select-list-container{
   --p-button-primary-active-border-color: transparent;
 }
 
+.logo{
+  cursor: pointer;
+}
 
 
 

@@ -5,7 +5,7 @@ import { LanguageService } from '../../services/language.service';
 import { Language } from '../../types/language';
 import { Menubar } from 'primeng/menubar';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
-import {Button} from 'primeng/button';
+import { Button } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
@@ -30,22 +30,27 @@ import { IfAuthenticatedDirective } from '../../directives/if-authenticated.dire
     Button,
   ],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   private readonly _translateService = inject(TranslateService);
   private readonly _authService = inject(AuthService);
   public readonly _languageService = inject(LanguageService);
 
-  private _menuConfig = [{ translationKey: 'home', routerLink: '/' }];
+  /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.
+  private _menuConfig = [];
+  */
 
   public items: MenuItem[] = [];
 
-  ngOnInit() {
-    this.translateMenuItems();
-
-    this._translateService.onLangChange.subscribe(() => {
+  /* Future links from the navbar will be added here,commenting out for now
+    ngOnInit() {
       this.translateMenuItems();
-    });
-  }
+
+      this._translateService.onLangChange.subscribe(() => {
+        this.translateMenuItems();
+      });
+    }
+
+     */
 
   public selectLanguage(language: Language): void {
     this._translateService.use(language.code);
@@ -60,6 +65,7 @@ export class NavbarComponent implements OnInit {
     return this._languageService.getLanguages();
   }
 
+  /* This function translates the items that are contained in the menuConfig array. Commented out for now
   private translateMenuItems() {
     const keys = this._menuConfig.map((item) => item.translationKey);
 
@@ -70,6 +76,8 @@ export class NavbarComponent implements OnInit {
       }));
     });
   }
+   */
+
   public isAuthenticated(): boolean {
     return this._authService.isLoggedIn();
   }
