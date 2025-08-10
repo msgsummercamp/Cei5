@@ -17,16 +17,13 @@ p-select-label{
   color: #ffffff;
 }
 
-::ng-deep .no-arrow .p-select-dropdown{
+::ng-deep .navbar-wrapper .p-select-dropdown{
   display: none !important; ;
-}
-
-.no-arrow {
-  margin-left: -0.2rem;
 }
 
 .selectedLanguageFlag{
   cursor: pointer;
+  margin-right: -0.7rem;
 }
 
 p-select-list-container{
@@ -41,6 +38,16 @@ p-select-list-container{
 #logo-text{
   cursor: default;
 }
+
+::ng-deep .navbar-wrapper .p-button{
+  --p-button-primary-background: transparent;
+  --p-button-primary-border-color: transparent;
+  --p-button-primary-hover-background: none;
+  --p-button-primary-active-background: none;
+  --p-button-primary-hover-border-color: transparent;
+  --p-button-primary-active-border-color: transparent;
+}
+
 
 
 

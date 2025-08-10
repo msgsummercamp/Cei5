@@ -1,17 +1,23 @@
-<div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
-  <p-menubar [model]="items" class="navbar w-full">
-    <ng-template pTemplate="start">
-      <img ngSrc ="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
-      <span class="font-bold text-xl flex align-items-center mr-1" id="logo-text" style="font-family: 'Baloo 2', sans-serif; color: white"
-        >AIR-ASSIST.EU
-      </span>
-    </ng-template>
-    <ng-template pTemplate="item" let-item>
-      <span>{{ item.label | translate }}</span>
-    </ng-template>
-    <ng-template pTemplate="end">
-      <div class="flex align-items-center gap-2">
-        <div class="flex align-items-center">
+<div class="navbar-wrapper">
+  <div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
+    <p-menubar [model]="items" class="navbar w-full">
+      <!--This section contains the elements that appear before the links in the middle of the navbar -->
+      <ng-template pTemplate="start">
+        <img class="logo" ngSrc="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
+        <span
+          class="logo-text font-bold text-xl flex align-items-center mr-1"
+          id="logo-text"
+          style="font-family: 'Baloo 2', sans-serif; color: white"
+          >AIR-ASSIST.EU
+        </span>
+      </ng-template>
+      <!--This section contains the links in the middle of the navbar -->
+      <ng-template pTemplate="item" let-item>
+        <span>{{ item.label | translate }}</span>
+      </ng-template>
+      <!--This section contains the elements that appear at the end of the navbar -->
+      <ng-template pTemplate="end">
+        <div class="flex align-items-center gap-2">
           <img
             class="selectedLanguageFlag"
             [ngSrc]="selectedLanguageFlag"
@@ -22,7 +28,6 @@
           />
           <p-select
             #langSelect
-            class="no-arrow"
             [options]="languages"
             [ngModel]="_languageService.getSelectedLanguageCode()"
             (ngModelChange)="selectLanguage($event)"
@@ -36,29 +41,25 @@
               <span style="color: white">{{ language?.code }}</span>
             </ng-template>
           </p-select>
-            <button
-              pButton
-              type="button"
-              class="p-button-text"
-              style="color: white"
-              (click)="logout()"
-              *ifAuthenticated="isAuthenticated()"
-            >
-              <span>{{ 'navbar.logout' | translate }}</span>
-            </button>
-            <button
-              pButton
-              type="button"
-              class="p-button-text"
-              style="color: white"
-              routerLink="/sign-in"
-              *ifAuthenticated="!isAuthenticated()"
-            >
-              <i class="pi pi-user"></i>
-              <span>{{ 'navbar.login' | translate }}</span>
-            </button>
+          <p-button
+            label="{{ 'navbar.login' | translate }}"
+            icon="pi pi-user"
+            type="button"
+            class="p-button-text"
+            routerLink="/sign-in"
+            *ifAuthenticated="!isAuthenticated()"
+          >
+          </p-button>
+          <p-button
+            label="{{ 'navbar.logout' | translate }}"
+            type="button"
+            class="p-button-text"
+            (onClick)="logout()"
+            *ifAuthenticated="isAuthenticated()"
+          >
+          </p-button>
         </div>
-      </div>
-    </ng-template>
-  </p-menubar>
+      </ng-template>
+    </p-menubar>
+  </div>
 </div>

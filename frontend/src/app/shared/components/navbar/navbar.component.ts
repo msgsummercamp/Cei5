@@ -5,7 +5,7 @@ import { LanguageService } from '../../services/language.service';
 import { Language } from '../../types/language';
 import { Menubar } from 'primeng/menubar';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
-import { ButtonDirective } from 'primeng/button';
+import {Button} from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
@@ -22,12 +22,12 @@ import {IfAuthenticatedDirective} from '../../directives/if-authenticated.direct
     RouterLink,
     Menubar,
     PrimeTemplate,
-    ButtonDirective,
     DropdownModule,
     FormsModule,
     Select,
     NgOptimizedImage,
     IfAuthenticatedDirective,
+    Button,
   ],
 })
 export class NavbarComponent implements OnInit {
