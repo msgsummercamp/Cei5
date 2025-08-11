@@ -1,10 +1,9 @@
 package com.airassist.backend.exception.user;
 
+import com.airassist.backend.model.enums.ApiErrorMessages;
+
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {
-        super("User does not exist");
-    }
-    public UserNotFoundException(String message) {
-        super(message);
+        super(ApiErrorMessages.USER_NOT_FOUND.getCode());
     }
 }

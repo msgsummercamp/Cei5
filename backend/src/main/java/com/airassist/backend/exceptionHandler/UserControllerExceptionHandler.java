@@ -4,6 +4,7 @@ import com.airassist.backend.controller.UserController;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import com.airassist.backend.model.enums.ApiErrorMessages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,35 +29,31 @@ public class UserControllerExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgumentException(IllegalArgumentException e) {
-        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.ILLEGAL_ARGUMENT.getCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String errorMsg = e.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .findFirst()
-                .orElse("Invalid input");
-        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.BAD_REQUEST, errorMsg);
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.BAD_REQUEST, ApiErrorMessages.USER_VALIDATION_ERROR.getCode());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ApiErrorMessages.DATA_INTEGRITY_VIOLATION.getCode());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ProblemDetail handleConstraintViolationException(ConstraintViolationException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Database constraint violation: " + e.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ApiErrorMessages.CONSTRAINT_VIOLATION.getCode());
     }
 
     @ExceptionHandler(JsonProcessingException.class)
     public ProblemDetail handleJsonProcessingException(JsonProcessingException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process password JSON: " + exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.JSON_PARSE_ERROR.getCode());
     }
 
     @ExceptionHandler(PasswordApiException.class)
     public ProblemDetail handlePasswordApiException(PasswordApiException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to generate password: " + exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.PASSWORD_API_ERROR.getCode());
     }
 }

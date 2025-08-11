@@ -109,7 +109,7 @@ public class CaseServiceImpl implements CaseService {
         updateReqCase.setId(id);
         Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", id);
-            return new CaseNotFoundException("Case with ID " + id + " not found for deletion");
+            return new CaseNotFoundException();
         });
         updateCaseFields(updateReqCase, caseToUpdate);
         logger.info("Service - updating case with ID: {}", id);
@@ -123,7 +123,7 @@ public class CaseServiceImpl implements CaseService {
     public void deleteCase(UUID id) throws CaseNotFoundException {
         if (!caseRepository.existsById(id)) {
             logger.warn(("Service - Attempted to delete a case with non-existing ID: {}"), id);
-            throw new CaseNotFoundException("Case with ID " + id + " not found for deletion");
+            throw new CaseNotFoundException();
         }
         logger.info("Service - deleting case: {}", id);
         caseRepository.deleteById(id);
