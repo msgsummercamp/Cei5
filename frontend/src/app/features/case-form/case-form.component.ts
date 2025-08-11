@@ -41,7 +41,6 @@ import { ConfirmationFormComponent } from './views/confirmation-form/confirmatio
 import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
-import { TranslateService } from '@ngx-translate/core';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 
@@ -147,6 +146,7 @@ export class CaseFormComponent {
     initialValue: [] as AirportResponse[],
   });
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
+  public checked: boolean = false;
 
   @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
