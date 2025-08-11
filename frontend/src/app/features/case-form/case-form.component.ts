@@ -46,11 +46,11 @@ import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
-import { AuthService } from '../../shared/services/auth/auth.service';
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TranslateService } from '@ngx-translate/core';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -103,7 +103,7 @@ export class CaseFormComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
-  private readonly _authService = inject(AuthService);
+  private readonly _translateService = inject(TranslateService);
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -212,6 +212,10 @@ export class CaseFormComponent implements OnInit {
   }
 
   public get isNextButtonEnabled(): boolean {
+    if (this.checked && this.airportsArray.length === 0) {
+      return false;
+    }
+
     return this.isAirportsValid() && this.isMainFlightValid;
   }
 
@@ -306,6 +310,17 @@ export class CaseFormComponent implements OnInit {
 
   // Function to handle the next step from flight details
   public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
+    if (this.checked && this.airportsArray.length === 0) {
+      return;
+    }
+
+    if (
+      this.checked &&
+      this.airportsArray.controls.some((control) => !control.value || control.value.trim() === '')
+    ) {
+      return;
+    }
+
     if (this.isMainFlightValid && this.isAirportsValid()) {
       this._navigationService.nextStep();
 
@@ -465,7 +480,19 @@ export class CaseFormComponent implements OnInit {
   }
 
   public isAirportsValid(): boolean {
-    return this.airportsArray.valid;
+    if (!this.checked) {
+      return true;
+    }
+
+    if (this.airportsArray.length === 0) {
+      return false;
+    }
+
+    const hasEmptyAirports = this.airportsArray.controls.some(
+      (control) => !control.value || control.value.trim() === ''
+    );
+
+    return this.airportsArray.valid && !hasEmptyAirports;
   }
 
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
@@ -747,5 +774,25 @@ export class CaseFormComponent implements OnInit {
       this.airportsArray.clear();
       this._flightService.resetConnectionData();
     }
+  }
+
+  public getConnectionValidationError(): string | null {
+    if (!this.checked) {
+      return null;
+    }
+
+    if (this.airportsArray.length === 0) {
+      return this._translateService.instant('mainForm.pleaseAddConnection');
+    }
+
+    const hasEmptyAirports = this.airportsArray.controls.some(
+      (control) => !control.value || control.value.trim() === ''
+    );
+
+    if (hasEmptyAirports) {
+      return this._translateService.instant('mainForm.fillInAllConnections');
+    }
+
+    return null;
   }
 }

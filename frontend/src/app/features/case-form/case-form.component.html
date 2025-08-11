@@ -8,7 +8,7 @@
       <p-step [value]="4">{{ 'stepper.step4' | translate }}</p-step>
       <p-step [value]="5">{{ 'stepper.step5' | translate }}</p-step>
       <p-step [value]="6">{{ 'stepper.step6' | translate }}</p-step>
-      <p-step [value]="7">Confirmation</p-step>
+      <p-step [value]="7">{{ 'stepper.step7' | translate }}</p-step>
     </p-step-list>
     <p-step-panels>
       <!-- Step 1: Reservation Info -->
@@ -217,13 +217,13 @@
                   [binary]="true"
                   (onChange)="onConnectionCheckboxChange()"
                 />
-                <label class="ml-2">Click to add connections</label>
+                <label class="ml-2">{{ 'mainForm.clickToAddConnections' | translate }}</label>
               </div>
             </div>
 
             @if (this.checked == true) {
               <!-- Connection Flights -->
-              <div class="mr-8 col">
+              <div class="mr-8 col mt-4">
                 <div class="flex flex-row justify-content-center align-items-center">
                   <p-header class="text-3xl">{{
                     'mainForm.connectionFlightsHeader' | translate
@@ -312,6 +312,19 @@
                                       }
                                     }
                                   }
+
+                                  <!-- TODO -->
+                                  <div
+                                    class="error-placeholder align-items-start align-content-center"
+                                  >
+                                    @if (getConnectionValidationError()) {
+                                      <div class="mb-2">
+                                        <app-error-message
+                                          [text]="getConnectionValidationError()!"
+                                        />
+                                      </div>
+                                    }
+                                  </div>
 
                                   @if (
                                     airport.hasError('connectionsShouldBeDifferent') &&

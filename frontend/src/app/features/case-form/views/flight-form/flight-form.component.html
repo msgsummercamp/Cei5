@@ -132,11 +132,7 @@
         ) {
           <app-error-message text="{{ 'flightForm.plannedArrivalTimeRequired' | translate }}" />
         }
-        @if (
-          flightDetailsForm.hasError('arrivalBeforeDeparture') &&
-          flightDetailsForm.controls.plannedArrivalTime.touched &&
-          flightDetailsForm.controls.plannedDepartureTime.touched
-        ) {
+        @if (flightDetailsForm.hasError('arrivalBeforeDeparture')) {
           <app-error-message text="{{ 'flightForm.arrivalBeforeDeparture' | translate }}" />
         }
       </div>
