@@ -248,7 +248,9 @@
     "connectionsShouldBedifferent": "Conexiunile ar trebui să fie diferite.",
     "usedDepartingAirport": "Nu folosiți aeroportul de plecare ca și conexiune.",
     "usedDestinationAirport": "Nu folosiți aeroportul de destinație ca și conexiune.",
-    "dateOrder": "Datele zborurilor trebuie să fie în ordine cronologică."
+    "dateOrder": "Datele zborurilor trebuie să fie în ordine cronologică.",
+    "selectConnection": "Selectați o conexiune pentru a adăuga detalii.",
+    "invalidFlightTimes": "Orele zborurilor trebuie să fie valide (sosire după plecare)."
   },
   "flightForm": {
     "flightNumber": "Numărul zborului",

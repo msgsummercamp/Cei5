@@ -77,12 +77,18 @@ export class FlightManagementService {
   }
 
   public areAllConnectionFlightsValid(): boolean {
-    for (let i = 0; i < this.connectionFlights.length; i++) {
-      if (!this.connectionFlightData[i]) {
-        return false; // No data means form is not valid
-      }
+    const flaggedIndex = this.isFlagged.findIndex((flag) => flag === true);
+
+    if (flaggedIndex === -1) {
+      return false;
     }
-    return true;
+
+    return !!this.connectionFlightData[flaggedIndex];
+  }
+
+  public hasValidFlaggedConnection(): boolean {
+    const flaggedIndex = this.isFlagged.findIndex((flag) => flag === true);
+    return flaggedIndex !== -1 && !!this.connectionFlightData[flaggedIndex];
   }
 
   public toggleFlag(index: number): void {
@@ -156,7 +162,6 @@ export class FlightManagementService {
     this.flags = 0;
   }
 
-  // Utility methods
   public hasConnectionFlights(): boolean {
     return this.connectionFlights.length > 0;
   }
@@ -168,10 +173,7 @@ export class FlightManagementService {
   public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
     const baseData = this.connectionFlightData[connectionIndex] || null;
 
-    // If no base data exists, create an empty one
-    if (!baseData) {
-      return this.createInitialConnectionData(connectionIndex);
-    }
+    if (!baseData) return null;
 
     return baseData;
   }
@@ -209,15 +211,18 @@ export class FlightManagementService {
     }
 
     const lastIndex = this.connectionFlights.length - 1;
-    if (this.connectionFlightData[lastIndex]) {
-      this.connectionFlightData[lastIndex] = {
-        ...this.connectionFlightData[lastIndex],
-        plannedArrivalTime: mainFlightData.plannedArrivalTime,
-      };
-    } else {
-      this.connectionFlightData[lastIndex] = this.createInitialConnectionData(lastIndex);
+    if (lastIndex > 0) {
       if (this.connectionFlightData[lastIndex]) {
-        this.connectionFlightData[lastIndex].plannedArrivalTime = mainFlightData.plannedArrivalTime;
+        this.connectionFlightData[lastIndex] = {
+          ...this.connectionFlightData[lastIndex],
+          plannedArrivalTime: mainFlightData.plannedArrivalTime,
+        };
+      } else {
+        this.connectionFlightData[lastIndex] = this.createInitialConnectionData(lastIndex);
+        if (this.connectionFlightData[lastIndex]) {
+          this.connectionFlightData[lastIndex].plannedArrivalTime =
+            mainFlightData.plannedArrivalTime;
+        }
       }
     }
   }
