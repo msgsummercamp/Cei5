@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { Language } from '../../types/language';
@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { IfAuthenticatedDirective } from '../../directives/if-authenticated.directive';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../services/user.service';
+import { StepNavigationService } from '../../services/step-navigation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,6 @@ import { UserService } from '../../services/user.service';
   styleUrl: './navbar.component.scss',
   imports: [
     TranslateModule,
-    RouterLink,
     Menubar,
     PrimeTemplate,
     DropdownModule,
@@ -37,6 +37,8 @@ export class NavbarComponent {
   private readonly _translateService = inject(TranslateService);
   private readonly _authService = inject(AuthService);
   private readonly _userService = inject(UserService);
+  private readonly _router = inject(Router);
+  private readonly _stepNavigationService = inject(StepNavigationService);
   public readonly _languageService = inject(LanguageService);
 
   //Contains the translated elements for the main navbar
@@ -100,6 +102,11 @@ export class NavbarComponent {
 
   public isAuthenticated(): boolean {
     return this._authService.isLoggedIn();
+  }
+
+  public redirectToLogin(): void {
+    this._stepNavigationService.resetToFirstStep();
+    this._router.navigate(['/sign-in']);
   }
 
   public logout(): void {
