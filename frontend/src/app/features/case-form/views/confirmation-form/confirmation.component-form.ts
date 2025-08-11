@@ -4,6 +4,7 @@ import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import FileSaver from 'file-saver';
 import { ContractService } from '../../../../shared/services/contract.service';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 type ContractDetails = {
   caseId: string;
@@ -18,7 +19,7 @@ type ContractDetails = {
 
 @Component({
   selector: 'app-confirmation-form',
-  imports: [TranslatePipe, Card, Button],
+  imports: [TranslatePipe, Card, Button, ScrollPanel],
   templateUrl: './confirmation.component-form.html',
   styleUrl: './confirmation.component-form.scss',
 })

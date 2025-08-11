@@ -162,7 +162,7 @@
     "password-invalid-reset": "Parola trebuie să conțină litere, cifre sau caractere speciale."
   },
   "user-details": {
-    "title": "Detalii utilizator",
+    "title": "Informații personale",
     "subtitle": "Vă rugăm să completați detaliile dvs.",
     "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
@@ -194,15 +194,14 @@
     "lastname-invalid": "Numele de familie poate conține doar litere.",
     "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
     "completing-for-someone-else": "Completați pentru altcineva?",
-    "someone-else-firstname-label": "Prenumele persoanei",
-    "someone-else-lastname-label": "Numele persoanei",
-    "someone-else-address-label": "Adresa persoanei",
-    "someone-else-postalCode-label": "Codul poștal al persoanei",
-    "someone-else-underage-label": "Persoana este minoră?",
+    "someone-else-firstname-label": "Prenumele beneficiarului",
+    "someone-else-lastname-label": "Numele beneficiarului",
+    "someone-else-address-label": "Adresa beneficiarului",
+    "someone-else-postalCode-label": "Codul poștal al beneficiarului",
+    "someone-else-underage-label": "Beneficiarul este minor?",
     "accept-terms": "Am citit și accept",
-    "terms": "termenii",
-    "privacy-policy": "politica de confidențialitate",
-    "and": "și"
+    "terms": "termenii și condițiile.",
+    "privacy-policy": "politica de confidențialitate"
   },
   "confirmation": {
     "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",

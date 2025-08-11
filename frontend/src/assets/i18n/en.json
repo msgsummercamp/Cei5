@@ -162,7 +162,7 @@
     "password-invalid-reset": "Password must contain letters, numbers, or special characters."
   },
   "user-details": {
-    "title": "User Details",
+    "title": "Personal Information",
     "subtitle": "Please fill in your details.",
     "email-label": "Email",
     "email-required": "Email is required.",
@@ -194,15 +194,14 @@
     "lastname-invalid": "Last name can only contain letters.",
     "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
     "completing-for-someone-else": "Are you completing this form for someone else?",
-    "someone-else-firstname-label": "First Name of the Person",
-    "someone-else-lastname-label": "Last Name of the Person",
-    "someone-else-address-label": "Address of the Person",
-    "someone-else-postalCode-label": "Postal Code of the Person",
-    "someone-else-underage-label": "Is the person under 18 years old?",
+    "someone-else-firstname-label": "Beneficiary's First Name",
+    "someone-else-lastname-label": "Beneficiary's Last Name",
+    "someone-else-address-label": "Beneficiary's Address",
+    "someone-else-postalCode-label": "Beneficiary's Postal Code",
+    "someone-else-underage-label": "Is the beneficiary under 18 years old?",
     "accept-terms": "I have read and agree to the",
-    "terms": "terms",
-    "privacy-policy": "privacy-policy.",
-    "and": "and"
+    "terms": "terms and conditions.",
+    "privacy-policy": "privacy-policy."
   },
   "confirmation": {
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",

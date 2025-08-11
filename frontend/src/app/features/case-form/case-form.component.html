@@ -499,7 +499,7 @@
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPreviousFromUserRegistration(prevCallback)"
-              [styleClass]="'px-6 mt-8'"
+              [styleClass]="'px-6 mt-5'"
             />
 
             <p-button
@@ -507,7 +507,7 @@
               severity="primary"
               [disabled]="!isUserRegistrationValid"
               (onClick)="onNextFromUserRegistration(nextCallback)"
-              [styleClass]="'px-6 mt-8'"
+              [styleClass]="'px-6 mt-5'"
             />
           </div>
         </ng-template>
@@ -525,14 +525,14 @@
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
-              [styleClass]="'px-6 mt-8'"
+              [styleClass]="'px-6 mt-5'"
             />
 
             <p-button
               label="{{ 'lastForm.next' | translate }}"
               severity="primary"
               (onClick)="submitCase()"
-              [styleClass]="'px-6 mt-8'"
+              [styleClass]="'px-6 mt-5'"
             />
           </div>
         </ng-template>

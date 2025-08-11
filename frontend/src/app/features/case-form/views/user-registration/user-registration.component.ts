@@ -69,6 +69,7 @@ export class UserRegistrationComponent {
   public readonly countryISO = CountryISO;
   public readonly phoneNumberFormat = PhoneNumberFormat;
   public acceptedTerms = false;
+  public acceptedGDPR = false;
 
   // Date limits for birth date
   protected readonly maxDate = (() => {
@@ -239,7 +240,7 @@ export class UserRegistrationComponent {
 
   public checkAndEmitValidity(): void {
     const isFormValid = this.userRegistrationForm.valid;
-    const isValid = isFormValid && this.acceptedTerms;
+    const isValid = isFormValid && this.acceptedTerms && this.acceptedGDPR;
     const data = isValid ? this.getUserFormDetails() : null;
     if (
       !this.lastEmitted ||
