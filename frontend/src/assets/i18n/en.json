@@ -42,11 +42,6 @@
     "copyright": "© 2025 AirAssist. All rights reserved.",
     "back-to-top": "Back to top"
   },
-  "case-form": {
-    "compensation-start": "Congratulations! You could earn up to €",
-    "compensation-end": ". Click next to continue.",
-    "submission-in-progress": "Your case is being submitted."
-  },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
     "disruptionTypeRequired": "A disruption type is required.",
@@ -277,8 +272,9 @@
     "checkEligibility": "Checking eligibility.",
     "loading": "Please wait while we check the eligibility of your case.",
     "eligible": {
-      "congratulations": "Congratulations.",
-      "eligibleMessage": "You are eligible for compensation."
+      "congratulations": "Congratulations!",
+      "compensation-start": "You may be entitled to compensation of up to €",
+      "compensation-end": ". Click <strong>Next</strong> to provide your personal details and submit your claim."
     },
     "notEligible": {
       "sorry": "We are sorry! Unfortunately, you are not eligible for compensation:",

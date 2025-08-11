@@ -277,9 +277,11 @@
     "checkEligibility": "Verificarea eligibilitati.",
     "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
     "eligible": {
-      "congratulations": "Felicitari.",
-      "eligibleMessage": "Ești eligibil pentru compensație."
+      "congratulations": "Felicitări!",
+      "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
+      "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
     },
+
     "notEligible": {
       "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
       "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."

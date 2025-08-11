@@ -34,14 +34,14 @@
           @if (shouldShowEligible()) {
             <div class="eligible-message">
               <i class="pi pi-check-circle text-6xl text-green-500"></i>
-              <h2 class="text-green-500">{{
+              <h2 class="text-green-500 text-4xl">{{
                 'eligibilityForm.eligible.congratulations' | translate
               }}</h2>
               <p-message
                 severity="success"
-                text="{{ 'eligibilityForm.eligible.eligibleMessage' | translate }}"
+                [innerHTML]="getEligibleMessage()"
                 [closable]="false"
-                [styleClass]="'text-align-start text-justify'"
+                class="text-xl"
               >
               </p-message>
             </div>
@@ -53,9 +53,9 @@
               <h2 class="text-red-500">{{ 'eligibilityForm.notEligible.sorry' | translate }}</h2>
               <p-message
                 severity="warn"
-                text="{{ 'eligibilityForm.notEligible.notEligibleMessage' | translate }}"
+                [innerHTML]="'eligibilityForm.notEligible.notEligibleMessage' | translate"
                 [closable]="false"
-                [styleClass]="'text-align-start text-justify'"
+                class="text-xl"
               >
               </p-message>
             </div>

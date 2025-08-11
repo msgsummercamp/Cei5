@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, ViewChild } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -39,7 +32,6 @@ import {
 } from './views/disruption-form/disruption-form.component';
 import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
@@ -87,7 +79,7 @@ type DisruptionForm = {
   styleUrl: './case-form.component.scss',
   providers: [AirportsService],
 })
-export class CaseFormComponent implements OnInit {
+export class CaseFormComponent {
   // CONSTANTS
   public readonly MAXIMUM_CONNECTIONS = 4;
 
@@ -99,7 +91,6 @@ export class CaseFormComponent implements OnInit {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _airportsService = inject(AirportsService);
   private readonly _userService = inject(UserService);
-  private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
@@ -152,40 +143,7 @@ export class CaseFormComponent implements OnInit {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
-  public compensation?: number;
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
-
-  public readonly departingAirportValue = toSignal(
-    this.reservationForm.controls.departingAirport.valueChanges
-  );
-  public readonly destinationAirportValue = toSignal(
-    this.reservationForm.controls.destinationAirport.valueChanges
-  );
-
-  constructor() {
-    effect(() => {
-      this.compensation = undefined;
-      const dep = this.departingAirportValue();
-      const dest = this.destinationAirportValue();
-      if (!!dep && !!dest) {
-        this._compensationService.calculateDistance(dep, dest);
-      }
-    });
-  }
-
-  public ngOnInit() {
-    this._compensationService.compensation$.subscribe((data) => {
-      this.compensation = data;
-    });
-  }
-
-  public calculateCompensation() {
-    const departingAirport = this.reservationForm.controls.departingAirport.value;
-    const destinationAirport = this.reservationForm.controls.destinationAirport.value;
-    if (!!departingAirport && !!destinationAirport) {
-      this._compensationService.calculateDistance(departingAirport, destinationAirport);
-    }
-  }
 
   @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 

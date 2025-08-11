@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -12,8 +12,9 @@ import { FlightManagementService } from '../../../../shared/services/flight-mana
 import { CaseDTO } from '../../../../shared/dto/case.dto';
 import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
+import { CompensationService } from '../../../../shared/services/compensation.service';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -35,6 +36,8 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _navigationService = inject(StepNavigationService);
   private readonly _eligibilityDataService = inject(EligibilityDataService);
+  private readonly _compensationService = inject(CompensationService);
+  private readonly _translateService = inject(TranslateService);
 
   private hasRunInitialCheck = false;
 
@@ -62,6 +65,33 @@ export class EligibilityPageComponent implements OnInit {
     () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
 
+  public compensation?: number;
+  public readonly departingAirportValue =
+    this._reservationService.getReservationInformation().departingAirport;
+  public readonly destinationAirportValue =
+    this._reservationService.getReservationInformation().destinationAirport;
+
+  constructor() {
+    effect(() => {
+      this.compensation = undefined;
+      const dep = this.departingAirportValue;
+      const dest = this.destinationAirportValue;
+      if (!!dep && !!dest) {
+        this._compensationService.calculateDistance(dep, dest);
+      }
+    });
+  }
+
+  public getEligibleMessage(): string {
+    return (
+      this._translateService.instant('eligibilityForm.eligible.compensation-start') +
+      '\n' +
+      this.compensation +
+      '\n' +
+      this._translateService.instant('eligibilityForm.eligible.compensation-end')
+    );
+  }
+
   public getErrorMessage(): string | undefined {
     return this.eligibilityResult().errorMessage;
   }
@@ -88,6 +118,10 @@ export class EligibilityPageComponent implements OnInit {
       this.hasRunInitialCheck = true;
       this.checkEligibility();
     }
+
+    this._compensationService.compensation$.subscribe((data) => {
+      this.compensation = data;
+    });
   }
 
   private checkEligibility(): void {
