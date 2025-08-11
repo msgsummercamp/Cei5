@@ -2,6 +2,7 @@ package com.airassist.backend.controller;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.CaseResponseMapper;
 import com.airassist.backend.model.Case;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +47,7 @@ public class CaseController {
     }
 
     @PostMapping
-    public ResponseEntity<CaseResponseDTO> createCase(@Valid @RequestBody CaseDTO caseRequest) {
+    public ResponseEntity<CaseResponseDTO> createCase(@Valid @RequestBody CaseDTO caseRequest) throws UserNotFoundException {
         Case createdCase = caseService.createCase(caseRequest);
         CaseResponseDTO createdCaseResponse = caseResponseMapper.toCaseResponseDTO(createdCase);
         return ResponseEntity.status(201).body(createdCaseResponse);
@@ -76,7 +76,7 @@ public class CaseController {
 
     @PreAuthorize("hasRole('EMPLOYEE')")
     @PatchMapping("/{caseId}/assign-employee/{employeeId}")
-    public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) {
+    public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) throws UserNotFoundException {
         Case changedCase = caseService.assignEmployee(caseId, employeeId);
         changedCase = caseService.setCaseStatus(changedCase.getId(), Statuses.ASSIGNED);
         CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(changedCase);

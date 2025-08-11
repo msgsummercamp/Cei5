@@ -25,7 +25,7 @@ public interface CaseService {
 
     boolean checkEligibility(Case caseEntity);
 
-    Case assignEmployee(UUID caseId, UUID employeeId);
+    Case assignEmployee(UUID caseId, UUID employeeId) throws UserNotFoundException;
 
     List<Case> getCasesForClient(UUID clientId);
 

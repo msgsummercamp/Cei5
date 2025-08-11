@@ -158,15 +158,15 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException {
+    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException, UserNotFoundException {
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new EntityNotFoundException("Case not found.");
+            return new CaseNotFoundException();
         });
 
         User employee = userRepository.findById(employeeId).orElseThrow(() -> {
             logger.warn("Service - Employee with ID {} not found", employeeId);
-            return new EntityNotFoundException("Employee not found.");
+            return new UserNotFoundException();
         });
 
         if(employee.getRole() != Roles.EMPLOYEE) {
@@ -187,7 +187,7 @@ public class CaseServiceImpl implements CaseService {
 
         if(cases.isEmpty()) {
             logger.warn("There are no cases for the client: {}", clientId);
-            throw new EntityNotFoundException("Cases not found for client.");
+            throw new CaseNotFoundException();
         }
 
         return cases;
@@ -196,7 +196,7 @@ public class CaseServiceImpl implements CaseService {
     public Case setCaseStatus(UUID caseId, Statuses status) {
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new EntityNotFoundException("Case not found.");
+            return new CaseNotFoundException();
         });
 
         caseEntity.setStatus(status);
