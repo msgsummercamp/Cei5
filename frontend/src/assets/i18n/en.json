@@ -43,7 +43,8 @@
   },
   "case-form": {
     "compensation-start": "Congratulations! You could earn up to €",
-    "compensation-end": ". Click next to continue."
+    "compensation-end": ". Click next to continue.",
+    "submission-in-progress": "Your case is being submitted."
   },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
@@ -193,6 +194,12 @@
     "firstname-invalid": "First name can only contain letters.",
     "lastname-invalid": "Last name can only contain letters.",
     "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
+    "completing-for-someone-else": "Are you completing this form for someone else?",
+    "someone-else-firstname-label": "First Name of the Person",
+    "someone-else-lastname-label": "Last Name of the Person",
+    "someone-else-address-label": "Address of the Person",
+    "someone-else-postalCode-label": "Postal Code of the Person",
+    "someone-else-underage-label": "Is the person under 18 years old?",
     "accept-terms": "I have read and agree to the",
     "terms": "terms",
     "privacy-policy": "privacy-policy.",
@@ -279,8 +286,5 @@
   },
   "lastForm": {
     "next": "Finish"
-  },
-  "user-service": {
-    "error": "Error"
   }
 }

@@ -43,7 +43,8 @@
   },
   "case-form": {
     "compensation-start": "Felicitări! Poți câștiga până la €",
-    "compensation-end": ". Apasă next pentru a continua."
+    "compensation-end": ". Apasă next pentru a continua.",
+    "submission-in-progress": "Cazul tău este în curs de înregistrare."
   },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
@@ -193,6 +194,12 @@
     "firstname-invalid": "Prenumele poate conține doar litere.",
     "lastname-invalid": "Numele de familie poate conține doar litere.",
     "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
+    "completing-for-someone-else": "Completați pentru altcineva?",
+    "someone-else-firstname-label": "Prenumele persoanei",
+    "someone-else-lastname-label": "Numele persoanei",
+    "someone-else-address-label": "Adresa persoanei",
+    "someone-else-postalCode-label": "Codul poștal al persoanei",
+    "someone-else-underage-label": "Persoana este minoră?",
     "accept-terms": "Am citit și accept",
     "terms": "termenii",
     "privacy-policy": "politica de confidențialitate",
