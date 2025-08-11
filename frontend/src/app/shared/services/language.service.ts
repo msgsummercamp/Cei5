@@ -10,8 +10,8 @@ export class LanguageService {
   private readonly _translationService = inject(TranslateService);
 
   private languages: Language[] = [
-    { code: 'en', flag: 'assets/flags/en.png' },
-    { code: 'ro', flag: 'assets/flags/ro.png' },
+    { code: 'en', flag: 'assets/photos/flags/en.png' },
+    { code: 'ro', flag: 'assets/photos/flags/ro.png' },
   ];
 
   public initializeLanguage(): void {
@@ -30,6 +30,7 @@ export class LanguageService {
   public setSelectedLanguage(languageCode: string): void {
     localStorage.setItem('selectedLanguage', languageCode);
     this.selectedLanguage = languageCode;
+    this._translationService.use(languageCode);
   }
 
   public getLanguages(): { code: string; flag: string }[] {

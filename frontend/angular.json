@@ -31,7 +31,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss", "./node_modules/p-intl-input-tel/src/assets/style.scss"],
+            "styles": ["src/styles.scss", "./node_modules/p-intl-input-tel/src/assets/style.scss", "node_modules/primeicons/primeicons.css"],
             "scripts": []
           },
           "configurations": {

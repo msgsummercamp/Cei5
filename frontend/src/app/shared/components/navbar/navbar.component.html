@@ -1,10 +1,16 @@
 <div class="navbar-wrapper">
   <div class="flex flex-wrap w-full top-0 left-0 right-0 fixed z-5">
-    <p-menubar [model]="items" class="navbar w-full">
+    <p-menubar [model]="navbarMainItems" class="navbar w-full">
       <!--This section contains the elements that appear before the links in the middle of the navbar -->
       <ng-template pTemplate="start">
         <div class="logo flex" routerLink="/">
-          <img ngSrc="assets/logo.png" alt="Logo" width="25" height="25" class="mr-2" />
+          <img
+            ngSrc="../../../../assets/photos/logo.png"
+            alt="Logo"
+            width="25"
+            height="25"
+            class="mr-2"
+          />
           <span
             class="font-bold text-xl flex align-items-center mr-1"
             id="logo-text"
@@ -52,14 +58,19 @@
             *ifAuthenticated="!isAuthenticated()"
           >
           </p-button>
-          <p-button
-            label="{{ 'navbar.logout' | translate }}"
-            type="button"
-            class="p-button-text"
-            (onClick)="logout()"
-            *ifAuthenticated="isAuthenticated()"
-          >
-          </p-button>
+          <div class="user-menu flex" *ifAuthenticated="isAuthenticated()">
+            <p-button (onClick)="userMenu.toggle($event)">
+              <span>{{ userName }}</span>
+              <i class="pi pi-angle-down"></i>
+            </p-button>
+
+            <p-menu
+              class="user-menu-dropdown"
+              #userMenu
+              [model]="userMenuItems"
+              [popup]="true"
+            ></p-menu>
+          </div>
         </div>
       </ng-template>
     </p-menubar>
