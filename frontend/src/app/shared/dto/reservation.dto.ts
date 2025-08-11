@@ -7,7 +7,7 @@ export type FlightsInfo = {
   departureTime: string;
   arrivalTime: string;
   airLine: string;
-  isProblematic: boolean;
+  problematic: boolean;
 };
 
 export type ReservationDTO = {

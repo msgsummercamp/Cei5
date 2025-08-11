@@ -39,7 +39,8 @@ public class FlightDTO {
     @Size(min = 3, max = 50)
     private String airLine;
 
-    private boolean isProblematic;
+    private boolean problematic;
+
 
 
 }

@@ -10,5 +10,5 @@ export type Flight = {
   arrivalTime: Date;
   reservation: Reservation | null;
   airLine: string;
-  isProblematic: boolean;
+  problematic: boolean;
 };

@@ -56,5 +56,6 @@ public class Flight {
     private String airLine;
 
     @Column(nullable = false)
-    private boolean isProblematic;
+    private boolean problematic;
+
 }
