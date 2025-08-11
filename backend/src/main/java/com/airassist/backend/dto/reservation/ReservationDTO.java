@@ -15,6 +15,4 @@ public class ReservationDTO {
     private String reservationNumber;
 
     private List<FlightDTO> flights;
-
-    private CaseDTO caseDTO;
 }

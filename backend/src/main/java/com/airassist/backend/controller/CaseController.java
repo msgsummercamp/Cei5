@@ -42,7 +42,6 @@ public class CaseController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @PostMapping
     public ResponseEntity<CaseResponseDTO> createCase(@Valid @RequestBody CaseDTO caseRequest) {
         Case createdCase = caseService.createCase(caseRequest);
@@ -70,6 +69,4 @@ public class CaseController {
         boolean eligible = caseService.checkEligibility(caseMapper.toEntity(caseDTO));
         return ResponseEntity.ok(eligible);
     }
-
-
 }

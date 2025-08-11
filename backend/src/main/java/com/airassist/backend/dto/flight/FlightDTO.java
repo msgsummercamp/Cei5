@@ -34,8 +34,6 @@ public class FlightDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime arrivalTime;
 
-    private ReservationDTO reservation;
-
     @Size(min = 3, max = 50)
     private String airLine;
 
