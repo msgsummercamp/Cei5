@@ -53,7 +53,11 @@ export class FlightFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   // Date limits for flight date
-  protected readonly maxDate = new Date();
+  protected readonly maxDate = (() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    return date;
+  })();
   protected readonly minDate = (() => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - 3);
