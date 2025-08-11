@@ -5,20 +5,24 @@ import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.CaseResponseMapper;
 import com.airassist.backend.model.Case;
+import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.service.CaseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cases")
 @RequiredArgsConstructor
+
 public class CaseController {
 
     private final CaseService caseService;
@@ -41,7 +45,6 @@ public class CaseController {
                 .map(caseEntity -> ResponseEntity.ok(caseResponseMapper.toCaseResponseDTO(caseEntity)))
                 .orElse(ResponseEntity.notFound().build());
     }
-
 
     @PostMapping
     public ResponseEntity<CaseResponseDTO> createCase(@Valid @RequestBody CaseDTO caseRequest) {
@@ -71,5 +74,30 @@ public class CaseController {
         return ResponseEntity.ok(eligible);
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PatchMapping("/{caseId}/assign-employee/{employeeId}")
+    public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) {
+        Case changedCase = caseService.assignEmployee(caseId, employeeId);
+        changedCase = caseService.setCaseStatus(changedCase.getId(), Statuses.ASSIGNED);
+        CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(changedCase);
+        return ResponseEntity.ok(updatedCaseResponse);
+    }
 
+    @PreAuthorize("hasRole('USER') or hasRole('EMPLOYEE')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CaseResponseDTO>> getAllCasesForClient(@PathVariable UUID userId) {
+        List<Case> userCases = caseService.getCasesForClient(userId);
+        List<CaseResponseDTO> userCaseDTOs = userCases.stream()
+                .map(caseResponseMapper::toCaseResponseDTO)
+                .toList();
+        return ResponseEntity.ok(userCaseDTOs);
+    }
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PatchMapping("/{caseId}/{status}")
+    public ResponseEntity<CaseResponseDTO> setStatusForCase(@PathVariable UUID caseId, @PathVariable Statuses status) {
+        Case changedCase = caseService.setCaseStatus(caseId, status);
+        CaseResponseDTO responseCase = caseResponseMapper.toCaseResponseDTO(changedCase);
+        return ResponseEntity.ok(responseCase);
+    }
 }

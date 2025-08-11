@@ -11,10 +11,13 @@ import com.airassist.backend.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,11 +28,23 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() throws UserNotFoundException {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id) throws UserNotFoundException {
         User user = userService.getUserById(id);
         UserResponseDTO response = userMapper.userToUserResponseDTO(user);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity<List<User>> getAllEmployees() throws UserNotFoundException {
+        List<User> employees = userService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
     @PostMapping
@@ -59,6 +74,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
