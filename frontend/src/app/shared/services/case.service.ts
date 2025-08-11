@@ -1,32 +1,105 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, ObservableLike, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
 import { CaseDTO } from '../dto/case.dto';
 import { NotificationService } from './toaster/notification.service';
+import { FlightManagementService } from './flight-management.service';
+import { Statuses } from '../types/enums/status';
+import { ReservationDTO } from '../dto/reservation.dto';
+import { ReservationService } from './reservation.service';
 
 @Injectable({ providedIn: 'root' })
 export class CaseService {
   private readonly _http = inject(HttpClient);
   private readonly _apiUrl = environment.API_URL;
   private readonly _notificationService = inject(NotificationService);
+  private readonly _flightService = inject(FlightManagementService);
+  private readonly _reservationService = inject(ReservationService);
 
-  public createCase(caseData: CaseDTO): void{
-      this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
-        next: (createdCase) => {
-          this._notificationService.showSuccess('Case created successfully');
-
-        },
-        error: (error) => {
-          this._notificationService.showError(error.error.detail);
-        }
-      });
-      
-
+  public createCase(caseData: CaseDTO): void {
+    this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
+      next: (createdCase) => {
+        this._notificationService.showSuccess('Case created successfully');
+      },
+      error: (error) => {
+        this._notificationService.showError(error.error.detail);
+      },
+    });
   }
 
   public checkEligibility(caseDTO: CaseDTO): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/cases/check-eligibility`, caseDTO);
+  }
+
+  public createAndSubmitCase(
+    clientID: string,
+    disruptionReason: string,
+    disruptionInfo: string,
+    reservationDTO: ReservationDTO,
+    beneficiary?: any
+  ): void {
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+
+    const caseData: CaseDTO = {
+      status: Statuses.PENDING,
+      disruptionReason: disruptionReason,
+      disruptionInfo: disruptionInfo,
+      date: formattedDate,
+      clientID: clientID,
+      assignedColleague: undefined,
+      reservation: reservationDTO,
+      documentList: [],
+      beneficiary: beneficiary,
+    };
+
+    this.checkEligibility(caseData).subscribe({
+      next: (isEligible) => {
+        if (isEligible) {
+          this.createCase(caseData);
+        } else {
+          this._notificationService.showError('You are not eligible for compensation');
+        }
+      },
+      error: (error) => {
+        this._notificationService.showError(error.error.detail);
+      },
+    });
+  }
+
+  public createReservationDTO(): ReservationDTO {
+    return {
+      reservationNumber: this._reservationService.getReservationInformation().reservationNumber,
+      flights: this._flightService.getAllFlights().map((flight, index) => {
+        const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
+        const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
+
+        const flightData = {
+          flightDate: this.extractDateOnly(departureDateTime),
+          flightNumber: flight.flightDetails.flightNumber,
+          departingAirport: flight.flightDetails.departingAirport || 'XXX',
+          destinationAirport: flight.flightDetails.destinationAirport || 'YYY',
+          departureTime: this.formatForLocalDateTime(departureDateTime),
+          arrivalTime: this.formatForLocalDateTime(arrivalDateTime),
+          airLine: flight.flightDetails.airline || 'UNKNOWN',
+          problematic: flight.isFlagged,
+        };
+        return flightData;
+      }),
+    };
+  }
+
+  private extractDateOnly(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Helper method to format date for Java LocalDateTime (without timezone)
+  private formatForLocalDateTime(date: Date): string {
+    return date.toISOString().slice(0, -1); // Removes the 'Z'
   }
 }
