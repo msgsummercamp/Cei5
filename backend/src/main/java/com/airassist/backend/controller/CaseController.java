@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/cases")
 @RequiredArgsConstructor
+
 public class CaseController {
 
     private final CaseService caseService;
@@ -71,6 +73,7 @@ public class CaseController {
         return ResponseEntity.ok(eligible);
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PatchMapping("/{caseId}/assign-employee/{employeeId}")
     public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) {
         Case changedCase = caseService.assignEmployee(caseId, employeeId);

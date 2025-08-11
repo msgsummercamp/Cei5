@@ -23,7 +23,8 @@ public class CacheWarmer implements CommandLineRunner {
             // Trigger the initial cache population.
             // .join() is necessary here to ensure the startup process waits
             // for the fetch to complete before the application is considered "ready".
-            airportApiFetchService.fetchAirportData();
+
+            //airportApiFetchService.fetchAirportData();
             logger.info("Cache warm-up for airports list completed successfully.");
         } catch (Exception e) {
             logger.error("Failed to warm up the airport cache on startup.", e);
