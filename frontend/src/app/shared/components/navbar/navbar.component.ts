@@ -110,6 +110,7 @@ export class NavbarComponent {
   }
 
   public logout(): void {
+    this._stepNavigationService.resetToFirstStep();
     this._authService.logOut();
   }
 
