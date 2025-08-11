@@ -3,20 +3,15 @@
     <p-menubar [model]="navbarMainItems" class="navbar w-full">
       <!--This section contains the elements that appear before the links in the middle of the navbar -->
       <ng-template pTemplate="start">
-        <div class="logo flex" routerLink="/">
+        <div class="logo flex align-items-center" routerLink="/">
           <img
             ngSrc="../../../../assets/photos/logo.png"
             alt="Logo"
-            width="25"
-            height="25"
+            width="34"
+            height="34"
             class="mr-2"
           />
-          <span
-            class="font-bold text-xl flex align-items-center mr-1"
-            id="logo-text"
-            style="font-family: 'Baloo 2', sans-serif; color: white"
-            >AIR-ASSIST.EU
-          </span>
+          <span class="font-bold flex align-items-center mr-1" id="logo-text"> AIR-ASSIST.EU </span>
         </div>
       </ng-template>
       <!--This section contains the links in the middle of the navbar -->
@@ -31,22 +26,19 @@
             [ngSrc]="selectedLanguageFlag"
             (click)="langSelect.show()"
             alt="Language"
-            width="24"
-            height="24"
+            width="32"
+            height="32"
           />
           <p-select
             #langSelect
+            class="visually-hidden"
             [options]="languages"
             [ngModel]="_languageService.getSelectedLanguageCode()"
             (ngModelChange)="selectLanguage($event)"
-            [placeholder]="_languageService.getSelectedLanguageCode()"
           >
             <ng-template pTemplate="item" let-language>
               <img [ngSrc]="language.flag" alt="Language" width="24" height="24" class="mr-2" />
               {{ language.code }}
-            </ng-template>
-            <ng-template pTemplate="selectedItem" let-language>
-              <span style="color: white">{{ language?.code }}</span>
             </ng-template>
           </p-select>
           <p-button
@@ -76,3 +68,4 @@
     </p-menubar>
   </div>
 </div>
+<div class="navbar-spacer"></div>
