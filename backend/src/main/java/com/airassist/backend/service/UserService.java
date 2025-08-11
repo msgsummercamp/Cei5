@@ -4,8 +4,9 @@ import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
+import com.airassist.backend.model.enums.Roles;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -74,6 +75,18 @@ public interface UserService {
      */
     void deleteUser(UUID id) throws UserNotFoundException;
 
+    /**
+     * Retrieves all users from the repository.
+     *
+     * @return a list of all users
+     * @throws UserNotFoundException if no users are found
+     */
+    List<User> getAllUsers() throws UserNotFoundException;
 
-
+    /**
+     * Retrieves all employees from the repository.
+     * @return a list of all employees with the role of EMPLOYEE
+     * @throws UserNotFoundException
+     */
+    List<User> getAllEmployees() throws UserNotFoundException;
 }
