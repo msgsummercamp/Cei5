@@ -13,24 +13,29 @@
   --p-select-placeholder-color: #ffffff;
 }
 
+.p-select-label.p-placeholder{
+  --p-select-placeholder-font-size: 1.5rem !important;
+}
+
 p-select-label{
   color: #ffffff;
 }
 
-::ng-deep .no-arrow .p-select-dropdown{
+::ng-deep .navbar-wrapper .p-select-dropdown{
   display: none !important; ;
-}
-
-.no-arrow {
-  margin-left: -0.2rem;
 }
 
 .selectedLanguageFlag{
   cursor: pointer;
+  margin-right: -0.7rem;
 }
 
 p-select-list-container{
   margin-right: 2rem;
+}
+
+::ng-deep .p-button-label {
+  font-size: 1.2rem !important;
 }
 
 .p-button-text:hover,{
@@ -38,9 +43,64 @@ p-select-list-container{
   background: none !important;
 }
 
-#logo-text{
-  cursor: default;
+::ng-deep .navbar-wrapper .p-button{
+  --p-button-primary-background: transparent;
+  --p-button-primary-border-color: transparent;
+  --p-button-primary-hover-background: none;
+  --p-button-primary-active-background: none;
+  --p-button-primary-hover-border-color: transparent;
+  --p-button-primary-active-border-color: transparent;
 }
 
+.visually-hidden{
+  width: 1px;
+  height: 1px;
+  padding: 0;
+}
 
+.logo{
+  cursor: pointer;
+}
 
+#logo-text{
+  font-family: 'Baloo 2', sans-serif;
+  color: white;
+  font-size: 1.3rem !important;
+}
+
+::ng-deep .p-menubar{
+  --p-menubar-padding: 1.2rem 1.2rem;
+}
+
+.navbar-wrapper{
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+::ng-deep .p-select-overlay {
+  margin-top: 2.3rem;
+  margin-right: 1.5rem;
+  margin-left: -3rem;
+}
+
+@media(max-width: 430px) {
+  .navbar-spacer {
+    height: 4.7rem;
+  }
+  #logo-text {
+    font-size: 1rem !important;
+  }
+}
+
+@media (min-width: 431px){
+  .navbar-spacer{
+    height: 3rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar-spacer {
+    height: 2rem;
+  }
+}

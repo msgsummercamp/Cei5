@@ -242,7 +242,7 @@ export class EligibilityPageComponent implements OnInit {
           departureTime: this.formatForLocalDateTime(departureDateTime), // Remove 'Z' for LocalDateTime
           arrivalTime: this.formatForLocalDateTime(arrivalDateTime), // Remove 'Z' for LocalDateTime
           airLine: flight.flightDetails.airline || 'UNKNOWN',
-          isProblematic: flight.isFlagged,
+          problematic: flight.isFlagged,
         };
         return flightData;
       }),

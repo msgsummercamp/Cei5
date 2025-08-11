@@ -47,6 +47,11 @@
     .p-datepicker {
       --p-datepicker-date-selected-background: #a6eb55;
     }
+
+    .flag-active .p-button-label,
+    .flag-active .pi-flag {
+      color: #f44336 !important;
+    }
   }
 }
 
