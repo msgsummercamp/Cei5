@@ -161,7 +161,7 @@ export class UserRegistrationComponent {
       }
 
       if (readOnly) {
-        this.disabeUserFields();
+        this.disableUserFields();
         this.areFieldsDisabled = true;
       }
     });
@@ -195,8 +195,6 @@ export class UserRegistrationComponent {
           Validators.maxLength(10),
           Validators.pattern(/^[a-zA-Z0-9- ]+$/),
         ];
-      case 'someoneElseIsUnderage':
-        return [Validators.required];
       default:
         return [];
     }
@@ -251,7 +249,7 @@ export class UserRegistrationComponent {
     }
   }
 
-  private disabeUserFields(): void {
+  private disableUserFields(): void {
     const fields = [
       'email',
       'firstName',
@@ -279,7 +277,6 @@ export class UserRegistrationComponent {
           'someoneElseLastName',
           'someoneElseAddress',
           'someoneElsePostalCode',
-          'someoneElseIsUnderage',
         ];
 
         fields.forEach((field) => {
