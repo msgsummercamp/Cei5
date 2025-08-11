@@ -84,7 +84,8 @@
       "airlineMotives": {
         "technicalProblems": "Technical problems",
         "badWeather": "Meteorological conditions",
-        "strike": "Strike",
+        "flightAttendantsStrike": "Flight attendant's strike",
+        "airportStaffStrike": "Airport staff's strike",
         "airportProblems": "Problems with airport",
         "crewProblems": "Crew problems",
         "other": "Other motives"

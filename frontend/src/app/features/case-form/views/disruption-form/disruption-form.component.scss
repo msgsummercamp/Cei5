@@ -8,12 +8,19 @@
   .disruption-wrapper {
     .p-scrollpanel {
       width: 30rem;
-      height: 37rem;
+      height: 25rem;
     }
 
     @media(max-width: 700px) {
       .p-scrollpanel {
         width: 22rem;
+        height: 37rem;
+      }
+    }
+
+    @media(min-width: 1900px) {
+      .p-scrollpanel {
+        height: 30rem;
       }
     }
   }

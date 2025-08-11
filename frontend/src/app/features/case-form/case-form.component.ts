@@ -43,6 +43,7 @@ import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -76,6 +77,7 @@ type DisruptionForm = {
     TranslatePipe,
     ConfirmationFormComponent,
     CheckboxModule,
+    ScrollPanel,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',

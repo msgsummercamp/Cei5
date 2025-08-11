@@ -89,7 +89,8 @@
       "airlineMotives": {
         "technicalProblems": "Probleme tehnice",
         "badWeather": "Condiții meteorologice",
-        "strike": "Grevă",
+        "flightAttendantsStrike": "Greva însoțitorilor de zbor",
+        "airportStaffStrike": "Greva personalului aeroportului",
         "airportProblems": "Probleme cu aeroportul",
         "crewProblems": "Probleme cu echipajul",
         "other": "Alte motive"

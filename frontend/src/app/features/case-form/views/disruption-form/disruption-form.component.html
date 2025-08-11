@@ -27,7 +27,7 @@
             }
           </div>
         </div>
-        <div>
+        <div class="px-1">
           @if (this.disruptionForm.controls.disruptionType.value === 'Cancellation') {
             <div class="mt-5">
               <p-message severity="secondary" variant="simple"
@@ -67,7 +67,10 @@
               </div>
             </div>
           }
-          @if (this.disruptionForm.controls.disruptionType.value === 'Delay') {
+          @if (
+            this.disruptionForm.controls.disruptionType.value === 'Delay' ||
+            this.disruptionForm.controls.disruptionType.value === 'Cancellation'
+          ) {
             <div class="mt-5">
               <p-message severity="secondary" variant="simple"
                 >{{ 'disruption-form.delayQuestion' | translate }}
@@ -263,13 +266,30 @@
                   </div>
                   <div class="pb-1">
                     <p-radio-button
-                      value="Strike"
+                      value="Flight Attendant's Strike"
                       inputId="airline-motive-followup-answer3"
                       formControlName="airlineMotiveFollowUpAnswer"
                     ></p-radio-button>
                     <label for="airline-motive-followup-answer3">
                       &nbsp;
-                      {{ 'disruption-form.airlineMotive.airlineMotives.strike' | translate }}</label
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.flightAttendantsStrike'
+                          | translate
+                      }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Airport Staff's Strike"
+                      inputId="airline-motive-followup-answer3"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer3">
+                      &nbsp;
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.airportStaffStrike'
+                          | translate
+                      }}</label
                     >
                   </div>
                   <div class="pb-1">

@@ -36,7 +36,7 @@ public class UserDetails {
     @Size(max = 10, message = "Postal code must be less than 10 characters")
     private String postalCode;
 
-    @Column(nullable = false)
+    @Column()
     @PastOrPresent(message = "Birth date cannot be in the future")
     private LocalDate birthDate;
 }

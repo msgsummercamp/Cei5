@@ -6,7 +6,7 @@
   <form
     novalidate
     [formGroup]="flightDetailsForm"
-    class="flex flex-column gap-4 justify-content-center align-items-center mt-4"
+    class="flex flex-column gap-4 justify-content-center md:align-items-center mt-3 p-4 pt-0 md:pb-0"
   >
     <!-- Flight Number -->
     <div>
@@ -18,7 +18,7 @@
           formControlName="flightNumber"
           id="flightNumber"
           (input)="checkAndEmitValidity()"
-          class="w-25rem h-3rem"
+          class="w-full md:w-25rem h-3rem"
         />
       </p-floatlabel>
       <div class="error-placeholder">
@@ -54,7 +54,7 @@
           formControlName="airline"
           id="airline"
           (input)="checkAndEmitValidity()"
-          class="w-25rem h-3rem"
+          class="w-full md:w-25rem h-3rem"
         />
       </p-floatlabel>
       <div class="error-placeholder">
@@ -92,7 +92,7 @@
           [maxDate]="maxDate"
           [readonlyInput]="true"
           (onSelect)="checkAndEmitValidity()"
-          [styleClass]="'w-25rem h-3rem'"
+          [styleClass]="'w-full md:w-25rem h-3rem'"
         />
         <label for="plannedDepartureTime">{{
           'flightForm.plannedDepartureTime' | translate
@@ -121,7 +121,7 @@
           [maxDate]="maxDate"
           [readonlyInput]="true"
           (onSelect)="checkAndEmitValidity()"
-          [styleClass]="'w-25rem h-3rem'"
+          [styleClass]="'w-full md:w-25rem h-3rem'"
         />
         <label for="plannedArrivalTime">{{ 'flightForm.plannedArrivalTime' | translate }}</label>
       </p-floatlabel>
