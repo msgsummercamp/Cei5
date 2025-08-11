@@ -542,7 +542,6 @@ export class CaseFormComponent implements OnInit {
               if (this.userDetailsFormData) {
                 this.userDetailsFormData.completedBy.id = createdUser?.id;
               }
-              this.submitCase();
             } else {
               this._notificationService.showInfo(
                 'If you want to view all your cases you need to sign in.'
@@ -553,10 +552,6 @@ export class CaseFormComponent implements OnInit {
             this._notificationService.showError(error.error.detail);
           },
         });
-
-        return;
-      } else {
-        return;
       }
     }
 
@@ -567,6 +562,12 @@ export class CaseFormComponent implements OnInit {
       }
     });
 
+    if (clientID === null) {
+      this._notificationService.showError(
+        this._translateService.instant('auth-service.fetch-user-details-error')
+      );
+      return;
+    }
     this._caseService.createAndSubmitCase(
       clientID,
       this.getDisruptionReason(),
