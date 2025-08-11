@@ -104,13 +104,12 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
-    "failed-to-send-email": "Eroare la trimiterea emailului",
     "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
     "password-reset-failed": "Eroare la resetarea parolei",
     "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
-    "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
+    "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului: "
   },
   "sign-in": {
     "title": "Introduceți datele contului dvs.",
@@ -266,6 +265,7 @@
     "airlineRequired": "Numele companiei aeriene este obligatoriu.",
     "airlineMinLength": "Numele companiei aeriene trebuie să aibă cel puțin 3 caractere.",
     "airlineMaxLength": "Numele companiei aeriene trebuie să aibă cel mult 50 de caractere.",
+    "airlineNotEmptyAfterTrim": "Numele companiei aeriene nu poate fi gol.",
     "plannedDepartureTime": "Ora planificată de plecare",
     "plannedDepartureTimeRequired": "Ora planificată de plecare este obligatorie.",
     "plannedArrivalTime": "Ora planificată de sosire",
@@ -279,7 +279,7 @@
     "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
     "congratulations": "Felicitari.",
     "eligible": "Ești eligibil pentru compensație.",
-    "continueWithPersoinalDetails": "Continua cu datele personale.",
+    "continueWithPersonalDetails": "Continua cu datele personale.",
     "sorry": "Scuze",
     "notEligible": "Cazul tau nu este eligibil pentru compensare conform reglementărilor UE.",
     "restart": "Reporniti de la inceput."
@@ -289,5 +289,24 @@
   },
   "user-service": {
     "error": "Eroare"
+  },
+  "api-errors": {
+    "invalid-airport-details": "Detalii aeroport invalide: de la {{departingAirportCode}} la {{destinationAirportCode}}. Vă rugăm să verificați codurile aeroporturilor.",
+    "generic-server-error": "Serverul a întâmpinat o eroare la procesarea cererii dumneavoastră.",
+    "server-interrupt-error": "Serverul a fost întrerupt în timpul preluării datelor.",
+    "user-not-found": "Utilizatorul nu există.",
+    "invalid-password": "Parolă introdusă invalidă.",
+    "duplicate-user": "Există deja un utilizator cu acest email.",
+    "messaging-error": "A apărut o eroare la trimiterea emailului. Vă rugăm să încercați din nou mai târziu.",
+    "invalid-token": "Tokenul furnizat este invalid sau a expirat.",
+    "json-parse-error": "A apărut o eroare la procesarea datelor JSON.",
+    "password-api-error": "A apărut o eroare la generarea parolei.",
+    "pdf-generation-error": "A apărut o eroare la generarea PDF-ului.",
+    "case-not-found": "Cazul nu a fost găsit.",
+    "case-validation-error": "Datele cazului furnizate sunt invalide. Vă rugăm să verificați datele introduse.",
+    "data-integrity-violation": "Ne pare rău, cererea nu a putut fi finalizată din cauza unui conflict de date. Vă rugăm să verificați datele și să încercați din nou.",
+    "illegal-argument-": "Datele furnizate nu sunt valide. Vă rugăm să verificați datele și să încercați din nou.",
+    "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
+    "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou."
   }
 }

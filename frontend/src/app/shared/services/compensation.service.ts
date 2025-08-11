@@ -1,7 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, Subject, switchMap, throwError } from 'rxjs';
+import { catchError, of, Subject, switchMap } from 'rxjs';
+import { NotificationService } from './toaster/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiError } from '../types/api-error';
 
 type DistanceWrapper = {
   departureCode: string;
@@ -13,6 +16,9 @@ type DistanceWrapper = {
 })
 export class CompensationService {
   private _httpClient = inject(HttpClient);
+  private _notificationService = inject(NotificationService);
+  private _translationService = inject(TranslateService);
+
   private readonly URL = environment.API_URL + '/airports/compensation';
 
   private _calculateDistance = new Subject<DistanceWrapper>();
@@ -30,10 +36,17 @@ export class CompensationService {
         '&destinationAirportCode=' +
         airportData.destinationCode;
 
-      return this._httpClient.post<number>(endpoint, {});
-    }),
-    catchError((error: Error) => {
-      return throwError(() => error);
+      return this._httpClient.post<number>(endpoint, {}).pipe(
+        catchError((error) => {
+          const apiError: ApiError = error?.error;
+          const message = this._translationService.instant('invalid-airport-details', {
+            departingAirportCode: airportData.departureCode,
+            destinationAirportCode: airportData.destinationCode,
+          });
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+          return of(null);
+        })
+      );
     })
   );
 }

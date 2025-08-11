@@ -152,7 +152,7 @@ export class CaseFormComponent implements OnInit {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
-  public compensation?: number;
+  public compensation?: number | null;
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
 
   public readonly departingAirportValue = toSignal(
@@ -651,9 +651,7 @@ export class CaseFormComponent implements OnInit {
 
     // Fallback to form if available
     if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
-      const formInfo = this.disruptionForm.getDisruptionDescription();
-
-      return formInfo;
+      return this.disruptionForm.getDisruptionDescription();
     }
 
     return '';
