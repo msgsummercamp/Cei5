@@ -39,11 +39,11 @@ export class CompensationService {
       return this._httpClient.post<number>(endpoint, {}).pipe(
         catchError((error) => {
           const apiError: ApiError = error?.error;
-          const message = this._translationService.instant('invalid-airport-details', {
+          const message = this._translationService.instant(apiError.detail, {
             departingAirportCode: airportData.departureCode,
             destinationAirportCode: airportData.destinationCode,
           });
-          this._notificationService.showError(this._translationService.instant(apiError.detail));
+          this._notificationService.showError(message);
           return of(null);
         })
       );

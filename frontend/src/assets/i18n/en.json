@@ -304,7 +304,7 @@
     "server-interrupt-error": "The server was interrupted while fetching data.",
     "user-not-found": "User does not exist.",
     "invalid-password": "Invalid password provided.",
-    "duplicate-user": "A user with this email already exists",
+    "duplicate-user": "A user with this email already exists.",
     "messaging-error": "An error occurred while sending the email. Please try again later.",
     "invalid-token": "The provided token is invalid or has expired.",
     "json-parse-error": "An error occurred while parsing the JSON data.",
