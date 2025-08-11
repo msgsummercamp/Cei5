@@ -2,22 +2,18 @@ package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
-import com.airassist.backend.model.Case;
-import com.airassist.backend.model.Reservation;
-import com.airassist.backend.model.User;
-import com.airassist.backend.model.Flight;
+import com.airassist.backend.model.*;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.service.CaseService;
 import com.airassist.backend.repository.ReservationRepository;
 import com.airassist.backend.repository.UserRepository;
-import com.airassist.backend.service.CaseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,18 +27,18 @@ public class CaseServiceImpl implements CaseService {
     private final CaseRepository caseRepository;
     private final CaseMapper caseMapper;
     private static final Logger logger = LoggerFactory.getLogger(CaseServiceImpl.class);
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final ReservationMapper reservationMapper;
+    private final BeneficiaryMapper beneficiaryMapper;
     private ReservationRepository reservationRepository;
 
 
-
-    public CaseServiceImpl(CaseRepository caseRepository, CaseMapper caseMapper, ReservationMapper reservationMapper) {
+    public CaseServiceImpl(CaseRepository caseRepository, UserRepository userRepository, CaseMapper caseMapper, ReservationMapper reservationMapper, BeneficiaryMapper beneficiaryMapper) {
         this.caseRepository = caseRepository;
         this.caseMapper = caseMapper;
         this.reservationMapper = reservationMapper;
-
+        this.beneficiaryMapper = beneficiaryMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -60,6 +56,7 @@ public class CaseServiceImpl implements CaseService {
     public Case createCase(CaseDTO caseDTO) {
         Case caseToAdd = caseMapper.toEntity(caseDTO);
         Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
+        Beneficiary beneficiary = beneficiaryMapper.toEntity(caseDTO.getBeneficiary());
 
         if (reservation.getFlights() != null) {
             reservation.getFlights().forEach(flight -> flight.setReservation(reservation));
@@ -98,6 +95,8 @@ public class CaseServiceImpl implements CaseService {
                 }
             }
         }
+
+        caseToAdd.setBeneficiary(beneficiary);
 
         logger.info("Service - creating a new case: {}", caseToAdd);
         caseToAdd.setStatus(checkEligibility(caseToAdd) ? Statuses.VALID : Statuses.INVALID);
@@ -151,6 +150,7 @@ public class CaseServiceImpl implements CaseService {
         target.setAssignedColleague(source.getAssignedColleague());
         target.setReservation(source.getReservation());
         target.setDocumentList(source.getDocumentList());
+        target.setBeneficiary(source.getBeneficiary());
     }
 
 

@@ -38,10 +38,9 @@ import {
   DisruptionFormData,
 } from './views/disruption-form/disruption-form.component';
 import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
-import { User } from '../../shared/types/user';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
@@ -51,6 +50,8 @@ import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TranslateService } from '@ngx-translate/core';
+import { CaseFormUserData } from '../../shared/types/case-form-userdata';
+import { NotificationService } from '../../shared/services/toaster/notification.service';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -103,7 +104,12 @@ export class CaseFormComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
+  private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
+
+  private _lastUserRegistrationData?: CaseFormUserData;
+  private _lastUser?: any;
+  private _lastCompletedFor?: any;
 
   // Form for reservation details
   protected readonly reservationForm = this._formBuilder.group(
@@ -143,7 +149,7 @@ export class CaseFormComponent implements OnInit {
   public flightData: FlightDetails | null = null;
   public isUserRegistrationValid = false;
   public loggedInUserData = this._userService.userDetails;
-  public userDetailsFormData: User | null = null;
+  public userDetailsFormData: CaseFormUserData | null = null;
   public currentStep = toSignal(this._navigationService.currentStep$, { initialValue: 1 });
   public airportsSuggestion: AirportResponse[] = [];
   public airports = toSignal(this._airportsService.airports$, {
@@ -528,19 +534,25 @@ export class CaseFormComponent implements OnInit {
     return result.hasBeenChecked && result.isEligible === true;
   }
 
-  public onUserRegistrationValidityChange(valid: boolean, data: User | null): void {
+  public onUserRegistrationValidityChange(valid: boolean, data: CaseFormUserData | null): void {
     this.isUserRegistrationValid = valid;
     this.userDetailsFormData = data;
   }
 
-  public get userRegistrationInitialData(): User | undefined {
-    if (this.loggedInUserData()) {
-      return this.loggedInUserData();
-    } else if (this.userDetailsFormData) {
-      return this.userDetailsFormData;
-    } else {
-      return undefined;
+  public get userRegistrationInitialData(): CaseFormUserData | undefined {
+    const user = this.loggedInUserData();
+    const completedFor = this.userDetailsFormData?.completedFor;
+
+    if (user !== this._lastUser || completedFor !== this._lastCompletedFor) {
+      this._lastUser = user;
+      this._lastCompletedFor = completedFor;
+      this._lastUserRegistrationData = user
+        ? { completedBy: { ...user }, completedFor: completedFor ? { ...completedFor } : null }
+        : this.userDetailsFormData
+          ? { ...this.userDetailsFormData }
+          : undefined;
     }
+    return this._lastUserRegistrationData;
   }
 
   public areAllConnectionFlightsValid(): boolean {
@@ -552,130 +564,66 @@ export class CaseFormComponent implements OnInit {
       return;
     }
 
+    this._notificationService.showInfo(
+      this._translateService.instant('case-form.submission-in-progress')
+    );
     const clientID = this.getClientId();
 
     if (!clientID) {
       if (this.userDetailsFormData) {
-        // ✅ FIX: Subscribe to the Observable to actually execute the HTTP request
-        this._userService.createUser(this.userDetailsFormData).subscribe({
+        this._userService.createUser(this.userDetailsFormData.completedBy).subscribe({
           next: (createdUser) => {
-            // Check if the created user has an ID and retry case submission
             if (createdUser?.id) {
               if (this.userDetailsFormData) {
-                this.userDetailsFormData.id = createdUser?.id;
+                this.userDetailsFormData.completedBy.id = createdUser?.id;
               }
-              this.submitCase(); // Retry submission with the new user
             } else {
-              // Handle the case where user is created but needs to sign in
+              this._notificationService.showInfo(
+                'If you want to view all your cases you need to sign in.'
+              );
             }
           },
           error: (error) => {
-            // TODO: Show error message to user
+            this._notificationService.showError(error.error.detail);
           },
         });
-
-        return; // Exit early since we're handling registration
-      } else {
-        return;
       }
     }
 
-    // Continue with case submission if we have a client ID
-    this.createAndSubmitCase(clientID);
-  }
-
-  private createAndSubmitCase(clientID: string): void {
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-
-    const caseData: CaseDTO = {
-      status: Statuses.PENDING,
-      disruptionReason: this.getDisruptionReason(),
-      disruptionInfo: this.getDisruptionInfo(),
-      date: formattedDate,
-      clientID: clientID,
-      assignedColleague: undefined,
-      reservation: this.createReservationDTO(),
-      documentList: [],
-    };
-
-    this._caseService.checkEligibility(caseData).subscribe({
-      next: (isEligible) => {
-        if (isEligible) {
-          this._caseService.createCase(caseData);
-        } else {
-          // TODO: Add handling for ineligible case - show message to user
-        }
-      },
-      error: (error) => {
-        // TODO: Add error handling here - show error message to user
-      },
+    const flagStatus = this._flightService.getFlagStatus();
+    this._flightService.getAllFlights().forEach((flight, index) => {
+      if (index < flagStatus.length) {
+        flight.isFlagged = flagStatus[index];
+      }
     });
+
+    if (clientID === null) {
+      this._notificationService.showError(
+        this._translateService.instant('auth-service.fetch-user-details-error')
+      );
+      return;
+    }
+    this._caseService.createAndSubmitCase(
+      clientID,
+      this.getDisruptionReason(),
+      this.getDisruptionInfo(),
+      this._caseService.createReservationDTO(),
+      this.userDetailsFormData?.completedFor
+    );
   }
 
   private getClientId(): string | null {
     const loggedInUser = this.loggedInUserData();
-    const userDetails = this.userDetailsFormData;
+    const userDetails = this.userDetailsFormData?.completedBy;
     if (loggedInUser?.id) {
       return loggedInUser.id;
     }
 
-    if (this.userDetailsFormData?.id) {
-      return this.userDetailsFormData.id;
+    if (userDetails?.id) {
+      return userDetails.id;
     }
 
     return null;
-  }
-
-  public getDisruptionReason(): string {
-    // First try saved data (this should be available when on step 7)
-    if (this.disruptionFormData?.disruptionType) {
-      // Map the disruption type to the proper reason using the same logic as DisruptionFormComponent
-      if (this.disruptionFormData.disruptionType === 'Cancellation') {
-        if (this.disruptionFormData.cancellationAnswer === '>14 days') {
-          return 'CANCELATION_NOTICE_OVER_14_DAYS';
-        } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
-          return 'CANCELATION_NOTICE_UNDER_14_DAYS';
-        }
-        return 'CANCELATION_ON_DAY_OF_DEPARTURE';
-      } else if (this.disruptionFormData.disruptionType === 'Delay') {
-        if (this.disruptionFormData.delayAnswer === '>3 hours') {
-          return 'ARRIVED_3H_LATE';
-        } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
-          return 'ARRIVED_EARLY';
-        }
-        return 'NEVER_ARRIVED';
-      } else if (this.disruptionFormData.disruptionType === 'Denied_Boarding') {
-        if (this.disruptionFormData.deniedBoardingAnswer === 'No') {
-          return 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY';
-        }
-        return 'DID_GIVE_THE_SEAT_VOLUNTARILY';
-      }
-    }
-
-    // Fallback to form if available (when actually on the disruption form step)
-    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
-      return this.disruptionForm.getResponseForDisruption();
-    }
-
-    return '';
-  }
-
-  // Fix getDisruptionInfo method
-  public getDisruptionInfo(): string {
-    // First try saved data
-    if (this.disruptionFormData?.disruptionInformation) {
-      return this.disruptionFormData.disruptionInformation;
-    }
-
-    // Fallback to form if available
-    if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
-      const formInfo = this.disruptionForm.getDisruptionDescription();
-
-      return formInfo;
-    }
-
-    return '';
   }
 
   public resetAllFormData(): void {
@@ -698,43 +646,6 @@ export class CaseFormComponent implements OnInit {
     this._reservationService.resetReservation();
     this._flightService.resetAllData();
     this._navigationService.resetToFirstStep();
-  }
-
-  private createReservationDTO(): ReservationDTO {
-    return {
-      reservationNumber: this.reservationInformation.reservationNumber,
-      flights: this._flightService.getAllFlights().map((flight, index) => {
-        const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
-        const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
-
-        const flightData = {
-          flightDate: this.extractDateOnly(departureDateTime), // Convert to string (YYYY-MM-DD)
-          flightNumber: flight.flightDetails.flightNumber || `FLIGHT${index + 1}`,
-          departingAirport: flight.flightDetails.departingAirport || 'XXX',
-          destinationAirport: flight.flightDetails.destinationAirport || 'YYY',
-          departureTime: this.formatForLocalDateTime(departureDateTime), // Remove 'Z' for LocalDateTime
-          arrivalTime: this.formatForLocalDateTime(arrivalDateTime), // Remove 'Z' for LocalDateTime
-          airLine: flight.flightDetails.airline || 'UNKNOWN',
-          isProblematic: flight.isFlagged,
-        };
-        return flightData;
-      }),
-    };
-  }
-
-  // Helper method to format date for Java LocalDateTime (without timezone)
-  private formatForLocalDateTime(date: Date): string {
-    // Convert to ISO string and remove the 'Z' at the end
-    return date.toISOString().slice(0, -1); // Removes the 'Z'
-    // This converts "2025-08-01T08:59:42.000Z" to "2025-08-01T08:59:42.000"
-  }
-
-  // Helper method to extract date only (YYYY-MM-DD format)
-  private extractDateOnly(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   public getAirportDisplayName(code: string): string {
@@ -794,5 +705,50 @@ export class CaseFormComponent implements OnInit {
     }
 
     return null;
+  }
+
+  public getDisruptionReason(): string {
+    if (this.disruptionFormData?.disruptionType) {
+      if (this.disruptionFormData.disruptionType === 'Cancellation') {
+        if (this.disruptionFormData.cancellationAnswer === '>14 days') {
+          return 'CANCELATION_NOTICE_OVER_14_DAYS';
+        } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
+          return 'CANCELATION_NOTICE_UNDER_14_DAYS';
+        }
+        return 'CANCELATION_ON_DAY_OF_DEPARTURE';
+      } else if (this.disruptionFormData.disruptionType === 'Delay') {
+        if (this.disruptionFormData.delayAnswer === '>3 hours') {
+          return 'ARRIVED_3H_LATE';
+        } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
+          return 'ARRIVED_EARLY';
+        }
+        return 'NEVER_ARRIVED';
+      } else if (this.disruptionFormData.disruptionType === 'Denied_Boarding') {
+        if (this.disruptionFormData.deniedBoardingAnswer === 'No') {
+          return 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY';
+        }
+        return 'DID_GIVE_THE_SEAT_VOLUNTARILY';
+      }
+    }
+
+    if (this.disruptionForm && this.disruptionForm.getResponseForDisruption) {
+      return this.disruptionForm.getResponseForDisruption();
+    }
+
+    return '';
+  }
+
+  public getDisruptionInfo(): string {
+    if (this.disruptionFormData?.disruptionInformation) {
+      return this.disruptionFormData.disruptionInformation;
+    }
+
+    if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
+      const formInfo = this.disruptionForm.getDisruptionDescription();
+
+      return formInfo;
+    }
+
+    return '';
   }
 }
