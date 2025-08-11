@@ -22,4 +22,5 @@ public interface CaseService {
 
     boolean checkEligibility(Case caseEntity);
 
+    Case assignEmployee(UUID caseId, UUID employeeId);
 }

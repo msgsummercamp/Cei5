@@ -6,6 +6,7 @@ import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.service.CaseService;
@@ -153,5 +154,27 @@ public class CaseServiceImpl implements CaseService {
         target.setBeneficiary(source.getBeneficiary());
     }
 
+    @Override
+    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException {
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
+            logger.warn("Service - Case with ID {} not found for update", caseId);
+            return new EntityNotFoundException("Case not found.");
+        });
 
+        User employee = userRepository.findById(employeeId).orElseThrow(() -> {
+            logger.warn("Service - Employee with ID {} not found", employeeId);
+            return new EntityNotFoundException("Employee not found.");
+        });
+
+        if(employee.getRole() != Roles.EMPLOYEE) {
+            logger.warn("User with ID {} does not have EMPLOYEE role", employeeId);
+            throw new IllegalArgumentException("User is not an employee.");
+        }
+
+        caseEntity.setAssignedColleague(employee);
+        caseRepository.save(caseEntity);
+        logger.info("Case with ID {} has an employee assigned: {}", caseId, employeeId);
+
+        return caseEntity;
+    }
 }

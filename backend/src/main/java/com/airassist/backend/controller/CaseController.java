@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,5 +69,12 @@ public class CaseController {
     public ResponseEntity<Boolean> checkEligibility(@RequestBody CaseDTO caseDTO) {
         boolean eligible = caseService.checkEligibility(caseMapper.toEntity(caseDTO));
         return ResponseEntity.ok(eligible);
+    }
+
+    @PatchMapping("/{caseId}/assign-employee/{employeeId}")
+    public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) {
+        Case changedCase = caseService.assignEmployee(caseId, employeeId);
+        CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(changedCase);
+        return ResponseEntity.ok(updatedCaseResponse);
     }
 }
