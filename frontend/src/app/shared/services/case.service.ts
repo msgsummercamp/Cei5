@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ObservableLike, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
 import { CaseDTO } from '../dto/case.dto';
@@ -9,6 +9,7 @@ import { FlightManagementService } from './flight-management.service';
 import { Statuses } from '../types/enums/status';
 import { ReservationDTO } from '../dto/reservation.dto';
 import { ReservationService } from './reservation.service';
+import { Beneficiary } from '../types/beneficiary';
 
 @Injectable({ providedIn: 'root' })
 export class CaseService {
@@ -38,7 +39,7 @@ export class CaseService {
     disruptionReason: string,
     disruptionInfo: string,
     reservationDTO: ReservationDTO,
-    beneficiary?: any
+    beneficiary?: Beneficiary | null
   ): void {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0];

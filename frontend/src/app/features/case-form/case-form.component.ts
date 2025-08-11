@@ -545,7 +545,7 @@ export class CaseFormComponent implements OnInit {
               this.submitCase();
             } else {
               this._notificationService.showInfo(
-                'If you wan to view all youre cases you need to sign in.'
+                'If you want to view all your cases you need to sign in.'
               );
             }
           },
@@ -563,7 +563,6 @@ export class CaseFormComponent implements OnInit {
     const flagStatus = this._flightService.getFlagStatus();
     this._flightService.getAllFlights().forEach((flight, index) => {
       if (index < flagStatus.length) {
-        const oldFlag = flight.isFlagged;
         flight.isFlagged = flagStatus[index];
       }
     });
@@ -572,7 +571,8 @@ export class CaseFormComponent implements OnInit {
       clientID,
       this.getDisruptionReason(),
       this.getDisruptionInfo(),
-      this._caseService.createReservationDTO()
+      this._caseService.createReservationDTO(),
+      this.userDetailsFormData?.completedFor
     );
   }
 
