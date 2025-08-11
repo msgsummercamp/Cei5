@@ -8,6 +8,7 @@ import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.*;
 import com.airassist.backend.model.enums.ApiErrorMessages;
+import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.service.CaseService;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -155,5 +157,50 @@ public class CaseServiceImpl implements CaseService {
         target.setBeneficiary(source.getBeneficiary());
     }
 
+    @Override
+    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException {
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
+            logger.warn("Service - Case with ID {} not found for update", caseId);
+            return new EntityNotFoundException("Case not found.");
+        });
 
+        User employee = userRepository.findById(employeeId).orElseThrow(() -> {
+            logger.warn("Service - Employee with ID {} not found", employeeId);
+            return new EntityNotFoundException("Employee not found.");
+        });
+
+        if(employee.getRole() != Roles.EMPLOYEE) {
+            logger.warn("User with ID {} does not have EMPLOYEE role", employeeId);
+            throw new IllegalArgumentException("User is not an employee.");
+        }
+
+        caseEntity.setAssignedColleague(employee);
+        caseRepository.save(caseEntity);
+        logger.info("Case with ID {} has an employee assigned: {}", caseId, employeeId);
+
+        return caseEntity;
+    }
+
+    public List<Case> getCasesForClient(UUID clientId) {
+        List<Case> cases = caseRepository.getCasesByClientId(clientId);
+        logger.info("Service - fetching all cases for client {}", clientId);
+
+        if(cases.isEmpty()) {
+            logger.warn("There are no cases for the client: {}", clientId);
+            throw new EntityNotFoundException("Cases not found for client.");
+        }
+
+        return cases;
+    }
+
+    public Case setCaseStatus(UUID caseId, Statuses status) {
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
+            logger.warn("Service - Case with ID {} not found for update", caseId);
+            return new EntityNotFoundException("Case not found.");
+        });
+
+        caseEntity.setStatus(status);
+        caseRepository.save(caseEntity);
+        return caseEntity;
+    }
 }

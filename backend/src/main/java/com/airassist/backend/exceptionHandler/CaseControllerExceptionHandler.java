@@ -49,5 +49,4 @@ public class CaseControllerExceptionHandler {
     public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.NOT_FOUND, ApiErrorMessages.USER_NOT_FOUND.getCode());
     }
-
 }

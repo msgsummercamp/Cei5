@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -186,5 +186,39 @@ public class UserServiceImpl implements UserService {
         if (source.getPostalCode() != null) target.setPostalCode(source.getPostalCode());
         if (source.getPhoneNumber() != null) target.setPhoneNumber(source.getPhoneNumber());
         if (source.getBirthDate() != null) target.setBirthDate(source.getBirthDate());
+    }
+
+    /**
+     * Retrieves all users from the repository.
+     * @return List of all users
+     * @throws UserNotFoundException
+     */
+    public List<User> getAllUsers() throws UserNotFoundException {
+        logger.info("UserService - Fetching all users");
+        List<User> users = userRepository.findAll();
+
+        if(users.isEmpty()) {
+            logger.warn("Users not found.");
+            throw new UserNotFoundException();
+        }
+
+        return users;
+    }
+
+    /**
+     * Retrieves all employees from the repository.
+     * @return List of all employees with the specified role
+     * @throws UserNotFoundException
+     */
+    public List<User> getAllEmployees() throws UserNotFoundException {
+        logger.info("UserService - Fetching all employees");
+        List<User> employees = userRepository.findAllEmployees(Roles.EMPLOYEE);
+
+        if(employees.isEmpty()) {
+            logger.warn("Employee not found.");
+            throw new UserNotFoundException();
+        }
+
+        return employees;
     }
 }

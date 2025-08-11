@@ -134,7 +134,8 @@
   },
   "navbar": {
     "login": "Loghează-te",
-    "logout": "Deconectează-te"
+    "logout": "Deconectează-te",
+    "profile": "Profil"
   },
   "request-reset": {
     "title": "Resetare parolă",
