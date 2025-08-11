@@ -93,6 +93,7 @@ public class CaseController {
         return ResponseEntity.ok(userCaseDTOs);
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PatchMapping("/{caseId}/{status}")
     public ResponseEntity<CaseResponseDTO> setStatusForCase(@PathVariable UUID caseId, @PathVariable Statuses status) {
         Case changedCase = caseService.setCaseStatus(caseId, status);
