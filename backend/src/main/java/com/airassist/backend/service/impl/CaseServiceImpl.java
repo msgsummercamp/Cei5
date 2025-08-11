@@ -190,4 +190,15 @@ public class CaseServiceImpl implements CaseService {
 
         return cases;
     }
+
+    public Case setCaseStatus(UUID caseId, Statuses status) {
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
+            logger.warn("Service - Case with ID {} not found for update", caseId);
+            return new EntityNotFoundException("Case not found.");
+        });
+
+        caseEntity.setStatus(status);
+        caseRepository.save(caseEntity);
+        return caseEntity;
+    }
 }

@@ -2,6 +2,7 @@ package com.airassist.backend.service;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.model.Case;
+import com.airassist.backend.model.enums.Statuses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,6 @@ public interface CaseService {
     Case assignEmployee(UUID caseId, UUID employeeId);
 
     List<Case> getCasesForClient(UUID clientId);
+
+    Case setCaseStatus(UUID caseId, Statuses status);
 }

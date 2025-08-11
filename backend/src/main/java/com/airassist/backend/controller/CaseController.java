@@ -5,6 +5,7 @@ import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.CaseResponseMapper;
 import com.airassist.backend.model.Case;
+import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.service.CaseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,7 @@ public class CaseController {
     @PatchMapping("/{caseId}/assign-employee/{employeeId}")
     public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) {
         Case changedCase = caseService.assignEmployee(caseId, employeeId);
+        changedCase = caseService.setCaseStatus(changedCase.getId(), Statuses.ASSIGNED);
         CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(changedCase);
         return ResponseEntity.ok(updatedCaseResponse);
     }
@@ -89,5 +91,12 @@ public class CaseController {
                 .map(caseResponseMapper::toCaseResponseDTO)
                 .toList();
         return ResponseEntity.ok(userCaseDTOs);
+    }
+
+    @PatchMapping("/{caseId}/{status}")
+    public ResponseEntity<CaseResponseDTO> setStatusForCase(@PathVariable UUID caseId, @PathVariable Statuses status) {
+        Case changedCase = caseService.setCaseStatus(caseId, status);
+        CaseResponseDTO responseCase = caseResponseMapper.toCaseResponseDTO(changedCase);
+        return ResponseEntity.ok(responseCase);
     }
 }
