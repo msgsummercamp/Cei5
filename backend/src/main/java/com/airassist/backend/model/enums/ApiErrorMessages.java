@@ -20,7 +20,8 @@ public enum ApiErrorMessages {
     DATA_INTEGRITY_VIOLATION("api-errors.data-integrity-violation"),
     ILLEGAL_ARGUMENT("api-errors.illegal-argument-"),
     USER_VALIDATION_ERROR("api-errors.user-validation-error"),
-    CONSTRAINT_VIOLATION("api-errors.constraint-violation");
+    CONSTRAINT_VIOLATION("api-errors.constraint-violation"),
+    RESERVATION_NOT_FOUND("api-errors.reservation-not-found");
 
     private final String code;
 

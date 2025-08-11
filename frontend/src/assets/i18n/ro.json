@@ -44,7 +44,8 @@
   "case-form": {
     "compensation-start": "Felicitări! Poți câștiga până la €",
     "compensation-end": ". Apasă next pentru a continua.",
-    "submission-in-progress": "Cazul tău este în curs de înregistrare."
+    "submission-in-progress": "Cazul tău este în curs de înregistrare.",
+    "sign-in-to-see-cases": "Autentifică-te pentru a vedea cazurile tale."
   },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
@@ -313,6 +314,7 @@
     "data-integrity-violation": "Ne pare rău, cererea nu a putut fi finalizată din cauza unui conflict de date. Vă rugăm să verificați datele și să încercați din nou.",
     "illegal-argument-": "Datele furnizate nu sunt valide. Vă rugăm să verificați datele și să încercați din nou.",
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
-    "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou."
+    "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
+    "reservation-not-found": "Rezervarea nu a fost găsită."
   }
 }

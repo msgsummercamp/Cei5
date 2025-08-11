@@ -31,7 +31,6 @@ import {
 } from '../../shared/services/reservation.service';
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
-import { ReservationDTO } from '../../shared/dto/reservation.dto';
 import { CaseService } from '../../shared/services/case.service';
 import {
   DisruptionFormComponent,
@@ -46,11 +45,10 @@ import { departingAirportIsDestinationAirport } from '../../shared/validators/de
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
-import { Statuses } from '../../shared/types/enums/status';
-import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
+import { ApiError } from '../../shared/types/api-error';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -578,12 +576,13 @@ export class CaseFormComponent implements OnInit {
               }
             } else {
               this._notificationService.showInfo(
-                'If you want to view all your cases you need to sign in.'
+                this._translateService.instant('case-form.sign-in-to-see-cases')
               );
             }
           },
           error: (error) => {
-            this._notificationService.showError(error.error.detail);
+            const apiError: ApiError = error?.error;
+            this._notificationService.showError(this._translateService.instant(apiError.detail));
           },
         });
       }

@@ -2,10 +2,12 @@ package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.ApiErrorMessages;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.service.CaseService;
@@ -53,7 +55,7 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.findById(id);
     }
 
-    public Case createCase(CaseDTO caseDTO) {
+    public Case createCase(CaseDTO caseDTO) throws UserNotFoundException {
         Case caseToAdd = caseMapper.toEntity(caseDTO);
         Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
         Beneficiary beneficiary = beneficiaryMapper.toEntity(caseDTO.getBeneficiary());
@@ -64,14 +66,14 @@ public class CaseServiceImpl implements CaseService {
         caseToAdd.setReservation(reservation);
 
         User client = userRepository.findById(caseDTO.getClientID())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException());
         caseToAdd.setClient(client);
 
         if (reservation.getId() != null) {
             boolean exists = reservationRepository.existsById(reservation.getId());
             if (exists) {
                 Reservation existingReservation = reservationRepository.findById(reservation.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+                        .orElseThrow(() -> new EntityNotFoundException(ApiErrorMessages.RESERVATION_NOT_FOUND.getCode()));
                 caseToAdd.setReservation(existingReservation);
             } else {
                 reservation.setId(null);

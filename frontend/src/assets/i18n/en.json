@@ -44,7 +44,8 @@
   "case-form": {
     "compensation-start": "Congratulations! You could earn up to €",
     "compensation-end": ". Click next to continue.",
-    "submission-in-progress": "Your case is being submitted."
+    "submission-in-progress": "Your case is being submitted.",
+    "sign-in-to-see-cases": "Sign in to view your cases."
   },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
@@ -313,6 +314,7 @@
     "data-integrity-violation": "Sorry, your request could not be completed due to a data conflict. Please check your input and try again.",
     "illegal-argument-": "The provided data is not valid. Please check your input and try again.",
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
-    "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again."
+    "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
+    "reservation-not-found": "The reservation was not found."
   }
 }

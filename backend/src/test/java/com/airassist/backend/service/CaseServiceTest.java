@@ -4,6 +4,7 @@ import com.airassist.backend.dto.beneficiary.BeneficiaryDTO;
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.dto.cases.CaseResponseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
@@ -228,7 +229,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    void addCase_ValidCase_ReturnsSavedCase() {
+    void addCase_ValidCase_ReturnsSavedCase() throws UserNotFoundException {
         CaseDTO caseDTO = createCaseDTO(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
         Case caseEntity = createCase(Statuses.VALID, DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE);
 

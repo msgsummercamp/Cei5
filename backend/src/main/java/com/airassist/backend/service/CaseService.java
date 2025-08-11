@@ -1,6 +1,7 @@
 package com.airassist.backend.service;
 
 import com.airassist.backend.dto.cases.CaseDTO;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.Case;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ public interface CaseService {
 
     Optional<Case> getCaseById(UUID id);
 
-    Case createCase(CaseDTO caseDTO);
+    Case createCase(CaseDTO caseDTO) throws UserNotFoundException;
 
     Case updateCase(CaseDTO caseDTO, UUID id);
 
