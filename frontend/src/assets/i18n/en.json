@@ -134,7 +134,8 @@
   },
   "navbar": {
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "profile": "Profile"
   },
   "request-reset": {
     "title": "Reset Password",
