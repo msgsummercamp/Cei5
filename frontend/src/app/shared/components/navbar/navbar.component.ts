@@ -48,7 +48,6 @@ export class NavbarComponent {
   /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.
   private _menuConfig = [];
 */
-
   private _userMenuConfig = [
     { label: 'navbar.profile', routerLink: '/profile' },
     { label: 'navbar.logout', command: () => this.logout() },
