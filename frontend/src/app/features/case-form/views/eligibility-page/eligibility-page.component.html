@@ -29,17 +29,19 @@
   <!-- Results -->
   @if (shouldShowResults()) {
     <div class="results-container flex justify-content-center">
-      <p-card class="w-6">
+      <p-card class="w-full lg:w-6">
         <div class="text-center">
           @if (shouldShowEligible()) {
             <div class="eligible-message">
               <i class="pi pi-check-circle text-6xl text-green-500"></i>
-              <h2 class="text-green-500">{{ 'eligibilityForm.congratulations' | translate }}</h2>
+              <h2 class="text-green-500">{{
+                'eligibilityForm.eligible.congratulations' | translate
+              }}</h2>
               <p-message
                 severity="success"
-                text="{{ 'eligibilityForm.eligible' | translate }}"
+                text="{{ 'eligibilityForm.eligible.eligibleMessage' | translate }}"
                 [closable]="false"
-                [styleClass]="'text-align-center'"
+                [styleClass]="'text-align-start text-justify'"
               >
               </p-message>
             </div>
@@ -48,12 +50,12 @@
           @if (shouldNotShowEligible()) {
             <div class="not-eligible-message">
               <i class="pi pi-times-circle text-6xl text-red-500"></i>
-              <h2 class="text-red-500">{{ 'eligibilityForm.sorry' | translate }}</h2>
+              <h2 class="text-red-500">{{ 'eligibilityForm.notEligible.sorry' | translate }}</h2>
               <p-message
                 severity="warn"
-                text="{{ 'eligibilityForm.notEligible' | translate }}"
+                text="{{ 'eligibilityForm.notEligible.notEligibleMessage' | translate }}"
                 [closable]="false"
-                [styleClass]="'text-align-center'"
+                [styleClass]="'text-align-start text-justify'"
               >
               </p-message>
             </div>

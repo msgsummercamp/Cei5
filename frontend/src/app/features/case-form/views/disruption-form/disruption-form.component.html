@@ -1,345 +1,352 @@
-<div class="flex flex-column align-items-center m-0">
-  <form novalidate [formGroup]="disruptionForm">
-    <div>
-      <div class="flex justify-content-center">
-        <p-select
-          [options]="reasons"
-          formControlName="disruptionType"
-          placeholder="{{ 'disruption-form.selectPlaceholder' | translate }}"
-        >
-          <ng-template let-item pTemplate="item">
-            {{ 'disruption-form.selection.' + item | translate }}
-          </ng-template>
-          <ng-template let-item pTemplate="selectedItem">
-            {{ 'disruption-form.selection.' + item | translate }}
-          </ng-template>
-        </p-select>
-      </div>
-      <div class="error-placeholder">
-        @if (
-          this.disruptionForm.controls.disruptionType.hasError('required') &&
-          this.disruptionForm.controls.disruptionType.touched
-        ) {
-          <app-error-message text="{{ 'disruption-form.disruptionTypeRequired' | translate }} " />
-        }
-      </div>
-      <div>
-        @if (this.disruptionForm.controls.disruptionType.value === 'Cancellation') {
-          <div class="mt-5">
-            <p-message severity="secondary" variant="simple"
-              >{{ 'disruption-form.cancellationQuestion' | translate }}
-            </p-message>
-          </div>
-          <div class="mt-3 pl-3">
-            <div class="pb-1">
-              <p-radio-button
-                value=">14 days"
-                inputId="cancellation-answer1"
-                formControlName="cancellationAnswer"
-              ></p-radio-button>
-              <label for="cancellation-answer1">
-                &nbsp; {{ 'disruption-form.cancelRadioButton.>14 days' | translate }}</label
-              >
-            </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="<14 days"
-                inputId="cancellation-answer2"
-                formControlName="cancellationAnswer"
-              ></p-radio-button>
-              <label for="cancellation-answer2">
-                &nbsp; {{ 'disruption-form.cancelRadioButton.<14 days' | translate }}</label
-              >
-            </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="On flight day"
-                inputId="cancellation-answer3"
-                formControlName="cancellationAnswer"
-              ></p-radio-button>
-              <label for="cancellation-answer3">
-                &nbsp; {{ 'disruption-form.cancelRadioButton.On flight day' | translate }}</label
-              >
-            </div>
-          </div>
-        }
-        @if (this.disruptionForm.controls.disruptionType.value === 'Delay') {
-          <div class="mt-5">
-            <p-message severity="secondary" variant="simple"
-              >{{ 'disruption-form.delayQuestion' | translate }}
-            </p-message>
-          </div>
-          <div class="mt-3 ml-3">
-            <div class="pb-1">
-              <p-radio-button
-                value=">3 hours"
-                inputId="delay-answer1"
-                formControlName="delayAnswer"
-              ></p-radio-button>
-              <label for="delay-answer1">
-                &nbsp; {{ 'disruption-form.delayRadioButton.>3 hours' | translate }}</label
-              >
-            </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="<3 hours"
-                inputId="delay-answer2"
-                formControlName="delayAnswer"
-              ></p-radio-button>
-              <label for="delay-answer2">
-                &nbsp; {{ 'disruption-form.delayRadioButton.<3 hours' | translate }}
-              </label>
-            </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="Never arrived"
-                inputId="delay-answer3"
-                formControlName="delayAnswer"
-              ></p-radio-button>
-              <label for="delay-answer3">
-                &nbsp; {{ 'disruption-form.delayRadioButton.Never arrived' | translate }}
-              </label>
-            </div>
-          </div>
-        }
-        @if (this.disruptionForm.controls.disruptionType.value === 'Denied_Boarding') {
-          <div class="mt-5">
-            <p-message severity="secondary" variant="simple">{{
-              'disruption-form.denialBoardingQuestion' | translate
-            }}</p-message>
-          </div>
-          <div class="mt-3 pl-3">
-            <div class="pb-1">
-              <p-radio-button
-                value="No"
-                inputId="denied-boarding-answer1"
-                formControlName="deniedBoardingAnswer"
-              ></p-radio-button>
-              <label for="denied-boarding-answer1">
-                &nbsp; {{ 'disruption-form.denialBoardingRadioButton.No' | translate }}</label
-              >
-            </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="Yes"
-                inputId="denied-boarding-answer2"
-                formControlName="deniedBoardingAnswer"
-              ></p-radio-button>
-              <label for="denied-boarding-answer2">
-                &nbsp; {{ 'disruption-form.denialBoardingRadioButton.Yes' | translate }}</label
-              >
-            </div>
-          </div>
-          @if (this.disruptionForm.controls.deniedBoardingAnswer.value === 'No') {
+<div class="disruption-wrapper flex flex-column align-items-center">
+  <p-scrollpanel>
+    <form novalidate [formGroup]="disruptionForm">
+      <div class="flex flex-column justify-content-center w-full h-full p-3">
+        <div class="flex justify-content-center">
+          <p-select
+            [options]="reasons"
+            formControlName="disruptionType"
+            placeholder="{{ 'disruption-form.selectPlaceholder' | translate }}"
+          >
+            <ng-template let-item pTemplate="item">
+              {{ 'disruption-form.selection.' + item | translate }}
+            </ng-template>
+            <ng-template let-item pTemplate="selectedItem">
+              {{ 'disruption-form.selection.' + item | translate }}
+            </ng-template>
+          </p-select>
+        </div>
+        <div class="error-placeholder">
+          @if (
+            this.disruptionForm.controls.disruptionType.hasError('required') &&
+            this.disruptionForm.controls.disruptionType.touched
+          ) {
+            <app-error-message text="{{ 'disruption-form.disruptionTypeRequired' | translate }} " />
+          }
+        </div>
+        <div>
+          @if (this.disruptionForm.controls.disruptionType.value === 'Cancellation') {
             <div class="mt-5">
               <p-message severity="secondary" variant="simple"
-                >{{ 'disruption-form.reasonsBehindDenialQuestion' | translate }}
+                >{{ 'disruption-form.cancellationQuestion' | translate }}
               </p-message>
             </div>
             <div class="mt-3 pl-3">
               <div class="pb-1">
                 <p-radio-button
-                  value="Flight overbooked"
-                  inputId="follow-up-answer-denied1"
-                  formControlName="deniedBoardingFollowUpAnswer"
+                  value=">14 days"
+                  inputId="cancellation-answer1"
+                  formControlName="cancellationAnswer"
                 ></p-radio-button>
-                <label for="follow-up-answer-denied1">
-                  &nbsp;
-                  {{ 'disruption-form.reasonsBehindDenial.overbookedFlight' | translate }}</label
+                <label for="cancellation-answer1">
+                  &nbsp; {{ 'disruption-form.cancelRadioButton.>14 days' | translate }}</label
                 >
               </div>
               <div class="pb-1">
                 <p-radio-button
-                  value="Aggressive behaviour with staff"
-                  inputId="follow-up-answer-denied2"
-                  formControlName="deniedBoardingFollowUpAnswer"
+                  value="<14 days"
+                  inputId="cancellation-answer2"
+                  formControlName="cancellationAnswer"
                 ></p-radio-button>
-                <label for="follow-up-answer-denied2">
-                  &nbsp;
-                  {{ 'disruption-form.reasonsBehindDenial.aggressivePassenger' | translate }}</label
+                <label for="cancellation-answer2">
+                  &nbsp; {{ 'disruption-form.cancelRadioButton.<14 days' | translate }}</label
                 >
               </div>
               <div class="pb-1">
                 <p-radio-button
-                  value="Unspecified reason"
-                  inputId="follow-up-answer-denied4"
-                  formControlName="deniedBoardingFollowUpAnswer"
+                  value="On flight day"
+                  inputId="cancellation-answer3"
+                  formControlName="cancellationAnswer"
                 ></p-radio-button>
-                <label for="follow-up-answer-denied4">
-                  &nbsp; {{ 'disruption-form.reasonsBehindDenial.unspecified' | translate }}</label
+                <label for="cancellation-answer3">
+                  &nbsp; {{ 'disruption-form.cancelRadioButton.On flight day' | translate }}</label
                 >
               </div>
             </div>
           }
-        }
-      </div>
-      <div>
-        @if (
-          this.disruptionForm.controls.disruptionType.value !== 'Denied Boarding' &&
-          this.disruptionForm.controls.disruptionType.valid
-        ) {
-          <div class="mt-5">
-            <p-message severity="secondary" variant="simple"
-              >{{ 'disruption-form.airlineMotive.disruptingQuestion' | translate }}
-            </p-message>
-          </div>
-          <div class="mt-3 pl-3">
-            <div class="pb-1">
-              <p-radio-button
-                value="Yes"
-                inputId="airline-motive-answer1"
-                formControlName="airlineMotiveAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-answer1">
-                &nbsp;
-                {{ 'disruption-form.airlineMotive.disruptingRadioButton.Yes' | translate }}</label
-              >
+          @if (this.disruptionForm.controls.disruptionType.value === 'Delay') {
+            <div class="mt-5">
+              <p-message severity="secondary" variant="simple"
+                >{{ 'disruption-form.delayQuestion' | translate }}
+              </p-message>
             </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="No"
-                inputId="airline-motive-answer2"
-                formControlName="airlineMotiveAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-answer2">
-                &nbsp;
-                {{ 'disruption-form.airlineMotive.disruptingRadioButton.No' | translate }}</label
-              >
+            <div class="mt-3 ml-3">
+              <div class="pb-1">
+                <p-radio-button
+                  value=">3 hours"
+                  inputId="delay-answer1"
+                  formControlName="delayAnswer"
+                ></p-radio-button>
+                <label for="delay-answer1">
+                  &nbsp; {{ 'disruption-form.delayRadioButton.>3 hours' | translate }}</label
+                >
+              </div>
+              <div class="pb-1">
+                <p-radio-button
+                  value="<3 hours"
+                  inputId="delay-answer2"
+                  formControlName="delayAnswer"
+                ></p-radio-button>
+                <label for="delay-answer2">
+                  &nbsp; {{ 'disruption-form.delayRadioButton.<3 hours' | translate }}
+                </label>
+              </div>
+              <div class="pb-1">
+                <p-radio-button
+                  value="Never arrived"
+                  inputId="delay-answer3"
+                  formControlName="delayAnswer"
+                ></p-radio-button>
+                <label for="delay-answer3">
+                  &nbsp; {{ 'disruption-form.delayRadioButton.Never arrived' | translate }}
+                </label>
+              </div>
             </div>
-            <div class="pb-1">
-              <p-radio-button
-                value="I don't know"
-                inputId="airline-motive-answer3"
-                formControlName="airlineMotiveAnswer"
-              ></p-radio-button>
-              <label for="airline-motive-answer3">
-                &nbsp;
-                {{
-                  "disruption-form.airlineMotive.disruptingRadioButton.I don't know" | translate
-                }}</label
-              >
+          }
+          @if (this.disruptionForm.controls.disruptionType.value === 'Denied_Boarding') {
+            <div class="mt-5">
+              <p-message severity="secondary" variant="simple">{{
+                'disruption-form.denialBoardingQuestion' | translate
+              }}</p-message>
             </div>
-          </div>
-          <div>
-            @if (this.disruptionForm.controls.airlineMotiveAnswer.value === 'Yes') {
+            <div class="mt-3 pl-3">
+              <div class="pb-1">
+                <p-radio-button
+                  value="No"
+                  inputId="denied-boarding-answer1"
+                  formControlName="deniedBoardingAnswer"
+                ></p-radio-button>
+                <label for="denied-boarding-answer1">
+                  &nbsp; {{ 'disruption-form.denialBoardingRadioButton.No' | translate }}</label
+                >
+              </div>
+              <div class="pb-1">
+                <p-radio-button
+                  value="Yes"
+                  inputId="denied-boarding-answer2"
+                  formControlName="deniedBoardingAnswer"
+                ></p-radio-button>
+                <label for="denied-boarding-answer2">
+                  &nbsp; {{ 'disruption-form.denialBoardingRadioButton.Yes' | translate }}</label
+                >
+              </div>
+            </div>
+            @if (this.disruptionForm.controls.deniedBoardingAnswer.value === 'No') {
               <div class="mt-5">
                 <p-message severity="secondary" variant="simple"
-                  >{{ 'disruption-form.airlineMotive.airlineMotiveQuestion' | translate }}
+                  >{{ 'disruption-form.reasonsBehindDenialQuestion' | translate }}
                 </p-message>
               </div>
               <div class="mt-3 pl-3">
                 <div class="pb-1">
                   <p-radio-button
-                    value="Technical problems"
-                    inputId="airline-motive-followup-answer1"
-                    formControlName="airlineMotiveFollowUpAnswer"
+                    value="Flight overbooked"
+                    inputId="follow-up-answer-denied1"
+                    formControlName="deniedBoardingFollowUpAnswer"
                   ></p-radio-button>
-                  <label for="airline-motive-followup-answer1">
+                  <label for="follow-up-answer-denied1">
+                    &nbsp;
+                    {{ 'disruption-form.reasonsBehindDenial.overbookedFlight' | translate }}</label
+                  >
+                </div>
+                <div class="pb-1">
+                  <p-radio-button
+                    value="Aggressive behaviour with staff"
+                    inputId="follow-up-answer-denied2"
+                    formControlName="deniedBoardingFollowUpAnswer"
+                  ></p-radio-button>
+                  <label for="follow-up-answer-denied2">
                     &nbsp;
                     {{
-                      'disruption-form.airlineMotive.airlineMotives.technicalProblems' | translate
+                      'disruption-form.reasonsBehindDenial.aggressivePassenger' | translate
                     }}</label
                   >
                 </div>
                 <div class="pb-1">
                   <p-radio-button
-                    value="Metereological conditions"
-                    inputId="airline-motive-followup-answer2"
-                    formControlName="airlineMotiveFollowUpAnswer"
+                    value="Unspecified reason"
+                    inputId="follow-up-answer-denied4"
+                    formControlName="deniedBoardingFollowUpAnswer"
                   ></p-radio-button>
-                  <label for="airline-motive-followup-answer2">
+                  <label for="follow-up-answer-denied4">
                     &nbsp;
-                    {{
-                      'disruption-form.airlineMotive.airlineMotives.badWeather' | translate
-                    }}</label
-                  >
-                </div>
-                <div class="pb-1">
-                  <p-radio-button
-                    value="Strike"
-                    inputId="airline-motive-followup-answer3"
-                    formControlName="airlineMotiveFollowUpAnswer"
-                  ></p-radio-button>
-                  <label for="airline-motive-followup-answer3">
-                    &nbsp;
-                    {{ 'disruption-form.airlineMotive.airlineMotives.strike' | translate }}</label
-                  >
-                </div>
-                <div class="pb-1">
-                  <p-radio-button
-                    value="Problems with airport"
-                    inputId="airline-motive-followup-answer4"
-                    formControlName="airlineMotiveFollowUpAnswer"
-                  ></p-radio-button>
-                  <label for="airline-motive-followup-answer4">
-                    &nbsp;
-                    {{
-                      'disruption-form.airlineMotive.airlineMotives.airportProblems' | translate
-                    }}</label
-                  >
-                </div>
-                <div class="pb-1">
-                  <p-radio-button
-                    value="Crew problems"
-                    inputId="airline-motive-followup-answer5"
-                    formControlName="airlineMotiveFollowUpAnswer"
-                  ></p-radio-button>
-                  <label for="airline-motive-followup-answer5">
-                    &nbsp;
-                    {{
-                      'disruption-form.airlineMotive.airlineMotives.crewProblems' | translate
-                    }}</label
-                  >
-                </div>
-                <div class="pb-1">
-                  <p-radio-button
-                    value="Other motives"
-                    inputId="airline-motive-followup-answer6"
-                    formControlName="airlineMotiveFollowUpAnswer"
-                  ></p-radio-button>
-                  <label for="airline-motive-followup-answer6">
-                    &nbsp;
-                    {{ 'disruption-form.airlineMotive.airlineMotives.other' | translate }}</label
+                    {{ 'disruption-form.reasonsBehindDenial.unspecified' | translate }}</label
                   >
                 </div>
               </div>
             }
-          </div>
-        }
-      </div>
-      <div class="mt-5">
-        @if (this.disruptionForm.controls.disruptionType.valid) {
-          <p-floatlabel variant="on">
-            <textarea
-              rows="10"
-              cols="100"
-              pTextarea
-              formControlName="disruptionInformation"
-              id="disruptionInformation"
-            ></textarea>
-            <label for="disruptionInformation">{{
-              'disruption-form.disruptionDescription' | translate
-            }}</label>
-          </p-floatlabel>
-          <div class="error-placeholder">
-            @if (
-              this.disruptionForm.controls.disruptionInformation.errors &&
-              this.disruptionForm.controls.disruptionInformation.touched
-            ) {
-              @switch (true) {
-                @case (this.disruptionForm.controls.disruptionInformation.hasError('required')) {
-                  <app-error-message text="{{ 'disruption-form.emptyDescription' | translate }}" />
-                }
-                @case (this.disruptionForm.controls.disruptionInformation.hasError('maxlength')) {
-                  <app-error-message
-                    text="{{ 'disruption-form.maxLengthDescription' | translate }}"
-                  />
+          }
+        </div>
+        <div>
+          @if (
+            this.disruptionForm.controls.disruptionType.value !== 'Denied Boarding' &&
+            this.disruptionForm.controls.disruptionType.valid
+          ) {
+            <div class="mt-5">
+              <p-message severity="secondary" variant="simple"
+                >{{ 'disruption-form.airlineMotive.disruptingQuestion' | translate }}
+              </p-message>
+            </div>
+            <div class="mt-3 pl-3">
+              <div class="pb-1">
+                <p-radio-button
+                  value="Yes"
+                  inputId="airline-motive-answer1"
+                  formControlName="airlineMotiveAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-answer1">
+                  &nbsp;
+                  {{ 'disruption-form.airlineMotive.disruptingRadioButton.Yes' | translate }}</label
+                >
+              </div>
+              <div class="pb-1">
+                <p-radio-button
+                  value="No"
+                  inputId="airline-motive-answer2"
+                  formControlName="airlineMotiveAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-answer2">
+                  &nbsp;
+                  {{ 'disruption-form.airlineMotive.disruptingRadioButton.No' | translate }}</label
+                >
+              </div>
+              <div class="pb-1">
+                <p-radio-button
+                  value="I don't know"
+                  inputId="airline-motive-answer3"
+                  formControlName="airlineMotiveAnswer"
+                ></p-radio-button>
+                <label for="airline-motive-answer3">
+                  &nbsp;
+                  {{
+                    "disruption-form.airlineMotive.disruptingRadioButton.I don't know" | translate
+                  }}</label
+                >
+              </div>
+            </div>
+            <div>
+              @if (this.disruptionForm.controls.airlineMotiveAnswer.value === 'Yes') {
+                <div class="mt-5">
+                  <p-message severity="secondary" variant="simple"
+                    >{{ 'disruption-form.airlineMotive.airlineMotiveQuestion' | translate }}
+                  </p-message>
+                </div>
+                <div class="mt-3 pl-3">
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Technical problems"
+                      inputId="airline-motive-followup-answer1"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer1">
+                      &nbsp;
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.technicalProblems' | translate
+                      }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Metereological conditions"
+                      inputId="airline-motive-followup-answer2"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer2">
+                      &nbsp;
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.badWeather' | translate
+                      }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Strike"
+                      inputId="airline-motive-followup-answer3"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer3">
+                      &nbsp;
+                      {{ 'disruption-form.airlineMotive.airlineMotives.strike' | translate }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Problems with airport"
+                      inputId="airline-motive-followup-answer4"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer4">
+                      &nbsp;
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.airportProblems' | translate
+                      }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Crew problems"
+                      inputId="airline-motive-followup-answer5"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer5">
+                      &nbsp;
+                      {{
+                        'disruption-form.airlineMotive.airlineMotives.crewProblems' | translate
+                      }}</label
+                    >
+                  </div>
+                  <div class="pb-1">
+                    <p-radio-button
+                      value="Other motives"
+                      inputId="airline-motive-followup-answer6"
+                      formControlName="airlineMotiveFollowUpAnswer"
+                    ></p-radio-button>
+                    <label for="airline-motive-followup-answer6">
+                      &nbsp;
+                      {{ 'disruption-form.airlineMotive.airlineMotives.other' | translate }}</label
+                    >
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mt-5">
+          @if (this.disruptionForm.controls.disruptionType.valid) {
+            <p-floatlabel variant="on">
+              <textarea
+                rows="10"
+                cols="38"
+                pTextarea
+                formControlName="disruptionInformation"
+                id="disruptionInformation"
+              ></textarea>
+              <label for="disruptionInformation">{{
+                'disruption-form.disruptionDescription' | translate
+              }}</label>
+            </p-floatlabel>
+            <div class="error-placeholder">
+              @if (
+                this.disruptionForm.controls.disruptionInformation.errors &&
+                this.disruptionForm.controls.disruptionInformation.touched
+              ) {
+                @switch (true) {
+                  @case (this.disruptionForm.controls.disruptionInformation.hasError('required')) {
+                    <app-error-message
+                      text="{{ 'disruption-form.emptyDescription' | translate }}"
+                    />
+                  }
+                  @case (this.disruptionForm.controls.disruptionInformation.hasError('maxlength')) {
+                    <app-error-message
+                      text="{{ 'disruption-form.maxLengthDescription' | translate }}"
+                    />
+                  }
                 }
               }
-            }
-          </div>
-        }
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </p-scrollpanel>
 </div>

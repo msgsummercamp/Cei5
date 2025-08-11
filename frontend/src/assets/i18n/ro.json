@@ -8,7 +8,7 @@
       "title": "E simplu",
       "submit-details": "Completezi detaliile zborului.",
       "check-eligibility": "Verificăm eligibilitatea.",
-      "get-paid": "Primești banii – noi ne ocupăm de compania aeriană."
+      "get-paid": "Primești banii - noi ne ocupăm de compania aeriană."
     },
     "why": {
       "title": "De ce să alegi platforma noastră?",
@@ -18,7 +18,7 @@
     },
     "fieldsets": {
       "rights": {
-        "title": "Drepturile tale conform legislației UE (EC 261/2004)",
+        "title": "Drepturile tale conform legislației UE \n (EC 261/2004)",
         "text": "Regulamentul (CE) nr. 261/2004 este o lege europeană care protejează pasagerii aerieni. Companiile aeriene sunt obligate să ofere compensații (până la 600 €) și asistență în caz de anulare, întârziere mai mare de 3 ore sau refuz la îmbarcare.",
         "goal": "Scopul: pasagerii să fie tratați corect atunci când le sunt afectate planurile de călătorie."
       },
@@ -270,11 +270,19 @@
   "eligibilityForm": {
     "checkEligibility": "Verificarea eligibilitati.",
     "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
-    "congratulations": "Felicitari.",
-    "eligible": "Ești eligibil pentru compensație.",
+    "eligible": {
+      "congratulations": "Felicitari.",
+      "eligibleMessage": "Ești eligibil pentru compensație."
+    },
+    "notEligible": {
+      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
+    },
+    "conditionsNotFulfilled": {
+      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate:",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici."
+    },
     "continueWithPersoinalDetails": "Continua cu datele personale.",
-    "sorry": "Scuze",
-    "notEligible": "Cazul tau nu este eligibil pentru compensare conform reglementărilor UE.",
     "restart": "Reporniti de la inceput."
   },
   "lastForm": {

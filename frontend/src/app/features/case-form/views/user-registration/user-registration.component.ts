@@ -16,6 +16,7 @@ import { CountryISO, IntlInputTelComponent, SearchCountryField } from 'p-intl-in
 import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -40,6 +41,7 @@ type UserRegistrationForm = {
     PanelModule,
     Checkbox,
     FormsModule,
+    ScrollPanel,
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',

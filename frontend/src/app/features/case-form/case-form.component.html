@@ -14,181 +14,171 @@
       <!-- Step 1: Reservation Info -->
       <p-step-panel [value]="1">
         <ng-template pTemplate="content" let-nextCallback="nextCallback">
-          <form
-            [formGroup]="reservationForm"
-            (ngSubmit)="onNext(nextCallback)"
-            class="flex flex-column gap-4 justify-content-center align-items-center"
-          >
-            <p-header class="text-3xl">{{ 'mainForm.reservationHeader' | translate }}</p-header>
+          <div class="flex justify-content-center">
+            <form
+              [formGroup]="reservationForm"
+              (ngSubmit)="onNext(nextCallback)"
+              class="flex flex-column gap-4 align-items-center w-22rem lg:w-26rem"
+            >
+              <p-header class="text-3xl">{{ 'mainForm.reservationHeader' | translate }}</p-header>
 
-            <div>
-              <p-floatlabel variant="on">
-                <input
-                  pInputText
-                  id="reservationNumber"
-                  formControlName="reservationNumber"
-                  class="w-26rem h-3rem inputclass"
-                />
-                <label for="reservationNumber">{{
-                  'mainForm.reservationNumber' | translate
-                }}</label>
-              </p-floatlabel>
-              <!-- Error Messages -->
-              <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.reservationNumber.touched &&
-                  reservationForm.controls.reservationNumber.errors
-                ) {
-                  <!-- In case there is an error, it will display the firconnectionsShouldBeDifferentst one that has value true-->
-                  @switch (true) {
-                    @case (reservationForm.controls.reservationNumber.hasError('required')) {
-                      <app-error-message
-                        text="{{ 'mainForm.reservationNumberRequired' | translate }}"
-                      />
-                    }
-                    @case (
-                      reservationForm.controls.reservationNumber.hasError('minlength') ||
-                      reservationForm.controls.reservationNumber.hasError('maxlength')
-                    ) {
-                      <app-error-message text="{{ 'mainForm.reservationLength' | translate }}" />
-                    }
-                    @case (reservationForm.controls.reservationNumber.hasError('pattern')) {
-                      <app-error-message text="{{ 'mainForm.reservationPattern' | translate }}" />
+              <div class="w-full h-full">
+                <p-floatlabel variant="on">
+                  <input
+                    pInputText
+                    id="reservationNumber"
+                    formControlName="reservationNumber"
+                    class="w-full h-3rem inputclass"
+                  />
+                  <label for="reservationNumber">{{
+                    'mainForm.reservationNumber' | translate
+                  }}</label>
+                </p-floatlabel>
+                <!-- Error Messages -->
+                <div class="error-placeholder">
+                  @if (
+                    reservationForm.controls.reservationNumber.touched &&
+                    reservationForm.controls.reservationNumber.errors
+                  ) {
+                    <!-- In case there is an error, it will display the firconnectionsShouldBeDifferentst one that has value true-->
+                    @switch (true) {
+                      @case (reservationForm.controls.reservationNumber.hasError('required')) {
+                        <app-error-message
+                          text="{{ 'mainForm.reservationNumberRequired' | translate }}"
+                        />
+                      }
+                      @case (
+                        reservationForm.controls.reservationNumber.hasError('minlength') ||
+                        reservationForm.controls.reservationNumber.hasError('maxlength')
+                      ) {
+                        <app-error-message text="{{ 'mainForm.reservationLength' | translate }}" />
+                      }
+                      @case (reservationForm.controls.reservationNumber.hasError('pattern')) {
+                        <app-error-message text="{{ 'mainForm.reservationPattern' | translate }}" />
+                      }
                     }
                   }
-                }
+                </div>
               </div>
-            </div>
 
-            <div>
-              <p-floatlabel variant="on">
-                <p-autocomplete
-                  [styleClass]="'w-26rem h-3rem'"
-                  id="departingAirport"
-                  formControlName="departingAirport"
-                  [dropdown]="true"
-                  [suggestions]="airportsSuggestion"
-                  (completeMethod)="search($event)"
-                  optionValue="code"
-                  optionLabel="name"
-                  [forceSelection]="true"
-                  [virtualScroll]="true"
-                  [virtualScrollItemSize]="50"
-                ></p-autocomplete>
-                <label for="departingAirport">{{ 'mainForm.departingAirport' | translate }}</label>
-              </p-floatlabel>
-              <!-- Error Messages -->
-              <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.departingAirport.touched &&
-                  reservationForm.controls.departingAirport.errors
-                ) {
-                  <!-- In case there is an error, it will display the first one that has value true-->
-                  @switch (true) {
-                    @case (reservationForm.controls.departingAirport.hasError('required')) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportRequired' | translate }}"
-                      />
-                    }
-                    @case (
-                      reservationForm.controls.departingAirport.hasError('minlength') ||
-                      reservationForm.controls.departingAirport.hasError('maxlength')
-                    ) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportLength' | translate }}"
-                      />
-                    }
-                    @case (reservationForm.controls.departingAirport.hasError('pattern')) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportUpper' | translate }}"
-                      />
+              <div class="w-full h-full">
+                <p-floatlabel variant="on">
+                  <p-autocomplete
+                    [styleClass]="'w-full h-3rem'"
+                    id="departingAirport"
+                    formControlName="departingAirport"
+                    [dropdown]="true"
+                    [suggestions]="airportsSuggestion"
+                    (completeMethod)="search($event)"
+                    optionValue="code"
+                    optionLabel="name"
+                    [forceSelection]="true"
+                    [virtualScroll]="true"
+                    [virtualScrollItemSize]="50"
+                  ></p-autocomplete>
+                  <label for="departingAirport">{{
+                    'mainForm.departingAirport' | translate
+                  }}</label>
+                </p-floatlabel>
+                <!-- Error Messages -->
+                <div class="error-placeholder">
+                  @if (
+                    reservationForm.controls.departingAirport.touched &&
+                    reservationForm.controls.departingAirport.errors
+                  ) {
+                    <!-- In case there is an error, it will display the first one that has value true-->
+                    @switch (true) {
+                      @case (reservationForm.controls.departingAirport.hasError('required')) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportRequired' | translate }}"
+                        />
+                      }
+                      @case (
+                        reservationForm.controls.departingAirport.hasError('minlength') ||
+                        reservationForm.controls.departingAirport.hasError('maxlength')
+                      ) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportLength' | translate }}"
+                        />
+                      }
+                      @case (reservationForm.controls.departingAirport.hasError('pattern')) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportUpper' | translate }}"
+                        />
+                      }
                     }
                   }
-                }
+                </div>
               </div>
-            </div>
 
-            <div>
-              <p-floatlabel variant="on">
-                <p-autocomplete
-                  id="destinationAirport"
-                  formControlName="destinationAirport"
-                  [dropdown]="true"
-                  [styleClass]="'w-26rem h-3rem'"
-                  [suggestions]="airportsSuggestion"
-                  (completeMethod)="search($event)"
-                  optionValue="code"
-                  optionLabel="name"
-                  [forceSelection]="true"
-                  [virtualScroll]="true"
-                  [virtualScrollItemSize]="50"
-                />
-                <label for="destinationAirport">{{
-                  'mainForm.departingAirport' | translate
-                }}</label>
-              </p-floatlabel>
-              <!-- Error Messages -->
-              <div class="error-placeholder">
-                @if (
-                  reservationForm.controls.destinationAirport.touched &&
-                  reservationForm.controls.destinationAirport.errors
-                ) {
-                  <!-- In case there is an error, it will display the first one that has value true-->
-                  @switch (true) {
-                    @case (reservationForm.controls.destinationAirport.hasError('required')) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportRequired' | translate }}"
-                      />
-                    }
-                    @case (
-                      reservationForm.controls.destinationAirport.hasError('minlength') ||
-                      reservationForm.controls.destinationAirport.hasError('maxlength')
-                    ) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportLength' | translate }}"
-                      />
-                    }
-                    @case (reservationForm.controls.destinationAirport.hasError('pattern')) {
-                      <app-error-message
-                        text="{{ 'mainForm.departingAirportUpper' | translate }}"
-                      />
-                    }
-                    @case (
-                      reservationForm.hasError('destinationIsDeparting') &&
-                      reservationForm.controls.departingAirport.touched
-                    ) {
-                      <app-error-message
-                        text="{{ 'mainForm.destinationIsDeparting' | translate }}"
-                      />
+              <div class="w-full h-full">
+                <p-floatlabel variant="on">
+                  <p-autocomplete
+                    id="destinationAirport"
+                    formControlName="destinationAirport"
+                    [dropdown]="true"
+                    [styleClass]="'w-full h-3rem'"
+                    [suggestions]="airportsSuggestion"
+                    (completeMethod)="search($event)"
+                    optionValue="code"
+                    optionLabel="name"
+                    [forceSelection]="true"
+                    [virtualScroll]="true"
+                    [virtualScrollItemSize]="50"
+                  />
+                  <label for="destinationAirport">{{
+                    'mainForm.departingAirport' | translate
+                  }}</label>
+                </p-floatlabel>
+                <!-- Error Messages -->
+                <div class="error-placeholder">
+                  @if (
+                    reservationForm.controls.destinationAirport.touched &&
+                    reservationForm.controls.destinationAirport.errors
+                  ) {
+                    <!-- In case there is an error, it will display the first one that has value true-->
+                    @switch (true) {
+                      @case (reservationForm.controls.destinationAirport.hasError('required')) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportRequired' | translate }}"
+                        />
+                      }
+                      @case (
+                        reservationForm.controls.destinationAirport.hasError('minlength') ||
+                        reservationForm.controls.destinationAirport.hasError('maxlength')
+                      ) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportLength' | translate }}"
+                        />
+                      }
+                      @case (reservationForm.controls.destinationAirport.hasError('pattern')) {
+                        <app-error-message
+                          text="{{ 'mainForm.departingAirportUpper' | translate }}"
+                        />
+                      }
+                      @case (
+                        reservationForm.hasError('destinationIsDeparting') &&
+                        reservationForm.controls.departingAirport.touched
+                      ) {
+                        <app-error-message
+                          text="{{ 'mainForm.destinationIsDeparting' | translate }}"
+                        />
+                      }
                     }
                   }
-                }
+                </div>
               </div>
-            </div>
 
-            <!--Compensation level message-->
-            <div>
-              @if (
-                reservationForm.controls.destinationAirport.valid &&
-                reservationForm.controls.departingAirport.valid &&
-                !!compensation
-              ) {
-                <p-message severity="success"
-                  >{{ 'case-form.compensation-start' | translate }}{{ compensation
-                  }}{{ 'case-form.compensation-end' | translate }}</p-message
-                >
-              }
-            </div>
-
-            <!-- Next Button -->
-            <p-button
-              [styleClass]="'px-6'"
-              label="{{ 'mainForm.next' | translate }}"
-              severity="primary"
-              (onClick)="onNext(nextCallback)"
-              [disabled]="reservationForm.invalid"
-            />
-          </form>
+              <!-- Next Button -->
+              <p-button
+                [styleClass]="'px-6'"
+                label="{{ 'mainForm.next' | translate }}"
+                severity="primary"
+                (onClick)="onNext(nextCallback)"
+                [disabled]="reservationForm.invalid"
+              />
+            </form>
+          </div>
         </ng-template>
       </p-step-panel>
 
