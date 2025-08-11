@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -176,5 +177,17 @@ public class CaseServiceImpl implements CaseService {
         logger.info("Case with ID {} has an employee assigned: {}", caseId, employeeId);
 
         return caseEntity;
+    }
+
+    public List<Case> getCasesForClient(UUID clientId) {
+        List<Case> cases = caseRepository.getCasesByClientId(clientId);
+        logger.info("Service - fetching all cases for client {}", clientId);
+
+        if(cases.isEmpty()) {
+            logger.warn("There are no cases for the client: {}", clientId);
+            throw new EntityNotFoundException("Cases not found for client.");
+        }
+
+        return cases;
     }
 }

@@ -6,6 +6,7 @@ import com.airassist.backend.exception.cases.CaseNotFoundException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -31,5 +32,4 @@ public class CaseControllerExceptionHandler {
     public ProblemDetail handleRuntime(RuntimeException ex) {
         return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + ex.getMessage());
     }
-
 }

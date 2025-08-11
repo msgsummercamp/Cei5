@@ -80,4 +80,14 @@ public class CaseController {
         CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(changedCase);
         return ResponseEntity.ok(updatedCaseResponse);
     }
+
+    @PreAuthorize("hasRole('USER') or hasRole('EMPLOYEE')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CaseResponseDTO>> getAllCasesForClient(@PathVariable UUID userId) {
+        List<Case> userCases = caseService.getCasesForClient(userId);
+        List<CaseResponseDTO> userCaseDTOs = userCases.stream()
+                .map(caseResponseMapper::toCaseResponseDTO)
+                .toList();
+        return ResponseEntity.ok(userCaseDTOs);
+    }
 }
