@@ -226,7 +226,8 @@
     "step3": "Connection Flights",
     "step4": "Disruption Info",
     "step5": "Eligibility Check",
-    "step6": "User Details"
+    "step6": "User Details",
+    "step7": "Confirmation"
   },
   "mainForm": {
     "next": "Next",
@@ -255,7 +256,12 @@
     "connectionsShouldBedifferent": "Connections should be different.",
     "usedDepartingAirport": "Don't use the departing airport as connection.",
     "usedDestinationAirport": "Don't use the destination airport as connection.",
-    "dateOrder": "Flight times must be in chronological order"
+    "dateOrder": "Flight times must be in chronological order",
+    "selectConnection": "Please select a connection flight to provide details",
+    "invalidFlightTimes": "Flight times must be valid (arrival after departure)",
+    "clickToAddConnections": "Click to add connections",
+    "pleaseAddConnection": "Add a connection airport",
+    "fillInAllConnections": "Do not leave connection airports empty."
   },
   "flightForm": {
     "flightNumber": "Flight Number",

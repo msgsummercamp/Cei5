@@ -48,6 +48,8 @@ import { EligibilityDataService } from '../../shared/services/eligibility-data.s
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
 import { Statuses } from '../../shared/types/enums/status';
 import { CaseDTO } from '../../shared/dto/case.dto';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TranslateService } from '@ngx-translate/core';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 
@@ -82,6 +84,7 @@ type DisruptionForm = {
     UserRegistrationComponent,
     TranslatePipe,
     ConfirmationFormComponent,
+    CheckboxModule,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -161,6 +164,7 @@ export class CaseFormComponent implements OnInit {
   public readonly destinationAirportValue = toSignal(
     this.reservationForm.controls.destinationAirport.valueChanges
   );
+  public checked: boolean = false;
 
   constructor() {
     effect(() => {
@@ -214,6 +218,10 @@ export class CaseFormComponent implements OnInit {
   }
 
   public get isNextButtonEnabled(): boolean {
+    if (this.checked && this.airportsArray.length === 0) {
+      return false;
+    }
+
     return this.isAirportsValid() && this.isMainFlightValid;
   }
 
@@ -235,6 +243,10 @@ export class CaseFormComponent implements OnInit {
 
   public toggleFlag(index: number): void {
     this._flightService.toggleFlag(index);
+
+    if (this.flightData) {
+      this._flightService.updateConnectionTimesFromMainFlight(this.flightData);
+    }
   }
 
   public isFlagActive(index: number): boolean {
@@ -304,6 +316,17 @@ export class CaseFormComponent implements OnInit {
 
   // Function to handle the next step from flight details
   public onNextFromFlightDetails(nextCallback?: Function, mainFlightForm?: any): void {
+    if (this.checked && this.airportsArray.length === 0) {
+      return;
+    }
+
+    if (
+      this.checked &&
+      this.airportsArray.controls.some((control) => !control.value || control.value.trim() === '')
+    ) {
+      return;
+    }
+
     if (this.isMainFlightValid && this.isAirportsValid()) {
       this._navigationService.nextStep();
 
@@ -463,7 +486,19 @@ export class CaseFormComponent implements OnInit {
   }
 
   public isAirportsValid(): boolean {
-    return this.airportsArray.valid;
+    if (!this.checked) {
+      return true;
+    }
+
+    if (this.airportsArray.length === 0) {
+      return false;
+    }
+
+    const hasEmptyAirports = this.airportsArray.controls.some(
+      (control) => !control.value || control.value.trim() === ''
+    );
+
+    return this.airportsArray.valid && !hasEmptyAirports;
   }
 
   public onMainFlightValidityChange(isValid: boolean, data: FlightDetails | null): void {
@@ -621,21 +656,55 @@ export class CaseFormComponent implements OnInit {
   }
 
   public areAllDatesValid(): boolean {
-    const connections = this._flightService.getConnectionFlights();
+    const flaggedIndex = this.isFlagged.findIndex((flag) => flag === true);
 
-    for (let i = 0; i < connections.length - 1; i++) {
-      const currentConnection = this._flightService.getConnectionInitialData(i) || null;
-      const nextConnection = this._flightService.getConnectionInitialData(i + 1) || null;
+    if (flaggedIndex === -1) return false;
 
-      if (
-        currentConnection?.plannedArrivalTime != null &&
-        nextConnection?.plannedDepartureTime != null &&
-        currentConnection.plannedArrivalTime > nextConnection.plannedDepartureTime
-      ) {
-        return false;
-      }
+    const flaggedConnection = this._flightService.getConnectionInitialData(flaggedIndex);
+
+    if (!flaggedConnection?.plannedArrivalTime || !flaggedConnection?.plannedDepartureTime) {
+      return false;
     }
-    return true;
+
+    return flaggedConnection.plannedArrivalTime > flaggedConnection.plannedDepartureTime;
+  }
+
+  public get isConnectionStepValid(): boolean {
+    return this.flagged && this._flightService.areAllConnectionFlightsValid();
+  }
+
+  public getConnectionTitle(index: number): string {
+    if (this.connectionFlights[index]) {
+      return `${this.connectionFlights[index][0]} - ${this.connectionFlights[index][1]}`;
+    }
+    return '';
+  }
+
+  public onConnectionCheckboxChange(): void {
+    if (!this.checked) {
+      this.airportsArray.clear();
+      this._flightService.resetConnectionData();
+    }
+  }
+
+  public getConnectionValidationError(): string | null {
+    if (!this.checked) {
+      return null;
+    }
+
+    if (this.airportsArray.length === 0) {
+      return this._translateService.instant('mainForm.pleaseAddConnection');
+    }
+
+    const hasEmptyAirports = this.airportsArray.controls.some(
+      (control) => !control.value || control.value.trim() === ''
+    );
+
+    if (hasEmptyAirports) {
+      return this._translateService.instant('mainForm.fillInAllConnections');
+    }
+
+    return null;
   }
 
   public getDisruptionReason(): string {
