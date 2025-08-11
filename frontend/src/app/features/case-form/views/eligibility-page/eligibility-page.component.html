@@ -45,16 +45,35 @@
           }
 
           @if (shouldNotShowEligible()) {
-            <div class="not-eligible-message">
-              <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
-              <h2 class="text-red-700">{{ 'eligibilityForm.sorry' | translate }}</h2>
-              <p-message
-                severity="warn"
-                text="{{ 'eligibilityForm.notEligible' | translate }}"
-                [closable]="false"
-              >
-              </p-message>
-            </div>
+            @if (checkWihichEligibilityMotive()) {
+              <div class="not-eligible-message">
+                <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
+                <h2 class="text-red-700">{{
+                  'eligibilityForm.notEligibleDueToOtherReasons' | translate
+                }}</h2>
+                <p-message
+                  severity="warn"
+                  text="{{ 'eligibilityForm.notEligibleDueToOtherReasonsSummary' | translate }}"
+                  [closable]="false"
+                >
+                </p-message>
+              </div>
+            } @else {
+              <div class="not-eligible-message">
+                <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
+                <h2 class="text-red-700">{{
+                  'eligibilityForm.notEligibleDueToDelaysAndCancellations' | translate
+                }}</h2>
+                <p-message
+                  severity="warn"
+                  text="{{
+                    'eligibilityForm.notEligibleDueToDelaysAndCancellationsSummary' | translate
+                  }}"
+                  [closable]="false"
+                >
+                </p-message>
+              </div>
+            }
           }
         </div>
       </p-card>

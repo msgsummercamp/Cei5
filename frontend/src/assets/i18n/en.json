@@ -280,7 +280,10 @@
     "congratulations": "Congratulations.",
     "eligible": "You are eligible for compensation.",
     "sorry": "Sorry.",
-    "notEligible": "Your case is not eligible for compensation under EU regulations.",
+    "notEligibleDueToDelaysAndCancellations": "We're sorry! Unfortunately, you are not eligible for compensation:",
+    "notEligibleDueToDelaysAndCancellationsSummary":"According to European Regulation EC261/2004, if your flight was delayed or canceled due to air traffic controller (ATC) strikes, adverse weather conditions, or other circumstances beyond the airline's control, then the airline is not required to compensate you.",
+    "notEligibleDueToOtherReasons" : "Sorry! You do not meet the eligibility requirements:",
+    "notEligibleDueToOtherReasonsSummary": "According to European Regulation EC261/2004, the airline is not required to compensate you if your flight: was delayed by less than 3 hours or if you were notified of the cancellation more than 14 days before the flight date (email, SMS) the airline is not obliged to compensate you even in the case of cancellations announced less than 14 days before the flight date, if you arrive less than 3 hours late compared to the original itinerary with an alternative flight offered by the airline. We apologize and thank you for your understanding.",
     "restart": "Start over from the beginning."
   },
   "lastForm": {
