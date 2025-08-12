@@ -542,28 +542,8 @@ export class CaseFormComponent {
                 const userId = createdUser?.id;
                 this.userDetailsFormData.completedBy.id = userId;
                 clientID = userId;
-                const flagStatus = this._flightService.getFlagStatus();
-                this._flightService.getAllFlights().forEach((flight, index) => {
-                  if (index < flagStatus.length) {
-                    flight.isFlagged = flagStatus[index];
-                  }
-                });
-
-                if (clientID === null) {
-                  this._notificationService.showError(
-                    this._translateService.instant('auth-service.fetch-user-details-error')
-                  );
-                  return;
-                }
-                this._caseService.createAndSubmitCase(
-                  clientID,
-                  this.getDisruptionReason(),
-                  this.getDisruptionInfo(),
-                  this._caseService.createReservationDTO(),
-                  this.userDetailsFormData?.completedFor
-                );
-                this._contractService.generateContract('contract');
                 this.handleCaseSubmission(clientID);
+                this._contractService.generateContract('contract');
               }
             } else {
               this._notificationService.showInfo(
@@ -578,29 +558,8 @@ export class CaseFormComponent {
         });
       }
     } else {
-      const flagStatus = this._flightService.getFlagStatus();
-      this._flightService.getAllFlights().forEach((flight, index) => {
-        if (index < flagStatus.length) {
-          flight.isFlagged = flagStatus[index];
-        }
-      });
-
-      if (clientID === null) {
-        this._notificationService.showError(
-          this._translateService.instant('auth-service.fetch-user-details-error')
-        );
-        return;
-      }
-      this._caseService.createAndSubmitCase(
-        clientID,
-        this.getDisruptionReason(),
-        this.getDisruptionInfo(),
-        this._caseService.createReservationDTO(),
-        this.userDetailsFormData?.completedFor
-      );
-
-      this._contractService.generateContract('contract');
       this.handleCaseSubmission(clientID);
+      this._contractService.generateContract('contract');
     }
   }
 
