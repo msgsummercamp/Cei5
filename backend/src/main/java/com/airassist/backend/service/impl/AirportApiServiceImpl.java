@@ -47,7 +47,7 @@ public class AirportApiServiceImpl implements AirportApiService {
         logger.info("Calculating distance from {} to {}", departingAirportCode, destinationAirportCode);
 
         if (departingAirportCode.equals(destinationAirportCode) || departingAirportCode.isEmpty() || destinationAirportCode.isEmpty()) {
-            throw new InvalidAirportDetailsException(departingAirportCode, destinationAirportCode);
+            throw new InvalidAirportDetailsException();
         }
 
         Map<String, String> requestBody = new HashMap<>();

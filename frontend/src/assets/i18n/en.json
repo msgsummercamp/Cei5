@@ -44,7 +44,8 @@
   "case-form": {
     "compensation-start": "Congratulations! You could earn up to €",
     "compensation-end": ". Click next to continue.",
-    "submission-in-progress": "Your case is being submitted."
+    "submission-in-progress": "Your case is being submitted.",
+    "sign-in-to-see-cases": "Sign in to view your cases."
   },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
@@ -103,14 +104,13 @@
     "email-required": "Email is required.",
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
-    "failed-to-send-email": "Failed to send email",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
     "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
     "password-reset-failed": "Password reset failed",
     "token-decode-error": "Error decoding token. Please try again",
-    "fetch-user-details-error": "Error fetching user details. Please try again."
+    "fetch-user-details-error": "Error fetching user details: "
   },
   "sign-in": {
     "title": "Enter your account's data",
@@ -273,6 +273,7 @@
     "airlineRequired": "Airline name is required.",
     "airlineMinLength": "Airline name must be at least 3 characters.",
     "airlineMaxLength": "Airline name must be at most 50 characters.",
+    "airlineNotEmptyAfterTrim": "Airline name must not be empty.",
     "plannedDepartureTime": "Planned Departure Time",
     "plannedDepartureTimeRequired": "Planned departure time is required.",
     "plannedArrivalTime": "Planned Arrival Time",
@@ -286,11 +287,35 @@
     "loading": "Please wait while we verify the eligibility of your case.",
     "congratulations": "Congratulations.",
     "eligible": "You are eligible for compensation.",
+    "continueWithPersonalDetails": "Continue with your personal details.",
     "sorry": "Sorry.",
     "notEligible": "Your case is not eligible for compensation under EU regulations.",
     "restart": "Start over from the beginning."
   },
   "lastForm": {
     "next": "Finish"
+  },
+  "user-service": {
+    "error": "Error"
+  },
+  "api-errors": {
+    "invalid-airport-details": "Invalid airports details: from {{departingAirportCode}} to {{destinationAirportCode}}. Please check the airport codes.",
+    "generic-server-error": "The server encountered an error while processing your request.",
+    "server-interrupt-error": "The server was interrupted while fetching data.",
+    "user-not-found": "User does not exist.",
+    "invalid-password": "Invalid password provided.",
+    "duplicate-user": "A user with this email already exists.",
+    "messaging-error": "An error occurred while sending the email. Please try again later.",
+    "invalid-token": "The provided token is invalid or has expired.",
+    "json-parse-error": "An error occurred while parsing the JSON data.",
+    "password-api-error": "An error occurred while generating the password.",
+    "pdf-generation-error": "An error occurred while generating the PDF.",
+    "case-not-found": "The case was not found.",
+    "case-validation-error": "The provided case data is invalid. Please check your input.",
+    "data-integrity-violation": "Sorry, your request could not be completed due to a data conflict. Please check your input and try again.",
+    "illegal-argument-": "The provided data is not valid. Please check your input and try again.",
+    "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
+    "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
+    "reservation-not-found": "The reservation was not found."
   }
 }

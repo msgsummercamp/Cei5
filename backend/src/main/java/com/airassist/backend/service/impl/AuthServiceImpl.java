@@ -47,11 +47,11 @@ public class AuthServiceImpl implements AuthService {
         log.info("Signing in user with email: {}", signInRequest.getEmail());
         var user = userRepository.findByEmail(signInRequest.getEmail());
         if (user.isEmpty()) {
-            throw new UserNotFoundException("User not found with email: " + signInRequest.getEmail());
+            throw new UserNotFoundException();
         }
         User foundUser = user.get();
         if(!passwordEncoder.matches(signInRequest.getPassword(), foundUser.getPassword())) {
-            throw new InvalidPasswordException("Invalid password for user: " + signInRequest.getEmail());
+            throw new InvalidPasswordException();
         }
         String token = generateToken(foundUser);
         return new SignInResponse(token, foundUser.getIsFirstLogin().booleanValue());
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException, PasswordApiException {
         log.info("Resetting password for email: {}", resetPasswordRequest.getEmail());
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User with given email not found!"));
+                .orElseThrow(UserNotFoundException::new);
         String newPassword = randomPasswordGenerator.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setIsFirstLogin(true);
@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
                 .getBody()
                 .get("email", String.class);
         if (email == null) {
-            throw new InvalidTokenException("Email claim not found in token");
+            throw new InvalidTokenException();
         }
         return email;
     }

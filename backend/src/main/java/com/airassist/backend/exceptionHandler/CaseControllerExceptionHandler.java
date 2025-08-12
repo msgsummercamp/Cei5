@@ -3,6 +3,9 @@ package com.airassist.backend.exceptionHandler;
 
 import com.airassist.backend.controller.CaseController;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
+import com.airassist.backend.model.enums.ApiErrorMessages;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,16 +22,31 @@ public class CaseControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
-        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.BAD_REQUEST, "Validation error: " + ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.BAD_REQUEST, ApiErrorMessages.CASE_VALIDATION_ERROR.getCode());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrity(DataIntegrityViolationException ex) {
-        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.CONFLICT, "Database constraint violation: " + ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.CONFLICT, ApiErrorMessages.DATA_INTEGRITY_VIOLATION.getCode());
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ProblemDetail handleRuntime(RuntimeException ex) {
-        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.GENERIC_SERVER_ERROR.getCode());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleIllegalArgument(IllegalArgumentException ex) {
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.ILLEGAL_ARGUMENT.getCode());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ProblemDetail handleEntityNotFound(EntityNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.NOT_FOUND, ApiErrorMessages.USER_NOT_FOUND.getCode());
     }
 }

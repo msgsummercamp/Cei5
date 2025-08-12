@@ -39,14 +39,14 @@ public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGenerat
             response = restTemplate.getForObject(url, String.class);
         } catch (Exception e) {
             logger.error("Error while calling password generator API: {}", e.getMessage());
-            throw new PasswordApiException("Failed to generate password from API");
+            throw new PasswordApiException();
         }
 
         logger.info("Received response from password generator API.");
 
         JsonNode root = objectMapper.readTree(response);
         if(!root.has("password") || root.get("password").isNull()) {
-            throw new PasswordApiException("Invalid response from password generator API");
+            throw new PasswordApiException();
         }
 
         return root.get("password").asText();

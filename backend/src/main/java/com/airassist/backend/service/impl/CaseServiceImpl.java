@@ -2,10 +2,12 @@ package com.airassist.backend.service.impl;
 
 import com.airassist.backend.dto.cases.CaseDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.BeneficiaryMapper;
 import com.airassist.backend.mapper.CaseMapper;
 import com.airassist.backend.mapper.ReservationMapper;
 import com.airassist.backend.model.*;
+import com.airassist.backend.model.enums.ApiErrorMessages;
 import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.repository.CaseRepository;
@@ -55,7 +57,7 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.findById(id);
     }
 
-    public Case createCase(CaseDTO caseDTO) {
+    public Case createCase(CaseDTO caseDTO) throws UserNotFoundException {
         Case caseToAdd = caseMapper.toEntity(caseDTO);
         Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
         Beneficiary beneficiary = beneficiaryMapper.toEntity(caseDTO.getBeneficiary());
@@ -66,14 +68,14 @@ public class CaseServiceImpl implements CaseService {
         caseToAdd.setReservation(reservation);
 
         User client = userRepository.findById(caseDTO.getClientID())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException());
         caseToAdd.setClient(client);
 
         if (reservation.getId() != null) {
             boolean exists = reservationRepository.existsById(reservation.getId());
             if (exists) {
                 Reservation existingReservation = reservationRepository.findById(reservation.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+                        .orElseThrow(() -> new EntityNotFoundException(ApiErrorMessages.RESERVATION_NOT_FOUND.getCode()));
                 caseToAdd.setReservation(existingReservation);
             } else {
                 reservation.setId(null);
@@ -111,7 +113,7 @@ public class CaseServiceImpl implements CaseService {
         updateReqCase.setId(id);
         Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", id);
-            return new CaseNotFoundException("Case with ID " + id + " not found for deletion");
+            return new CaseNotFoundException();
         });
         updateCaseFields(updateReqCase, caseToUpdate);
         logger.info("Service - updating case with ID: {}", id);
@@ -125,7 +127,7 @@ public class CaseServiceImpl implements CaseService {
     public void deleteCase(UUID id) throws CaseNotFoundException {
         if (!caseRepository.existsById(id)) {
             logger.warn(("Service - Attempted to delete a case with non-existing ID: {}"), id);
-            throw new CaseNotFoundException("Case with ID " + id + " not found for deletion");
+            throw new CaseNotFoundException();
         }
         logger.info("Service - deleting case: {}", id);
         caseRepository.deleteById(id);
@@ -156,15 +158,15 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException {
+    public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException, UserNotFoundException {
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new EntityNotFoundException("Case not found.");
+            return new CaseNotFoundException();
         });
 
         User employee = userRepository.findById(employeeId).orElseThrow(() -> {
             logger.warn("Service - Employee with ID {} not found", employeeId);
-            return new EntityNotFoundException("Employee not found.");
+            return new UserNotFoundException();
         });
 
         if(employee.getRole() != Roles.EMPLOYEE) {
@@ -185,7 +187,7 @@ public class CaseServiceImpl implements CaseService {
 
         if(cases.isEmpty()) {
             logger.warn("There are no cases for the client: {}", clientId);
-            throw new EntityNotFoundException("Cases not found for client.");
+            throw new CaseNotFoundException();
         }
 
         return cases;
@@ -194,7 +196,7 @@ public class CaseServiceImpl implements CaseService {
     public Case setCaseStatus(UUID caseId, Statuses status) {
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
             logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new EntityNotFoundException("Case not found.");
+            return new CaseNotFoundException();
         });
 
         caseEntity.setStatus(status);

@@ -48,6 +48,7 @@ import { ConfirmationFormComponent } from './views/confirmation-form/confirmatio
 import { CheckboxModule } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
+import { ApiError } from '../../shared/types/api-error';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -151,7 +152,7 @@ export class CaseFormComponent implements OnInit {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
-  public compensation?: number;
+  public compensation?: number | null;
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
 
   public readonly departingAirportValue = toSignal(
@@ -575,12 +576,13 @@ export class CaseFormComponent implements OnInit {
               }
             } else {
               this._notificationService.showInfo(
-                'If you want to view all your cases you need to sign in.'
+                this._translateService.instant('case-form.sign-in-to-see-cases')
               );
             }
           },
           error: (error) => {
-            this._notificationService.showError(error.error.detail);
+            const apiError: ApiError = error?.error;
+            this._notificationService.showError(this._translateService.instant(apiError.detail));
           },
         });
       }
@@ -740,9 +742,7 @@ export class CaseFormComponent implements OnInit {
     }
 
     if (this.disruptionForm && this.disruptionForm.getDisruptionDescription) {
-      const formInfo = this.disruptionForm.getDisruptionDescription();
-
-      return formInfo;
+      return this.disruptionForm.getDisruptionDescription();
     }
 
     return '';

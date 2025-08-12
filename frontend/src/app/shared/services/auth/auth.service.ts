@@ -89,7 +89,7 @@ export class AuthService {
       },
       error: (error) => {
         const apiError: ApiError = error?.error;
-        this._notificationService.showError(apiError.detail);
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
         this._authState.set(initialState);
         this.clearTokenFromSessionStorage();
       },
@@ -119,7 +119,7 @@ export class AuthService {
       },
       error: (error) => {
         const apiError: ApiError = error?.error;
-        this._notificationService.showError(apiError.detail);
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
       },
     });
   }
@@ -162,11 +162,7 @@ export class AuthService {
       },
       error: (error) => {
         const apiError: ApiError = error?.error;
-        this._notificationService.showError(
-          this._translationService.instant('auth-service.failed-to-send-email') +
-            ': ' +
-            apiError.detail
-        );
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
       },
     });
   }
@@ -217,7 +213,7 @@ export class AuthService {
         this._notificationService.showError(
           this._translationService.instant('auth-service.password-reset-failed') +
             ': ' +
-            apiError.detail
+            this._translationService.instant(apiError.detail)
         );
       },
     });
@@ -241,9 +237,11 @@ export class AuthService {
         sessionStorage.setItem(environment.userDetailsSessionStorageKey, JSON.stringify(user));
         this._userService.loadUserDetails();
       },
-      error: () => {
+      error: (error) => {
+        const apiError: ApiError = error?.error;
         this._notificationService.showError(
-          this._translationService.instant('auth-service.fetch-user-details-error')
+          this._translationService.instant('auth-service.fetch-user-details-error') +
+            this._translationService.instant(apiError.detail)
         );
       },
     });

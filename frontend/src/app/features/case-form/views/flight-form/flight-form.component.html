@@ -74,6 +74,9 @@
             @case (flightDetailsForm.controls.airline.hasError('pattern')) {
               <app-error-message text="{{ 'flightForm.airlinePattern' | translate }}" />
             }
+            @case (flightDetailsForm.controls.airline.hasError('notEmptyAfterTrim')) {
+              <app-error-message text="{{ 'flightForm.airlineNotEmptyAfterTrim' | translate }}" />
+            }
           }
         }
       </div>
