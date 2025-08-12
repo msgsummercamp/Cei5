@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
 import { CaseDTO } from '../dto/case.dto';
@@ -23,6 +23,7 @@ export class CaseService {
   private readonly _translationService = inject(TranslateService);
 
   public createCase(caseData: CaseDTO): void {
+    console.log(caseData);
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
         this._notificationService.showSuccess('Case created successfully');
@@ -94,6 +95,26 @@ export class CaseService {
         return flightData;
       }),
     };
+  }
+
+  public getAllCases(): Observable<Case[]> {
+    return this._http.get<Case[]>(`${this._apiUrl}/cases`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of([]);
+      })
+    );
+  }
+
+  public deleteCase(caseId: string): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/cases/${caseId}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of();
+      })
+    );
   }
 
   private extractDateOnly(date: Date): string {

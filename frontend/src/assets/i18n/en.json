@@ -290,8 +290,8 @@
     "continueWithPersonalDetails": "Continue with your personal details.",
     "sorry": "Sorry.",
     "notEligibleDueToDelaysAndCancellations": "We're sorry! Unfortunately, you are not eligible for compensation:",
-    "notEligibleDueToDelaysAndCancellationsSummary":"According to European Regulation EC261/2004, if your flight was delayed or canceled due to air traffic controller (ATC) strikes, adverse weather conditions, or other circumstances beyond the airline's control, then the airline is not required to compensate you.",
-    "notEligibleDueToOtherReasons" : "Sorry! You do not meet the eligibility requirements:",
+    "notEligibleDueToDelaysAndCancellationsSummary": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to air traffic controller (ATC) strikes, adverse weather conditions, or other circumstances beyond the airline's control, then the airline is not required to compensate you.",
+    "notEligibleDueToOtherReasons": "Sorry! You do not meet the eligibility requirements:",
     "notEligibleDueToOtherReasonsSummary": "According to European Regulation EC261/2004, the airline is not required to compensate you if your flight: was delayed by less than 3 hours or if you were notified of the cancellation more than 14 days before the flight date (email, SMS) the airline is not obliged to compensate you even in the case of cancellations announced less than 14 days before the flight date, if you arrive less than 3 hours late compared to the original itinerary with an alternative flight offered by the airline. We apologize and thank you for your understanding.",
     "restart": "Start over from the beginning."
   },
@@ -309,7 +309,7 @@
     "invalid-password": "Invalid password provided.",
     "duplicate-user": "A user with this email already exists.",
     "messaging-error": "An error occurred while sending the email. Please try again later.",
-    "invalid-token": "The provided token is invalid or has expired.",
+    "invalid-token": "The session is invalid or has expired. Please log in again.",
     "json-parse-error": "An error occurred while parsing the JSON data.",
     "password-api-error": "An error occurred while generating the password.",
     "pdf-generation-error": "An error occurred while generating the PDF.",
@@ -320,5 +320,43 @@
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "reservation-not-found": "The reservation was not found."
+  },
+  "case-table": {
+    "case-id": "Case ID",
+    "created-on": "Created On",
+    "flight-number": "Flight Number",
+    "client-name": "Client Name",
+    "assigned-employee": "Assigned Employee",
+    "status": "Status",
+    "search-by-id": "Search by Case ID",
+    "confirmation": "Confirmation",
+    "confirm-delete": "Are you sure you want to delete this case?",
+    "case-deleted": "Case deleted successfully.",
+    "search-by-name": "Search by Client Name",
+    "unassigned": "Unassigned",
+    "select-status": "Select Status",
+    "no-cases-found": "No cases found."
+  },
+  "primeng": {
+    "startsWith": "Starts with",
+    "contains": "Contains",
+    "notContains": "Does not contain",
+    "endsWith": "Ends with",
+    "equals": "Equals",
+    "notEquals": "Not equals",
+    "noFilter": "No filter",
+    "matchAll": "Match all",
+    "matchAny": "Match any",
+    "addRule": "Add Rule",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "statuses": {
+    "PENDING": "Pending",
+    "COMPLETED": "Completed",
+    "ARCHIVED": "Archived",
+    "FAILED": "Failed",
+    "VALID": "Valid",
+    "INVALID": "Invalid"
   }
 }
