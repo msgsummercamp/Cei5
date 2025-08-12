@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, of, Subject, switchMap } from 'rxjs';
+import { catchError, of, shareReplay, Subject, switchMap } from 'rxjs';
 import { NotificationService } from './toaster/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiError } from '../types/api-error';
@@ -47,6 +47,7 @@ export class CompensationService {
           return of(null);
         })
       );
-    })
+    }),
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
 }

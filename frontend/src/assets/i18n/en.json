@@ -209,12 +209,11 @@
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
     "step1": {
       "title": "Step 1",
-      "text": "Click the button below to download the contract. Read it and sign it.",
-      "button": "Download contract"
+      "text": "You can enter your account by clicking the <strong>Finish</strong> button below. After entering your account, upload all necessary documents for your case."
     },
     "step2": {
       "title": "Step 2",
-      "text": "After entering your account, upload all necessary documents for your case. You can enter your account by clicking the <strong>Finish</strong> button below."
+      "text": "When you click <strong>Finish</strong> a contract with your details will be generated. Read it, sign it and upload it to your case."
     },
     "step3": {
       "title": "Step 3",

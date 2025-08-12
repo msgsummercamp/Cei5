@@ -28,10 +28,10 @@
 
         .signature td {
             width: 30%;
-            height: 130px;
-            margin-top: 20px;
-            text-align: left;
-            border: 1px solid black;
+            height: 10px;
+            margin-top: 50px;
+            text-align: center;
+            border-top: solid 1px;
         }
 
         .footer {
@@ -50,21 +50,21 @@
     <table>
         <tr>
             <td>
-                <p><strong>First and Last name of the passenger (the “Client”)</strong><br/>
-                    / Prenume și nume pasager („Client”):<br/>
+                <p><strong>First and Last name of the passenger (the “Client”)</strong>
+                    / Prenume și nume <br/> pasager („Client”):
                     <span th:text="${firstName}"></span> <span th:text="${lastName}"></span></p>
 
                 <p><strong>Address (with postal code)</strong>
                     / Adresă (<u>Atenție: adăugați și codul poștal!</u>):<br/>
-                    <span th:text="${address}"></span>, <span th:text="${postalCode}"></span></p>
+                    <span></span></p>
             </td>
 
             <td >
                 <p><strong>Booking reference</strong> / Cod rezervare:<br/>
                     <span th:text="${reservationNumber}"></span></p>
 
-                <p><strong>Email address</strong> / Adresă de email:<br/>
-                    <span th:text="${email}"></span></p>
+                <p><strong>ID</strong> / CNP:<br/>
+                    <span></span></p>
             </td>
         </tr>
     </table>
@@ -104,7 +104,6 @@
 
     <table class="signature">
         <tr>
-            <td><strong>Passenger Services S.R.L.</strong><br/>Előd Imreh-Racz - Administrator</td>
             <td><strong>Client signature</strong> / Semnătură Client</td>
             <td><strong>Date</strong> / Data</td>
         </tr>

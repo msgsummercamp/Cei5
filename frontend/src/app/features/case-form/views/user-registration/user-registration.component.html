@@ -1,7 +1,7 @@
 <div class="user-registration-container flex flex-column align-items-center">
   <p-header class="text-3xl">{{ 'user-details.title' | translate }}</p-header>
   <p>{{ 'user-details.subtitle' | translate }}</p>
-  <p-scrollpanel>
+  <div class="scroll-container">
     <form novalidate [formGroup]="userRegistrationForm" class="flex flex-column gap-4 p-4">
       <!-- Email Input -->
       <div>
@@ -389,7 +389,9 @@
           <p-checkbox
             formControlName="someoneElseIsUnderage"
             binary="true"
+            [(ngModel)]="underage"
             inputId="someoneElseIsUnderage"
+            (onChange)="filterDetails()"
           ></p-checkbox>
           <label for="someoneElseIsUnderage" class="ml-2">
             {{ 'user-details.someone-else-underage-label' | translate }}
@@ -410,7 +412,7 @@
         </div>
       }
     </form>
-  </p-scrollpanel>
+  </div>
   <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
   <div class="flex flex-column gap-2">
     <div>

@@ -74,13 +74,19 @@ export class EligibilityPageComponent implements OnInit {
     this._reservationService.getReservationInformation().destinationAirport;
 
   constructor() {
-    effect(() => {
-      this.compensation = undefined;
-      const dep = this.departingAirportValue;
-      const dest = this.destinationAirportValue;
-      if (!!dep && !!dest) {
-        this._compensationService.calculateDistance(dep, dest);
-      }
+    this.compensation = undefined;
+    const dep = this.departingAirportValue;
+    const dest = this.destinationAirportValue;
+
+    console.log({ dep });
+    console.log({ dest });
+    if (!!dep && !!dest) {
+      this._compensationService.calculateDistance(dep, dest);
+    }
+
+    this._compensationService.compensation$.subscribe((data) => {
+      console.log('imi bag pl');
+      this.compensation = data;
     });
   }
 
@@ -130,10 +136,6 @@ export class EligibilityPageComponent implements OnInit {
       this.hasRunInitialCheck = true;
       this.checkEligibility();
     }
-
-    this._compensationService.compensation$.subscribe((data) => {
-      this.compensation = data;
-    });
   }
 
   private checkEligibility(): void {

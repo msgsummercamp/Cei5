@@ -206,19 +206,18 @@
     "privacy-policy": "politica de confidențialitate."
   },
   "confirmation": {
-    "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
+    "congratulations": "Felicitări! Acum puteți trimite cazul dumneavoastră. Înainte de aceasta, iată o prezentare a pașilor următori:",
     "step1": {
       "title": "Pasul 1",
-      "text": "Apasă butonul de mai jos pentru a descărca contractul. Citește-l cu atenție și semnează-l.",
-      "button": "Descarcă contractul"
+      "text": "Accesați contul dumneavoastră apăsând butonul <strong>Finalizează</strong> de mai jos. După autentificare, încărcați toate documentele necesare pentru cazul dumneavoastră."
     },
     "step2": {
       "title": "Pasul 2",
-      "text": "După ce te autentifici în cont, încarcă toate documentele necesare pentru cazul tău. Poți accesa contul apăsând butonul <strong>Finalizează</strong> de mai jos."
+      "text": "După ce apăsați <strong>Finalizează</strong>, se va genera un contract cu datele dumneavoastră. Citiți-l cu atenție, semnați-l și încărcați-l în dosarul dumneavoastră."
     },
     "step3": {
       "title": "Pasul 3",
-      "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
+      "text": "Așteptați ca un membru al echipei să proceseze cazul dumneavoastră și verificați periodic emailul pentru eventuale actualizări."
     }
   },
   "stepper": {

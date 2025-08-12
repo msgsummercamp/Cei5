@@ -192,7 +192,7 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <p-scrollpanel class="flex flex-column">
+          <div class="flex flex-column">
             <div class="grid">
               <!-- Main Flight Form -->
               <div class="col-12 md:col">
@@ -370,7 +370,7 @@
                 </div>
               }
             </div>
-          </p-scrollpanel>
+          </div>
           <!-- Next and back buttons -->
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
@@ -435,17 +435,17 @@
                 }
               }
             </div>
+
+            <!-- Error message if no connection is flagged -->
+            @if (!flagged) {
+              <p-message severity="warn" class="mb-2 text-center">
+                {{ 'mainForm.selectConnection' | translate }}
+              </p-message>
+            }
           </div>
 
-          <!-- Error message if no connection is flagged -->
-          @if (!flagged) {
-            <p-message severity="warn" class="mb-2 text-center">
-              {{ 'mainForm.selectConnection' | translate }}
-            </p-message>
-          }
-
           <!-- Next and back buttons -->
-          <div class="justify-content-between flex flex-row gap-2 mt-2">
+          <div class="justify-content-center flex flex-row gap-6">
             <p-button
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"

@@ -4,24 +4,22 @@
   align-items: flex-start;
 }
 
-::ng-deep {
-  .disruption-wrapper {
-    .p-scrollpanel {
-      width: 30rem;
-      height: 25rem;
-    }
+.scroll-container {
+  width: 30rem;
+  height: 25rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
-    @media(max-width: 700px) {
-      .p-scrollpanel {
-        width: 22rem;
-        height: 37rem;
-      }
-    }
+@media(max-width: 700px) {
+  .scroll-container {
+    width: 22rem;
+    height: 37rem;
+  }
+}
 
-    @media(min-width: 1900px) {
-      .p-scrollpanel {
-        height: 30rem;
-      }
-    }
+@media(min-width: 1900px) {
+  .scroll-container {
+    height: 37rem;
   }
 }

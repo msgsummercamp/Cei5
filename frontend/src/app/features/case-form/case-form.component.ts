@@ -41,7 +41,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 import { ApiError } from '../../shared/types/api-error';
-import { ScrollPanel } from 'primeng/scrollpanel';
 import { ContractService } from '../../shared/services/contract.service';
 
 type DisruptionForm = {
@@ -76,7 +75,6 @@ type DisruptionForm = {
     TranslatePipe,
     ConfirmationFormComponent,
     CheckboxModule,
-    ScrollPanel,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -147,9 +145,17 @@ export class CaseFormComponent {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
+  public reservation = toSignal(this._contractService.contract$, {
+    initialValue: undefined,
+  });
   public compensation?: number | null;
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
   public checked: boolean = false;
+
+  public readonly reservationNumber = toSignal(
+    this.reservationForm.get('reservationNumber')!.valueChanges,
+    { initialValue: this.reservationForm.get('reservationNumber')!.value }
+  );
 
   @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
@@ -523,12 +529,11 @@ export class CaseFormComponent {
     if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
       return;
     }
-
     this._notificationService.showInfo(
       this._translateService.instant('case-form.submission-in-progress')
     );
     let clientID = this.getClientId();
-
+    console.log('.');
     if (!clientID) {
       if (this.userDetailsFormData) {
         this._userService.createUser(this.userDetailsFormData.completedBy).subscribe({
@@ -538,7 +543,7 @@ export class CaseFormComponent {
                 const userId = createdUser?.id;
                 this.userDetailsFormData.completedBy.id = userId;
                 clientID = userId;
-
+                console.log('.');
                 const flagStatus = this._flightService.getFlagStatus();
                 this._flightService.getAllFlights().forEach((flight, index) => {
                   if (index < flagStatus.length) {
@@ -559,6 +564,7 @@ export class CaseFormComponent {
                   this._caseService.createReservationDTO(),
                   this.userDetailsFormData?.completedFor
                 );
+                this._contractService.generateContract('contract');
               }
             } else {
               this._notificationService.showInfo(
@@ -572,7 +578,27 @@ export class CaseFormComponent {
           },
         });
       }
+    } else {
+      const flagStatus = this._flightService.getFlagStatus();
+      this._flightService.getAllFlights().forEach((flight, index) => {
+        if (index < flagStatus.length) {
+          flight.isFlagged = flagStatus[index];
+        }
+      });
 
+      if (clientID === null) {
+        this._notificationService.showError(
+          this._translateService.instant('auth-service.fetch-user-details-error')
+        );
+        return;
+      }
+      this._caseService.createAndSubmitCase(
+        clientID,
+        this.getDisruptionReason(),
+        this.getDisruptionInfo(),
+        this._caseService.createReservationDTO(),
+        this.userDetailsFormData?.completedFor
+      );
       this._contractService.generateContract('contract');
     }
   }

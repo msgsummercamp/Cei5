@@ -16,8 +16,9 @@ import { CountryISO, IntlInputTelComponent, SearchCountryField } from 'p-intl-in
 import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
-import { ScrollPanel } from 'primeng/scrollpanel';
 import { CaseFormUserData } from '../../../../shared/types/case-form-userdata';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CaseFormUserDetailsService } from '../../../../shared/services/case-form-user-details.service';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -48,13 +49,13 @@ type UserRegistrationForm = {
     PanelModule,
     Checkbox,
     FormsModule,
-    ScrollPanel,
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegistrationComponent {
+  private readonly _caseFormUserDetailsService = inject(CaseFormUserDetailsService);
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private areFieldsDisabled = false;
   private hasInitialized = false;
@@ -70,6 +71,7 @@ export class UserRegistrationComponent {
   public readonly phoneNumberFormat = PhoneNumberFormat;
   public acceptedTerms = false;
   public acceptedGDPR = false;
+  public underage = false;
 
   // Date limits for birth date
   protected readonly maxDate = (() => {
@@ -123,6 +125,23 @@ export class UserRegistrationComponent {
     someoneElsePostalCode: this._formBuilder.control<string>(''),
     someoneElseIsUnderage: this._formBuilder.control<boolean>(false),
   });
+
+  // public readonly userFirstName = toSignal(
+  //   this.userRegistrationForm.get('firstName')!.valueChanges,
+  //   { initialValue: this.userRegistrationForm.get('firstName')!.value }
+  // );
+  // public readonly userLastName = toSignal(this.userRegistrationForm.get('lastName')!.valueChanges, {
+  //   initialValue: this.userRegistrationForm.get('lastName')!.value,
+  // });
+  //
+  // public readonly beneficiaryFirstName = toSignal(
+  //   this.userRegistrationForm.get('someoneElseFirstName')!.valueChanges,
+  //   { initialValue: this.userRegistrationForm.get('beneficiaryFirstName')!.value }
+  // );
+  // public readonly beneficiaryLastName = toSignal(
+  //   this.userRegistrationForm.get('someoneElseLastName')!.valueChanges,
+  //   { initialValue: this.userRegistrationForm.get('beneficiaryLastName')!.value }
+  // );
 
   constructor() {
     this.userRegistrationForm.statusChanges.subscribe(() => {
@@ -207,9 +226,8 @@ export class UserRegistrationComponent {
     if (!this.userRegistrationForm.valid) return null;
 
     const birthDateValue = this.userRegistrationForm.get('birthDate')?.value;
-    const completingForSomeoneElse = this.userRegistrationForm.get(
-      'completingForSomeoneElse'
-    )?.value;
+    const completingForSomeoneElse =
+      this.userRegistrationForm.get('completingForSomeoneElse')?.value || false;
 
     const completedBy = {
       email: this.userRegistrationForm.get('email')?.value,
@@ -235,6 +253,11 @@ export class UserRegistrationComponent {
       };
     }
 
+    this._caseFormUserDetailsService.setUserDetails(result);
+    this._caseFormUserDetailsService.setUserCompletesForSomeoneElse(
+      completingForSomeoneElse && !!result.completedFor && !result.completedFor.isUnderage
+    );
+
     return result;
   }
 
@@ -249,6 +272,13 @@ export class UserRegistrationComponent {
     ) {
       this.validityChange.emit({ valid: isValid, data });
       this.lastEmitted = { valid: isValid, data };
+    }
+  }
+
+  public filterDetails(): void {
+    const hasBeneficiary = this.userRegistrationForm.get('completingForSomeoneElse')?.value;
+    if (hasBeneficiary && this.underage) {
+    } else {
     }
   }
 

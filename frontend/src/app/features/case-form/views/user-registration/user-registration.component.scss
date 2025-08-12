@@ -22,18 +22,23 @@
   color: #0056b3;
 }
 
-::ng-deep {
-  .user-registration-container {
-    .p-scrollpanel {
-      width: 30rem;
-      height: 26rem;
-    }
+.scroll-container {
+  width: 30rem;
+  height: 10rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 
-    @media(max-width: 700px) {
-      .p-scrollpanel {
-        width: 22rem;
-        height: 24rem;
-      }
-    }
+@media(max-width: 700px) {
+  .scroll-container {
+    width: 26rem;
+    height: 21rem;
+  }
+}
+
+@media(min-width: 1900px) {
+  .scroll-container {
+    width: 30rem;
+    height: 23rem;
   }
 }
