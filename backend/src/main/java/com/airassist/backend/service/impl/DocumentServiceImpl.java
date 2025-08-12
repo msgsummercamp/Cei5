@@ -14,6 +14,7 @@ import com.airassist.backend.service.DocumentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
@@ -50,12 +51,16 @@ public class DocumentServiceImpl implements DocumentService {
      * @param caseId - the ID of the case for which documents are being fetched
      * @return the list of documents
      */
+    @Transactional
     public List<DocumentSummaryDTO> getDocumentsForCase(UUID caseId) {
         if(!caseRepository.existsById(caseId)) {
             throw new CaseNotFoundException();
         }
         logger.info("Document Service - fetching a list of documents for the case {}", caseId);
-        return documentRepository.findByCaseEntityId(caseId);
+        List<Document> documents = documentRepository.findByCaseEntityId(caseId);
+        return documents.stream()
+                .map(doc -> new DocumentSummaryDTO(doc.getId(), doc.getName(), doc.getType()))
+                .toList();
     }
 
 

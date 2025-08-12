@@ -123,7 +123,6 @@ public class CaseServiceTest {
         dto.setDate(LocalDate.now());
         dto.setClientId(client.getId());
         dto.setAssignedColleagueId(null);
-        dto.setReservationId(reservation.getId());
         dto.setDocumentIds(List.of());
         dto.setBeneficiary(new BeneficiaryDTO(
                 beneficiary.getId(),

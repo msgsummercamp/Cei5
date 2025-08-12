@@ -1,10 +1,17 @@
 package com.airassist.backend.dto.document;
 
 import com.airassist.backend.model.enums.DocumentTypes;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.UUID;
 
-public interface DocumentSummaryDTO {
-    UUID getId();
-    String getName();
-    DocumentTypes getType();
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class DocumentSummaryDTO {
+    private UUID id;
+    private String name;
+    private DocumentTypes type;
 }

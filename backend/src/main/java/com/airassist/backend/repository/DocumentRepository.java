@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DocumentRepository extends JpaRepository<Document, UUID> {
-    List<DocumentSummaryDTO> findByCaseEntityId(UUID caseId);
+    List<Document> findByCaseEntityId(UUID caseId);
 }
