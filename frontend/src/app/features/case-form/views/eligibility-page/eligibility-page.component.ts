@@ -14,6 +14,7 @@ import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
+import { UserService } from '../../../../shared/services/user.service';
 import { CompensationService } from '../../../../shared/services/compensation.service';
 
 @Component({
@@ -36,6 +37,7 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _navigationService = inject(StepNavigationService);
   private readonly _eligibilityDataService = inject(EligibilityDataService);
+  private readonly _userService = inject(UserService);
   private readonly _compensationService = inject(CompensationService);
   private readonly _translateService = inject(TranslateService);
 
@@ -92,6 +94,16 @@ export class EligibilityPageComponent implements OnInit {
     );
   }
 
+  public checkWhichEligibilityMotive(): boolean {
+    if (
+      this.disruptionReason() === 'ARRIVED_EARLY' ||
+      this.disruptionReason() === 'CANCELATION_NOTICE_OVER_14_DAYS'
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   public getErrorMessage(): string | undefined {
     return this.eligibilityResult().errorMessage;
   }
@@ -143,7 +155,6 @@ export class EligibilityPageComponent implements OnInit {
       if (!caseData || Object.keys(caseData).length === 0) {
         this._eligibilityDataService.setEligibilityResult({
           isLoading: false,
-          errorMessage: 'Missing case information. Please complete all previous steps.',
           hasBeenChecked: true,
           isEligible: false,
         });
@@ -204,6 +215,16 @@ export class EligibilityPageComponent implements OnInit {
     });
   }
 
+  private getClientId(): string | null {
+    const userDetails = this._userService.userDetails();
+
+    if (userDetails?.id) {
+      return userDetails.id;
+    }
+
+    return null;
+  }
+
   private createCaseDTO(): CaseDTO | {} {
     const reservationInfo = this._reservationService.getReservationInformation();
     const allFlights = this._flightService.getAllFlights();
@@ -211,14 +232,14 @@ export class EligibilityPageComponent implements OnInit {
     if (!reservationInfo.reservationNumber || !allFlights || allFlights.length === 0) {
       return {};
     }
+    const clientID = this.getClientId();
 
-    ///TODO: For now we have mock placeholder data, replace with new one after User Form is ready
     const caseData: CaseDTO = {
       status: Statuses.PENDING,
       disruptionReason: this.disruptionReason(),
       disruptionInfo: this.disruptionInfo(),
       date: new Date().toISOString(),
-      clientID: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', ///TODO: Replace with actual client ID from user form
+      clientID: clientID || '',
       assignedColleague: undefined,
       reservation: this.createReservationDTO(),
       documentList: [],

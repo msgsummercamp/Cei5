@@ -9,6 +9,8 @@ import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.enums.ApiErrorMessages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +22,16 @@ public class AuthControllerExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ProblemDetail handleConstraintViolationException(ConstraintViolationException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ApiErrorMessages.CONSTRAINT_VIOLATION.getCode());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ProblemDetail handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ApiErrorMessages.DATA_INTEGRITY_VIOLATION.getCode());
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
@@ -51,4 +63,6 @@ public class AuthControllerExceptionHandler {
     public ProblemDetail handlePasswordApiException(PasswordApiException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.PASSWORD_API_ERROR.getCode());
     }
+
+
 }

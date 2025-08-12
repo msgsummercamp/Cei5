@@ -527,7 +527,7 @@ export class CaseFormComponent {
     this._notificationService.showInfo(
       this._translateService.instant('case-form.submission-in-progress')
     );
-    const clientID = this.getClientId();
+    let clientID = this.getClientId();
 
     if (!clientID) {
       if (this.userDetailsFormData) {
@@ -535,7 +535,30 @@ export class CaseFormComponent {
           next: (createdUser) => {
             if (createdUser?.id) {
               if (this.userDetailsFormData) {
-                this.userDetailsFormData.completedBy.id = createdUser?.id;
+                const userId = createdUser?.id;
+                this.userDetailsFormData.completedBy.id = userId;
+                clientID = userId;
+
+                const flagStatus = this._flightService.getFlagStatus();
+                this._flightService.getAllFlights().forEach((flight, index) => {
+                  if (index < flagStatus.length) {
+                    flight.isFlagged = flagStatus[index];
+                  }
+                });
+
+                if (clientID === null) {
+                  this._notificationService.showError(
+                    this._translateService.instant('auth-service.fetch-user-details-error')
+                  );
+                  return;
+                }
+                this._caseService.createAndSubmitCase(
+                  clientID,
+                  this.getDisruptionReason(),
+                  this.getDisruptionInfo(),
+                  this._caseService.createReservationDTO(),
+                  this.userDetailsFormData?.completedFor
+                );
               }
             } else {
               this._notificationService.showInfo(
@@ -552,27 +575,6 @@ export class CaseFormComponent {
 
       this._contractService.generateContract('contract');
     }
-
-    const flagStatus = this._flightService.getFlagStatus();
-    this._flightService.getAllFlights().forEach((flight, index) => {
-      if (index < flagStatus.length) {
-        flight.isFlagged = flagStatus[index];
-      }
-    });
-
-    if (clientID === null) {
-      this._notificationService.showError(
-        this._translateService.instant('auth-service.fetch-user-details-error')
-      );
-      return;
-    }
-    this._caseService.createAndSubmitCase(
-      clientID,
-      this.getDisruptionReason(),
-      this.getDisruptionInfo(),
-      this._caseService.createReservationDTO(),
-      this.userDetailsFormData?.completedFor
-    );
   }
 
   private getClientId(): string | null {

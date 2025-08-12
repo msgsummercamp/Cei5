@@ -283,8 +283,8 @@
     "airlinePattern": "Airline must contain only letters."
   },
   "eligibilityForm": {
-    "checkEligibility": "Checking eligibility.",
-    "loading": "Please wait while we check the eligibility of your case.",
+    "checkEligibility": "Eligibility check.",
+    "loading": "Please wait while we verify the eligibility of your case.",
     "eligible": {
       "congratulations": "Congratulations!",
       "compensation-start": "You may be entitled to compensation of up to €",
