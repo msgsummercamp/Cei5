@@ -34,6 +34,10 @@ export class CaseService {
     });
   }
 
+  public getAllUserCases(clientID: string): Observable<Case[]> {
+    return this._http.get<Case[]>(`${this._apiUrl}/cases/user/${clientID}`);
+  }
+
   public checkEligibility(caseDTO: CaseDTO): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/cases/check-eligibility`, caseDTO);
   }
