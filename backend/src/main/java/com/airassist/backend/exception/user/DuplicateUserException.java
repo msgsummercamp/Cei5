@@ -1,7 +1,9 @@
 package com.airassist.backend.exception.user;
 
+import com.airassist.backend.model.enums.ApiErrorMessages;
+
 public class DuplicateUserException extends Exception {
     public DuplicateUserException() {
-        super("A user with this email already exists");
+        super(ApiErrorMessages.DUPLICATE_USER.getCode());
     }
 }

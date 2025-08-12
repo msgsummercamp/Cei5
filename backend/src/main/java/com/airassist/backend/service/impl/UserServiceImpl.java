@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         /*Check for null values in non-nullable fields. This allows us to use the same dto for update and patch*/
         if(!UserValidator.userIsValidForUpdate(user)) {
             logger.error("User with ID {} has invalid data for update", id);
-            throw new IllegalArgumentException("Invalid user data for update");
+            throw new IllegalArgumentException();
         }
 
         Optional<User> existingUserOpt = userRepository.findById(id);

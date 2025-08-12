@@ -2,6 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, Subject, switchMap, throwError } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from './toaster/notification.service';
+import { ApiError } from '../types/api-error';
 
 type ContractDetails = {
   caseId: string;
@@ -19,6 +22,9 @@ type ContractDetails = {
 })
 export class ContractService {
   private _httpClient = inject(HttpClient);
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translationService = inject(TranslateService);
+
   private readonly URL = environment.API_URL + '/pdf/generate';
 
   private _generateContract = new Subject<string>();
@@ -47,7 +53,9 @@ export class ContractService {
         { headers: headers, responseType: 'blob' as 'json' }
       );
     }),
-    catchError((error: Error) => {
+    catchError((error) => {
+      const apiError: ApiError = error?.error;
+      this._notificationService.showError(this._translationService.instant(apiError.detail));
       return throwError(() => error);
     })
   );

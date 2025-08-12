@@ -45,7 +45,8 @@
   "case-form": {
     "compensation-start": "Felicitări! Poți câștiga până la €",
     "compensation-end": ". Apasă next pentru a continua.",
-    "submission-in-progress": "Cazul tău este în curs de înregistrare."
+    "submission-in-progress": "Cazul tău este în curs de înregistrare.",
+    "sign-in-to-see-cases": "Autentifică-te pentru a vedea cazurile tale."
   },
   "disruption-form": {
     "selectPlaceholder": "Selectează un tip de întrerupere",
@@ -105,20 +106,19 @@
     "registration-success": "Înregistrare reușită. Vă rugăm să verificați adresa de email.",
     "password-reset-email-sent": "Emailul pentru resetarea parolei a fost trimis cu succes.",
     "must-be-logged-for-reset": "Trebuie să fiți autentificat pentru a reseta parola.",
-    "failed-to-send-email": "Eroare la trimiterea emailului",
     "must-be-logged-for-details": "Trebuie să fiți autentificat pentru a vizualiza detaliile utilizatorului.",
     "password-null-or-empty": "Noua parolă trebuie să aibă cel puțin 6 caractere.",
     "password-reset-success": "Resetarea parolei a fost realizată cu succes.",
     "password-reset-failed": "Eroare la resetarea parolei",
     "token-decode-error": "Eroare la decodarea tokenului. Vă rugăm să încercați din nou.",
-    "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului. Vă rugăm să încercați din nou."
+    "fetch-user-details-error": "Eroare la obținerea detaliilor utilizatorului: "
   },
   "sign-in": {
     "title": "Introduceți datele contului dvs.",
-    "email-label": "Email*",
+    "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
-    "password-label": "Parolă*",
+    "password-label": "Parolă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
     "password-maxlength": "Parola nu poate depăși 30 de caractere.",
@@ -141,7 +141,7 @@
   "request-reset": {
     "title": "Resetare parolă",
     "description": "Introduceți adresa de email pentru a primi o nouă parolă temporară. La prima autentificare vi se va solicita să schimbați parola.",
-    "email-label": "Email*",
+    "email-label": "Email",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Vă rugăm să introduceți o adresă de email validă.",
     "submit-button": "Trimite mail-ul de resetare",
@@ -150,11 +150,11 @@
   },
   "change-pass": {
     "title": "Schimbă-ți parola",
-    "password-label": "Parolă nouă*",
+    "password-label": "Parolă nouă",
     "password-required": "Parola este obligatorie.",
     "password-minlength": "Parola trebuie să aibă cel puțin 6 caractere.",
     "password-maxlength": "Parola nu poate depăși 30 de caractere.",
-    "confirm-required": "Vă rugăm să confirmați parola.*",
+    "confirm-required": "Vă rugăm să confirmați parola.",
     "confirm-label": "Confirmă parola",
     "password-mismatch": "Parolele nu coincid.",
     "submit-button": "Schimbă parola",
@@ -273,6 +273,7 @@
     "airlineRequired": "Numele companiei aeriene este obligatoriu.",
     "airlineMinLength": "Numele companiei aeriene trebuie să aibă cel puțin 3 caractere.",
     "airlineMaxLength": "Numele companiei aeriene trebuie să aibă cel mult 50 de caractere.",
+    "airlineNotEmptyAfterTrim": "Numele companiei aeriene nu poate fi gol.",
     "plannedDepartureTime": "Ora planificată de plecare*",
     "plannedDepartureTimeRequired": "Ora planificată de plecare este obligatorie.",
     "plannedArrivalTime": "Ora planificată de sosire*",
@@ -306,5 +307,25 @@
   },
   "user-service": {
     "error": "Eroare"
+  },
+  "api-errors": {
+    "invalid-airport-details": "Detalii aeroport invalide: de la {{departingAirportCode}} la {{destinationAirportCode}}. Vă rugăm să verificați codurile aeroporturilor.",
+    "generic-server-error": "Serverul a întâmpinat o eroare la procesarea cererii dumneavoastră.",
+    "server-interrupt-error": "Serverul a fost întrerupt în timpul preluării datelor.",
+    "user-not-found": "Utilizatorul nu există.",
+    "invalid-password": "Parolă introdusă invalidă.",
+    "duplicate-user": "Există deja un utilizator cu acest email.",
+    "messaging-error": "A apărut o eroare la trimiterea emailului. Vă rugăm să încercați din nou mai târziu.",
+    "invalid-token": "Tokenul furnizat este invalid sau a expirat.",
+    "json-parse-error": "A apărut o eroare la procesarea datelor JSON.",
+    "password-api-error": "A apărut o eroare la generarea parolei.",
+    "pdf-generation-error": "A apărut o eroare la generarea PDF-ului.",
+    "case-not-found": "Cazul nu a fost găsit.",
+    "case-validation-error": "Datele cazului furnizate sunt invalide. Vă rugăm să verificați datele introduse.",
+    "data-integrity-violation": "Ne pare rău, cererea nu a putut fi finalizată din cauza unui conflict de date. Vă rugăm să verificați datele și să încercați din nou.",
+    "illegal-argument-": "Datele furnizate nu sunt valide. Vă rugăm să verificați datele și să încercați din nou.",
+    "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
+    "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
+    "reservation-not-found": "Rezervarea nu a fost găsită."
   }
 }

@@ -3,10 +3,13 @@ package com.airassist.backend.filters;
 import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.service.AuthService;
 import com.airassist.backend.service.CustomUserDetailsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +51,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (InvalidTokenException ex) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid or missing token: " + ex.getMessage());
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+            response.setContentType("application/problem+json");
+            new ObjectMapper().writeValue(response.getWriter(), problemDetail);
             response.getWriter().flush();
         }
     }

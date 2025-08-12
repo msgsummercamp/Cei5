@@ -10,6 +10,8 @@ import { Statuses } from '../types/enums/status';
 import { ReservationDTO } from '../dto/reservation.dto';
 import { ReservationService } from './reservation.service';
 import { Beneficiary } from '../types/beneficiary';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiError } from '../types/api-error';
 
 @Injectable({ providedIn: 'root' })
 export class CaseService {
@@ -18,6 +20,7 @@ export class CaseService {
   private readonly _notificationService = inject(NotificationService);
   private readonly _flightService = inject(FlightManagementService);
   private readonly _reservationService = inject(ReservationService);
+  private readonly _translationService = inject(TranslateService);
 
   public createCase(caseData: CaseDTO): void {
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
@@ -25,7 +28,8 @@ export class CaseService {
         this._notificationService.showSuccess('Case created successfully');
       },
       error: (error) => {
-        this._notificationService.showError(error.error.detail);
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
       },
     });
   }

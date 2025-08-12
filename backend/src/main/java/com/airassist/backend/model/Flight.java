@@ -2,7 +2,6 @@ package com.airassist.backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +21,6 @@ public class Flight {
     private UUID id;
 
     @Column(nullable = false)
-    @PastOrPresent(message = "Flight date must be in the past or present")
     private LocalDate flightDate;
 
     @Column(nullable = false)

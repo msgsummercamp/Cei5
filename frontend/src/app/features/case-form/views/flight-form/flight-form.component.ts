@@ -1,4 +1,4 @@
-import { Component, inject, input, output, effect } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -14,6 +14,7 @@ import { MessageModule } from 'primeng/message';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { arrivalAfterDepartureValidator } from '../../../../shared/validators/arrivalAfterDepartureValidator';
 import { TranslatePipe } from '@ngx-translate/core';
+import { notEmptyAfterTrimValidator } from '../../../../shared/validators/notEmptyAfterTrimValidator';
 
 // Interface for flight details
 export interface FlightDetails {
@@ -53,7 +54,11 @@ export class FlightFormComponent {
   private readonly _formBuilder = inject(NonNullableFormBuilder);
 
   // Date limits for flight date
-  protected readonly maxDate = new Date();
+  protected readonly maxDate = (() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    return date;
+  })();
   protected readonly minDate = (() => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - 3);
@@ -72,7 +77,8 @@ export class FlightFormComponent {
         Validators.minLength(3),
         Validators.maxLength(50),
         Validators.required,
-        Validators.pattern(/^[a-zA-Z]+$/),
+        Validators.pattern(/^[a-zA-Z ]+$/),
+        notEmptyAfterTrimValidator(),
       ]),
       plannedDepartureTime: this._formBuilder.control<Date | null>(null, [Validators.required]),
       plannedArrivalTime: this._formBuilder.control<Date | null>(null, [Validators.required]),

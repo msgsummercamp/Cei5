@@ -1,6 +1,7 @@
 package com.airassist.backend.exceptionHandler;
 
 import com.airassist.backend.controller.PdfController;
+import com.airassist.backend.model.enums.ApiErrorMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,6 @@ public class PdfControllerExceptionHandler {
 
     @ExceptionHandler(IOException.class)
     public ProblemDetail handleIOException(IOException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "The server encountered an error while generating pdf: " + ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.PDF_GENERATION_ERROR.getCode());
     }
 }

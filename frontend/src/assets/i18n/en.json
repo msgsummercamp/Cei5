@@ -42,6 +42,12 @@
     "copyright": "© 2025 AirAssist. All rights reserved.",
     "back-to-top": "Back to top"
   },
+  "case-form": {
+    "compensation-start": "Congratulations! You could earn up to €",
+    "compensation-end": ". Click next to continue.",
+    "submission-in-progress": "Your case is being submitted.",
+    "sign-in-to-see-cases": "Sign in to view your cases."
+  },
   "disruption-form": {
     "selectPlaceholder": "Select a disruption type",
     "disruptionTypeRequired": "A disruption type is required.",
@@ -99,21 +105,20 @@
     "email-required": "Email is required.",
     "registration-success": "Registration successful. Please check your email.",
     "password-reset-email-sent": "Password reset email sent successfully.",
-    "failed-to-send-email": "Failed to send email",
     "must-be-logged-for-reset": "You must be logged in to reset your password.",
     "must-be-logged-for-details": "You must be logged in to view user details.",
     "password-null-or-empty": "New password must be at least 6 characters long.",
     "password-reset-success": "Password reset successful.",
     "password-reset-failed": "Password reset failed",
     "token-decode-error": "Error decoding token. Please try again",
-    "fetch-user-details-error": "Error fetching user details. Please try again."
+    "fetch-user-details-error": "Error fetching user details: "
   },
   "sign-in": {
     "title": "Enter your account's data",
-    "email-label": "Email*",
+    "email-label": "Email",
     "email-required": "Email is required.",
     "email-invalid": "Please enter a valid email address.",
-    "password-label": "Password*",
+    "password-label": "Password",
     "password-required": "Password is required.",
     "password-minlength": "Password must be at least 6 characters long.",
     "password-maxlength": "Password cannot exceed 30 characters.",
@@ -136,7 +141,7 @@
   "request-reset": {
     "title": "Reset Password",
     "description": "Enter your email address to receive a new temporary password. The first time you log in, you will be prompted to change your password.",
-    "email-label": "Email*",
+    "email-label": "Email",
     "email-required": "Email address is required.",
     "email-invalid": "Please enter a valid email address.",
     "submit-button": "Send Reset Mail",
@@ -145,11 +150,11 @@
   },
   "change-pass": {
     "title": "Change Your Password",
-    "password-label": "New Password*",
+    "password-label": "New Password",
     "password-required": "Password is required.",
     "password-minlength": "Password must be at least 6 characters long.",
     "password-maxlength": "Password cannot exceed 30 characters.",
-    "confirm-label": "Confirm Password*",
+    "confirm-label": "Confirm Password",
     "confirm-required": "Please confirm your password.",
     "password-mismatch": "Passwords do not match.",
     "submit-button": "Change Password",
@@ -268,6 +273,7 @@
     "airlineRequired": "Airline name is required.",
     "airlineMinLength": "Airline name must be at least 3 characters.",
     "airlineMaxLength": "Airline name must be at most 50 characters.",
+    "airlineNotEmptyAfterTrim": "Airline name must not be empty.",
     "plannedDepartureTime": "Planned Departure Time*",
     "plannedDepartureTimeRequired": "Planned departure time is required.",
     "plannedArrivalTime": "Planned Arrival Time*",
@@ -297,5 +303,28 @@
   },
   "lastForm": {
     "next": "Finish"
+  },
+  "user-service": {
+    "error": "Error"
+  },
+  "api-errors": {
+    "invalid-airport-details": "Invalid airports details: from {{departingAirportCode}} to {{destinationAirportCode}}. Please check the airport codes.",
+    "generic-server-error": "The server encountered an error while processing your request.",
+    "server-interrupt-error": "The server was interrupted while fetching data.",
+    "user-not-found": "User does not exist.",
+    "invalid-password": "Invalid password provided.",
+    "duplicate-user": "A user with this email already exists.",
+    "messaging-error": "An error occurred while sending the email. Please try again later.",
+    "invalid-token": "The provided token is invalid or has expired.",
+    "json-parse-error": "An error occurred while parsing the JSON data.",
+    "password-api-error": "An error occurred while generating the password.",
+    "pdf-generation-error": "An error occurred while generating the PDF.",
+    "case-not-found": "The case was not found.",
+    "case-validation-error": "The provided case data is invalid. Please check your input.",
+    "data-integrity-violation": "Sorry, your request could not be completed due to a data conflict. Please check your input and try again.",
+    "illegal-argument-": "The provided data is not valid. Please check your input and try again.",
+    "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
+    "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
+    "reservation-not-found": "The reservation was not found."
   }
 }
