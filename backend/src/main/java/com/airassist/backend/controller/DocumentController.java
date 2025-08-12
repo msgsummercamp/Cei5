@@ -2,8 +2,6 @@ package com.airassist.backend.controller;
 
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
-import com.airassist.backend.mapper.DocumentMapper;
-import com.airassist.backend.model.Document;
 import com.airassist.backend.model.enums.DocumentTypes;
 import com.airassist.backend.service.DocumentService;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/documents")
 public class DocumentController {
     private final DocumentService documentService;
-    private final DocumentMapper documentMapper;
 
-    public DocumentController(DocumentService documentService, DocumentMapper documentMapper) {
+    public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
-        this.documentMapper = documentMapper;
     }
 
     /**
@@ -32,9 +27,7 @@ public class DocumentController {
      */
     @GetMapping("/{documentId}")
     public ResponseEntity<DocumentDTO> getDocument(@PathVariable UUID documentId) {
-        Optional<Document> responseDocument = documentService.getDocument(documentId);
-        DocumentDTO documentDTO = documentMapper.documentToDocumentDTO(responseDocument.orElse(null));
-        return ResponseEntity.ok(documentDTO);
+        return ResponseEntity.ok(documentService.getDocument(documentId));
     }
 
     /**
@@ -44,8 +37,7 @@ public class DocumentController {
      */
     @GetMapping("/case/{caseId}")
     public ResponseEntity<List<DocumentSummaryDTO>> getDocumentsForCase(@PathVariable UUID caseId) {
-        List<DocumentSummaryDTO> responseDocument = documentService.getDocumentsForCase(caseId);
-        return ResponseEntity.ok(responseDocument);
+        return ResponseEntity.ok(documentService.getDocumentsForCase(caseId));
     }
 
     /**
@@ -64,13 +56,7 @@ public class DocumentController {
             @RequestParam("type") DocumentTypes type,
             @PathVariable UUID caseId
     ) throws IOException {
-        Document document = new Document();
-        document.setName(name);
-        document.setType(type);
-        document.setContent(file.getBytes());
-        Document savedDocument = documentService.addDocument(document, caseId);
-        DocumentDTO documentDTO = documentMapper.documentToDocumentDTO(savedDocument);
-        return ResponseEntity.ok(documentDTO);
+        return ResponseEntity.ok(documentService.addDocument(file, name, type, caseId));
     }
 
     /**
