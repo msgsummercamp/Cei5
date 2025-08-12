@@ -61,10 +61,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/pdf/**").permitAll()
+                        .requestMatchers("/api/airports/**").permitAll()
+                        .requestMatchers("/api/documents/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cases").permitAll()
-                        .requestMatchers("/api/airports/**").permitAll()
-                        .requestMatchers("/api/pdf/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cases/check-eligibility").permitAll()
                         .anyRequest().authenticated()
                 )
