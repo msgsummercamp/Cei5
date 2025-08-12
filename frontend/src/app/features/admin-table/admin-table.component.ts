@@ -6,6 +6,8 @@ import { NotificationService } from '../../shared/services/toaster/notification.
 import { ApiError } from '../../shared/types/api-error';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { CaseService } from '../../shared/services/case.service';
+import { map, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-admin-table',
@@ -15,9 +17,11 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminTableComponent implements OnInit {
   private readonly _userService = inject(UserService);
+  private readonly _caseService = inject(CaseService);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
   public users: User[] = [];
+  public userCaseCounts = new Map<string, number>();
 
   ngOnInit(): void {
     console.log('AdminTableComponent initialized');
@@ -28,19 +32,40 @@ export class AdminTableComponent implements OnInit {
     return `${user.firstName} ${user.lastName}`;
   }
 
+  public getCaseCountForUser(userId: string): number {
+    return this.userCaseCounts.get(userId) || 0;
+  }
+
   private loadUsers(): void {
-    console.log('Api call');
-    this._userService.getAllUsers().subscribe({
-      next: (users) => {
-        this.users = users || [];
-        console.log(users);
-        console.log(users.length);
-        console.log(users[0].email);
-      },
-      error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translateService.instant(apiError.detail));
-      },
-    });
+    this._userService
+      .getAllUsers()
+      .pipe(
+        switchMap((users) =>
+          this._caseService.getAllCases().pipe(map((cases) => ({ users, cases })))
+        ),
+        map(({ users, cases }) => {
+          this.userCaseCounts.clear();
+
+          users.map((user) => {
+            if (user.id) {
+              const assignedCases = cases.filter((c) => c.assignedColleague?.id === user.id);
+              this.userCaseCounts.set(user.id, assignedCases.length);
+            }
+            return user;
+          });
+
+          return users;
+        })
+      )
+      .subscribe({
+        next: (users) => {
+          this.users = users || [];
+        },
+        error: (error) => {
+          const apiError: ApiError = error?.error;
+          const errorKey = apiError?.detail || 'error.message';
+          this._notificationService.showError(this._translateService.instant(errorKey));
+        },
+      });
   }
 }
