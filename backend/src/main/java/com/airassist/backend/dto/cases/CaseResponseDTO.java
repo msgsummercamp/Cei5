@@ -18,8 +18,8 @@ public class CaseResponseDTO {
     private DisruptionReasons disruptionReason;
     private String disruptionInfo;
     private LocalDate date;
-    private UUID clientId;
-    private UserResponseDTO assignedColleagueId;
+    private UserResponseDTO client;
+    private UserResponseDTO assignedColleague;
     private ReservationDTO reservation;
     private BeneficiaryDTO beneficiary;
     private List<UUID> documentIds;

@@ -121,8 +121,8 @@ public class CaseServiceTest {
         dto.setDisruptionReason(reason);
         dto.setDisruptionInfo("Response disruption info");
         dto.setDate(LocalDate.now());
-        dto.setClientId(client.getId());
-        dto.setAssignedColleagueId(null);
+        dto.setClient(client.getId());
+        dto.setAssignedColleague(null);
         dto.setReservationId(reservation.getId());
         dto.setDocumentIds(List.of());
         dto.setBeneficiary(new BeneficiaryDTO(
