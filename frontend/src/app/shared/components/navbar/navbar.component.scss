@@ -34,7 +34,7 @@ p-select-list-container{
   margin-right: 2rem;
 }
 
-::ng-deep .p-button-label {
+::ng-deep .navbar-wrapper .p-button-label {
   font-size: 1.2rem !important;
 }
 
@@ -68,7 +68,7 @@ p-select-list-container{
   font-size: 1.3rem !important;
 }
 
-::ng-deep .p-menubar{
+::ng-deep .navbar-wrapper .p-menubar{
   --p-menubar-padding: 1.2rem 1.2rem;
 }
 
@@ -78,7 +78,7 @@ p-select-list-container{
   z-index: 1000;
 }
 
-::ng-deep .p-select-overlay {
+::ng-deep .navbar-wrapper .p-select-overlay {
   margin-top: 2.3rem;
   margin-right: 1.5rem;
   margin-left: -3rem;
