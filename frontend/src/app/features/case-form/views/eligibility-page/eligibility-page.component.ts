@@ -65,7 +65,7 @@ export class EligibilityPageComponent implements OnInit {
     () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
 
-  public compensation?: number;
+  public compensation?: null | number;
   public readonly departingAirportValue =
     this._reservationService.getReservationInformation().departingAirport;
   public readonly destinationAirportValue =

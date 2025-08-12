@@ -19,7 +19,7 @@ type ContractDetails = {
 
 @Component({
   selector: 'app-confirmation-form',
-  imports: [TranslatePipe, Card, Button, ScrollPanel],
+  imports: [TranslatePipe, Card, ScrollPanel],
   templateUrl: './confirmation.component-form.html',
   styleUrl: './confirmation.component-form.scss',
 })

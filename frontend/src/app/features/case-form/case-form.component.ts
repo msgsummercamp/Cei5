@@ -42,6 +42,7 @@ import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 import { ApiError } from '../../shared/types/api-error';
 import { ScrollPanel } from 'primeng/scrollpanel';
+import { ContractService } from '../../shared/services/contract.service';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -96,6 +97,7 @@ export class CaseFormComponent {
   private readonly _eligibilityService = inject(EligibilityDataService);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
+  private readonly _contractService = inject(ContractService);
 
   private _lastUserRegistrationData?: CaseFormUserData;
   private _lastUser?: any;
@@ -547,6 +549,8 @@ export class CaseFormComponent {
           },
         });
       }
+
+      this._contractService.generateContract('contract');
     }
 
     const flagStatus = this._flightService.getFlagStatus();

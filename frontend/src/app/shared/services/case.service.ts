@@ -13,6 +13,11 @@ import { Beneficiary } from '../types/beneficiary';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiError } from '../types/api-error';
 
+type CreatedCaseDetails = {
+  caseId?: string;
+  caseDate: Date | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class CaseService {
   private readonly _http = inject(HttpClient);
@@ -22,9 +27,15 @@ export class CaseService {
   private readonly _reservationService = inject(ReservationService);
   private readonly _translationService = inject(TranslateService);
 
+  private createdCaseDetails: CreatedCaseDetails | undefined;
+
   public createCase(caseData: CaseDTO): void {
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
+        this.createdCaseDetails = {
+          caseId: createdCase.id,
+          caseDate: createdCase.date,
+        };
         this._notificationService.showSuccess('Case created successfully');
       },
       error: (error) => {
@@ -32,6 +43,14 @@ export class CaseService {
         this._notificationService.showError(this._translationService.instant(apiError.detail));
       },
     });
+  }
+
+  public getCaseId() {
+    return this.createdCaseDetails?.caseId;
+  }
+
+  public getCaseDate() {
+    return this.createdCaseDetails?.caseDate;
   }
 
   public checkEligibility(caseDTO: CaseDTO): Observable<boolean> {
