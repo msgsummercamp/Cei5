@@ -31,5 +31,4 @@ public class CaseControllerExceptionHandler {
     public ProblemDetail handleRuntime(RuntimeException ex) {
         return ProblemDetail.forStatusAndDetail(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + ex.getMessage());
     }
-
 }
