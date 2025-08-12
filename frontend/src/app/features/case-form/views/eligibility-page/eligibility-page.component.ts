@@ -121,7 +121,6 @@ export class EligibilityPageComponent implements OnInit {
       if (!caseData || Object.keys(caseData).length === 0) {
         this._eligibilityDataService.setEligibilityResult({
           isLoading: false,
-          errorMessage: 'Missing case information. Please complete all previous steps.',
           hasBeenChecked: true,
           isEligible: false,
         });
