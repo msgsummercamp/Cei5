@@ -533,7 +533,6 @@ export class CaseFormComponent {
       this._translateService.instant('case-form.submission-in-progress')
     );
     let clientID = this.getClientId();
-    console.log('.');
     if (!clientID) {
       if (this.userDetailsFormData) {
         this._userService.createUser(this.userDetailsFormData.completedBy).subscribe({
@@ -543,7 +542,6 @@ export class CaseFormComponent {
                 const userId = createdUser?.id;
                 this.userDetailsFormData.completedBy.id = userId;
                 clientID = userId;
-                console.log('.');
                 const flagStatus = this._flightService.getFlagStatus();
                 this._flightService.getAllFlights().forEach((flight, index) => {
                   if (index < flagStatus.length) {
@@ -565,6 +563,7 @@ export class CaseFormComponent {
                   this.userDetailsFormData?.completedFor
                 );
                 this._contractService.generateContract('contract');
+                this.handleCaseSubmission(clientID);
               }
             } else {
               this._notificationService.showInfo(
@@ -599,8 +598,26 @@ export class CaseFormComponent {
         this._caseService.createReservationDTO(),
         this.userDetailsFormData?.completedFor
       );
+
       this._contractService.generateContract('contract');
+      this.handleCaseSubmission(clientID);
     }
+  }
+
+  private handleCaseSubmission(clientID: string) {
+    const flagStatus = this._flightService.getFlagStatus();
+    this._flightService.getAllFlights().forEach((flight, index) => {
+      if (index < flagStatus.length) {
+        flight.isFlagged = flagStatus[index];
+      }
+    });
+    this._caseService.createAndSubmitCase(
+      clientID,
+      this.getDisruptionReason(),
+      this.getDisruptionInfo(),
+      this._caseService.createReservationDTO(),
+      this.userDetailsFormData?.completedFor
+    );
   }
 
   private getClientId(): string | null {
