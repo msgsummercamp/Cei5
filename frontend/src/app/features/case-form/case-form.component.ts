@@ -31,7 +31,6 @@ import {
 } from '../../shared/services/reservation.service';
 import { FlightManagementService } from '../../shared/services/flight-management.service';
 import { AirportResponse, AirportsService } from '../../shared/services/airports.service';
-import { ReservationDTO } from '../../shared/dto/reservation.dto';
 import { CaseService } from '../../shared/services/case.service';
 import {
   DisruptionFormComponent,
@@ -46,10 +45,7 @@ import { departingAirportIsDestinationAirport } from '../../shared/validators/de
 import { connectionsShouldBeDifferent } from '../../shared/validators/connectionsShouldBeDifferent';
 import { EligibilityDataService } from '../../shared/services/eligibility-data.service';
 import { ConfirmationFormComponent } from './views/confirmation-form/confirmation.component-form';
-import { Statuses } from '../../shared/types/enums/status';
-import { CaseDTO } from '../../shared/dto/case.dto';
 import { CheckboxModule } from 'primeng/checkbox';
-import { TranslateService } from '@ngx-translate/core';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 

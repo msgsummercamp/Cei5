@@ -1,11 +1,7 @@
 package com.airassist.backend.dto.flight;
 
 import com.airassist.backend.dto.reservation.ReservationDTO;
-import com.airassist.backend.model.Reservation;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -15,7 +11,6 @@ import java.time.LocalDateTime;
 @Data
 public class FlightDTO {
 
-    @PastOrPresent(message = "Flight date must be in the past or present")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate flightDate;
 
