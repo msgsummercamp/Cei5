@@ -3,14 +3,16 @@ package com.airassist.backend.service;
 import com.airassist.backend.controller.DocumentController;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
+import com.airassist.backend.model.enums.DocumentTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +46,32 @@ public class DocumentControllerTest {
 
         assertEquals(dtos, response.getBody());
         verify(documentService).getDocumentsForCase(caseId);
-
     }
+
+    @Test
+    void addDocument_ShouldReturnDocumentDTO() throws IOException {
+        MultipartFile file = mock(MultipartFile.class);
+        String name = "Doc";
+        DocumentTypes type = DocumentTypes.JPG;
+        UUID caseId = UUID.randomUUID();
+        DocumentDTO dto = new DocumentDTO();
+        when(documentService.addDocument(file, name, type, caseId)).thenReturn(dto);
+
+        var response = documentController.addDocument(file, name, type, caseId);
+
+        assertEquals(dto, response.getBody());
+        verify(documentService).addDocument(file, name, type, caseId);
+    }
+
+    @Test
+    void deleteDocument_ShouldReturnNoContent() {
+        UUID documentId = UUID.randomUUID();
+
+        var response = documentController.deleteDocument(documentId);
+
+        assertNull(response.getBody());
+        assertEquals(204, response.getStatusCodeValue());
+        verify(documentService).deleteDocument(documentId);
+    }
+
 }
