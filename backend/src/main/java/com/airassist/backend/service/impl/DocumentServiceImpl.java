@@ -48,7 +48,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * This function returns a list of documents from a case, but WITHOUT the CONTENT (only ids, types and names)
-     * @param caseId - the ID of the case for which documents are being fetched
+     * @param caseId - the ID of the case for which documents are beinCg fetched
      * @return the list of documents
      */
     @Transactional

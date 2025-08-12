@@ -5,6 +5,7 @@ import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.exception.document.DocumentNotFoundException;
 import com.airassist.backend.mapper.DocumentMapper;
+import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Document;
 import com.airassist.backend.model.enums.DocumentTypes;
 import com.airassist.backend.repository.CaseRepository;
@@ -15,8 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -106,5 +111,44 @@ public class DocumentServiceTest {
         when(caseRepository.existsById(caseId)).thenReturn(false);
 
         assertThrows(CaseNotFoundException.class, () -> documentService.getDocumentsForCase(caseId));
+    }
+
+    @Test
+    void addDocument_WhenInvalidInputs_ShouldThrowIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(null, "", null, UUID.randomUUID()));
+    }
+
+    @Test
+    void addDocument_WhenValidInputsButCaseDoesNotExist_ShouldThrowCaseNotFoundException() {
+        UUID caseId = UUID.randomUUID();
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test content".getBytes());
+
+        when(caseRepository.findById(caseId)).thenReturn(Optional.empty());
+        assertThrows(CaseNotFoundException.class, () -> documentService.addDocument(file, "TestDoc", DocumentTypes.JPG, caseId));
+    }
+
+    @Test
+    void addDocument_WhenValidInputsAndCaseExists_ShouldReturnTheAddedDocumentDTO() throws IOException {
+        MockMultipartFile file = new MockMultipartFile("Doc", "test.txt", "text/plain", "i".getBytes());
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+
+        Document document = new Document();
+        document.setId(UUID.randomUUID());
+        document.setName("Doc");
+        document.setType(DocumentTypes.JPG);
+        document.setContent("i".getBytes());
+        document.setCaseEntity(caseEntity);
+
+        DocumentDTO expectedDocumentDTO = new DocumentDTO(document.getId(), document.getName(), document.getType(), new String(document.getContent()));
+
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        when(documentMapper.documentToDocumentDTO(document)).thenReturn(expectedDocumentDTO);
+        when(documentRepository.save(any(Document.class))).thenReturn(document);
+
+        DocumentDTO actualDocumentDTO = documentService.addDocument(file, "Doc", DocumentTypes.JPG, caseId);
+
+        assertEquals(expectedDocumentDTO, actualDocumentDTO);
     }
 }
