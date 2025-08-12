@@ -3,6 +3,7 @@ package com.airassist.backend.service;
 import com.airassist.backend.controller.DocumentController;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
+import com.airassist.backend.exception.document.DocumentNotFoundException;
 import com.airassist.backend.model.enums.DocumentTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ public class DocumentControllerTest {
     private DocumentController documentController;
 
     @Test
-    void getDocument_ShouldReturnDocumentDTO() {
+    void getDocument_WhenFound_ShouldReturnDocumentDTO() {
         UUID documentId = UUID.randomUUID();
         DocumentDTO dto = new DocumentDTO();
         when(documentService.getDocument(documentId)).thenReturn(dto);
@@ -37,7 +38,22 @@ public class DocumentControllerTest {
     }
 
     @Test
-    void getDocumentsForCase_ShouldReturnListOfDocumentSummaryDTOs() {
+    void getDocument_WhenNotFound_ShouldThrowException() {
+        UUID documentId = UUID.randomUUID();
+        when(documentService.getDocument(documentId)).thenThrow(new DocumentNotFoundException());
+        assertThrows(DocumentNotFoundException.class, () -> documentController.getDocument(documentId));
+    }
+
+    @Test
+    void getDocument_WhenServiceReturnsNull_ShouldReturnNullBody() {
+        UUID documentId = UUID.randomUUID();
+        when(documentService.getDocument(documentId)).thenReturn(null);
+        var response = documentController.getDocument(documentId);
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void getDocumentsForCase_WhenDocumentsExist_ShouldReturnListOfDocumentSummaryDTOs() {
         UUID caseId = UUID.randomUUID();
         List<DocumentSummaryDTO> dtos = List.of(new DocumentSummaryDTO());
         when(documentService.getDocumentsForCase(caseId)).thenReturn(dtos);
@@ -46,6 +62,24 @@ public class DocumentControllerTest {
 
         assertEquals(dtos, response.getBody());
         verify(documentService).getDocumentsForCase(caseId);
+    }
+
+    @Test
+    void getDocumentsForCase_WhenNoDocuments_ShouldReturnEmptyList() {
+        UUID caseId = UUID.randomUUID();
+        when(documentService.getDocumentsForCase(caseId)).thenReturn(List.of());
+        var response = documentController.getDocumentsForCase(caseId);
+        assertTrue(response.getBody().isEmpty());
+    }
+
+    @Test
+    void addDocument_WhenInvalidInput_ShouldThrowException() throws IOException {
+        MultipartFile file = null;
+        String name = "";
+        DocumentTypes type = null;
+        UUID caseId = UUID.randomUUID();
+        when(documentService.addDocument(file, name, type, caseId)).thenThrow(new IllegalArgumentException());
+        assertThrows(IllegalArgumentException.class, () -> documentController.addDocument(file, name, type, caseId));
     }
 
     @Test
@@ -73,5 +107,4 @@ public class DocumentControllerTest {
         assertEquals(204, response.getStatusCodeValue());
         verify(documentService).deleteDocument(documentId);
     }
-
 }
