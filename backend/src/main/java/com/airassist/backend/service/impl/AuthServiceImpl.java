@@ -90,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws InvalidTokenException {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(jwtSecret)
@@ -99,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
             return true;
         } catch (Exception e) {
             log.error("Invalid JWT token: {}", e.getMessage());
-            return false;
+            throw new InvalidTokenException();
         }
     }
 
