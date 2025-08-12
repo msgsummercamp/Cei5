@@ -133,9 +133,11 @@
     "warning": "Warning"
   },
   "navbar": {
+    "greeting": "Hello",
     "login": "Login",
     "logout": "Logout",
-    "profile": "Profile"
+    "profile": "Profile",
+    "language": "Language"
   },
   "request-reset": {
     "title": "Reset Password",
