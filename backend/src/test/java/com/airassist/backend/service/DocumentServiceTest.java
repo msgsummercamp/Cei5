@@ -89,6 +89,18 @@ public class DocumentServiceTest {
     }
 
     @Test
+    void getDocumentsForCase_WhenCaseExistsButNoDocuments_ShouldReturnEmptyList() {
+        UUID caseId = UUID.randomUUID();
+
+        when(caseRepository.existsById(caseId)).thenReturn(true);
+        when(documentRepository.findByCaseEntityId(caseId)).thenReturn(List.of());
+
+        List<DocumentSummaryDTO> actualList = documentService.getDocumentsForCase(caseId);
+
+        assertTrue(actualList.isEmpty());
+    }
+
+    @Test
     void getDocumentsForCase_WhenCaseDoesNotExist_ShouldThrowCaseNotFoundException() {
         UUID caseId = UUID.randomUUID();
         when(caseRepository.existsById(caseId)).thenReturn(false);
