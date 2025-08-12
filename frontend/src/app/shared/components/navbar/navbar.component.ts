@@ -9,7 +9,7 @@ import { Button } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
-import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { IfAuthenticatedDirective } from '../../directives/if-authenticated.directive';
 import { MenuModule } from 'primeng/menu';
@@ -32,8 +32,6 @@ import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'pr
     IfAuthenticatedDirective,
     Button,
     MenuModule,
-    NgIf,
-    NgForOf,
     Accordion,
     AccordionPanel,
     AccordionHeader,
@@ -115,7 +113,9 @@ export class NavbarComponent {
   }
 
   public redirectToLogin(): void {
-    this.toggleHamburgerMenu();
+    if (this.isHamburgerMenuOpen) {
+      this.toggleHamburgerMenu();
+    }
     this._stepNavigationService.resetToFirstStep();
     this._router.navigate(['/sign-in']);
   }

@@ -44,29 +44,33 @@
                 {{ language.code }}
               </ng-template>
             </p-select>
-            <p-button
-              label="{{ 'navbar.login' | translate }}"
-              icon="pi pi-user"
-              type="button"
-              class="p-button-text"
-              (onClick)="redirectToLogin()"
-              *ifAuthenticated="!isAuthenticated()"
-            >
-            </p-button>
-            <div class="user-menu flex" *ifAuthenticated="isAuthenticated()">
-              <p-button (onClick)="userMenu.toggle($event)">
-                <span>{{ userName }}</span>
-                <i class="pi pi-angle-down"></i>
+            @if (!isAuthenticated()) {
+              <p-button
+                label="{{ 'navbar.login' | translate }}"
+                icon="pi pi-user"
+                type="button"
+                class="p-button-text"
+                (onClick)="redirectToLogin()"
+              >
               </p-button>
+            }
+            @if (isAuthenticated()) {
+              <div class="user-menu flex">
+                <p-button (onClick)="userMenu.toggle($event)">
+                  <span>{{ userName }}</span>
+                  <i class="pi pi-angle-down"></i>
+                </p-button>
 
-              <p-menu
-                class="user-menu-dropdown"
-                #userMenu
-                [model]="userMenuItems"
-                [popup]="true"
-              ></p-menu>
-            </div>
+                <p-menu
+                  class="user-menu-dropdown"
+                  #userMenu
+                  [model]="userMenuItems"
+                  [popup]="true"
+                ></p-menu>
+              </div>
+            }
           </div>
+
           <p-button
             class="hamburger-menu-button"
             (onClick)="toggleHamburgerMenu()"
@@ -81,61 +85,75 @@
 
 <div class="navbar-spacer"></div>
 
-<div
-  class="hamburger-menu-overlay"
-  *ngIf="isHamburgerMenuOpen"
-  (click)="toggleHamburgerMenu()"
-></div>
+@if (isHamburgerMenuOpen) {
+  <div class="hamburger-menu-overlay" (click)="toggleHamburgerMenu()"></div>
+}
+
 <div class="hamburger-menu-wrapper">
-  <div class="hamburger-menu-container" *ngIf="isHamburgerMenuOpen">
-    <ul class="hamburger-menu-content">
-      <li class="first-section">
-        <ul class="user-options">
-          <li *ifAuthenticated="isAuthenticated()">
-            <p class="greeting">{{ 'navbar.greeting' | translate }}, {{ userName }}</p>
-          </li>
-          <div *ifAuthenticated="isAuthenticated()">
-            <li>
-              <p-button
-                label="{{ 'navbar.profile' | translate }}"
-                type="button"
-                class="p-button-text"
-              ></p-button>
-            </li>
-            <li>
-              <p-button
-                label="{{ 'navbar.logout' | translate }}"
-                type="button"
-                class="p-button-text"
-                (onClick)="logout()"
-              ></p-button>
-            </li>
-          </div>
-          <div *ifAuthenticated="!isAuthenticated()">
-            <p-button
-              label="{{ 'navbar.login' | translate }}"
-              type="button"
-              class="p-button-text"
-              (onClick)="redirectToLogin()"
-            ></p-button>
-          </div>
-        </ul>
-      </li>
-      <li class="second-section">
-        <p-accordion value="-1">
-          <p-accordion-panel value="0">
-            <p-accordion-header
-              >{{ 'navbar.language' | translate }}: {{ _languageService.getSelectedLanguageCode() }}
-            </p-accordion-header>
-            <p-accordion-content>
-              <p-button *ngFor="let language of languages" (onClick)="selectLanguage(language)">
-                <img [ngSrc]="language.flag" alt="Language" width="24" height="24" class="mr-2" />
-                {{ language.name }}
-              </p-button>
-            </p-accordion-content>
-          </p-accordion-panel>
-        </p-accordion>
-      </li>
-    </ul>
-  </div>
+  @if (isHamburgerMenuOpen) {
+    <div class="hamburger-menu-container">
+      <ul class="hamburger-menu-content">
+        <li class="first-section">
+          <ul class="user-options">
+            @if (isAuthenticated()) {
+              <li>
+                <p class="greeting">{{ 'navbar.greeting' | translate }}, {{ userName }}</p>
+              </li>
+              <div>
+                <li>
+                  <p-button
+                    label="{{ 'navbar.profile' | translate }}"
+                    type="button"
+                    class="p-button-text"
+                  ></p-button>
+                </li>
+                <li>
+                  <p-button
+                    label="{{ 'navbar.logout' | translate }}"
+                    type="button"
+                    class="p-button-text"
+                    (onClick)="logout()"
+                  ></p-button>
+                </li>
+              </div>
+            }
+            @if (!isAuthenticated()) {
+              <div>
+                <p-button
+                  label="{{ 'navbar.login' | translate }}"
+                  type="button"
+                  class="p-button-text"
+                  (onClick)="redirectToLogin()"
+                ></p-button>
+              </div>
+            }
+          </ul>
+        </li>
+        <li class="second-section">
+          <p-accordion value="-1">
+            <p-accordion-panel value="0">
+              <p-accordion-header
+                >{{ 'navbar.language' | translate }}:
+                {{ _languageService.getSelectedLanguageCode() }}
+              </p-accordion-header>
+              <p-accordion-content>
+                @for (language of languages; track language.name) {
+                  <p-button (onClick)="selectLanguage(language)">
+                    <img
+                      [ngSrc]="language.flag"
+                      alt="Language"
+                      width="24"
+                      height="24"
+                      class="mr-2"
+                    />
+                    {{ language.name }}
+                  </p-button>
+                }
+              </p-accordion-content>
+            </p-accordion-panel>
+          </p-accordion>
+        </li>
+      </ul>
+    </div>
+  }
 </div>
