@@ -36,4 +36,9 @@ export const routes: Routes = [
         './features/password-reset/request-pass-reset-page/request-pass-reset-page.component'
       ).then((m) => m.RequestPassResetPageComponent),
   },
+  {
+    path: 'admin-table',
+    loadComponent: () =>
+      import('./features/admin-table/admin-table.component').then((m) => m.AdminTableComponent),
+  },
 ];

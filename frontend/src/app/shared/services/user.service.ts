@@ -52,6 +52,20 @@ export class UserService {
   }
 
   /**
+   * Creates a new user by sending a request to the backend
+   * @returns Observable<User> - All Users
+   */
+  public getAllUsers(): Observable<User[]> {
+    return this._httpClient.get<User[]>(`${this.API_URL}/users`).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
+  public getNumberOfAssignedCasesForEachUser(): number
+
+  /**
    * Transforms user data to match backend UserDTO expectations
    */
   private transformUserDataForBackend(userData: User): any {
