@@ -115,7 +115,7 @@ export class UserRegistrationComponent {
       Validators.maxLength(10),
       Validators.pattern(/^[a-zA-Z0-9- ]+$/),
     ]),
-    birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
+    birthDate: this._formBuilder.control<Date | null>(null),
     completingForSomeoneElse: this._formBuilder.control<boolean>(false),
     someoneElseFirstName: this._formBuilder.control<string>(''),
     someoneElseLastName: this._formBuilder.control<string>(''),
