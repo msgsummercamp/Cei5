@@ -38,7 +38,6 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _eligibilityDataService = inject(EligibilityDataService);
   private readonly _userService = inject(UserService);
 
-
   private hasRunInitialCheck = false;
 
   public readonly disruptionReason = input<string>('');
@@ -65,7 +64,7 @@ export class EligibilityPageComponent implements OnInit {
     () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
 
-  public checkWihichEligibilityMotive(): boolean {
+  public checkWhichEligibilityMotive(): boolean {
     if (
       this.disruptionReason() === 'ARRIVED_EARLY' ||
       this.disruptionReason() === 'CANCELATION_NOTICE_OVER_14_DAYS'
@@ -74,7 +73,7 @@ export class EligibilityPageComponent implements OnInit {
     }
     return false;
   }
-  
+
   public getErrorMessage(): string | undefined {
     return this.eligibilityResult().errorMessage;
   }
