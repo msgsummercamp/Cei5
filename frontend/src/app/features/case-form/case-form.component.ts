@@ -576,30 +576,11 @@ export class CaseFormComponent implements OnInit {
                 this.userDetailsFormData.completedBy.id = userId;
                 clientID = userId;
 
-                const flagStatus = this._flightService.getFlagStatus();
-                this._flightService.getAllFlights().forEach((flight, index) => {
-                  if (index < flagStatus.length) {
-                    flight.isFlagged = flagStatus[index];
-                  }
-                });
-
-                if (clientID === null) {
-                  this._notificationService.showError(
-                    this._translateService.instant('auth-service.fetch-user-details-error')
-                  );
-                  return;
-                }
-                this._caseService.createAndSubmitCase(
-                  clientID,
-                  this.getDisruptionReason(),
-                  this.getDisruptionInfo(),
-                  this._caseService.createReservationDTO(),
-                  this.userDetailsFormData?.completedFor
-                );
+                this.handleCaseSubmission(clientID);
               }
             } else {
-              this._notificationService.showInfo(
-                this._translateService.instant('case-form.sign-in-to-see-cases')
+              this._notificationService.showError(
+                this._translateService.instant('auth-service.fetch-user-details-error')
               );
             }
           },
@@ -609,7 +590,25 @@ export class CaseFormComponent implements OnInit {
           },
         });
       }
+    } else {
+      this.handleCaseSubmission(clientID);
     }
+  }
+
+  private handleCaseSubmission(clientID: string) {
+    const flagStatus = this._flightService.getFlagStatus();
+    this._flightService.getAllFlights().forEach((flight, index) => {
+      if (index < flagStatus.length) {
+        flight.isFlagged = flagStatus[index];
+      }
+    });
+    this._caseService.createAndSubmitCase(
+      clientID,
+      this.getDisruptionReason(),
+      this.getDisruptionInfo(),
+      this._caseService.createReservationDTO(),
+      this.userDetailsFormData?.completedFor
+    );
   }
 
   private getClientId(): string | null {
