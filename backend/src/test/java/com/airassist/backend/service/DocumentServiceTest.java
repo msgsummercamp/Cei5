@@ -17,10 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -150,5 +148,25 @@ public class DocumentServiceTest {
         DocumentDTO actualDocumentDTO = documentService.addDocument(file, "Doc", DocumentTypes.JPG, caseId);
 
         assertEquals(expectedDocumentDTO, actualDocumentDTO);
+    }
+
+    @Test
+    void deleteDocument_WhenDocumentDoesNotExist_ShouldThrowDocumentNotFoundException() {
+        UUID documentId = UUID.randomUUID();
+        when(documentRepository.existsById(documentId)).thenReturn(false);
+        assertThrows(DocumentNotFoundException.class, () -> documentService.deleteDocument(documentId));
+    }
+
+    @Test
+    void deleteDocument_WhenDocumentExists_ShouldWork() {
+        UUID documentId = UUID.randomUUID();
+        Document document = new Document();
+        document.setId(documentId);
+        document.setName("Doc");
+
+        when(documentRepository.existsById(documentId)).thenReturn(true);
+        documentService.deleteDocument(documentId);
+
+        verify(documentRepository).deleteById(documentId);
     }
 }
