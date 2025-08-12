@@ -320,5 +320,15 @@
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "reservation-not-found": "The reservation was not found."
+  },
+  "case-table": {
+    "case-id": "Case ID",
+    "created-on": "Created On",
+    "flight-number": "Flight Number",
+    "client-name": "Client Name",
+    "assigned-employee": "Assigned Employee",
+    "status": "Status",
+    "search-by-id": "Search by Case ID",
+    "beneficiary-name": "Beneficiary Name"
   }
 }

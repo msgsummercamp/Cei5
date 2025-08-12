@@ -1,4 +1,4 @@
-<div class="user-cases-table-wrapper">
+<div class="user-cases-table-wrapper mt-8">
   <p-table
     [value]="userCases"
     [paginator]="true"
@@ -8,16 +8,48 @@
   >
     <ng-template #header>
       <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Quantity</th>
+        <th>
+          <div>
+            {{ 'case-table.case-id' | translate }}
+            <p-columnFilter
+              [showAddButton]="false"
+              [showOperator]="false"
+              type="text"
+              field="id"
+              display="menu"
+            />
+          </div>
+        </th>
+        <th pSortableColumn="date"
+          >{{ 'case-table.created-on' | translate }} <p-sortIcon field="date"
+        /></th>
+        <th>
+          <div>
+            {{ 'case-table.flight-number' | translate }}
+            <p-columnFilter
+              [showAddButton]="false"
+              [showOperator]="false"
+              type="text"
+              field="flightNumber"
+              display="menu"
+            />
+          </div>
+        </th>
+        <th pSortableColumn="beneficiaryName">
+          {{ 'case-table.beneficiary-name' | translate }}<p-sortIcon field="beneficiaryName"
+        /></th>
+        <th> {{ 'case-table.assigned-employee' | translate }}</th>
+        <th pSortableColumn="status"> {{ 'case-table.status' | translate }} </th>
       </tr>
     </ng-template>
     <ng-template #body let-case>
       <tr>
         <td>{{ case.id }}</td>
         <td>{{ case.date }}</td>
+        <td>{{ case.flightNumber }}</td>
+        <td>{{ this.getBeneficiaryName(case) }}</td>
+        <td>{{ case.assignedColleague }}</td>
+        <td>{{ case.status }}</td>
       </tr>
     </ng-template>
   </p-table>

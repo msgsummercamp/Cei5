@@ -320,5 +320,15 @@
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "reservation-not-found": "Rezervarea nu a fost găsită."
+  },
+  "case-table": {
+    "case-id": "ID Caz",
+    "created-on": "Creat pe",
+    "flight-number": "Număr Zbor",
+    "client-name": "Nume Client",
+    "assigned-employee": "Angajat Atribuit",
+    "status": "Status",
+    "search-by-id": "Căutare după ID Caz",
+    "beneficiary-name": "Nume Beneficiar"
   }
 }

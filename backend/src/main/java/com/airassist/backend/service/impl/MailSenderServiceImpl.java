@@ -14,6 +14,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 @Service
 public class MailSenderServiceImpl implements MailSenderService {
 
+    private final String recipientName = "recipientName";
     private String mailSubject;
 
     @Autowired
@@ -38,7 +39,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     public void sendValidCaseEmail(String recipient, int caseId) throws MessagingException {
         Context thymeleafContext = new Context();
 
-        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable(recipientName, recipient);
         thymeleafContext.setVariable("caseId", caseId);
         String htmlBody = templateEngine.process("validCaseEmail.html", thymeleafContext);
         mailSubject = "Case Validated Successfully";
@@ -50,7 +51,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     public void sendGeneratedPasswordEmail(String recipient, String generatedPassword) throws MessagingException {
         Context thymeleafContext = new Context();
 
-        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable(recipientName, recipient);
         thymeleafContext.setVariable("generatedPassword", generatedPassword);
         String htmlBody = templateEngine.process("generatedPasswordEmail.html", thymeleafContext);
         mailSubject = "Your Generated Password";
@@ -62,7 +63,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     public void sendContractLink(String recipient, String contractLink) throws MessagingException {
         Context thymeleafContext = new Context();
 
-        thymeleafContext.setVariable("recipientName", recipient);
+        thymeleafContext.setVariable(recipientName, recipient);
         thymeleafContext.setVariable("contractLink", contractLink);
         String htmlBody = templateEngine.process("contractLinkEmail.html", thymeleafContext);
         mailSubject = "Contract Link";
