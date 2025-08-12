@@ -169,4 +169,37 @@ public class DocumentServiceTest {
 
         verify(documentRepository).deleteById(documentId);
     }
+
+    @Test
+    void inputValidations_WhenNameIsNull_ShouldReturnFalse() {
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes());
+        boolean result = documentService.inputValidations(file, null, DocumentTypes.JPG, UUID.randomUUID());
+        assertFalse(result);
+    }
+
+    @Test
+    void inputValidations_WhenNameIsEmpty_ShouldReturnFalse() {
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes());
+        boolean result = documentService.inputValidations(file, "   ", DocumentTypes.JPG, UUID.randomUUID());
+        assertFalse(result);
+    }
+
+    @Test
+    void inputValidations_WhenFileIsEmpty_ShouldReturnFalse() {
+        MockMultipartFile emptyFile = new MockMultipartFile("file", "empty.txt", "text/plain", new byte[0]);
+        boolean result = documentService.inputValidations(emptyFile, "Doc", DocumentTypes.JPG, UUID.randomUUID());
+        assertFalse(result);
+    }
+
+    @Test
+    void addDocument_WhenTypeIsNull_ShouldReturnFalse() {
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "test.txt", "text/plain", "Test".getBytes()
+        );
+        UUID caseId = UUID.randomUUID();
+
+        assertThrows(IllegalArgumentException.class, () ->
+                documentService.addDocument(file, "ValidName", null, caseId)
+        );
+    }
 }

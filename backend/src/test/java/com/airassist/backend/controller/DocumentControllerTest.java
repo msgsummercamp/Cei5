@@ -1,10 +1,10 @@
-package com.airassist.backend.service;
+package com.airassist.backend.controller;
 
-import com.airassist.backend.controller.DocumentController;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.document.DocumentNotFoundException;
 import com.airassist.backend.model.enums.DocumentTypes;
+import com.airassist.backend.service.DocumentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,18 +26,6 @@ public class DocumentControllerTest {
     private DocumentController documentController;
 
     @Test
-    void getDocument_WhenFound_ShouldReturnDocumentDTO() {
-        UUID documentId = UUID.randomUUID();
-        DocumentDTO dto = new DocumentDTO();
-        when(documentService.getDocument(documentId)).thenReturn(dto);
-
-        var response = documentController.getDocument(documentId);
-
-        assertEquals(dto, response.getBody());
-        verify(documentService).getDocument(documentId);
-    }
-
-    @Test
     void getDocument_WhenNotFound_ShouldThrowException() {
         UUID documentId = UUID.randomUUID();
         when(documentService.getDocument(documentId)).thenThrow(new DocumentNotFoundException());
@@ -53,6 +41,26 @@ public class DocumentControllerTest {
     }
 
     @Test
+    void getDocument_WhenFound_ShouldReturnDocumentDTO() {
+        UUID documentId = UUID.randomUUID();
+        DocumentDTO dto = new DocumentDTO();
+        when(documentService.getDocument(documentId)).thenReturn(dto);
+
+        var response = documentController.getDocument(documentId);
+
+        assertEquals(dto, response.getBody());
+        verify(documentService).getDocument(documentId);
+    }
+
+    @Test
+    void getDocumentsForCase_WhenNoDocuments_ShouldReturnEmptyList() {
+        UUID caseId = UUID.randomUUID();
+        when(documentService.getDocumentsForCase(caseId)).thenReturn(List.of());
+        var response = documentController.getDocumentsForCase(caseId);
+        assertTrue(response.getBody().isEmpty());
+    }
+
+    @Test
     void getDocumentsForCase_WhenDocumentsExist_ShouldReturnListOfDocumentSummaryDTOs() {
         UUID caseId = UUID.randomUUID();
         List<DocumentSummaryDTO> dtos = List.of(new DocumentSummaryDTO());
@@ -65,11 +73,12 @@ public class DocumentControllerTest {
     }
 
     @Test
-    void getDocumentsForCase_WhenNoDocuments_ShouldReturnEmptyList() {
+    void addDocument_WhenServiceThrowsIOException_ShouldPropagate() throws IOException {
+        MultipartFile file = mock(MultipartFile.class);
         UUID caseId = UUID.randomUUID();
-        when(documentService.getDocumentsForCase(caseId)).thenReturn(List.of());
-        var response = documentController.getDocumentsForCase(caseId);
-        assertTrue(response.getBody().isEmpty());
+        when(documentService.addDocument(file, "Doc", DocumentTypes.JPG, caseId)).thenThrow(new IOException());
+        assertThrows(IOException.class, () ->
+                documentController.addDocument(file, "Doc", DocumentTypes.JPG, caseId));
     }
 
     @Test
@@ -83,7 +92,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    void addDocument_ShouldReturnDocumentDTO() throws IOException {
+    void addDocument_ValidInput_ShouldReturnDocumentDTO() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
         String name = "Doc";
         DocumentTypes type = DocumentTypes.JPG;
@@ -98,7 +107,14 @@ public class DocumentControllerTest {
     }
 
     @Test
-    void deleteDocument_ShouldReturnNoContent() {
+    void deleteDocument_WhenNotFound_ShouldThrowException() {
+        UUID documentId = UUID.randomUUID();
+        doThrow(new DocumentNotFoundException()).when(documentService).deleteDocument(documentId);
+        assertThrows(DocumentNotFoundException.class, () -> documentController.deleteDocument(documentId));
+    }
+
+    @Test
+    void deleteDocument_WhenFound_ShouldReturnNoContent() {
         UUID documentId = UUID.randomUUID();
 
         var response = documentController.deleteDocument(documentId);
