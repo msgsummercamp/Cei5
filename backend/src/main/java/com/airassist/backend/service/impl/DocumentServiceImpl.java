@@ -1,5 +1,6 @@
 package com.airassist.backend.service.impl;
 
+import com.airassist.backend.dto.document.CreateDocumentDTO;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
@@ -14,6 +15,8 @@ import com.airassist.backend.service.DocumentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
@@ -47,39 +50,41 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * This function returns a list of documents from a case, but WITHOUT the CONTENT (only ids, types and names)
-     * @param caseId - the ID of the case for which documents are being fetched
+     * @param caseId - the ID of the case for which documents are beinCg fetched
      * @return the list of documents
      */
+    @Transactional
     public List<DocumentSummaryDTO> getDocumentsForCase(UUID caseId) {
         if(!caseRepository.existsById(caseId)) {
             throw new CaseNotFoundException();
         }
         logger.info("Document Service - fetching a list of documents for the case {}", caseId);
-        return documentRepository.findByCaseEntityId(caseId);
+        List<Document> documents = documentRepository.findByCaseEntityId(caseId);
+        return documents.stream()
+                .map(doc -> new DocumentSummaryDTO(doc.getId(), doc.getName(), doc.getType()))
+                .toList();
     }
 
 
     /**
      * Function to add a document to a case
-     * @param file - the file we want to upload - should be sent as multipart/form-data
-     * @param name - the name of the document - should be a non empty-string
-     * @param type - the type of the document - should be from the ENUM DocumentTypes
-     * @param caseId - the id of the case we want to add the document to
-     * @return - the saved document obj
+     * @param createDocumentDTO - the DTO containing the document details
+     * @param caseId - the ID of the case to which the document will be added
+     * @return - the saved document as a DocumentDTO
      * @throws IOException - if there is an error reading the file
      */
     @Override
-    public DocumentDTO addDocument(MultipartFile file, String name, DocumentTypes type, UUID caseId) throws IOException {
-        if(!inputValidations(file, name, type, caseId)) {
+    public DocumentDTO addDocument(CreateDocumentDTO createDocumentDTO, UUID caseId) throws IOException {
+        if(!checkAllNotNull(createDocumentDTO.getFile(), createDocumentDTO.getName(), createDocumentDTO.getType(), caseId)) {
             throw new IllegalArgumentException("Invalid input parameters for adding a document.");
         }
 
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
 
         Document document = new Document();
-        document.setName(name);
-        document.setType(type);
-        document.setContent(file.getBytes());
+        document.setName(createDocumentDTO.getName());
+        document.setType(createDocumentDTO.getType());
+        document.setContent(createDocumentDTO.getFile().getBytes());
         document.setCaseEntity(caseEntity);
 
         logger.info("Document Service - A document has been added to the case: {}", caseId);
@@ -108,9 +113,9 @@ public class DocumentServiceImpl implements DocumentService {
      * @param caseId - the ID of the case to which the document belongs
      * @return true if all validations pass, false otherwise
      */
-    public boolean inputValidations(MultipartFile file, String name, DocumentTypes type, UUID caseId) {
+    private boolean checkAllNotNull(MultipartFile file, String name, DocumentTypes type, UUID caseId) {
         return file != null && !file.isEmpty()
-                && name != null && !name.trim().isEmpty()
+                && StringUtils.hasText(name)
                 && type != null
                 && caseId != null;
     }

@@ -43,6 +43,7 @@ import { NotificationService } from '../../shared/services/toaster/notification.
 import { ApiError } from '../../shared/types/api-error';
 import { ContractService } from '../../shared/services/contract.service';
 import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
+import { Tooltip } from 'primeng/tooltip';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -76,6 +77,7 @@ type DisruptionForm = {
     TranslatePipe,
     ConfirmationFormComponent,
     CheckboxModule,
+    Tooltip,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -688,7 +690,7 @@ export class CaseFormComponent {
     if (this.disruptionFormData?.disruptionType) {
       if (this.disruptionFormData.disruptionType === 'Cancellation') {
         if (this.disruptionFormData.cancellationAnswer === '>14 days') {
-          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;;
         } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
           if (this.disruptionFormData.delayAnswer === '>3 hours') {
             return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_OVER_3H;
