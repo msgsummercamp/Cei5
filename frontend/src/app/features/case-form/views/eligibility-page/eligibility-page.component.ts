@@ -16,6 +16,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { CompensationService } from '../../../../shared/services/compensation.service';
+import { DisruptionReasons } from '../../../../shared/types/enums/disruption-reason';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -98,13 +99,7 @@ export class EligibilityPageComponent implements OnInit {
   }
 
   public checkWhichEligibilityMotive(): boolean {
-    if (
-      this.disruptionReason() === 'ARRIVED_EARLY' ||
-      this.disruptionReason() === 'CANCELATION_NOTICE_OVER_14_DAYS'
-    ) {
-      return true;
-    }
-    return false;
+    return this.disruptionReason() === DisruptionReasons.NOT_ELIGIBLE_REASON;
   }
 
   public getErrorMessage(): string | undefined {
