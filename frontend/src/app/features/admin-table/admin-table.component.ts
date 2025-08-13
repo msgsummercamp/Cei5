@@ -60,7 +60,7 @@ export class AdminTableComponent implements OnInit {
       },
       error: (error) => {
         const apiError: ApiError = error?.error;
-        const errorKey = apiError?.detail || 'error.det';
+        const errorKey = apiError?.detail || 'error.details';
         this._notificationService.showError(this._translateService.instant(errorKey));
       },
     });
