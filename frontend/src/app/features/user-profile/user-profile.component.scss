@@ -1,0 +1,66 @@
+.page-container{
+  background-color: rgb(213, 255, 255);
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+
+.user-information-container{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.user-information-title{
+  font-size: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  color: rgb(15, 27, 88);
+}
+
+.card-title{
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.account-information{
+  border-radius: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  align-self: center;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.account-information-element{
+  background-color: transparent;
+  font-size: 1.1rem;
+}
+
+::ng-deep .user-information-container .p-card{
+  --p-card-color: #ffffff !important;
+  --p-card-background: rgb(15, 27, 88) !important;
+}
+
+.table-wrapper{
+  margin-top: 5rem;
+  margin-bottom: 10rem;
+}
+
+
+@media (max-width: 768px) {
+  .account-information{
+    grid-template-columns: 1fr;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .user-information-title{
+    padding-top: 1rem;
+  }
+
+}
+

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './features/home-page/home-page.component';
 import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CaseFormComponent } from './features/case-form/case-form.component';
-import { UserCasesTableComponent } from './features/user-cases-table/user-cases-table.component';
+import { UserProfileComponent } from './features/user-profile/user-profile.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
@@ -24,8 +24,8 @@ export const routes: Routes = [
     component: SignInComponent,
   },
   {
-    path: 'user-cases-table',
-    component: UserCasesTableComponent,
+    path: 'profile',
+    component: UserProfileComponent,
   },
   {
     path: 'change-password',

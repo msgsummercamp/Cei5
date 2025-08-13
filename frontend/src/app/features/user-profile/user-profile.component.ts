@@ -6,16 +6,20 @@ import { UserService } from '../../shared/services/user.service';
 import { CommonModule } from '@angular/common';
 import { Flight } from '../../shared/types/flight';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Card } from 'primeng/card';
+import { User } from '../../shared/types/user';
 
 @Component({
   selector: 'app-user-cases-table',
-  templateUrl: './user-cases-table.component.html',
-  styleUrl: './user-cases-table.component.scss',
-  imports: [TableModule, CommonModule, TranslatePipe],
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.scss',
+  imports: [TableModule, CommonModule, TranslatePipe, Card],
 })
-export class UserCasesTableComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
   private readonly _caseService = inject(CaseService);
   private readonly _userService = inject(UserService);
+  public readonly user: User | undefined = this._userService.userDetails();
+
   public userCases: Case[] = [];
 
   ngOnInit() {
@@ -32,9 +36,19 @@ export class UserCasesTableComponent implements OnInit {
     });
   }
 
+  public getUserFullName(): string {
+    if (this.user) {
+      return `${this.user.lastName} ${this.user.firstName}`;
+    }
+    return '';
+  }
+
   private getUserId(): string {
-    const userDetails = this._userService.userDetails();
-    return userDetails?.id || '';
+    if (this.user) {
+      return this.user.id || '';
+    } else {
+      return '';
+    }
   }
 
   public getProblematicFlight(givenCase: Case): Flight | undefined {

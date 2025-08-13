@@ -51,7 +51,7 @@ export class NavbarComponent {
   private _menuConfig = [];
 */
   private _userMenuConfig = [
-    { label: 'navbar.profile', routerLink: '/profile' },
+    { label: 'navbar.profile', command: () => this.redirectToProfile() },
     { label: 'navbar.logout', command: () => this.logout() },
   ];
 
@@ -117,5 +117,10 @@ export class NavbarComponent {
   public get userName(): string {
     const userDetails = this._userService.userDetails();
     return userDetails?.firstName || '';
+  }
+
+  public redirectToProfile(): void {
+    this._stepNavigationService.resetToFirstStep();
+    this._router.navigate(['/profile']);
   }
 }

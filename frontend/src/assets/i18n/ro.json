@@ -135,7 +135,9 @@
   "navbar": {
     "login": "Loghează-te",
     "logout": "Deconectează-te",
-    "profile": "Profil"
+    "profile": "Profil",
+    "user-profile-card-title": "Informații cont",
+    "user-profile-title": "Profilul meu"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -330,5 +332,16 @@
     "status": "Status",
     "search-by-id": "Căutare după ID Caz",
     "beneficiary-name": "Nume Beneficiar"
+  },
+
+  "profile-page": {
+    "card-information": {
+      "email": "Email:",
+      "phone-number": "Număr de telefon:",
+      "name": "Nume:",
+      "postal-code": "Cod poștal:",
+      "address": "Adresă:",
+      "birth-date": "Data nașterii:"
+    }
   }
 }

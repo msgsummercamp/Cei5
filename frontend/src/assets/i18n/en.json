@@ -135,7 +135,9 @@
   "navbar": {
     "login": "Login",
     "logout": "Logout",
-    "profile": "Profile"
+    "profile": "Profile",
+    "user-profile-card-title": "Account Details",
+    "user-profile-title": "My Profile"
   },
   "request-reset": {
     "title": "Reset Password",
@@ -330,5 +332,15 @@
     "status": "Status",
     "search-by-id": "Search by Case ID",
     "beneficiary-name": "Beneficiary Name"
+  },
+  "profile-page": {
+    "card-information": {
+      "email": "Email:",
+      "phone-number": "Phone number:",
+      "name": "Name:",
+      "postal-code": "Postal Code:",
+      "address": "Adress:",
+      "birth-date": "Birth date:"
+    }
   }
 }
