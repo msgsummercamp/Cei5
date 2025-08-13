@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -12,9 +12,10 @@ import { FlightManagementService } from '../../../../shared/services/flight-mana
 import { CaseDTO } from '../../../../shared/dto/case.dto';
 import { ReservationDTO } from '../../../../shared/dto/reservation.dto';
 import { StepNavigationService } from '../../../../shared/services/step-navigation.service';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
 import { UserService } from '../../../../shared/services/user.service';
+import { CompensationService } from '../../../../shared/services/compensation.service';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -37,6 +38,8 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _navigationService = inject(StepNavigationService);
   private readonly _eligibilityDataService = inject(EligibilityDataService);
   private readonly _userService = inject(UserService);
+  private readonly _compensationService = inject(CompensationService);
+  private readonly _translateService = inject(TranslateService);
 
   private hasRunInitialCheck = false;
 
@@ -63,6 +66,36 @@ export class EligibilityPageComponent implements OnInit {
   public readonly shouldNotShowEligible = computed(
     () => this.shouldShowResults() && this.eligibilityResult().isEligible === false
   );
+
+  public compensation?: null | number;
+  public readonly departingAirportValue =
+    this._reservationService.getReservationInformation().departingAirport;
+  public readonly destinationAirportValue =
+    this._reservationService.getReservationInformation().destinationAirport;
+
+  constructor() {
+    this.compensation = undefined;
+    const dep = this.departingAirportValue;
+    const dest = this.destinationAirportValue;
+
+    if (!!dep && !!dest) {
+      this._compensationService.calculateDistance(dep, dest);
+    }
+
+    this._compensationService.compensation$.subscribe((data) => {
+      this.compensation = data;
+    });
+  }
+
+  public getEligibleMessage(): string {
+    return (
+      this._translateService.instant('eligibilityForm.eligible.compensation-start') +
+      '\n' +
+      this.compensation +
+      '\n' +
+      this._translateService.instant('eligibilityForm.eligible.compensation-end')
+    );
+  }
 
   public checkWhichEligibilityMotive(): boolean {
     if (
@@ -201,7 +234,7 @@ export class EligibilityPageComponent implements OnInit {
     const clientID = this.getClientId();
 
     const caseData: CaseDTO = {
-      status: Statuses.PENDING,
+      status: Statuses.VALID,
       disruptionReason: this.disruptionReason(),
       disruptionInfo: this.disruptionInfo(),
       date: new Date().toISOString(),

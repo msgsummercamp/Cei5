@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
 import { CaseDTO } from '../dto/case.dto';
@@ -13,6 +13,11 @@ import { Beneficiary } from '../types/beneficiary';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiError } from '../types/api-error';
 
+type CreatedCaseDetails = {
+  caseId?: string;
+  caseDate: Date | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class CaseService {
   private readonly _http = inject(HttpClient);
@@ -21,10 +26,15 @@ export class CaseService {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _reservationService = inject(ReservationService);
   private readonly _translationService = inject(TranslateService);
+  public readonly caseSaved = new Subject<CreatedCaseDetails>();
 
   public createCase(caseData: CaseDTO): void {
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
+        this.caseSaved.next({
+          caseId: createdCase.id,
+          caseDate: createdCase.date,
+        });
         this._notificationService.showSuccess('Case created successfully');
       },
       error: (error) => {
@@ -53,7 +63,7 @@ export class CaseService {
     const formattedDate = today.toISOString().split('T')[0];
 
     const caseData: CaseDTO = {
-      status: Statuses.PENDING,
+      status: Statuses.VALID,
       disruptionReason: disruptionReason,
       disruptionInfo: disruptionInfo,
       date: formattedDate,
@@ -98,6 +108,26 @@ export class CaseService {
         return flightData;
       }),
     };
+  }
+
+  public getAllCases(): Observable<Case[]> {
+    return this._http.get<Case[]>(`${this._apiUrl}/cases`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of([]);
+      })
+    );
+  }
+
+  public deleteCase(caseId: string): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/cases/${caseId}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of();
+      })
+    );
   }
 
   private extractDateOnly(date: Date): string {
