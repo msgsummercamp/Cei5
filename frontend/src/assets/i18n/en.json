@@ -374,5 +374,25 @@
     "FAILED": "Failed",
     "VALID": "Valid",
     "INVALID": "Invalid"
+  },
+  "admin-panel": {
+    "title": "Admin Panel",
+    "name": "Name",
+    "role": "Role",
+    "assignedCases": "Number of assigned cases",
+    "userDeleted": "The User was deleted",
+    "addNewEmployee": "Add a new Employee"
+  },
+  "employee-dialog": {
+    "header": "Add User",
+    "title": "User Details",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "role": "Role",
+    "save": "Save",
+    "cancel": "Cancel",
+    "fillAllFields": "Please fill in all fields.",
+    "userCreated": "User created successfully."
   }
 }
