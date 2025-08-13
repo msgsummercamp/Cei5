@@ -87,10 +87,11 @@ p-select-list-container {
   --p-menubar-padding: 1.2rem 1.2rem;
 }
 
-.navbar-wrapper {
-  position: fixed;
+.navbar-wrapper{
+  position: sticky;
   width: 100%;
   z-index: 1000;
+  padding-bottom: 1.7rem;
 }
 
 ::ng-deep .navbar-wrapper .p-select-overlay {
@@ -99,9 +100,6 @@ p-select-list-container {
   margin-left: -3rem;
 }
 
-.navbar-spacer{
-  width: 100%;
-}
 
 ::ng-deep .hamburger-menu-button{
   display: none !important;
@@ -213,12 +211,12 @@ p-select-list-container {
     display: none !important;
   }
 
-
   .end-items > :not(.hamburger-menu-button) {
     display: none !important;
   }
-  .navbar-spacer{
-     height: 2.5rem;
+
+  .navbar-wrapper {
+    padding-bottom: 4rem;
   }
 }
 
@@ -234,7 +232,8 @@ p-select-list-container {
   .end-items > :not(.hamburger-menu-button) {
     display: none !important;
   }
-  .navbar-spacer{
-    height: 3.5rem;
+
+  .navbar-wrapper {
+    padding-bottom: 4rem;
   }
 }
