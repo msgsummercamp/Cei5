@@ -1,5 +1,6 @@
 {
   "home": "Home",
+  "mandatory": "* Fields marked with asterisk are mandatory.",
   "homepage": {
     "question": "Delayed? Cancelled? Get the compensation you deserve!",
     "claim-info": "You can claim up to €600 for delays, cancellations, or overbookings under EU and UK regulations.",
@@ -8,7 +9,7 @@
       "title": "It’s Simple",
       "submit-details": "Submit your flight details.",
       "check-eligibility": "We check your eligibility.",
-      "get-paid": "You get paid – we handle the airline!"
+      "get-paid": "You get paid - we handle the airline!"
     },
     "why": {
       "title": "Why Choose Us?",
@@ -55,48 +56,48 @@
       "Delay": "Delay",
       "Denied_Boarding": "Denied Boarding"
     },
-    "cancellationQuestion": "How many days before cancellation has the airline informed you?",
+    "cancellationQuestion": "How many days before cancellation has the airline informed you?*",
     "cancelRadioButton": {
       ">14 days": ">14 days",
       "<14 days": "<14 days",
       "On flight day": "On flight day"
     },
-    "delayQuestion": "How late did you arrive to the destination?",
+    "delayQuestion": "How late did you arrive to the destination?*",
     "delayRadioButton": {
       ">3 hours": ">3 hours",
       "<3 hours": "<3 hours",
       "Never arrived": "Never arrived"
     },
-    "denialBoardingQuestion": "Did you give up your seat voluntarily?",
+    "denialBoardingQuestion": "Did you give up your seat voluntarily?*",
     "denialBoardingRadioButton": {
       "Yes": "Yes",
       "No": "No"
     },
-    "reasonsBehindDenialQuestion": "Reasons behind denial of boarding:",
+    "reasonsBehindDenialQuestion": "Reasons behind denial of boarding:*",
     "reasonsBehindDenial": {
       "overbookedFlight": "Flight overbooked",
       "aggressivePassenger": "Aggressive behaviour with staff",
-      "intoxication": "Intoxication",
       "unspecified": "Unspecified reason"
     },
     "airlineMotive": {
-      "disruptingQuestion": "Did the airline mention disruption motive?",
+      "disruptingQuestion": "Did the airline mention disruption motive?*",
       "disruptingRadioButton": {
         "Yes": "Yes",
         "No": "No",
         "I don't know": "I don't know"
       },
-      "airlineMotiveQuestion": "What was the motive communicated by the airline?",
+      "airlineMotiveQuestion": "What was the motive communicated by the airline?*",
       "airlineMotives": {
         "technicalProblems": "Technical problems",
         "badWeather": "Meteorological conditions",
-        "strike": "Strike",
+        "flightAttendantsStrike": "Flight attendant's strike",
+        "airportStaffStrike": "Airport staff's strike",
         "airportProblems": "Problems with airport",
         "crewProblems": "Crew problems",
         "other": "Other motives"
       }
     },
-    "disruptionDescription": "Description",
+    "disruptionDescription": "Description*",
     "emptyDescription": "The description should not be empty.",
     "maxLengthDescription": "The description should have less than 1000 characters."
   },
@@ -165,28 +166,28 @@
     "password-invalid-reset": "Password must contain letters, numbers, or special characters."
   },
   "user-details": {
-    "title": "User Details",
+    "title": "Personal Information",
     "subtitle": "Please fill in your details.",
-    "email-label": "Email",
+    "email-label": "Email*",
     "email-required": "Email is required.",
     "email-invalid": "Invalid email address.",
     "email-length": "Email is too long.",
-    "firstname-label": "First Name",
+    "firstname-label": "First Name*",
     "firstname-required": "First name is required.",
     "firstname-minlength": "First name is too short.",
     "firstname-maxlength": "First name is too long.",
-    "lastname-label": "Last Name",
+    "lastname-label": "Last Name*",
     "lastname-required": "Last name is required.",
     "lastname-minlength": "Last name is too short.",
     "lastname-maxlength": "Last name is too long.",
-    "address-label": "Address",
+    "address-label": "Address*",
     "address-required": "Address is required.",
     "address-maxlength": "Address is too long.",
     "phoneNumber-label": "Phone Number",
     "phoneNumber-required": "Phone number is required.",
     "phoneNumber-minlength": "Phone number is too short.",
     "phoneNumber-invalidFormat": "Phone number format is invalid.",
-    "postalCode-label": "Postal Code",
+    "postalCode-label": "Postal Code*",
     "postalCode-required": "Postal code is required.",
     "postalCode-maxlength": "Postal code is too long.",
     "postalCode-invalid": "Invalid postal code.",
@@ -197,26 +198,24 @@
     "lastname-invalid": "Last name can only contain letters.",
     "address-invalid": "Address can only contain letters, numbers, spaces, commas, periods, and hyphens.",
     "completing-for-someone-else": "Are you completing this form for someone else?",
-    "someone-else-firstname-label": "First Name of the Person",
-    "someone-else-lastname-label": "Last Name of the Person",
-    "someone-else-address-label": "Address of the Person",
-    "someone-else-postalCode-label": "Postal Code of the Person",
-    "someone-else-underage-label": "Is the person under 18 years old?",
+    "someone-else-firstname-label": "Beneficiary's First Name*",
+    "someone-else-lastname-label": "Beneficiary's Last Name*",
+    "someone-else-address-label": "Beneficiary's Address*",
+    "someone-else-postalCode-label": "Beneficiary's Postal Code*",
+    "someone-else-underage-label": "Is the beneficiary under 18 years old?",
     "accept-terms": "I have read and agree to the",
-    "terms": "terms",
-    "privacy-policy": "privacy-policy.",
-    "and": "and"
+    "terms": "terms and conditions.",
+    "privacy-policy": "privacy-policy."
   },
   "confirmation": {
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
     "step1": {
       "title": "Step 1",
-      "text": "Click the button below to download the contract. Read it and sign it.",
-      "button": "Download contract"
+      "text": "You can enter your account by clicking the <strong>Finish</strong> button below. After entering your account, upload all necessary documents for your case."
     },
     "step2": {
       "title": "Step 2",
-      "text": "After entering your account, upload all necessary documents for your case. You can enter your account by clicking the <strong>Finish</strong> button below."
+      "text": "When you click <strong>Finish</strong> a contract with your details will be generated. Read it, sign it and upload it to your case."
     },
     "step3": {
       "title": "Step 3",
@@ -236,10 +235,10 @@
     "next": "Next",
     "previous": "Previous",
     "reservationHeader": "Reservation Info",
-    "reservationNumber": "Reservation Number",
+    "reservationNumber": "Reservation Number*",
     "reservationNumberRequired": "Reservation number is required.",
     "reservationLength": "Reservation number must be exactly 6 characters.",
-    "departingAirport": "Departing Airport",
+    "departingAirport": "Departing Airport*",
     "departingAirportRequired": "Departing Airport is required.",
     "departingAirportLength": "Departing Airport must be exactly 3 characters",
     "departingAirportUpper": "Airport code must be 3 uppercase letters.",
@@ -267,18 +266,18 @@
     "fillInAllConnections": "Do not leave connection airports empty."
   },
   "flightForm": {
-    "flightNumber": "Flight Number",
+    "flightNumber": "Flight Number*",
     "flightNumberRequired": "Flight number is required.",
     "flightNumberMinLength": "Flight Number must be at least 3 characters.",
     "flightNumberMaxLength": "Flight Number must be at most 6 characters.",
-    "airline": "Airline",
+    "airline": "Airline*",
     "airlineRequired": "Airline name is required.",
     "airlineMinLength": "Airline name must be at least 3 characters.",
     "airlineMaxLength": "Airline name must be at most 50 characters.",
     "airlineNotEmptyAfterTrim": "Airline name must not be empty.",
-    "plannedDepartureTime": "Planned Departure Time",
+    "plannedDepartureTime": "Planned Departure Time*",
     "plannedDepartureTimeRequired": "Planned departure time is required.",
-    "plannedArrivalTime": "Planned Arrival Time",
+    "plannedArrivalTime": "Planned Arrival Time*",
     "plannedArrivalTimeRequired": "Planned arrival time is required.",
     "arrivalBeforeDeparture": "Arrival time must be after departure time.",
     "flightNumberPattern": "Flight number must be alphanumeric.",
@@ -287,15 +286,21 @@
   "eligibilityForm": {
     "checkEligibility": "Eligibility check.",
     "loading": "Please wait while we verify the eligibility of your case.",
-    "congratulations": "Congratulations.",
-    "eligible": "You are eligible for compensation.",
-    "continueWithPersonalDetails": "Continue with your personal details.",
-    "sorry": "Sorry.",
-    "notEligibleDueToDelaysAndCancellations": "We're sorry! Unfortunately, you are not eligible for compensation:",
-    "notEligibleDueToDelaysAndCancellationsSummary": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to air traffic controller (ATC) strikes, adverse weather conditions, or other circumstances beyond the airline's control, then the airline is not required to compensate you.",
-    "notEligibleDueToOtherReasons": "Sorry! You do not meet the eligibility requirements:",
-    "notEligibleDueToOtherReasonsSummary": "According to European Regulation EC261/2004, the airline is not required to compensate you if your flight: was delayed by less than 3 hours or if you were notified of the cancellation more than 14 days before the flight date (email, SMS) the airline is not obliged to compensate you even in the case of cancellations announced less than 14 days before the flight date, if you arrive less than 3 hours late compared to the original itinerary with an alternative flight offered by the airline. We apologize and thank you for your understanding.",
-    "restart": "Start over from the beginning."
+    "eligible": {
+      "congratulations": "Congratulations!",
+      "compensation-start": "You may be entitled to compensation of up to €",
+      "compensation-end": ". Click <strong>Next</strong> to provide your personal details and submit your claim."
+    },
+    "notEligible": {
+      "sorry": "We are sorry! Unfortunately, you are not eligible for compensation:",
+      "notEligibleMessage": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to an air traffic control (ATC) strike, adverse weather conditions, or other circumstances beyond the airline’s control, the airline is not obliged to compensate you."
+    },
+    "conditionsNotFulfilled": {
+      "sorry": "We are sorry! You do not meet the eligibility requirements:",
+      "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click here."
+    },
+    "continueWithPersoinalDetails": "Continue with personal details.",
+    "restart": "Restart from the beginning."
   },
   "lastForm": {
     "next": "Finish"

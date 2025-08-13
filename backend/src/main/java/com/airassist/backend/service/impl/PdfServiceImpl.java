@@ -2,6 +2,7 @@ package com.airassist.backend.service.impl;
 
 import com.airassist.backend.service.PdfService;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.sun.tools.javac.Main;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -26,11 +29,11 @@ public class PdfServiceImpl implements PdfService {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfRendererBuilder builder = new PdfRendererBuilder();
-
-        builder.withHtmlContent(htmlContent, null);
-
-        builder.toStream(outputStream);
-        builder.run();
+        builder.useFastMode()
+                .useFont(new File(Objects.requireNonNull(Main.class.getClassLoader().getResource("fonts/DejaVuSans.ttf")).getFile()), "DejaVuSans")
+                .withHtmlContent(htmlContent, null)
+                .toStream(outputStream)
+                .run();
         return outputStream.toByteArray();
     }
 }

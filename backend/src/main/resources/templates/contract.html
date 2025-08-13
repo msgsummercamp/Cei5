@@ -5,9 +5,10 @@
     <title>Contract</title>
     <style>
         body {
-            font-family: 'DejaVu', sans-serif;
+            font-family: 'DejaVuSans', sans-serif;
             font-size: 12px;
             line-height: 1.4;
+            text-align: justify;
         }
 
         .title {
@@ -27,44 +28,43 @@
 
         .signature td {
             width: 30%;
-            height: 130px;
-            margin-top: 20px;
-            text-align: left;
-            border: 1px solid black;
+            height: 10px;
+            margin-top: 50px;
+            text-align: center;
+            border-top: solid 1px;
         }
 
         .footer {
-            font-size: 11px;
+            font-size: 10px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 <div class="contract-file">
-    <img src="logo.png" alt="Logo" style="width: 140px; height: auto; margin-bottom: 20px;" />
-
     <div class="title">
         <p>TRANSFER FORM (AGREEMENT) / FORMULAR DE CESIUNE (ACORD)</p>
-        <p>No. <span th:text="${caseId}">123456789</span> / From <span th:text="${caseDate}">2025-07-31</span></p>
+        <p>No. <span th:text="${caseId}"></span> / From <span th:text="${caseDate}"></span></p>
     </div>
 
     <table>
         <tr>
             <td>
                 <p><strong>First and Last name of the passenger (the “Client”)</strong>
-                    / Prenume și nume pasager („Client”):<br/>
-                    <span th:text="${firstName}">John</span> <span th:text="${lastName}">Doe</span></p>
+                    / Prenume și nume <br/> pasager („Client”):
+                    <span th:text="${firstName}"></span> <span th:text="${lastName}"></span></p>
 
                 <p><strong>Address (with postal code)</strong>
                     / Adresă (<u>Atenție: adăugați și codul poștal!</u>):<br/>
-                    <span th:text="${address}">Str. Exemplu 123</span>, <span th:text="${postalcode}">400000</span></p>
+                    <span></span></p>
             </td>
 
             <td >
                 <p><strong>Booking reference</strong> / Cod rezervare:<br/>
-                    <span th:text="${reservationNumber}">RES-2025-0001</span></p>
+                    <span th:text="${reservationNumber}"></span></p>
 
-                <p><strong>Email address</strong> / Adresă de email:<br/>
-                    <span th:text="${email}">john.doe@example.com</span></p>
+                <p><strong>ID</strong> / CNP:<br/>
+                    <span></span></p>
             </td>
         </tr>
     </table>
@@ -104,7 +104,6 @@
 
     <table class="signature">
         <tr>
-            <td><strong>Passenger Services S.R.L.</strong><br/>Előd Imreh-Racz - Administrator</td>
             <td><strong>Client signature</strong> / Semnătură Client</td>
             <td><strong>Date</strong> / Data</td>
         </tr>
