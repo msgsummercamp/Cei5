@@ -375,5 +375,10 @@
     "FAILED": "Eșuat",
     "VALID": "Valid",
     "INVALID": "Invalid"
+  },
+  "forbidden": {
+    "title": "Acces interzis",
+    "message": "Oops! Se pare că nu aveți permisiunea să accesați această pagină. Ruta este restricționată.",
+    "back-to-home": "Înapoi acasă"
   }
 }
