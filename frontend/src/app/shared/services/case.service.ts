@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -29,6 +29,7 @@ export class CaseService {
   public readonly caseSaved = new Subject<CreatedCaseDetails>();
 
   public createCase(caseData: CaseDTO): void {
+    console.log(caseData);
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
         this.caseSaved.next({
@@ -91,17 +92,16 @@ export class CaseService {
         const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
         const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
 
-        const flightData = {
-          flightDate: this.extractDateOnly(departureDateTime),
-          flightNumber: flight.flightDetails.flightNumber,
+        return {
+          flightDate: this.extractDateOnly(departureDateTime) || null,
+          flightNumber: flight.flightDetails.flightNumber || null,
           departingAirport: flight.flightDetails.departingAirport || 'XXX',
           destinationAirport: flight.flightDetails.destinationAirport || 'YYY',
-          departureTime: this.formatForLocalDateTime(departureDateTime),
-          arrivalTime: this.formatForLocalDateTime(arrivalDateTime),
-          airLine: flight.flightDetails.airline || 'UNKNOWN',
+          departureTime: this.formatForLocalDateTime(departureDateTime) || null,
+          arrivalTime: this.formatForLocalDateTime(arrivalDateTime) || null,
+          airLine: flight.flightDetails.airline || null,
           problematic: flight.isFlagged,
         };
-        return flightData;
       }),
     };
   }
