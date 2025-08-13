@@ -54,8 +54,9 @@ public interface AuthService {
      *
      * @param token the JWT token to validate
      * @return true if the token is valid, false otherwise
+     * @throws InvalidTokenException if the token is invalid or has expired
      */
-    boolean validateToken(String token);
+    boolean validateToken(String token) throws InvalidTokenException;
 
     /**
      * Extracts the email from the provided JWT token.

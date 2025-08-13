@@ -10,11 +10,6 @@ export const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'verify-case',
-    redirectTo: '/form',
-    pathMatch: 'full',
-  },
-  {
     path: 'form',
     component: CaseFormComponent,
   },
@@ -35,6 +30,13 @@ export const routes: Routes = [
       import(
         './features/password-reset/request-pass-reset-page/request-pass-reset-page.component'
       ).then((m) => m.RequestPassResetPageComponent),
+  },
+  {
+    path: 'employee-dashboard',
+    loadComponent: () =>
+      import('./features/employee-case-table/employee-case-table.component').then(
+        (m) => m.EmployeeCaseTableComponent
+      ),
   },
   {
     path: 'admin-table',
