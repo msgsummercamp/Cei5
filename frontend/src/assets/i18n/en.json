@@ -301,7 +301,7 @@
       "sorry": "We are sorry! You do not meet the eligibility requirements:",
       "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click here."
     },
-    "continueWithPersoinalDetails": "Continue with personal details.",
+    "continueWithPersonalDetails": "Continue with personal details.",
     "restart": "Restart from the beginning."
   },
   "lastForm": {

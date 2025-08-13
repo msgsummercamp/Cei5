@@ -302,7 +302,7 @@
       "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate:",
       "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici."
     },
-    "continueWithPersoinalDetails": "Continua cu datele personale.",
+    "continueWithPersonalDetails": "Continua cu datele personale.",
     "restart": "Reporniti de la inceput."
   },
   "lastForm": {
