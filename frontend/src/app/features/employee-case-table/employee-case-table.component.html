@@ -127,13 +127,13 @@
             &nbsp;
             {{ case.id }}</td
           >
-          <td>{{ case.date }}</td>
-          <td>{{ case.problemFlightNumber }}</td>
-          <td>{{ case.clientName }}</td>
-          <td
+          <td class="text-center">{{ case.date }}</td>
+          <td class="text-center">{{ case.problemFlightNumber }}</td>
+          <td class="text-center">{{ case.clientName }}</td>
+          <td class="text-center"
             ><b>{{ case.employeeName }}</b></td
           >
-          <td>
+          <td class="text-center">
             <p-tag
               [value]="getStatusTranslation(case.status)"
               [severity]="getStatusSeverity(case.status)"

@@ -1,4 +1,4 @@
-import { Component, inject, output, effect, signal, input } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -13,7 +13,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisruptionReasons } from '../../../../shared/types/enums/disruption-reason';
-import { ScrollPanel, ScrollPanelModule } from 'primeng/scrollpanel';
 
 type DisruptionForm = {
   disruptionType: FormControl<string>;
@@ -54,7 +53,6 @@ enum Disruptions {
     TextareaModule,
     FloatLabelModule,
     TranslatePipe,
-    ScrollPanel,
   ],
   templateUrl: './disruption-form.component.html',
   styleUrl: './disruption-form.component.scss',

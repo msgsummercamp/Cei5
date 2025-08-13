@@ -61,6 +61,7 @@ public class CaseController {
 
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCase(
             @PathVariable UUID id){
@@ -74,7 +75,7 @@ public class CaseController {
         return ResponseEntity.ok(eligible);
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     @PatchMapping("/{caseId}/assign-employee/{employeeId}")
     public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) throws UserNotFoundException {
         Case changedCase = caseService.assignEmployee(caseId, employeeId);
@@ -83,7 +84,6 @@ public class CaseController {
         return ResponseEntity.ok(updatedCaseResponse);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('EMPLOYEE')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<CaseResponseDTO>> getAllCasesForClient(@PathVariable UUID userId) {
         List<Case> userCases = caseService.getCasesForClient(userId);

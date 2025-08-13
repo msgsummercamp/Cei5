@@ -1,7 +1,7 @@
 import { SortEvent } from 'primeng/api';
 
 export class TableHelper {
-  public static sortTableData<T>(event: SortEvent) {
+  public static sortTableData<T>(event: SortEvent): void {
     type Data = {
       [k: string]: T;
     };

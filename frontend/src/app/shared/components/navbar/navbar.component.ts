@@ -11,12 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { NgOptimizedImage } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
-import { IfAuthenticatedDirective } from '../../directives/if-authenticated.directive';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../services/user.service';
 import { StepNavigationService } from '../../services/step-navigation.service';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { NavbarHelper } from '../../helper/visibile-for-role';
+import { Roles } from '../../types/enums/roles';
 
 @Component({
   selector: 'app-navbar',
@@ -30,7 +30,6 @@ import { NavbarHelper } from '../../helper/visibile-for-role';
     FormsModule,
     Select,
     NgOptimizedImage,
-    IfAuthenticatedDirective,
     Button,
     MenuModule,
     Accordion,
@@ -62,12 +61,13 @@ export class NavbarComponent {
       label: 'navbar.check-flight',
       routerLink: '/form',
       icon: 'pi pi-file-check',
+      roles: [Roles.EMPLOYEE, Roles.ADMIN, Roles.USER],
     },
     {
       label: 'navbar.employee-dashboard',
       routerLink: '/employee-dashboard',
-      visible: NavbarHelper.isVisibleForAuthUser(['EMPLOYEE', 'ADMIN'], this._authService),
       icon: 'pi pi-address-book',
+      roles: [Roles.ADMIN, Roles.EMPLOYEE],
     },
   ];
 
@@ -84,7 +84,7 @@ export class NavbarComponent {
       );
       this._menuConfig = this._menuConfig.map((item) => ({
         ...item,
-        visible: NavbarHelper.isVisibleForAuthUser(['EMPLOYEE', 'ADMIN'], this._authService),
+        visible: NavbarHelper.isVisibleForAuthUser(item.roles, this._authService),
       }));
       this.translateMenuItems(
         this._menuConfig,

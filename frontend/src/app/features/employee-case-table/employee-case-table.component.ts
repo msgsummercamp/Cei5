@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, viewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { CaseService } from '../../shared/services/case.service';
 import { Case } from '../../shared/types/case';
 import { Table, TableModule } from 'primeng/table';
@@ -42,7 +42,7 @@ type CaseDTO = {
   styleUrl: './employee-case-table.component.scss',
   providers: [ConfirmationService],
 })
-export class EmployeeCaseTableComponent implements OnInit {
+export class EmployeeCaseTableComponent implements OnInit, OnDestroy {
   private readonly _caseService = inject(CaseService);
   private readonly _confirmationService = inject(ConfirmationService);
   private readonly _translationService = inject(TranslateService);
