@@ -1,1 +1,16 @@
-<p>case-details works!</p>
+@if (!loading) {
+  <div class="case-details-container mt-8 mx-3">
+    <div class="column">
+      <h2>Case Details</h2>
+      {{ caseData | json }}
+    </div>
+    <div class="column">
+      <h2>Additional Information</h2>
+      <!-- Add content for the second column here -->
+    </div>
+  </div>
+} @else {
+  <div class="loading-container">
+    <p>Loading...</p>
+  </div>
+}

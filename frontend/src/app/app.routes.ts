@@ -4,6 +4,8 @@ import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CaseFormComponent } from './features/case-form/case-form.component';
 import { roleBasedGuardGuard } from './shared/guards/role-based-guard.guard';
 import { ForbiddenPageComponent } from './features/forbidden-page/forbidden-page.component';
+import { alreadyAuthGuardGuard } from './shared/guards/already-auth-guard.guard';
+import { userSeesHisOwnGuardGuard } from './shared/guards/user-sees-his-own-guard.guard';
 
 export const routes: Routes = [
   // change these, only for testing purposes
@@ -18,6 +20,7 @@ export const routes: Routes = [
   {
     path: 'sign-in',
     component: SignInComponent,
+    canActivate: [alreadyAuthGuardGuard],
   },
   {
     path: 'change-password',
@@ -47,6 +50,12 @@ export const routes: Routes = [
   {
     path: 'forbidden',
     component: ForbiddenPageComponent,
+  },
+  {
+    path: 'case-details/:caseId',
+    loadComponent: () =>
+      import('./features/case-details/case-details.component').then((m) => m.CaseDetailsComponent),
+    canActivate: [userSeesHisOwnGuardGuard],
   },
   {
     path: 'admin-table',
