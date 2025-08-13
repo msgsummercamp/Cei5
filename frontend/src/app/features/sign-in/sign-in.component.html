@@ -72,7 +72,7 @@
         }}<p-button
           label="{{ 'sign-in.here' | translate }}"
           [link]="true"
-          (click)="navigateToPasswordReset()"
+          (onClick)="navigateToPasswordReset()"
           class="custom-link-button pl-1"
         />!
       </div>
@@ -83,7 +83,7 @@
           label="{{ 'sign-in.sign-in-button' | translate }}"
           type="submit"
           [disabled]="signInForm.invalid"
-          (click)="onFormSubmit()"
+          (onClick)="onFormSubmit()"
           class="w-25rem h-3rem"
           size="large"
         ></p-button>
