@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
 import { CaseDTO } from '../dto/case.dto';
@@ -13,6 +13,11 @@ import { Beneficiary } from '../types/beneficiary';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiError } from '../types/api-error';
 
+type CreatedCaseDetails = {
+  caseId?: string;
+  caseDate: Date | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class CaseService {
   private readonly _http = inject(HttpClient);
@@ -21,11 +26,15 @@ export class CaseService {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _reservationService = inject(ReservationService);
   private readonly _translationService = inject(TranslateService);
+  public readonly caseSaved = new Subject<CreatedCaseDetails>();
 
   public createCase(caseData: CaseDTO): void {
-    console.log(caseData);
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
+        this.caseSaved.next({
+          caseId: createdCase.id,
+          caseDate: createdCase.date,
+        });
         this._notificationService.showSuccess('Case created successfully');
       },
       error: (error) => {

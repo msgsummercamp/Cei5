@@ -1,5 +1,6 @@
 {
   "home": "Acasă",
+  "mandatory": "* Câmpurile marcate cu steluță sunt obligatorii.",
   "homepage": {
     "question": "Zbor întârziat sau anulat? Obține compensația cuvenită!",
     "claim-info": "Poți primi până la 600 € pentru întârzieri, anulări sau suprarezervări, conform reglementărilor UE și UK.",
@@ -8,7 +9,7 @@
       "title": "E simplu",
       "submit-details": "Completezi detaliile zborului.",
       "check-eligibility": "Verificăm eligibilitatea.",
-      "get-paid": "Primești banii – noi ne ocupăm de compania aeriană."
+      "get-paid": "Primești banii - noi ne ocupăm de compania aeriană."
     },
     "why": {
       "title": "De ce să alegi platforma noastră?",
@@ -18,7 +19,7 @@
     },
     "fieldsets": {
       "rights": {
-        "title": "Drepturile tale conform legislației UE (EC 261/2004)",
+        "title": "Drepturile tale conform legislației UE \n (EC 261/2004)",
         "text": "Regulamentul (CE) nr. 261/2004 este o lege europeană care protejează pasagerii aerieni. Companiile aeriene sunt obligate să ofere compensații (până la 600 €) și asistență în caz de anulare, întârziere mai mare de 3 ore sau refuz la îmbarcare.",
         "goal": "Scopul: pasagerii să fie tratați corect atunci când le sunt afectate planurile de călătorie."
       },
@@ -55,48 +56,48 @@
       "Delay": "Întârziere",
       "Denied_Boarding": "Refuzul îmbarcării"
     },
-    "cancellationQuestion": "Cu câte zile înainte de anulare v-a informat compania aeriană?",
+    "cancellationQuestion": "Cu câte zile înainte de anulare v-a informat compania aeriană?*",
     "cancelRadioButton": {
       ">14 days": ">14 zile",
       "<14 days": "<14 zile",
       "On flight day": "În ziua zborului"
     },
-    "delayQuestion": "Cât ați întârziat la destinație?",
+    "delayQuestion": "Cât ați întârziat la destinație?*",
     "delayRadioButton": {
       ">3 hours": ">3 ore",
       "<3 hours": "<3 ore",
       "Never arrived": "Nu am ajuns niciodată"
     },
-    "denialBoardingQuestion": "V-ați dat locul în mod voluntar?",
+    "denialBoardingQuestion": "V-ați dat locul în mod voluntar?*",
     "denialBoardingRadioButton": {
       "Yes": "Da",
       "No": "Nu"
     },
-    "reasonsBehindDenialQuestion": "Motivele din spatele refuzului îmbarcării:",
+    "reasonsBehindDenialQuestion": "Motivele din spatele refuzului îmbarcării:*",
     "reasonsBehindDenial": {
       "overbookedFlight": "Zbor suprarezervat",
       "aggressivePassenger": "Comportament agresiv cu personalul",
-      "intoxication": "Intoxicație",
       "unspecified": "Motiv nespecificat"
     },
     "airlineMotive": {
-      "disruptingQuestion": "A menționat compania aeriană motivul întreruperii?",
+      "disruptingQuestion": "A menționat compania aeriană motivul întreruperii?*",
       "disruptingRadioButton": {
         "Yes": "Da",
         "No": "Nu",
         "I don't know": "Nu știu"
       },
-      "airlineMotiveQuestion": "Care a fost motivul comunicat de compania aeriană?",
+      "airlineMotiveQuestion": "Care a fost motivul comunicat de compania aeriană?*",
       "airlineMotives": {
         "technicalProblems": "Probleme tehnice",
         "badWeather": "Condiții meteorologice",
-        "strike": "Grevă",
+        "flightAttendantsStrike": "Greva însoțitorilor de zbor",
+        "airportStaffStrike": "Greva personalului aeroportului",
         "airportProblems": "Probleme cu aeroportul",
         "crewProblems": "Probleme cu echipajul",
         "other": "Alte motive"
       }
     },
-    "disruptionDescription": "Descriere",
+    "disruptionDescription": "Descriere*",
     "emptyDescription": "Descrierea nu ar trebui să fie goală.",
     "maxLengthDescription": "Descrierea ar trebui să aibă mai puțin de 1000"
   },
@@ -133,9 +134,11 @@
     "warning": "Avertisment"
   },
   "navbar": {
+    "greeting": "Bun venit",
     "login": "Loghează-te",
     "logout": "Deconectează-te",
     "profile": "Profil",
+    "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
     "check-flight": "Verifică zbor"
   },
@@ -165,28 +168,28 @@
     "password-invalid-reset": "Parola trebuie să conțină litere, cifre sau caractere speciale."
   },
   "user-details": {
-    "title": "Detalii utilizator",
+    "title": "Informații personale",
     "subtitle": "Vă rugăm să completați detaliile dvs.",
-    "email-label": "Email",
+    "email-label": "Email*",
     "email-required": "Adresa de email este obligatorie.",
     "email-invalid": "Adresă de email invalidă.",
     "email-length": "Adresa de email este prea lungă.",
-    "firstname-label": "Prenume",
+    "firstname-label": "Prenume*",
     "firstname-required": "Prenumele este obligatoriu.",
     "firstname-minlength": "Prenumele este prea scurt.",
     "firstname-maxlength": "Prenumele este prea lung.",
-    "lastname-label": "Nume",
+    "lastname-label": "Nume*",
     "lastname-required": "Numele este obligatoriu.",
     "lastname-minlength": "Numele este prea scurt.",
     "lastname-maxlength": "Numele este prea lung.",
-    "address-label": "Adresă",
+    "address-label": "Adresă*",
     "address-required": "Adresa este obligatorie.",
     "address-maxlength": "Adresa este prea lungă.",
-    "phoneNumber-label": "Număr de telefon",
+    "phoneNumber-label": "Număr de telefon*",
     "phoneNumber-required": "Numărul de telefon este obligatoriu.",
     "phoneNumber-minlength": "Numărul de telefon este prea scurt.",
     "phoneNumber-invalidFormat": "Formatul numărului de telefon nu este valid.",
-    "postalCode-label": "Cod poștal",
+    "postalCode-label": "Cod poștal*",
     "postalCode-required": "Codul poștal este obligatoriu.",
     "postalCode-maxlength": "Codul poștal este prea lung.",
     "postalCode-invalid": "Cod poștal invalid.",
@@ -197,30 +200,28 @@
     "lastname-invalid": "Numele de familie poate conține doar litere.",
     "address-invalid": "Adresa poate conține doar litere, cifre, spații, virgule, puncte și cratime.",
     "completing-for-someone-else": "Completați pentru altcineva?",
-    "someone-else-firstname-label": "Prenumele persoanei",
-    "someone-else-lastname-label": "Numele persoanei",
-    "someone-else-address-label": "Adresa persoanei",
-    "someone-else-postalCode-label": "Codul poștal al persoanei",
-    "someone-else-underage-label": "Persoana este minoră?",
+    "someone-else-firstname-label": "Prenumele beneficiarului*",
+    "someone-else-lastname-label": "Numele beneficiarului*",
+    "someone-else-address-label": "Adresa beneficiarului*",
+    "someone-else-postalCode-label": "Codul poștal al beneficiarului*",
+    "someone-else-underage-label": "Beneficiarul este minor?",
     "accept-terms": "Am citit și accept",
-    "terms": "termenii",
-    "privacy-policy": "politica de confidențialitate",
-    "and": "și"
+    "terms": "termenii și condițiile.",
+    "privacy-policy": "politica de confidențialitate."
   },
   "confirmation": {
-    "congratulations": "Felicitări! Acum poți trimite cazul tău. Înainte de asta, iată o scurtă prezentare a pașilor următori:",
+    "congratulations": "Felicitări! Acum puteți trimite cazul dumneavoastră. Înainte de aceasta, iată o prezentare a pașilor următori:",
     "step1": {
       "title": "Pasul 1",
-      "text": "Apasă butonul de mai jos pentru a descărca contractul. Citește-l cu atenție și semnează-l.",
-      "button": "Descarcă contractul"
+      "text": "Accesați contul dumneavoastră apăsând butonul <strong>Finalizează</strong> de mai jos. După autentificare, încărcați toate documentele necesare pentru cazul dumneavoastră."
     },
     "step2": {
       "title": "Pasul 2",
-      "text": "După ce te autentifici în cont, încarcă toate documentele necesare pentru cazul tău. Poți accesa contul apăsând butonul <strong>Finalizează</strong> de mai jos."
+      "text": "După ce apăsați <strong>Finalizează</strong>, se va genera un contract cu datele dumneavoastră. Citiți-l cu atenție, semnați-l și încărcați-l în dosarul dumneavoastră."
     },
     "step3": {
       "title": "Pasul 3",
-      "text": "Așteaptă ca un operator să îți analizeze cazul și verifică e-mailul pentru eventuale actualizări."
+      "text": "Așteptați ca un membru al echipei să proceseze cazul dumneavoastră și verificați periodic emailul pentru eventuale actualizări."
     }
   },
   "stepper": {
@@ -236,14 +237,14 @@
     "next": "Următorul",
     "previous": "Anterior",
     "reservationHeader": "Informații rezervare",
-    "reservationNumber": "Numărul rezervării",
+    "reservationNumber": "Numărul rezervării*",
     "reservationNumberRequired": "Numărul rezervării este obligatoriu.",
     "reservationLength": "Numărul rezervării trebuie să aibă exact 6 caractere.",
-    "departingAirport": "Aeroportul de plecare",
+    "departingAirport": "Aeroportul de plecare*",
     "departingAirportRequired": "Aeroportul de plecare este obligatoriu.",
     "departingAirportLength": "Aeroportul de plecare trebuie să aibă exact 3 caractere",
     "departingAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
-    "destinationAirport": "Aeroportul de destinație",
+    "destinationAirport": "Aeroportul de destinație:",
     "destinationAirportRequired": "Aeroportul de destinație este obligatoriu.",
     "destinationAirportLength": "Aeroportul de destinație trebuie să aibă exact 3 caractere",
     "destinationAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
@@ -267,18 +268,18 @@
     "fillInAllConnections": "Nu lăsa aeroporturile de conexiune goale."
   },
   "flightForm": {
-    "flightNumber": "Numărul zborului",
+    "flightNumber": "Numărul zborului*",
     "flightNumberRequired": "Numărul zborului este obligatoriu.",
     "flightNumberMinLength": "Numărul zborului trebuie să aibă cel puțin 3 caractere.",
     "flightNumberMaxLength": "Numărul zborului trebuie să aibă cel mult 6 caractere.",
-    "airline": "Compania aeriană",
+    "airline": "Compania aeriană*",
     "airlineRequired": "Numele companiei aeriene este obligatoriu.",
     "airlineMinLength": "Numele companiei aeriene trebuie să aibă cel puțin 3 caractere.",
     "airlineMaxLength": "Numele companiei aeriene trebuie să aibă cel mult 50 de caractere.",
     "airlineNotEmptyAfterTrim": "Numele companiei aeriene nu poate fi gol.",
-    "plannedDepartureTime": "Ora planificată de plecare",
+    "plannedDepartureTime": "Ora planificată de plecare*",
     "plannedDepartureTimeRequired": "Ora planificată de plecare este obligatorie.",
-    "plannedArrivalTime": "Ora planificată de sosire",
+    "plannedArrivalTime": "Ora planificată de sosire*",
     "plannedArrivalTimeRequired": "Ora planificată de sosire este obligatorie.",
     "arrivalBeforeDeparture": "Ora de sosire trebuie să fie după ora de plecare.",
     "flightNumberPattern": "Numărul zborului trebuie să fie alfanumeric.",
@@ -287,14 +288,21 @@
   "eligibilityForm": {
     "checkEligibility": "Verificarea eligibilitati.",
     "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
-    "congratulations": "Felicitari.",
-    "eligible": "Ești eligibil pentru compensație.",
-    "continueWithPersonalDetails": "Continua cu datele personale.",
-    "sorry": "Scuze",
-    "notEligibleDueToDelaysAndCancellations": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
-    "notEligibleDueToDelaysAndCancellationsSummary": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească.",
-    "notEligibleDueToOtherReasons": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate: ",
-    "notEligibleDueToOtherReasonsSummary": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:a avut o întârziere de mai puțin de 3 ore sau dacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS) compania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.Ne pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici. (a se include un link catre un nou formular)",
+    "eligible": {
+      "congratulations": "Felicitări!",
+      "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
+      "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
+    },
+
+    "notEligible": {
+      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
+    },
+    "conditionsNotFulfilled": {
+      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate:",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici."
+    },
+    "continueWithPersoinalDetails": "Continua cu datele personale.",
     "restart": "Reporniti de la inceput."
   },
   "lastForm": {
@@ -321,7 +329,8 @@
     "illegal-argument-": "Datele furnizate nu sunt valide. Vă rugăm să verificați datele și să încercați din nou.",
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
+    "reservation-not-found": "Rezervarea nu a fost găsită.",
+    "document-not-found": "Documentul solicitat nu a fost găsit."
   },
   "case-table": {
     "case-id": "ID Caz",
