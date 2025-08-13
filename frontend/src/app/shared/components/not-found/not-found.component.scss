@@ -1,0 +1,78 @@
+.not-found-container {
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Roboto Mono', monospace;
+  overflow: hidden;
+}
+
+.board {
+  background: #0c2c70;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 2rem 3rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  text-align: left;
+  min-width: 300px;
+}
+
+.board-title {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: #a6eb55;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.board-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.board-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.board-value {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.cancelled {
+  color: #a6eb55;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.message {
+  margin-top: 2rem;
+  font-size: 1rem;
+  text-align: center;
+  max-width: 400px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.home-button {
+  margin-top: 1.5rem;
+  background: #a6eb55;
+  color: #0c2c70;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.home-button:hover {
+  background: #90d949;
+}
