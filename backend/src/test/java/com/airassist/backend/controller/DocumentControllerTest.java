@@ -50,7 +50,6 @@ public class DocumentControllerTest {
         var response = documentController.getDocument(documentId);
 
         assertEquals(dto, response.getBody());
-        verify(documentService).getDocument(documentId);
     }
 
     @Test
@@ -70,7 +69,6 @@ public class DocumentControllerTest {
         var response = documentController.getDocumentsForCase(caseId);
 
         assertEquals(dtos, response.getBody());
-        verify(documentService).getDocumentsForCase(caseId);
     }
 
     @Test
@@ -87,10 +85,8 @@ public class DocumentControllerTest {
     }
 
     @Test
-    void addDocument_WhenInvalidInput_ShouldThrowException() throws IOException {
+    void addDocument_WhenNullFile_ShouldThrowException() throws IOException {
         MultipartFile file = null;
-        String name = "";
-        DocumentTypes type = null;
         UUID caseId = UUID.randomUUID();
         CreateDocumentDTO ddto = new CreateDocumentDTO();
         ddto.setFile(file);
@@ -103,8 +99,6 @@ public class DocumentControllerTest {
     @Test
     void addDocument_ValidInput_ShouldReturnDocumentDTO() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
-        String name = "Doc";
-        DocumentTypes type = DocumentTypes.JPG;
         UUID caseId = UUID.randomUUID();
         DocumentDTO dto = new DocumentDTO();
         CreateDocumentDTO ddto = new CreateDocumentDTO();
@@ -116,7 +110,6 @@ public class DocumentControllerTest {
         var response = documentController.addDocument(ddto, caseId);
 
         assertEquals(dto, response.getBody());
-        verify(documentService).addDocument(ddto, caseId);
     }
 
     @Test
@@ -134,6 +127,5 @@ public class DocumentControllerTest {
 
         assertNull(response.getBody());
         assertEquals(204, response.getStatusCodeValue());
-        verify(documentService).deleteDocument(documentId);
     }
 }

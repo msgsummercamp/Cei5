@@ -113,12 +113,49 @@ public class DocumentServiceTest {
     }
 
     @Test
-    void addDocument_WhenInvalidInputs_ShouldThrowIllegalArgumentException() {
+    void addDocument_WhenFileIsNull_ShouldThrowIllegalArgumentException() {
         CreateDocumentDTO ddto = new CreateDocumentDTO();
         ddto.setFile(null);
-        ddto.setName("");
+        ddto.setName("ValidName");
+        ddto.setType(DocumentTypes.JPG);
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, UUID.randomUUID()));
+    }
+
+    @Test
+    void addDocument_WhenFileIsEmpty_ShouldThrowIllegalArgumentException() {
+        MockMultipartFile emptyFile = new MockMultipartFile("file", "empty.txt", "text/plain", new byte[0]);
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(emptyFile);
+        ddto.setName("ValidName");
+        ddto.setType(DocumentTypes.JPG);
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, UUID.randomUUID()));
+    }
+
+    @Test
+    void addDocument_WhenNameIsEmpty_ShouldThrowIllegalArgumentException() {
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes()));
+        ddto.setName("   ");
+        ddto.setType(DocumentTypes.JPG);
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, UUID.randomUUID()));
+    }
+
+    @Test
+    void addDocument_WhenTypeIsNull_ShouldThrowIllegalArgumentException() {
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes()));
+        ddto.setName("ValidName");
         ddto.setType(null);
         assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, UUID.randomUUID()));
+    }
+
+    @Test
+    void addDocument_WhenCaseIdIsNull_ShouldThrowIllegalArgumentException() {
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes()));
+        ddto.setName("ValidName");
+        ddto.setType(DocumentTypes.JPG);
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, null));
     }
 
     @Test
@@ -182,27 +219,6 @@ public class DocumentServiceTest {
         documentService.deleteDocument(documentId);
 
         verify(documentRepository).deleteById(documentId);
-    }
-
-    @Test
-    void inputValidations_WhenNameIsNull_ShouldReturnFalse() {
-        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes());
-        boolean result = documentService.inputValidations(file, null, DocumentTypes.JPG, UUID.randomUUID());
-        assertFalse(result);
-    }
-
-    @Test
-    void inputValidations_WhenNameIsEmpty_ShouldReturnFalse() {
-        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test".getBytes());
-        boolean result = documentService.inputValidations(file, "   ", DocumentTypes.JPG, UUID.randomUUID());
-        assertFalse(result);
-    }
-
-    @Test
-    void inputValidations_WhenFileIsEmpty_ShouldReturnFalse() {
-        MockMultipartFile emptyFile = new MockMultipartFile("file", "empty.txt", "text/plain", new byte[0]);
-        boolean result = documentService.inputValidations(emptyFile, "Doc", DocumentTypes.JPG, UUID.randomUUID());
-        assertFalse(result);
     }
 
     @Test

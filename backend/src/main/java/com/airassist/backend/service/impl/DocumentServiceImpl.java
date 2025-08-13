@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
@@ -74,7 +75,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public DocumentDTO addDocument(CreateDocumentDTO createDocumentDTO, UUID caseId) throws IOException {
-        if(!inputValidations(createDocumentDTO.getFile(), createDocumentDTO.getName(), createDocumentDTO.getType(), caseId)) {
+        if(!checkAllNotNull(createDocumentDTO.getFile(), createDocumentDTO.getName(), createDocumentDTO.getType(), caseId)) {
             throw new IllegalArgumentException("Invalid input parameters for adding a document.");
         }
 
@@ -112,9 +113,9 @@ public class DocumentServiceImpl implements DocumentService {
      * @param caseId - the ID of the case to which the document belongs
      * @return true if all validations pass, false otherwise
      */
-    public boolean inputValidations(MultipartFile file, String name, DocumentTypes type, UUID caseId) {
+    private boolean checkAllNotNull(MultipartFile file, String name, DocumentTypes type, UUID caseId) {
         return file != null && !file.isEmpty()
-                && name != null && !name.trim().isEmpty()
+                && StringUtils.hasText(name)
                 && type != null
                 && caseId != null;
     }
