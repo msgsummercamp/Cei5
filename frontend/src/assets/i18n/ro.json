@@ -248,6 +248,7 @@
     "connectionFlightsHeader": "Zboruri de conexiune",
     "connectionDepartingAirport": "Aeroportul de plecare:",
     "connection": "Conexiune",
+    "flag": "Marchează zborul cu probleme.",
     "connectionDestinationRequired": "Destinația conexiunii este obligatorie.",
     "connectionDestinationLength": "Codul aeroportului trebuie să aibă exact 3 caractere.",
     "connectionDestinationUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",

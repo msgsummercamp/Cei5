@@ -42,6 +42,7 @@ import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 import { ApiError } from '../../shared/types/api-error';
 import { ContractService } from '../../shared/services/contract.service';
+import { Tooltip } from 'primeng/tooltip';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -75,6 +76,7 @@ type DisruptionForm = {
     TranslatePipe,
     ConfirmationFormComponent,
     CheckboxModule,
+    Tooltip,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',

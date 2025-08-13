@@ -248,6 +248,7 @@
     "connectionFlightsHeader": "Connection Flights",
     "connectionDepartingAirport": "Departing Airport:",
     "connection": "Connection",
+    "flag": "Mark this flight as problematic.",
     "connectionDestinationRequired": "Connection destination is required.",
     "connectionDestinationLength": "Airport code must be exactly 3 characters.",
     "connectionDestinationUpper": "Airport code must be 3 uppercase letters.",
