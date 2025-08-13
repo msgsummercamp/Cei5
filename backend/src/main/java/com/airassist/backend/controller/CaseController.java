@@ -30,13 +30,13 @@ public class CaseController {
     private final CaseMapper caseMapper;
 
     @GetMapping
-    public ResponseEntity<List<CaseResponseDTO>> getCases(Pageable pageable) {
-        Page<Case> casePage = caseService.getCases(pageable);
-        Page<CaseResponseDTO> caseResponseDTOPage = casePage.map(caseResponseMapper::toCaseResponseDTO);
-        if (caseResponseDTOPage.isEmpty()) {
+    public ResponseEntity<List<CaseResponseDTO>> getCases() {
+        List<Case> caseList = caseService.getCases();
+        List<CaseResponseDTO> caseResponseDTOList = caseList.stream().map(caseResponseMapper::toCaseResponseDTO).toList();
+        if (caseResponseDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(caseResponseDTOPage.getContent());
+        return ResponseEntity.ok(caseResponseDTOList);
     }
 
     @GetMapping("/{id}")

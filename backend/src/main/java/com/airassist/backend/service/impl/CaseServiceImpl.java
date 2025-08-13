@@ -46,9 +46,9 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Page<Case> getCases(Pageable pageable) throws CaseNotFoundException {
-        logger.info("Service - fetching all cases with pagination: {}", pageable);
-        return caseRepository.findAll(pageable);
+    public List<Case> getCases() throws CaseNotFoundException {
+        logger.info("Service - fetching all cases.");
+        return caseRepository.findAll();
     }
 
     @Override

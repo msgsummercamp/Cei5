@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface CaseService {
 
-    Page<Case> getCases(Pageable pageable);
+    List<Case> getCases();
 
     Optional<Case> getCaseById(UUID id);
 
