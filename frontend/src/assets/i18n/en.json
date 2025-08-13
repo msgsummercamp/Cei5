@@ -324,6 +324,7 @@
     "illegal-argument-": "The provided data is not valid. Please check your input and try again.",
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
-    "reservation-not-found": "The reservation was not found."
+    "reservation-not-found": "The reservation was not found.",
+    "document-not-found": "The requested document was not found."
   }
 }

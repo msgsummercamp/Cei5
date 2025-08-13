@@ -325,6 +325,7 @@
     "illegal-argument-": "Datele furnizate nu sunt valide. Vă rugăm să verificați datele și să încercați din nou.",
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
+    "reservation-not-found": "Rezervarea nu a fost găsită.",
+    "document-not-found": "Documentul solicitat nu a fost găsit."
   }
 }
