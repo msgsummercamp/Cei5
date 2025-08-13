@@ -126,23 +126,6 @@ export class UserRegistrationComponent {
     someoneElseIsUnderage: this._formBuilder.control<boolean>(false),
   });
 
-  // public readonly userFirstName = toSignal(
-  //   this.userRegistrationForm.get('firstName')!.valueChanges,
-  //   { initialValue: this.userRegistrationForm.get('firstName')!.value }
-  // );
-  // public readonly userLastName = toSignal(this.userRegistrationForm.get('lastName')!.valueChanges, {
-  //   initialValue: this.userRegistrationForm.get('lastName')!.value,
-  // });
-  //
-  // public readonly beneficiaryFirstName = toSignal(
-  //   this.userRegistrationForm.get('someoneElseFirstName')!.valueChanges,
-  //   { initialValue: this.userRegistrationForm.get('beneficiaryFirstName')!.value }
-  // );
-  // public readonly beneficiaryLastName = toSignal(
-  //   this.userRegistrationForm.get('someoneElseLastName')!.valueChanges,
-  //   { initialValue: this.userRegistrationForm.get('beneficiaryLastName')!.value }
-  // );
-
   constructor() {
     this.userRegistrationForm.statusChanges.subscribe(() => {
       this.checkAndEmitValidity();

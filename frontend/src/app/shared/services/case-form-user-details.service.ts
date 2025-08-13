@@ -28,17 +28,4 @@ export class CaseFormUserDetailsService {
       return details?.completedBy;
     }
   });
-
-  // private userInformation = initialUser;
-
-  // public setUserDetails(user: User): void {
-  //   this.userInformation = {
-  //     ...this.userInformation,
-  //     ...user,
-  //     userDetails: {
-  //       ...this.userInformation.userDetails,
-  //       ...user.userDetails,
-  //     },
-  //   };
-  // }
 }
