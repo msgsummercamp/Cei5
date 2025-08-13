@@ -50,7 +50,7 @@ export class CaseService {
     const formattedDate = today.toISOString().split('T')[0];
 
     const caseData: CaseDTO = {
-      status: Statuses.PENDING,
+      status: Statuses.VALID,
       disruptionReason: disruptionReason,
       disruptionInfo: disruptionInfo,
       date: formattedDate,

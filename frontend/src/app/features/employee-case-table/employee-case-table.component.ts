@@ -16,6 +16,8 @@ import { NotificationService } from '../../shared/services/toaster/notification.
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { Tag } from 'primeng/tag';
+import { Subscription } from 'rxjs';
+import { TableHelper } from '../../shared/helper/table-helper';
 
 type CaseDTO = {
   id: string;
@@ -52,14 +54,27 @@ export class EmployeeCaseTableComponent implements OnInit {
   public initialValue: CaseDTO[] = [];
   public loading = true;
   private isSorted: boolean | null = null;
-  public statusOptions = Object.values(Statuses).map((status) => ({
-    label: this.getStatusTranslation(status as Statuses),
-    value: status,
-  }));
+  public statusOptions: { label: string; value: Statuses }[] = [];
+  private langChangeSub?: Subscription;
   public statusFilterValue: Statuses | null = null;
 
   ngOnInit() {
+    this.buildStatusOptions();
+    this.langChangeSub = this._translationService.onLangChange.subscribe(() => {
+      this.buildStatusOptions();
+    });
     this.initializeCases();
+  }
+
+  ngOnDestroy() {
+    this.langChangeSub?.unsubscribe();
+  }
+
+  private buildStatusOptions(): void {
+    this.statusOptions = Object.values(Statuses).map((status) => ({
+      label: this.getStatusTranslation(status as Statuses),
+      value: status,
+    }));
   }
 
   private initializeCases(): void {
@@ -69,7 +84,7 @@ export class EmployeeCaseTableComponent implements OnInit {
         clientName: this.extractClientName(caseItem),
         employeeName: this.extractEmployeeName(caseItem),
         problemFlightNumber: this.extractProblemFlightNumber(caseItem),
-        status: caseItem.status ?? Statuses.PENDING,
+        status: caseItem.status ?? Statuses.VALID,
         disruptionReason: caseItem.disruptionReason,
         disruptionInfo: caseItem.disruptionInfo,
         date: caseItem.date,
@@ -81,7 +96,6 @@ export class EmployeeCaseTableComponent implements OnInit {
       }));
       this.initialValue = [...this.cases];
       this.loading = false;
-      console.log('Cases loaded:', this.cases);
     });
   }
 
@@ -98,7 +112,7 @@ export class EmployeeCaseTableComponent implements OnInit {
   public extractEmployeeName(caseItem: Case): string {
     return caseItem.assignedColleague
       ? `${caseItem.assignedColleague.firstName} ${caseItem.assignedColleague.lastName}`
-      : this._translationService.instant('case-table.unassigned');
+      : '\u2014';
   }
 
   public extractClientName(caseItem: Case): string {
@@ -112,37 +126,15 @@ export class EmployeeCaseTableComponent implements OnInit {
   public customSort(event: SortEvent) {
     if (this.isSorted == null) {
       this.isSorted = true;
-      this.sortTableData(event);
+      TableHelper.sortTableData(event);
     } else if (this.isSorted) {
       this.isSorted = false;
-      this.sortTableData(event);
+      TableHelper.sortTableData(event);
     } else if (!this.isSorted) {
       this.isSorted = null;
       this.cases = [...this.initialValue];
       this.dt().reset();
     }
-  }
-
-  public sortTableData(event: SortEvent) {
-    const field = event.field;
-    const order = event.order;
-    if (!field || !order) {
-      console.error('Sort event does not have a valid field or order');
-      return;
-    }
-    event.data?.sort((data1: CaseDTO, data2: CaseDTO) => {
-      let value1 = data1[field as keyof CaseDTO] || '';
-      let value2 = data2[field as keyof CaseDTO] || '';
-      let result;
-      if (!value1 && !value2) result = 0;
-      else if (!value1 && !!value2) result = -1;
-      else if (!!value1 && !value2) result = 1;
-      else if (typeof value1 === 'string' && typeof value2 === 'string')
-        result = value1.localeCompare(value2);
-      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
-
-      return order * result;
-    });
   }
 
   public deleteCase(caseId: string): void {
@@ -168,8 +160,6 @@ export class EmployeeCaseTableComponent implements OnInit {
 
   public getStatusSeverity(status: Statuses): string {
     switch (status) {
-      case Statuses.PENDING:
-        return 'info';
       case Statuses.ARCHIVED:
         return 'secondary';
       case Statuses.COMPLETED:
@@ -180,6 +170,8 @@ export class EmployeeCaseTableComponent implements OnInit {
         return 'danger';
       case Statuses.INVALID:
         return 'warn';
+      case Statuses.ASSIGNED:
+        return 'info';
     }
   }
 
