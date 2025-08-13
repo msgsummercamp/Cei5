@@ -135,7 +135,9 @@
   "navbar": {
     "login": "Login",
     "logout": "Logout",
-    "profile": "Profile"
+    "profile": "Profile",
+    "employee-dashboard": "View Cases",
+    "check-flight": "Check Flight"
   },
   "request-reset": {
     "title": "Reset Password",
@@ -335,7 +337,10 @@
     "search-by-name": "Search by Client Name",
     "unassigned": "Unassigned",
     "select-status": "Select Status",
-    "no-cases-found": "No cases found."
+    "no-cases-found": "No cases found.",
+    "title": "All Cases",
+    "search-by-employee": "Search by Employee",
+    "search-by-flight-number": "Search by Flight Number"
   },
   "primeng": {
     "startsWith": "Starts with",
@@ -349,10 +354,12 @@
     "matchAny": "Match any",
     "addRule": "Add Rule",
     "clear": "Clear",
-    "apply": "Apply"
+    "apply": "Apply",
+    "yes": "Yes",
+    "no": "No"
   },
   "statuses": {
-    "PENDING": "Pending",
+    "ASSIGNED": "Assigned",
     "COMPLETED": "Completed",
     "ARCHIVED": "Archived",
     "FAILED": "Failed",

@@ -135,7 +135,9 @@
   "navbar": {
     "login": "Loghează-te",
     "logout": "Deconectează-te",
-    "profile": "Profil"
+    "profile": "Profil",
+    "employee-dashboard": "Vizualizare cazuri",
+    "check-flight": "Verifică zbor"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -335,7 +337,10 @@
     "search-by-name": "Căutare după Nume Client",
     "unassigned": "Neatribuit",
     "select-status": "Selectați statusul",
-    "no-cases-found": "Nu s-au găsit cazuri."
+    "no-cases-found": "Nu s-au găsit cazuri.",
+    "title": "Toate cazurile",
+    "search-by-flight-number": "Căutare după Număr Zbor",
+    "search-by-employee": "Căutare după Angajat"
   },
   "primeng": {
     "startsWith": "Începe cu",
@@ -349,10 +354,12 @@
     "matchAny": "Potrivire parțială",
     "addRule": "Adaugă regulă",
     "clear": "Curăță",
-    "apply": "Aplică"
+    "apply": "Aplică",
+    "yes": "Da",
+    "no": "Nu"
   },
   "statuses": {
-    "PENDING": "În așteptare",
+    "ASSIGNED": "Atribuit",
     "COMPLETED": "Finalizat",
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
