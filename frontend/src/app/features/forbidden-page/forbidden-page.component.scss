@@ -1,5 +1,6 @@
 ::ng-deep .forbidden-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 8%;
@@ -19,10 +20,10 @@
 
 .forbidden-content {
   text-align: center;
-  background-color: #ffffff;
+
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
 }

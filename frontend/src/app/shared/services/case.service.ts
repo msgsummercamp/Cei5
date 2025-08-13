@@ -126,6 +126,16 @@ export class CaseService {
     );
   }
 
+  public getCaseById(caseId: string): Observable<Case | null> {
+    return this._http.get<Case>(`${this._apiUrl}/cases/${caseId}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of(null);
+      })
+    );
+  }
+
   private extractDateOnly(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
