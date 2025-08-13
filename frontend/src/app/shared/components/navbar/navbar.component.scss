@@ -1,5 +1,6 @@
 .navbar {
   --p-menubar-background: rgba(15, 27, 88, 0.97);
+  --p-menubar-item-color: #ffffff;
   --p-menubar-item-focus-background: none;
   --p-menubar-item-focus-color: #ffffff;
   --p-menubar-border-color: rgba(15, 27, 88, 0.97);
@@ -27,6 +28,11 @@
   --p-select-placeholder-color: #ffffff;
 }
 
+::ng-deep .p-menubar-mobile .p-menubar-root-list {
+  background: rgba(15, 27, 88, 0.97);
+  border: rgba(15, 27, 88, 0.97);
+}
+
 .p-select-label.p-placeholder {
   --p-select-placeholder-font-size: 1.5rem !important;
 }
@@ -37,6 +43,7 @@ p-select-label {
 
 ::ng-deep .navbar-wrapper .p-select-dropdown {
   display: none !important;
+  background-color: rgba(15, 27, 88, 0.97) !important;
 }
 
 .selected-language-flag {
