@@ -320,5 +320,25 @@
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "reservation-not-found": "Rezervarea nu a fost găsită."
+  },
+  "admin-panel": {
+    "title": "Panou de administrare",
+    "name" : "Nume",
+    "role" : "Rol",
+    "assignedCases" : "Numar de cazuri atribuite",
+    "userDeleted" : "Utilizatorul a fost sters",
+    "addNewEmployee" : "Adaugă un nou angajat"
+  },
+    "employee-dialog": {
+    "header": "Adaugă User",
+    "title": "Detalii User",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "email": "Email",
+    "role": "Rol",
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "fillAllFields": "Vă rugăm să completați toate câmpurile.",
+    "userCreated": "Utilizator creat cu succes."
   }
 }

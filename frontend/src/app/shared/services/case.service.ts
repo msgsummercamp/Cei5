@@ -38,6 +38,10 @@ export class CaseService {
     return this._http.post<boolean>(`${this._apiUrl}/cases/check-eligibility`, caseDTO);
   }
 
+  public getAllCases(): Observable<Case[]> {
+    return this._http.get<Case[]>(`${this._apiUrl}/cases`);
+  }
+
   public createAndSubmitCase(
     clientID: string,
     disruptionReason: string,

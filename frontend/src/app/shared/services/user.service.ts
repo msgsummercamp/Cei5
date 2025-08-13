@@ -63,7 +63,17 @@ export class UserService {
     );
   }
 
-  public getNumberOfAssignedCasesForEachUser(): number
+  /**
+   * Creates a new user by sending a request to the backend
+   * @returns Observable<void> - deletes a User
+   */
+  public deleteUser(userId: string): Observable<void> {
+    return this._httpClient.delete<void>(`${this.API_URL}/users/${userId}`).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
 
   /**
    * Transforms user data to match backend UserDTO expectations
@@ -73,7 +83,7 @@ export class UserService {
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
-      role: Roles.USER,
+      role: userData.role,
       isFirstLogin: true,
       userDetails: userData.userDetails
         ? {

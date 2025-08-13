@@ -63,6 +63,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cases").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/cases").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/cases").permitAll()
                         .requestMatchers("/api/airports/**").permitAll()
                         .requestMatchers("/api/pdf/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cases/check-eligibility").permitAll()
