@@ -110,31 +110,28 @@ public class CaseServiceTest {
         return dto;
     }
 
-//     static CaseResponseDTO createCaseResponseDTO(Statuses status, DisruptionReasons reason) {
-//        UUID id = UUID.randomUUID();
-//        User client = createTestUser();
-//        Reservation reservation = createTestReservation();
-//        Beneficiary beneficiary = createTestBeneficiary();
-//        CaseResponseDTO dto = new CaseResponseDTO();
-//        dto.setId(id);
-//        dto.setStatus(status);
-//        dto.setDisruptionReason(reason);
-//        dto.setDisruptionInfo("Response disruption info");
-//        dto.setDate(LocalDate.now());
-//        dto.setClient(client);
-//        dto.setAssignedColleague(null);
-//        dto.setReservationId(reservation.getId());
-//        dto.setDocumentIds(List.of());
-//        dto.setBeneficiary(new BeneficiaryDTO(
-//                beneficiary.getId(),
-//                beneficiary.getFirstName(),
-//                beneficiary.getLastName(),
-//                beneficiary.getAddress(),
-//                beneficiary.getPostalCode(),
-//                beneficiary.getIsUnderage()
-//        ));
-//        return dto;
-//    }
+     static CaseResponseDTO createCaseResponseDTO(Statuses status, DisruptionReasons reason) {
+        UUID id = UUID.randomUUID();
+        User client = createTestUser();
+        Reservation reservation = createTestReservation();
+        Beneficiary beneficiary = createTestBeneficiary();
+        CaseResponseDTO dto = new CaseResponseDTO();
+        dto.setId(id);
+        dto.setStatus(status);
+        dto.setDisruptionReason(reason);
+        dto.setDisruptionInfo("Response disruption info");
+        dto.setDate(LocalDate.now());
+        dto.setDocumentIds(List.of());
+        dto.setBeneficiary(new BeneficiaryDTO(
+                beneficiary.getId(),
+                beneficiary.getFirstName(),
+                beneficiary.getLastName(),
+                beneficiary.getAddress(),
+                beneficiary.getPostalCode(),
+                beneficiary.getIsUnderage()
+        ));
+        return dto;
+    }
 
      static List<Case> createCaseList() {
         return List.of(

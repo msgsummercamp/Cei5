@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { Language } from '../../types/language';
@@ -15,6 +15,7 @@ import { IfAuthenticatedDirective } from '../../directives/if-authenticated.dire
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../services/user.service';
 import { StepNavigationService } from '../../services/step-navigation.service';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +32,11 @@ import { StepNavigationService } from '../../services/step-navigation.service';
     IfAuthenticatedDirective,
     Button,
     MenuModule,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    RouterLink,
+    AccordionContent,
   ],
 })
 export class NavbarComponent {
@@ -40,6 +46,8 @@ export class NavbarComponent {
   private readonly _router = inject(Router);
   private readonly _stepNavigationService = inject(StepNavigationService);
   public readonly _languageService = inject(LanguageService);
+
+  public isHamburgerMenuOpen = false;
 
   //Contains the translated elements for the main navbar
   public navbarMainItems: MenuItem[] = [];
@@ -105,6 +113,9 @@ export class NavbarComponent {
   }
 
   public redirectToLogin(): void {
+    if (this.isHamburgerMenuOpen) {
+      this.toggleHamburgerMenu();
+    }
     this._stepNavigationService.resetToFirstStep();
     this._router.navigate(['/sign-in']);
   }
@@ -117,5 +128,9 @@ export class NavbarComponent {
   public get userName(): string {
     const userDetails = this._userService.userDetails();
     return userDetails?.firstName || '';
+  }
+
+  public toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
   }
 }

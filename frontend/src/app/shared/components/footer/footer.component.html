@@ -1,19 +1,22 @@
 <div class="footer-background p-0 m-0 h-34rem">
   <div class="grid grid-nogutter justify-content-center align-items-end footer-text h-28rem m-0">
-    <div class="col-3">
-      <img [src]="'airplane_icon.svg'" alt="Airplane" class="h-12rem w-12rem">
+    <div class="col-2">
+      <img [src]="'airplane_icon.svg'" alt="Airplane" class="h-12rem w-12rem" />
     </div>
-    <div class="col-7 mb-0">
-      <h1>AIR ASSIST</h1>
+    <div class="col-4">
+      <h1 class="mb-8">AIR-ASSIST.EU</h1>
+    </div>
+    <div class="col-5 mb-0">
       <div class="grid grid-nogutter gap-8 ml-8">
         <div class="flex flex-column">
           <h2>Contact</h2>
           <p class="line-height-4">
             <i class="pi pi-phone"></i> &nbsp; {{ phone }} <br />
             <i class="pi pi-envelope"></i> &nbsp;
-            <a class="link" [href]="'mailto:' + ('mail')">
+            <a class="link" [href]="'mailto:' + 'mail'">
               {{ mail }}
-            </a> <br />
+            </a>
+            <br />
             <i class="pi pi-whatsapp"></i> &nbsp; {{ phone }}
           </p>
         </div>
@@ -30,7 +33,12 @@
   </div>
   <div class="px-5 py-3 flex flex-row justify-content-between">
     <p class="text-white-alpha-90">{{ 'footer.copyright' | translate }}</p>
-    <p-button (click)="scrollToTop()" icon="pi pi-angle-double-up" [label]="'footer.back-to-top' | translate" variant="text">
+    <p-button
+      (click)="scrollToTop()"
+      icon="pi pi-angle-double-up"
+      [label]="'footer.back-to-top' | translate"
+      variant="text"
+    >
     </p-button>
   </div>
 </div>

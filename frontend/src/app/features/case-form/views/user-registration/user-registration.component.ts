@@ -17,6 +17,8 @@ import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../../../shared/types/case-form-userdata';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CaseFormUserDetailsService } from '../../../../shared/services/case-form-user-details.service';
 
 type UserRegistrationForm = {
   email: FormControl<string>;
@@ -53,6 +55,7 @@ type UserRegistrationForm = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegistrationComponent {
+  private readonly _caseFormUserDetailsService = inject(CaseFormUserDetailsService);
   private readonly _formBuilder = inject(NonNullableFormBuilder);
   private areFieldsDisabled = false;
   private hasInitialized = false;
@@ -67,6 +70,8 @@ export class UserRegistrationComponent {
   public readonly countryISO = CountryISO;
   public readonly phoneNumberFormat = PhoneNumberFormat;
   public acceptedTerms = false;
+  public acceptedGDPR = false;
+  public underage = false;
 
   // Date limits for birth date
   protected readonly maxDate = (() => {
@@ -112,7 +117,7 @@ export class UserRegistrationComponent {
       Validators.maxLength(10),
       Validators.pattern(/^[a-zA-Z0-9- ]+$/),
     ]),
-    birthDate: this._formBuilder.control<Date | null>(null, [Validators.required]),
+    birthDate: this._formBuilder.control<Date | null>(null),
     completingForSomeoneElse: this._formBuilder.control<boolean>(false),
     someoneElseFirstName: this._formBuilder.control<string>(''),
     someoneElseLastName: this._formBuilder.control<string>(''),
@@ -204,9 +209,8 @@ export class UserRegistrationComponent {
     if (!this.userRegistrationForm.valid) return null;
 
     const birthDateValue = this.userRegistrationForm.get('birthDate')?.value;
-    const completingForSomeoneElse = this.userRegistrationForm.get(
-      'completingForSomeoneElse'
-    )?.value;
+    const completingForSomeoneElse =
+      this.userRegistrationForm.get('completingForSomeoneElse')?.value || false;
 
     const completedBy = {
       email: this.userRegistrationForm.get('email')?.value,
@@ -232,12 +236,17 @@ export class UserRegistrationComponent {
       };
     }
 
+    this._caseFormUserDetailsService.setUserDetails(result);
+    this._caseFormUserDetailsService.setUserCompletesForSomeoneElse(
+      completingForSomeoneElse && !!result.completedFor && !result.completedFor.isUnderage
+    );
+
     return result;
   }
 
   public checkAndEmitValidity(): void {
     const isFormValid = this.userRegistrationForm.valid;
-    const isValid = isFormValid && this.acceptedTerms;
+    const isValid = isFormValid && this.acceptedTerms && this.acceptedGDPR;
     const data = isValid ? this.getUserFormDetails() : null;
     if (
       !this.lastEmitted ||
@@ -246,6 +255,13 @@ export class UserRegistrationComponent {
     ) {
       this.validityChange.emit({ valid: isValid, data });
       this.lastEmitted = { valid: isValid, data };
+    }
+  }
+
+  public filterDetails(): void {
+    const hasBeneficiary = this.userRegistrationForm.get('completingForSomeoneElse')?.value;
+    if (hasBeneficiary && this.underage) {
+    } else {
     }
   }
 

@@ -1,277 +1,62 @@
-<div
-  class="user-registration-container h-full flex flex-column justify-content-center align-items-center mt-3 pt-3"
->
+<div class="user-registration-container flex flex-column align-items-center">
   <p-header class="text-3xl">{{ 'user-details.title' | translate }}</p-header>
   <p>{{ 'user-details.subtitle' | translate }}</p>
-  <form novalidate [formGroup]="userRegistrationForm" class="flex flex-column gap-4 mt-3">
-    <!-- Email Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <label for="email">{{ 'user-details.email-label' | translate }}</label>
-        <input pInputText type="email" formControlName="email" id="email" class="w-25rem h-3rem" />
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.email.touched && userRegistrationForm.controls.email.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.email.hasError('required')) {
-              <app-error-message text="{{ 'user-details.email-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.email.hasError('email')) {
-              <app-error-message text="{{ 'user-details.email-invalid' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.email.hasError('maxlength')) {
-              <app-error-message text="{{ 'user-details.email-length' | translate }}" />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- First Name Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <label for="firstname">{{ 'user-details.firstname-label' | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          formControlName="firstName"
-          id="firstname"
-          class="w-25rem h-3rem"
-        />
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.firstName.touched &&
-          userRegistrationForm.controls.firstName.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.firstName.hasError('required')) {
-              <app-error-message text="{{ 'user-details.firstname-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.firstName.hasError('minlength')) {
-              <app-error-message text="{{ 'user-details.firstname-minlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.firstName.hasError('maxlength')) {
-              <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.firstName.hasError('pattern')) {
-              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- Last Name Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <label for="lastname">{{ 'user-details.lastname-label' | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          formControlName="lastName"
-          id="lastname"
-          class="w-25rem h-3rem"
-        />
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.lastName.touched &&
-          userRegistrationForm.controls.lastName.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.lastName.hasError('required')) {
-              <app-error-message text="{{ 'user-details.lastname-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.lastName.hasError('minlength')) {
-              <app-error-message text="{{ 'user-details.lastname-minlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.lastName.hasError('maxlength')) {
-              <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.lastName.hasError('pattern')) {
-              <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- Address Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <label for="address">{{ 'user-details.address-label' | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          formControlName="address"
-          id="address"
-          class="w-25rem h-3rem"
-        />
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.address.touched &&
-          userRegistrationForm.controls.address.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.address.hasError('required')) {
-              <app-error-message text="{{ 'user-details.address-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.address.hasError('maxlength')) {
-              <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.address.hasError('pattern')) {
-              <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- Phone Input -->
-    <div>
-      <p-intl-tel-input
-        formControlName="phoneNumber"
-        [lang]="'en'"
-        [favoriteCountries]="[countryISO.Romania, countryISO.UnitedStates]"
-        [enableAutoCountrySelect]="true"
-        [displayPlaceholder]="true"
-        [selectedCountryISO]="countryISO.Romania"
-        [phoneValidation]="true"
-        [separateDialCode]="true"
-        [numberFormat]="phoneNumberFormat.INTERNATIONAL"
-        [searchCountryField]="[searchCountryField.NAME, searchCountryField.DIALCODE]"
-        [formControl]="userRegistrationForm.controls.phoneNumber"
-        cssClass="custom"
-        id="phoneNumber"
-        class="w-25rem"
-      ></p-intl-tel-input>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.phoneNumber.touched &&
-          userRegistrationForm.controls.phoneNumber.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.phoneNumber.hasError('required')) {
-              <app-error-message text="{{ 'user-details.phoneNumber-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.phoneNumber.hasError('minlength')) {
-              <app-error-message text="{{ 'user-details.phoneNumber-minlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.phoneNumber.hasError('invalidFormat')) {
-              <app-error-message
-                text="{{ 'user-details.phoneNumber-invalidFormat' | translate }}"
-              />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- PostalCode Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <label for="postalCode">{{ 'user-details.postalCode-label' | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          formControlName="postalCode"
-          id="postalCode"
-          class="w-25rem h-3rem"
-        />
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.postalCode.touched &&
-          userRegistrationForm.controls.postalCode.errors
-        ) {
-          @switch (true) {
-            @case (userRegistrationForm.controls.postalCode.hasError('required')) {
-              <app-error-message text="{{ 'user-details.postalCode-required' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.postalCode.hasError('maxlength')) {
-              <app-error-message text="{{ 'user-details.postalCode-maxlength' | translate }}" />
-            }
-            @case (userRegistrationForm.controls.postalCode.hasError('pattern')) {
-              <app-error-message text="{{ 'user-details.postalCode-invalid' | translate }}" />
-            }
-          }
-        }
-      </div>
-    </div>
-
-    <!-- BirthDate Input -->
-    <div>
-      <p-floatlabel variant="on">
-        <p-datepicker
-          inputId="calendar-24h"
-          formControlName="birthDate"
-          id="birthDate"
-          [showTime]="false"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          [defaultDate]="maxDate"
-          [styleClass]="'w-25rem h-3rem'"
-        />
-        <label for="birthDate">{{ 'user-details.birthDate-label' | translate }}</label>
-      </p-floatlabel>
-      <div class="error-placeholder">
-        @if (
-          userRegistrationForm.controls.birthDate.hasError('required') &&
-          userRegistrationForm.controls.birthDate.touched
-        ) {
-          <app-error-message text="{{ 'user-details.birthDate-required' | translate }}" />
-        }
-      </div>
-    </div>
-
-    <!-- Add this checkbox after the birthDate input -->
-    <div class="flex align-items-center mt-2">
-      <p-checkbox
-        formControlName="completingForSomeoneElse"
-        binary="true"
-        inputId="completingForSomeoneElse"
-      ></p-checkbox>
-      <label for="completingForSomeoneElse" class="ml-2">
-        {{ 'user-details.completing-for-someone-else' | translate }}
-      </label>
-    </div>
-
-    <!-- Conditionally show the someoneElse fields -->
-    @if (userRegistrationForm.get('completingForSomeoneElse')?.value) {
-      <!-- Someone Else First Name -->
+  <div class="scroll-container">
+    <form novalidate [formGroup]="userRegistrationForm" class="flex flex-column gap-4 p-4">
+      <!-- Email Input -->
       <div>
         <p-floatlabel variant="on">
-          <label for="someoneElseFirstName">{{
-            'user-details.someone-else-firstname-label' | translate
-          }}</label>
+          <label for="email">{{ 'user-details.email-label' | translate }}</label>
+          <input pInputText type="email" formControlName="email" id="email" class="w-full h-3rem" />
+        </p-floatlabel>
+        <div class="error-placeholder">
+          @if (
+            userRegistrationForm.controls.email.touched &&
+            userRegistrationForm.controls.email.errors
+          ) {
+            @switch (true) {
+              @case (userRegistrationForm.controls.email.hasError('required')) {
+                <app-error-message text="{{ 'user-details.email-required' | translate }}" />
+              }
+              @case (userRegistrationForm.controls.email.hasError('email')) {
+                <app-error-message text="{{ 'user-details.email-invalid' | translate }}" />
+              }
+              @case (userRegistrationForm.controls.email.hasError('maxlength')) {
+                <app-error-message text="{{ 'user-details.email-length' | translate }}" />
+              }
+            }
+          }
+        </div>
+      </div>
+
+      <!-- First Name Input -->
+      <div>
+        <p-floatlabel variant="on">
+          <label for="firstname">{{ 'user-details.firstname-label' | translate }}</label>
           <input
             pInputText
             type="text"
-            formControlName="someoneElseFirstName"
-            id="someoneElseFirstName"
-            class="w-25rem h-3rem"
+            formControlName="firstName"
+            id="firstname"
+            class="w-full h-3rem"
           />
         </p-floatlabel>
         <div class="error-placeholder">
           @if (
-            userRegistrationForm.controls.someoneElseFirstName.touched &&
-            userRegistrationForm.controls.someoneElseFirstName.errors
+            userRegistrationForm.controls.firstName.touched &&
+            userRegistrationForm.controls.firstName.errors
           ) {
             @switch (true) {
-              @case (userRegistrationForm.controls.someoneElseFirstName.hasError('required')) {
+              @case (userRegistrationForm.controls.firstName.hasError('required')) {
                 <app-error-message text="{{ 'user-details.firstname-required' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseFirstName.hasError('minlength')) {
+              @case (userRegistrationForm.controls.firstName.hasError('minlength')) {
                 <app-error-message text="{{ 'user-details.firstname-minlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseFirstName.hasError('maxlength')) {
+              @case (userRegistrationForm.controls.firstName.hasError('maxlength')) {
                 <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseFirstName.hasError('pattern')) {
+              @case (userRegistrationForm.controls.firstName.hasError('pattern')) {
                 <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
               }
             }
@@ -279,36 +64,34 @@
         </div>
       </div>
 
-      <!-- Someone Else Last Name -->
+      <!-- Last Name Input -->
       <div>
         <p-floatlabel variant="on">
-          <label for="someoneElseLastName">{{
-            'user-details.someone-else-lastname-label' | translate
-          }}</label>
+          <label for="lastname">{{ 'user-details.lastname-label' | translate }}</label>
           <input
             pInputText
             type="text"
-            formControlName="someoneElseLastName"
-            id="someoneElseLastName"
-            class="w-25rem h-3rem"
+            formControlName="lastName"
+            id="lastname"
+            class="w-full h-3rem"
           />
         </p-floatlabel>
         <div class="error-placeholder">
           @if (
-            userRegistrationForm.controls.someoneElseLastName.touched &&
-            userRegistrationForm.controls.someoneElseLastName.errors
+            userRegistrationForm.controls.lastName.touched &&
+            userRegistrationForm.controls.lastName.errors
           ) {
             @switch (true) {
-              @case (userRegistrationForm.controls.someoneElseLastName.hasError('required')) {
+              @case (userRegistrationForm.controls.lastName.hasError('required')) {
                 <app-error-message text="{{ 'user-details.lastname-required' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseLastName.hasError('minlength')) {
+              @case (userRegistrationForm.controls.lastName.hasError('minlength')) {
                 <app-error-message text="{{ 'user-details.lastname-minlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseLastName.hasError('maxlength')) {
+              @case (userRegistrationForm.controls.lastName.hasError('maxlength')) {
                 <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseLastName.hasError('pattern')) {
+              @case (userRegistrationForm.controls.lastName.hasError('pattern')) {
                 <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
               }
             }
@@ -316,33 +99,31 @@
         </div>
       </div>
 
-      <!-- Someone Else Address -->
+      <!-- Address Input -->
       <div>
         <p-floatlabel variant="on">
-          <label for="someoneElseAddress">{{
-            'user-details.someone-else-address-label' | translate
-          }}</label>
+          <label for="address">{{ 'user-details.address-label' | translate }}</label>
           <input
             pInputText
             type="text"
-            formControlName="someoneElseAddress"
-            id="someoneElseAddress"
-            class="w-25rem h-3rem"
+            formControlName="address"
+            id="address"
+            class="w-full h-3rem"
           />
         </p-floatlabel>
         <div class="error-placeholder">
           @if (
-            userRegistrationForm.controls.someoneElseAddress.touched &&
-            userRegistrationForm.controls.someoneElseAddress.errors
+            userRegistrationForm.controls.address.touched &&
+            userRegistrationForm.controls.address.errors
           ) {
             @switch (true) {
-              @case (userRegistrationForm.controls.someoneElseAddress.hasError('required')) {
+              @case (userRegistrationForm.controls.address.hasError('required')) {
                 <app-error-message text="{{ 'user-details.address-required' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseAddress.hasError('maxlength')) {
+              @case (userRegistrationForm.controls.address.hasError('maxlength')) {
                 <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElseAddress.hasError('pattern')) {
+              @case (userRegistrationForm.controls.address.hasError('pattern')) {
                 <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
               }
             }
@@ -350,33 +131,71 @@
         </div>
       </div>
 
-      <!-- Someone Else Postal Code -->
+      <!-- Phone Input -->
+      <div>
+        <p-intl-tel-input
+          formControlName="phoneNumber"
+          [lang]="'en'"
+          [favoriteCountries]="[countryISO.Romania, countryISO.UnitedStates]"
+          [enableAutoCountrySelect]="true"
+          [displayPlaceholder]="true"
+          [selectedCountryISO]="countryISO.Romania"
+          [phoneValidation]="true"
+          [separateDialCode]="true"
+          [numberFormat]="phoneNumberFormat.INTERNATIONAL"
+          [searchCountryField]="[searchCountryField.NAME, searchCountryField.DIALCODE]"
+          [formControl]="userRegistrationForm.controls.phoneNumber"
+          cssClass="custom"
+          id="phoneNumber"
+          class="w-full"
+        ></p-intl-tel-input>
+        <div class="error-placeholder">
+          @if (
+            userRegistrationForm.controls.phoneNumber.touched &&
+            userRegistrationForm.controls.phoneNumber.errors
+          ) {
+            @switch (true) {
+              @case (userRegistrationForm.controls.phoneNumber.hasError('required')) {
+                <app-error-message text="{{ 'user-details.phoneNumber-required' | translate }}" />
+              }
+              @case (userRegistrationForm.controls.phoneNumber.hasError('minlength')) {
+                <app-error-message text="{{ 'user-details.phoneNumber-minlength' | translate }}" />
+              }
+              @case (userRegistrationForm.controls.phoneNumber.hasError('invalidFormat')) {
+                <app-error-message
+                  text="{{ 'user-details.phoneNumber-invalidFormat' | translate }}"
+                />
+              }
+            }
+          }
+        </div>
+      </div>
+
+      <!-- PostalCode Input -->
       <div>
         <p-floatlabel variant="on">
-          <label for="someoneElsePostalCode">{{
-            'user-details.someone-else-postalCode-label' | translate
-          }}</label>
+          <label for="postalCode">{{ 'user-details.postalCode-label' | translate }}</label>
           <input
             pInputText
             type="text"
-            formControlName="someoneElsePostalCode"
-            id="someoneElsePostalCode"
-            class="w-25rem h-3rem"
+            formControlName="postalCode"
+            id="postalCode"
+            class="w-full h-3rem"
           />
         </p-floatlabel>
         <div class="error-placeholder">
           @if (
-            userRegistrationForm.controls.someoneElsePostalCode.touched &&
-            userRegistrationForm.controls.someoneElsePostalCode.errors
+            userRegistrationForm.controls.postalCode.touched &&
+            userRegistrationForm.controls.postalCode.errors
           ) {
             @switch (true) {
-              @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('required')) {
+              @case (userRegistrationForm.controls.postalCode.hasError('required')) {
                 <app-error-message text="{{ 'user-details.postalCode-required' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('maxlength')) {
+              @case (userRegistrationForm.controls.postalCode.hasError('maxlength')) {
                 <app-error-message text="{{ 'user-details.postalCode-maxlength' | translate }}" />
               }
-              @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('pattern')) {
+              @case (userRegistrationForm.controls.postalCode.hasError('pattern')) {
                 <app-error-message text="{{ 'user-details.postalCode-invalid' | translate }}" />
               }
             }
@@ -384,48 +203,250 @@
         </div>
       </div>
 
-      <!-- Someone Else Is Underage -->
+      <!-- BirthDate Input -->
       <div>
-        <p-checkbox
-          formControlName="someoneElseIsUnderage"
-          binary="true"
-          inputId="someoneElseIsUnderage"
-        ></p-checkbox>
-        <label for="someoneElseIsUnderage" class="ml-2">
-          {{ 'user-details.someone-else-underage-label' | translate }}
-        </label>
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="calendar-24h"
+            formControlName="birthDate"
+            id="birthDate"
+            [showTime]="false"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+            [defaultDate]="maxDate"
+            [styleClass]="'w-full h-3rem'"
+          />
+          <label for="birthDate">{{ 'user-details.birthDate-label' | translate }}</label>
+        </p-floatlabel>
         <div class="error-placeholder">
           @if (
-            userRegistrationForm.controls.someoneElseIsUnderage &&
-            userRegistrationForm.controls.someoneElseIsUnderage.touched &&
-            userRegistrationForm.controls.someoneElseIsUnderage.errors
+            userRegistrationForm.controls.birthDate.hasError('required') &&
+            userRegistrationForm.controls.birthDate.touched
           ) {
-            @switch (true) {
-              @case (userRegistrationForm.controls.someoneElseIsUnderage.hasError('required')) {
-                <app-error-message text="{{ 'user-details.underage-required' | translate }}" />
-              }
-            }
+            <app-error-message text="{{ 'user-details.birthDate-required' | translate }}" />
           }
         </div>
       </div>
-    }
-  </form>
+
+      <!-- Add this checkbox after the birthDate input -->
+      <div class="flex align-items-center mt-2">
+        <p-checkbox
+          formControlName="completingForSomeoneElse"
+          binary="true"
+          inputId="completingForSomeoneElse"
+        ></p-checkbox>
+        <label for="completingForSomeoneElse" class="ml-2">
+          {{ 'user-details.completing-for-someone-else' | translate }}
+        </label>
+      </div>
+
+      <!-- Conditionally show the someoneElse fields -->
+      @if (userRegistrationForm.get('completingForSomeoneElse')?.value) {
+        <!-- Someone Else First Name -->
+        <div>
+          <p-floatlabel variant="on">
+            <label for="someoneElseFirstName">{{
+              'user-details.someone-else-firstname-label' | translate
+            }}</label>
+            <input
+              pInputText
+              type="text"
+              formControlName="someoneElseFirstName"
+              id="someoneElseFirstName"
+              class="w-full h-3rem"
+            />
+          </p-floatlabel>
+          <div class="error-placeholder">
+            @if (
+              userRegistrationForm.controls.someoneElseFirstName.touched &&
+              userRegistrationForm.controls.someoneElseFirstName.errors
+            ) {
+              @switch (true) {
+                @case (userRegistrationForm.controls.someoneElseFirstName.hasError('required')) {
+                  <app-error-message text="{{ 'user-details.firstname-required' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseFirstName.hasError('minlength')) {
+                  <app-error-message text="{{ 'user-details.firstname-minlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseFirstName.hasError('maxlength')) {
+                  <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseFirstName.hasError('pattern')) {
+                  <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+                }
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Someone Else Last Name -->
+        <div>
+          <p-floatlabel variant="on">
+            <label for="someoneElseLastName">{{
+              'user-details.someone-else-lastname-label' | translate
+            }}</label>
+            <input
+              pInputText
+              type="text"
+              formControlName="someoneElseLastName"
+              id="someoneElseLastName"
+              class="w-full h-3rem"
+            />
+          </p-floatlabel>
+          <div class="error-placeholder">
+            @if (
+              userRegistrationForm.controls.someoneElseLastName.touched &&
+              userRegistrationForm.controls.someoneElseLastName.errors
+            ) {
+              @switch (true) {
+                @case (userRegistrationForm.controls.someoneElseLastName.hasError('required')) {
+                  <app-error-message text="{{ 'user-details.lastname-required' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseLastName.hasError('minlength')) {
+                  <app-error-message text="{{ 'user-details.lastname-minlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseLastName.hasError('maxlength')) {
+                  <app-error-message text="{{ 'user-details.lastname-maxlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseLastName.hasError('pattern')) {
+                  <app-error-message text="{{ 'user-details.lastname-invalid' | translate }}" />
+                }
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Someone Else Address -->
+        <div>
+          <p-floatlabel variant="on">
+            <label for="someoneElseAddress">{{
+              'user-details.someone-else-address-label' | translate
+            }}</label>
+            <input
+              pInputText
+              type="text"
+              formControlName="someoneElseAddress"
+              id="someoneElseAddress"
+              class="w-full h-3rem"
+            />
+          </p-floatlabel>
+          <div class="error-placeholder">
+            @if (
+              userRegistrationForm.controls.someoneElseAddress.touched &&
+              userRegistrationForm.controls.someoneElseAddress.errors
+            ) {
+              @switch (true) {
+                @case (userRegistrationForm.controls.someoneElseAddress.hasError('required')) {
+                  <app-error-message text="{{ 'user-details.address-required' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseAddress.hasError('maxlength')) {
+                  <app-error-message text="{{ 'user-details.address-maxlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElseAddress.hasError('pattern')) {
+                  <app-error-message text="{{ 'user-details.address-invalid' | translate }}" />
+                }
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Someone Else Postal Code -->
+        <div>
+          <p-floatlabel variant="on">
+            <label for="someoneElsePostalCode">{{
+              'user-details.someone-else-postalCode-label' | translate
+            }}</label>
+            <input
+              pInputText
+              type="text"
+              formControlName="someoneElsePostalCode"
+              id="someoneElsePostalCode"
+              class="w-full h-3rem"
+            />
+          </p-floatlabel>
+          <div class="error-placeholder">
+            @if (
+              userRegistrationForm.controls.someoneElsePostalCode.touched &&
+              userRegistrationForm.controls.someoneElsePostalCode.errors
+            ) {
+              @switch (true) {
+                @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('required')) {
+                  <app-error-message text="{{ 'user-details.postalCode-required' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('maxlength')) {
+                  <app-error-message text="{{ 'user-details.postalCode-maxlength' | translate }}" />
+                }
+                @case (userRegistrationForm.controls.someoneElsePostalCode.hasError('pattern')) {
+                  <app-error-message text="{{ 'user-details.postalCode-invalid' | translate }}" />
+                }
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Someone Else Is Underage -->
+        <div>
+          <p-checkbox
+            formControlName="someoneElseIsUnderage"
+            binary="true"
+            [(ngModel)]="underage"
+            inputId="someoneElseIsUnderage"
+            (onChange)="filterDetails()"
+          ></p-checkbox>
+          <label for="someoneElseIsUnderage" class="ml-2">
+            {{ 'user-details.someone-else-underage-label' | translate }}
+          </label>
+          <div class="error-placeholder">
+            @if (
+              userRegistrationForm.controls.someoneElseIsUnderage &&
+              userRegistrationForm.controls.someoneElseIsUnderage.touched &&
+              userRegistrationForm.controls.someoneElseIsUnderage.errors
+            ) {
+              @switch (true) {
+                @case (userRegistrationForm.controls.someoneElseIsUnderage.hasError('required')) {
+                  <app-error-message text="{{ 'user-details.underage-required' | translate }}" />
+                }
+              }
+            }
+          </div>
+        </div>
+      }
+    </form>
+  </div>
   <p class="pt-3">{{ 'user-details.password-email' | translate }}</p>
-  <div class="flex">
-    <p-checkbox
-      binary="true"
-      [(ngModel)]="acceptedTerms"
-      (onChange)="checkAndEmitValidity()"
-    ></p-checkbox>
-    <span class="accept-terms-label">
-      {{ 'user-details.accept-terms' | translate }}
-      <a href="assets/docs/terms.pdf" download="terms.pdf" class="doc-link">{{
-        'user-details.terms' | translate
-      }}</a>
-      {{ 'user-details.and' | translate }}
-      <a href="assets/docs/privacy.pdf" download="privacy.pdf" class="doc-link">{{
-        'user-details.privacy-policy' | translate
-      }}</a>
-    </span>
+  <div class="flex flex-column gap-2">
+    <div>
+      <p-checkbox
+        binary="true"
+        [(ngModel)]="acceptedTerms"
+        (onChange)="checkAndEmitValidity()"
+      ></p-checkbox>
+      <span class="accept-terms-label">
+        {{ 'user-details.accept-terms' | translate }}
+        <a href="assets/docs/terms.pdf" target="T&C" class="doc-link">{{
+          'user-details.terms' | translate
+        }}</a
+        >*
+      </span>
+    </div>
+    <div>
+      <p-checkbox
+        binary="true"
+        [(ngModel)]="acceptedGDPR"
+        (onChange)="checkAndEmitValidity()"
+      ></p-checkbox>
+      <span class="accept-terms-label">
+        {{ 'user-details.accept-terms' | translate }}
+        <a href="assets/docs/privacy.pdf" target="GDPR" class="doc-link">{{
+          'user-details.privacy-policy' | translate
+        }}</a
+        >*
+      </span>
+    </div>
+    <div>
+      <p>
+        {{ 'mandatory' | translate }}
+      </p>
+    </div>
   </div>
 </div>

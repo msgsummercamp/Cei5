@@ -31,10 +31,11 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() throws UserNotFoundException {
         List<User> users = userService.getAllUsers();
-        List<UserResponseDTO> userDTOs = users.stream()
+        List<UserResponseDTO> userResponseDTOs = users.stream()
                 .map(userMapper::userToUserResponseDTO)
                 .toList();
-        return ResponseEntity.ok(userDTOs);
+        return ResponseEntity.ok(userResponseDTOs);
+
     }
 
     @GetMapping("/{id}")
@@ -45,9 +46,12 @@ public class UserController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<User>> getAllEmployees() throws UserNotFoundException {
+    public ResponseEntity<List<UserResponseDTO>> getAllEmployees() throws UserNotFoundException {
         List<User> employees = userService.getAllEmployees();
-        return ResponseEntity.ok(employees);
+        List<UserResponseDTO> employeeResponseDTOs = employees.stream()
+                .map(userMapper::userToUserResponseDTO)
+                .toList();
+        return ResponseEntity.ok(employeeResponseDTOs);
     }
 
     @PostMapping

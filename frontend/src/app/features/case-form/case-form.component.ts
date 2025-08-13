@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, ViewChild } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -38,7 +31,6 @@ import {
 } from './views/disruption-form/disruption-form.component';
 import { EligibilityPageComponent } from './views/eligibility-page/eligibility-page.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CompensationService } from '../../shared/services/compensation.service';
 import { UserRegistrationComponent } from './views/user-registration/user-registration.component';
 import { UserService } from '../../shared/services/user.service';
 import { departingAirportIsDestinationAirport } from '../../shared/validators/departingAirportIsDestinationAirport';
@@ -49,6 +41,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 import { ApiError } from '../../shared/types/api-error';
+import { ContractService } from '../../shared/services/contract.service';
+import { Tooltip } from 'primeng/tooltip';
 
 type DisruptionForm = {
   disruptionType: string;
@@ -82,12 +76,13 @@ type DisruptionForm = {
     TranslatePipe,
     ConfirmationFormComponent,
     CheckboxModule,
+    Tooltip,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
   providers: [AirportsService],
 })
-export class CaseFormComponent implements OnInit {
+export class CaseFormComponent {
   // CONSTANTS
   public readonly MAXIMUM_CONNECTIONS = 4;
 
@@ -99,10 +94,10 @@ export class CaseFormComponent implements OnInit {
   private readonly _flightService = inject(FlightManagementService);
   private readonly _airportsService = inject(AirportsService);
   private readonly _userService = inject(UserService);
-  private readonly _compensationService = inject(CompensationService);
   private readonly _eligibilityService = inject(EligibilityDataService);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
+  private readonly _contractService = inject(ContractService);
 
   private _lastUserRegistrationData?: CaseFormUserData;
   private _lastUser?: any;
@@ -152,41 +147,17 @@ export class CaseFormComponent implements OnInit {
   public airports = toSignal(this._airportsService.airports$, {
     initialValue: [] as AirportResponse[],
   });
+  public reservation = toSignal(this._contractService.contract$, {
+    initialValue: undefined,
+  });
   public compensation?: number | null;
   public readonly isUserReadOnly = this._userService.isUserReadOnly;
-
-  public readonly departingAirportValue = toSignal(
-    this.reservationForm.controls.departingAirport.valueChanges
-  );
-  public readonly destinationAirportValue = toSignal(
-    this.reservationForm.controls.destinationAirport.valueChanges
-  );
   public checked: boolean = false;
 
-  constructor() {
-    effect(() => {
-      this.compensation = undefined;
-      const dep = this.departingAirportValue();
-      const dest = this.destinationAirportValue();
-      if (!!dep && !!dest) {
-        this._compensationService.calculateDistance(dep, dest);
-      }
-    });
-  }
-
-  public ngOnInit() {
-    this._compensationService.compensation$.subscribe((data) => {
-      this.compensation = data;
-    });
-  }
-
-  public calculateCompensation() {
-    const departingAirport = this.reservationForm.controls.departingAirport.value;
-    const destinationAirport = this.reservationForm.controls.destinationAirport.value;
-    if (!!departingAirport && !!destinationAirport) {
-      this._compensationService.calculateDistance(departingAirport, destinationAirport);
-    }
-  }
+  public readonly reservationNumber = toSignal(
+    this.reservationForm.get('reservationNumber')!.valueChanges,
+    { initialValue: this.reservationForm.get('reservationNumber')!.value }
+  );
 
   @ViewChild('disruptionForm') disruptionForm!: DisruptionFormComponent;
 
@@ -560,12 +531,10 @@ export class CaseFormComponent implements OnInit {
     if (!this._flightService.getAllFlights() || this._flightService.getAllFlights().length === 0) {
       return;
     }
-
     this._notificationService.showInfo(
       this._translateService.instant('case-form.submission-in-progress')
     );
     let clientID = this.getClientId();
-
     if (!clientID) {
       if (this.userDetailsFormData) {
         this._userService.createUser(this.userDetailsFormData.completedBy).subscribe({
@@ -575,27 +544,8 @@ export class CaseFormComponent implements OnInit {
                 const userId = createdUser?.id;
                 this.userDetailsFormData.completedBy.id = userId;
                 clientID = userId;
-
-                const flagStatus = this._flightService.getFlagStatus();
-                this._flightService.getAllFlights().forEach((flight, index) => {
-                  if (index < flagStatus.length) {
-                    flight.isFlagged = flagStatus[index];
-                  }
-                });
-
-                if (clientID === null) {
-                  this._notificationService.showError(
-                    this._translateService.instant('auth-service.fetch-user-details-error')
-                  );
-                  return;
-                }
-                this._caseService.createAndSubmitCase(
-                  clientID,
-                  this.getDisruptionReason(),
-                  this.getDisruptionInfo(),
-                  this._caseService.createReservationDTO(),
-                  this.userDetailsFormData?.completedFor
-                );
+                this.handleCaseSubmission(clientID);
+                this._contractService.generateContract('contract');
               }
             } else {
               this._notificationService.showInfo(
@@ -609,7 +559,26 @@ export class CaseFormComponent implements OnInit {
           },
         });
       }
+    } else {
+      this.handleCaseSubmission(clientID);
+      this._contractService.generateContract('contract');
     }
+  }
+
+  private handleCaseSubmission(clientID: string) {
+    const flagStatus = this._flightService.getFlagStatus();
+    this._flightService.getAllFlights().forEach((flight, index) => {
+      if (index < flagStatus.length) {
+        flight.isFlagged = flagStatus[index];
+      }
+    });
+    this._caseService.createAndSubmitCase(
+      clientID,
+      this.getDisruptionReason(),
+      this.getDisruptionInfo(),
+      this._caseService.createReservationDTO(),
+      this.userDetailsFormData?.completedFor
+    );
   }
 
   private getClientId(): string | null {

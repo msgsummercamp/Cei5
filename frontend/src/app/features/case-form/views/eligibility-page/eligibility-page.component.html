@@ -28,18 +28,25 @@
 
   <!-- Results -->
   @if (shouldShowResults()) {
-    <div class="results-container">
-      <p-card>
+    <div class="results-container flex justify-content-center">
+      <p-card class="w-full lg:w-6">
         <div class="text-center">
           @if (shouldShowEligible()) {
             <div class="eligible-message">
-              <i class="pi pi-check-circle text-6xl text-green-500 mb-3"></i>
-              <h2 class="text-green-700">{{ 'eligibilityForm.congratulations' | translate }}</h2>
-              <p-message
-                severity="success"
-                text="{{ 'eligibilityForm.eligible' | translate }}"
-                [closable]="false"
-              >
+              <i class="pi pi-check-circle text-6xl text-green-500"></i>
+              <h2 class="text-green-500 text-4xl"
+                >{{ 'eligibilityForm.eligible.congratulations' | translate }}
+              </h2>
+              <p-message severity="success" [closable]="false" class="text-xl">
+                <div>
+                  <span
+                    [innerHTML]="'eligibilityForm.eligible.compensation-start' | translate"
+                  ></span>
+                  <span>{{ compensation }}</span>
+                  <span
+                    [innerHTML]="'eligibilityForm.eligible.compensation-end' | translate"
+                  ></span>
+                </div>
               </p-message>
             </div>
           }
@@ -48,12 +55,10 @@
             @if (checkWhichEligibilityMotive()) {
               <div class="not-eligible-message">
                 <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
-                <h2 class="text-red-700">{{
-                  'eligibilityForm.notEligibleDueToOtherReasons' | translate
-                }}</h2>
+                <h2 class="text-red-500">{{ 'eligibilityForm.notEligible.sorry' | translate }}</h2>
                 <p-message
                   severity="warn"
-                  text="{{ 'eligibilityForm.notEligibleDueToOtherReasonsSummary' | translate }}"
+                  text="{{ 'eligibilityForm.notEligible.notEligibleMessage' | translate }}"
                   [closable]="false"
                 >
                 </p-message>
@@ -61,13 +66,13 @@
             } @else {
               <div class="not-eligible-message">
                 <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
-                <h2 class="text-red-700">{{
-                  'eligibilityForm.notEligibleDueToDelaysAndCancellations' | translate
+                <h2 class="text-red-500">{{
+                  'eligibilityForm.conditionsNotFulfilled.sorry' | translate
                 }}</h2>
                 <p-message
                   severity="warn"
                   text="{{
-                    'eligibilityForm.notEligibleDueToDelaysAndCancellationsSummary' | translate
+                    'eligibilityForm.conditionsNotFulfilled.notEligibleMessage' | translate
                   }}"
                   [closable]="false"
                 >

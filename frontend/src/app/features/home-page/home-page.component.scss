@@ -11,9 +11,10 @@
     .p-fieldset-legend {
       color: #0c2c70;
       background-color: transparent;
-      font-size: 1.3rem;
+      font-size: 1.6rem;
       text-align: center;
       display: block;
+      white-space: pre-line;
     }
 
     .p-fieldset {
@@ -21,6 +22,17 @@
       border-color: powderblue;
       transition: all 0.3s ease;
       height: 100%;
+    }
+
+    .p-button {
+      background-color: #a6eb55;
+      border-color: #a6eb55;
+      --p-button-label-font-weight: bold;
+    }
+
+    .p-button:hover {
+      background-color: #a6eb22;
+      border-color: #a6eb55;
     }
 
     .p-fieldset:hover {
