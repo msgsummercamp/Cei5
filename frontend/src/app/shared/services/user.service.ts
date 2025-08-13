@@ -52,6 +52,30 @@ export class UserService {
   }
 
   /**
+   * Creates a new user by sending a request to the backend
+   * @returns Observable<User> - All Users
+   */
+  public getAllUsers(): Observable<User[]> {
+    return this._httpClient.get<User[]>(`${this.API_URL}/users`).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
+  /**
+   * Creates a new user by sending a request to the backend
+   * @returns Observable<void> - deletes a User
+   */
+  public deleteUser(userId: string): Observable<void> {
+    return this._httpClient.delete<void>(`${this.API_URL}/users/${userId}`).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
+  /**
    * Transforms user data to match backend UserDTO expectations
    */
   private transformUserDataForBackend(userData: User): any {
@@ -59,7 +83,7 @@ export class UserService {
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
-      role: Roles.USER,
+      role: userData.role,
       isFirstLogin: true,
       userDetails: userData.userDetails
         ? {

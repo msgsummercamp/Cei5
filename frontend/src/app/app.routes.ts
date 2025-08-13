@@ -48,4 +48,9 @@ export const routes: Routes = [
     path: 'forbidden',
     component: ForbiddenPageComponent,
   },
+  {
+    path: 'admin-table',
+    loadComponent: () =>
+      import('./features/admin-table/admin-table.component').then((m) => m.AdminTableComponent),
+  },
 ];

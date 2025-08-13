@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,11 +40,13 @@ public class Case {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User assignedColleague;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
