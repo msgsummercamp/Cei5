@@ -133,9 +133,11 @@
     "warning": "Avertisment"
   },
   "navbar": {
+    "greeting": "Bun venit",
     "login": "Loghează-te",
     "logout": "Deconectează-te",
-    "profile": "Profil"
+    "profile": "Profil",
+    "language": "Limba"
   },
   "request-reset": {
     "title": "Resetare parolă",
