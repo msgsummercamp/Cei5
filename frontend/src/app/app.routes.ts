@@ -10,11 +10,6 @@ export const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'verify-case',
-    redirectTo: '/form',
-    pathMatch: 'full',
-  },
-  {
     path: 'form',
     component: CaseFormComponent,
   },

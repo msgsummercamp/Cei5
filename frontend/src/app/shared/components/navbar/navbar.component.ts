@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
@@ -15,6 +15,7 @@ import { IfAuthenticatedDirective } from '../../directives/if-authenticated.dire
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../services/user.service';
 import { StepNavigationService } from '../../services/step-navigation.service';
+import { NavbarHelper } from '../../helper/visibile-for-role';
 
 @Component({
   selector: 'app-navbar',
@@ -47,24 +48,50 @@ export class NavbarComponent {
   //Contains the translated elements for the user menu that appears after login
   public userMenuItems: MenuItem[] = [];
 
-  /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.
-  private _menuConfig = [];
-*/
+  /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.*/
+  private _menuConfig = [
+    {
+      label: 'navbar.check-flight',
+      routerLink: '/form',
+      icon: 'pi pi-file-check',
+    },
+    {
+      label: 'navbar.employee-dashboard',
+      routerLink: '/employee-dashboard',
+      visible: NavbarHelper.isVisibleForAuthUser(['EMPLOYEE', 'ADMIN'], this._authService),
+      icon: 'pi pi-address-book',
+    },
+  ];
+
   private _userMenuConfig = [
     { label: 'navbar.profile', routerLink: '/profile' },
     { label: 'navbar.logout', command: () => this.logout() },
   ];
 
-  ngOnInit() {
-    this.translateMenuItems(
-      this._userMenuConfig,
-      (translatedItems) => (this.userMenuItems = translatedItems)
-    );
+  constructor() {
+    effect(() => {
+      this.translateMenuItems(
+        this._userMenuConfig,
+        (translatedItems) => (this.userMenuItems = translatedItems)
+      );
+      this._menuConfig = this._menuConfig.map((item) => ({
+        ...item,
+        visible: NavbarHelper.isVisibleForAuthUser(['EMPLOYEE', 'ADMIN'], this._authService),
+      }));
+      this.translateMenuItems(
+        this._menuConfig,
+        (translatedItems) => (this.navbarMainItems = translatedItems)
+      );
+    });
 
     this._translateService.onLangChange.subscribe(() => {
       this.translateMenuItems(
         this._userMenuConfig,
         (translatedItems) => (this.userMenuItems = translatedItems)
+      );
+      this.translateMenuItems(
+        this._menuConfig,
+        (translatedItems) => (this.navbarMainItems = translatedItems)
       );
     });
   }
