@@ -1,5 +1,6 @@
 package com.airassist.backend.controller;
 
+import com.airassist.backend.dto.document.CreateDocumentDTO;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.document.DocumentNotFoundException;
@@ -76,9 +77,13 @@ public class DocumentControllerTest {
     void addDocument_WhenServiceThrowsIOException_ShouldPropagate() throws IOException {
         MultipartFile file = mock(MultipartFile.class);
         UUID caseId = UUID.randomUUID();
-        when(documentService.addDocument(file, "Doc", DocumentTypes.JPG, caseId)).thenThrow(new IOException());
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("Doc");
+        ddto.setType(DocumentTypes.JPG);
+        when(documentService.addDocument(ddto, caseId)).thenThrow(new IOException());
         assertThrows(IOException.class, () ->
-                documentController.addDocument(file, "Doc", DocumentTypes.JPG, caseId));
+                documentController.addDocument(ddto, caseId));
     }
 
     @Test
@@ -87,8 +92,12 @@ public class DocumentControllerTest {
         String name = "";
         DocumentTypes type = null;
         UUID caseId = UUID.randomUUID();
-        when(documentService.addDocument(file, name, type, caseId)).thenThrow(new IllegalArgumentException());
-        assertThrows(IllegalArgumentException.class, () -> documentController.addDocument(file, name, type, caseId));
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("Doc");
+        ddto.setType(DocumentTypes.JPG);
+        when(documentService.addDocument(ddto, caseId)).thenThrow(new IllegalArgumentException());
+        assertThrows(IllegalArgumentException.class, () -> documentController.addDocument(ddto, caseId));
     }
 
     @Test
@@ -98,12 +107,16 @@ public class DocumentControllerTest {
         DocumentTypes type = DocumentTypes.JPG;
         UUID caseId = UUID.randomUUID();
         DocumentDTO dto = new DocumentDTO();
-        when(documentService.addDocument(file, name, type, caseId)).thenReturn(dto);
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("Doc");
+        ddto.setType(DocumentTypes.JPG);
+        when(documentService.addDocument(ddto, caseId)).thenReturn(dto);
 
-        var response = documentController.addDocument(file, name, type, caseId);
+        var response = documentController.addDocument(ddto, caseId);
 
         assertEquals(dto, response.getBody());
-        verify(documentService).addDocument(file, name, type, caseId);
+        verify(documentService).addDocument(ddto, caseId);
     }
 
     @Test

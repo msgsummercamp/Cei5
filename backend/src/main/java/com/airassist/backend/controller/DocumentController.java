@@ -1,12 +1,11 @@
 package com.airassist.backend.controller;
 
+import com.airassist.backend.dto.document.CreateDocumentDTO;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
-import com.airassist.backend.model.enums.DocumentTypes;
 import com.airassist.backend.service.DocumentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -41,22 +40,18 @@ public class DocumentController {
     }
 
     /**
-     * Uploads a document for a specific case
-     * @param file - the file we want to upload - should be sent as multipart/form-data
-     * @param name - the name of the document - should be a non empty-string
-     * @param type - the type of the document - should be from the ENUM DocumentTypes
-     * @param caseId - the id of the case we want to add the document to
-     * @return the saved document obj
-     * @throws IOException if there is an error reading the file
+     * Adds a new document to a case
+     * @param createDocumentDTO - the DTO containing the document details
+     * @param caseId - the ID of the case to which the document will be added
+     * @return ResponseEntity containing the created DocumentDTO
+     * @throws IOException if there is an error processing the file upload
      */
     @PostMapping("/case/{caseId}/upload")
     public ResponseEntity<DocumentDTO> addDocument(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("name") String name,
-            @RequestParam("type") DocumentTypes type,
+            @ModelAttribute CreateDocumentDTO createDocumentDTO,
             @PathVariable UUID caseId
     ) throws IOException {
-        return ResponseEntity.ok(documentService.addDocument(file, name, type, caseId));
+        return ResponseEntity.ok(documentService.addDocument(createDocumentDTO, caseId));
     }
 
     /**

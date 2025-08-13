@@ -1,5 +1,6 @@
 package com.airassist.backend.service;
 
+import com.airassist.backend.dto.document.CreateDocumentDTO;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
@@ -113,16 +114,24 @@ public class DocumentServiceTest {
 
     @Test
     void addDocument_WhenInvalidInputs_ShouldThrowIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(null, "", null, UUID.randomUUID()));
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(null);
+        ddto.setName("");
+        ddto.setType(null);
+        assertThrows(IllegalArgumentException.class, () -> documentService.addDocument(ddto, UUID.randomUUID()));
     }
 
     @Test
     void addDocument_WhenValidInputsButCaseDoesNotExist_ShouldThrowCaseNotFoundException() {
         UUID caseId = UUID.randomUUID();
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Test content".getBytes());
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("TestDoc");
+        ddto.setType(DocumentTypes.JPG);
 
         when(caseRepository.findById(caseId)).thenReturn(Optional.empty());
-        assertThrows(CaseNotFoundException.class, () -> documentService.addDocument(file, "TestDoc", DocumentTypes.JPG, caseId));
+        assertThrows(CaseNotFoundException.class, () -> documentService.addDocument(ddto, caseId));
     }
 
     @Test
@@ -139,13 +148,18 @@ public class DocumentServiceTest {
         document.setContent("i".getBytes());
         document.setCaseEntity(caseEntity);
 
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("Doc");
+        ddto.setType(DocumentTypes.JPG);
+
         DocumentDTO expectedDocumentDTO = new DocumentDTO(document.getId(), document.getName(), document.getType(), new String(document.getContent()));
 
         when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
         when(documentMapper.documentToDocumentDTO(document)).thenReturn(expectedDocumentDTO);
         when(documentRepository.save(any(Document.class))).thenReturn(document);
 
-        DocumentDTO actualDocumentDTO = documentService.addDocument(file, "Doc", DocumentTypes.JPG, caseId);
+        DocumentDTO actualDocumentDTO = documentService.addDocument(ddto, caseId);
 
         assertEquals(expectedDocumentDTO, actualDocumentDTO);
     }
@@ -198,8 +212,13 @@ public class DocumentServiceTest {
         );
         UUID caseId = UUID.randomUUID();
 
+        CreateDocumentDTO ddto = new CreateDocumentDTO();
+        ddto.setFile(file);
+        ddto.setName("ValidName");
+        ddto.setType(null);
+
         assertThrows(IllegalArgumentException.class, () ->
-                documentService.addDocument(file, "ValidName", null, caseId)
+                documentService.addDocument(ddto, caseId)
         );
     }
 }

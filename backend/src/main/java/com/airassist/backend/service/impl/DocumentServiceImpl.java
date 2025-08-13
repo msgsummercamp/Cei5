@@ -1,5 +1,6 @@
 package com.airassist.backend.service.impl;
 
+import com.airassist.backend.dto.document.CreateDocumentDTO;
 import com.airassist.backend.dto.document.DocumentDTO;
 import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
@@ -66,25 +67,23 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Function to add a document to a case
-     * @param file - the file we want to upload - should be sent as multipart/form-data
-     * @param name - the name of the document - should be a non empty-string
-     * @param type - the type of the document - should be from the ENUM DocumentTypes
-     * @param caseId - the id of the case we want to add the document to
-     * @return - the saved document obj
+     * @param createDocumentDTO - the DTO containing the document details
+     * @param caseId - the ID of the case to which the document will be added
+     * @return - the saved document as a DocumentDTO
      * @throws IOException - if there is an error reading the file
      */
     @Override
-    public DocumentDTO addDocument(MultipartFile file, String name, DocumentTypes type, UUID caseId) throws IOException {
-        if(!inputValidations(file, name, type, caseId)) {
+    public DocumentDTO addDocument(CreateDocumentDTO createDocumentDTO, UUID caseId) throws IOException {
+        if(!inputValidations(createDocumentDTO.getFile(), createDocumentDTO.getName(), createDocumentDTO.getType(), caseId)) {
             throw new IllegalArgumentException("Invalid input parameters for adding a document.");
         }
 
         Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
 
         Document document = new Document();
-        document.setName(name);
-        document.setType(type);
-        document.setContent(file.getBytes());
+        document.setName(createDocumentDTO.getName());
+        document.setType(createDocumentDTO.getType());
+        document.setContent(createDocumentDTO.getFile().getBytes());
         document.setCaseEntity(caseEntity);
 
         logger.info("Document Service - A document has been added to the case: {}", caseId);
