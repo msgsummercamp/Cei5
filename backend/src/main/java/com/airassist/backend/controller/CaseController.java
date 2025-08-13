@@ -10,8 +10,6 @@ import com.airassist.backend.model.enums.Statuses;
 import com.airassist.backend.service.CaseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +28,13 @@ public class CaseController {
     private final CaseMapper caseMapper;
 
     @GetMapping
-    public ResponseEntity<List<CaseResponseDTO>> getCases(Pageable pageable) {
-        Page<Case> casePage = caseService.getCases(pageable);
-        Page<CaseResponseDTO> caseResponseDTOPage = casePage.map(caseResponseMapper::toCaseResponseDTO);
-        if (caseResponseDTOPage.isEmpty()) {
+    public ResponseEntity<List<CaseResponseDTO>> getCases() {
+        List<Case> caseList = caseService.getCases();
+        List<CaseResponseDTO> caseResponseDTOList = caseList.stream().map(caseResponseMapper::toCaseResponseDTO).toList();
+        if (caseResponseDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(caseResponseDTOPage.getContent());
+        return ResponseEntity.ok(caseResponseDTOList);
     }
 
     @GetMapping("/{id}")
@@ -61,6 +59,7 @@ public class CaseController {
 
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCase(
             @PathVariable UUID id){
@@ -74,7 +73,7 @@ public class CaseController {
         return ResponseEntity.ok(eligible);
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     @PatchMapping("/{caseId}/assign-employee/{employeeId}")
     public ResponseEntity<CaseResponseDTO> assignEmployeeToCase(@PathVariable UUID caseId, @PathVariable UUID employeeId) throws UserNotFoundException {
         Case changedCase = caseService.assignEmployee(caseId, employeeId);
@@ -83,7 +82,6 @@ public class CaseController {
         return ResponseEntity.ok(updatedCaseResponse);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('EMPLOYEE')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<CaseResponseDTO>> getAllCasesForClient(@PathVariable UUID userId) {
         List<Case> userCases = caseService.getCasesForClient(userId);

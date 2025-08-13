@@ -37,7 +37,7 @@ public class Case {
     @PastOrPresent
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private User client;
 
