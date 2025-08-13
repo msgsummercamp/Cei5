@@ -12,6 +12,7 @@ import com.airassist.backend.service.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -53,9 +54,8 @@ public class CommentServiceImpl implements CommentService {
      * @param createCommentDTO the CreateCommentDTO object to validate
      * @return true if the DTO is invalid, false otherwise
      */
-    public boolean invalidDTO(CreateCommentDTO createCommentDTO) {
-        return createCommentDTO.getText() == null ||
-                createCommentDTO.getText().isBlank() ||
+    private boolean CheckNullsInDto(CreateCommentDTO createCommentDTO) {
+        return !StringUtils.hasText(createCommentDTO.getText()) ||
                 createCommentDTO.getText().length() > 1000 ||
                 createCommentDTO.getUserId() == null;
     }
@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
         Case caseEntity = caseRepository.findById(caseId)
                 .orElseThrow(CaseNotFoundException::new);
 
-        if(invalidDTO(createCommentDTO)) {
+        if(CheckNullsInDto(createCommentDTO)) {
             throw new IllegalArgumentException("Invalid comment.");
         }
 
