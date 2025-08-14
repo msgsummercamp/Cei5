@@ -142,7 +142,8 @@
     "user-profile-title": "Profilul meu",
     "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
-    "check-flight": "Verifică zbor"
+    "check-flight": "Verifică zbor",
+    "admin-table": "Administrare utilizatori"
   },
   "request-reset": {
     "title": "Resetare parolă",
