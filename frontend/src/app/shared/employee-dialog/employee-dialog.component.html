@@ -1,68 +1,122 @@
-<div class="employee-dialog-container">
-  <p-dialog
-    header="{{ 'employee-dialog.header' | translate }}"
-    [modal]="true"
-    [visible]="visible()"
-    (visibleChange)="visibleChange.emit($event)"
-    [style]="{ width: '25rem', height: '32rem' }"
-    [contentStyle]="{ overflow: 'visible', 'padding-bottom': '100px' }"
-    (onHide)="onCancelClick()"
-  >
-    <div class="flex flex-column gap-4 mb-4">
-      <div class="flex flex-column gap-2">
-        <label for="firstName" class="font-semibold">{{
-          'employee-dialog.firstName' | translate
-        }}</label>
-        <input
-          pInputText
-          id="firstName"
-          class="w-full"
-          autocomplete="off"
-          [(ngModel)]="firstName"
-        />
-      </div>
-
-      <div class="flex flex-column gap-2">
-        <label for="lastName" class="font-semibold">{{
-          'employee-dialog.lastName' | translate
-        }}</label>
-        <input pInputText id="lastName" class="w-full" autocomplete="off" [(ngModel)]="lastName" />
-      </div>
-
-      <div class="flex flex-column gap-2">
-        <label for="email" class="font-semibold">{{ 'employee-dialog.email' | translate }}</label>
-        <input
-          pInputText
-          id="email"
-          type="email"
-          class="w-full"
-          autocomplete="off"
-          [(ngModel)]="email"
-        />
-      </div>
-
-      <div class="flex flex-column gap-2" style="position: relative">
-        <label for="role" class="font-semibold">{{ 'employee-dialog.role' | translate }}</label>
-        <p-select
-          [options]="roles"
-          [(ngModel)]="selectedRole"
-          optionLabel="name"
-          placeholder="Select a Role"
-          class="w-full"
-          [panelStyle]="{
-            'max-height': '120px',
-            'overflow-y': 'auto',
-            width: '100%',
-            left: '0',
-            top: '100%',
-          }"
-          [showClear]="true"
-          panelStyleClass="role-dropdown-panel"
-        />
+<!--<form novalidate [formGroup]="newUserForm" class="flex flex-column gap-4 p-4">-->
+<p-dialog
+  header="{{ 'employee-dialog.header' | translate }}"
+  [modal]="true"
+  [visible]="visible()"
+  (visibleChange)="visibleChange.emit($event)"
+  [style]="{ width: '25rem', height: '32rem' }"
+  [contentStyle]="{ overflow: 'visible', 'padding-bottom': '100px' }"
+  (onHide)="onCancelClick()"
+>
+  <form novalidate [formGroup]="newUserForm" class="flex flex-column gap-4 p-4">
+    <div>
+      <p-floatlabel variant="on">
+        <label for="email">{{ 'employee-dialog.email' | translate }}</label>
+        <input pInputText type="email" formControlName="email" id="email" class="w-full h-3rem" />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (newUserForm.controls.email.touched && newUserForm.controls.email.errors) {
+          @switch (true) {
+            @case (newUserForm.controls.email.hasError('required')) {
+              <app-error-message text="{{ 'user-details.email-required' | translate }}" />
+            }
+            @case (newUserForm.controls.email.hasError('email')) {
+              <app-error-message text="{{ 'user-details.email-invalid' | translate }}" />
+            }
+            @case (newUserForm.controls.email.hasError('maxlength')) {
+              <app-error-message text="{{ 'user-details.email-length' | translate }}" />
+            }
+          }
+        }
       </div>
     </div>
 
-    <div class="flex justify-end gap-2">
+    <div>
+      <p-floatlabel variant="on">
+        <label for="firstName">{{ 'employee-dialog.firstName' | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          formControlName="firstName"
+          id="firstName"
+          class="w-full h-3rem"
+        />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (newUserForm.controls.firstName.touched && newUserForm.controls.firstName.errors) {
+          @switch (true) {
+            @case (newUserForm.controls.firstName.hasError('required')) {
+              <app-error-message text="{{ 'user-details.firstname-required' | translate }}" />
+            }
+            @case (newUserForm.controls.firstName.hasError('minlength')) {
+              <app-error-message text="{{ 'user-details.firstname-minlength' | translate }}" />
+            }
+            @case (newUserForm.controls.firstName.hasError('maxlength')) {
+              <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
+            }
+            @case (newUserForm.controls.firstName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <label for="lastName">{{ 'employee-dialog.lastName' | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          formControlName="lastName"
+          id="lastName"
+          class="w-full h-3rem"
+        />
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (newUserForm.controls.lastName.touched && newUserForm.controls.lastName.errors) {
+          @switch (true) {
+            @case (newUserForm.controls.lastName.hasError('required')) {
+              <app-error-message text="{{ 'user-details.firstname-required' | translate }}" />
+            }
+            @case (newUserForm.controls.lastName.hasError('minlength')) {
+              <app-error-message text="{{ 'user-details.firstname-minlength' | translate }}" />
+            }
+            @case (newUserForm.controls.lastName.hasError('maxlength')) {
+              <app-error-message text="{{ 'user-details.firstname-maxlength' | translate }}" />
+            }
+            @case (newUserForm.controls.lastName.hasError('pattern')) {
+              <app-error-message text="{{ 'user-details.firstname-invalid' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <div>
+      <p-floatlabel variant="on">
+        <p-select
+          [styleClass]="'w-full py-1'"
+          id="role"
+          formControlName="role"
+          [options]="roles"
+          optionValue="value"
+          optionLabel="name"
+        ></p-select>
+        <label for="role">{{ 'employee-dialog.role' | translate }}</label>
+      </p-floatlabel>
+      <div class="error-placeholder">
+        @if (newUserForm.controls.role.touched && newUserForm.controls.role.errors) {
+          @switch (true) {
+            @case (newUserForm.controls.role.hasError('required')) {
+              <app-error-message text="{{ 'employee-dialog.role-required' | translate }}" />
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <div class="flex justify-content-between">
       <p-button
         label="{{ 'employee-dialog.cancel' | translate }}"
         severity="secondary"
@@ -76,5 +130,5 @@
         [disabled]="loading()"
       />
     </div>
-  </p-dialog>
-</div>
+  </form>
+</p-dialog>
