@@ -80,14 +80,14 @@ export class EligibilityPageComponent implements OnInit {
     const dep = this.departingAirportValue;
     const dest = this.destinationAirportValue;
 
-    if (!!dep && !!dest) {
-      this._compensationService.calculateDistance(dep, dest);
-    }
-
     this._compensationService.compensation$.subscribe((data) => {
       this.compensation = data;
       this.isCompensationLoading.set(false);
     });
+
+    if (!!dep && !!dest) {
+      this._compensationService.calculateDistance(dep, dest);
+    }
   }
 
   public getEligibleMessage(): string {
