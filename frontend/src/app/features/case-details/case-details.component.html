@@ -1,16 +1,22 @@
-@if (!loading) {
+@if (!loading && caseData) {
   <div class="case-details-container mt-8 mx-3">
     <div class="column">
       <h2>Case Details</h2>
-      {{ caseData | json }}
+      <p
+        ><label><strong>Status: </strong></label>{{ caseData.status }}</p
+      >
     </div>
     <div class="column">
-      <h2>Additional Information</h2>
-      <!-- Add content for the second column here -->
+      <div>
+        <h2>Additional Actions</h2>
+      </div>
+      <div>
+        <h2>Chat</h2>
+      </div>
     </div>
   </div>
 } @else {
   <div class="loading-container">
-    <p>Loading...</p>
+    <p-progress-spinner />
   </div>
 }
