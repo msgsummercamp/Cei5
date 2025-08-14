@@ -138,6 +138,8 @@
     "login": "Loghează-te",
     "logout": "Deconectează-te",
     "profile": "Profil",
+    "user-profile-card-title": "Informații cont",
+    "user-profile-title": "Profilul meu",
     "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
     "check-flight": "Verifică zbor"
@@ -350,7 +352,9 @@
     "no-cases-found": "Nu s-au găsit cazuri.",
     "title": "Toate cazurile",
     "search-by-flight-number": "Căutare după Număr Zbor",
-    "search-by-employee": "Căutare după Angajat"
+    "search-by-employee": "Căutare după Angajat",
+    "beneficiary-name": "Nume Beneficiar"
+
   },
   "primeng": {
     "startsWith": "Începe cu",
@@ -374,7 +378,18 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid"
+    "INVALID": "Invalid",
+  },
+
+  "profile-page": {
+    "card-information": {
+      "email": "Email:",
+      "phone-number": "Număr de telefon:",
+      "name": "Nume:",
+      "postal-code": "Cod poștal:",
+      "address": "Adresă:",
+      "birth-date": "Data nașterii:"
+    }
   },
   "admin-panel": {
     "title": "Panou de administrare",
