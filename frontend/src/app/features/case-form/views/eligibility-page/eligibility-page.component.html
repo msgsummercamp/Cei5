@@ -1,8 +1,8 @@
 <div class="eligibility-container">
   <!-- Loading State -->
   @if (shouldShowLoading()) {
-    <div class="loading-state">
-      <p-card>
+    <div class="loading-state results-container flex justify-content-center">
+      <p-card class="w-full lg:w-6">
         <div class="text-center">
           <p-progressSpinner />
           <h3>{{ 'eligibilityForm.checkEligibility' | translate }}</h3>
@@ -14,8 +14,8 @@
 
   <!-- Error State -->
   @if (shouldShowError()) {
-    <div class="error-state">
-      <p-card>
+    <div class="error-state results-container flex justify-content-center">
+      <p-card class="w-full lg:w-6">
         <div class="text-center">
           <p-message severity="error" [text]="getErrorMessage()" />
           <div class="mt-4">
@@ -32,23 +32,31 @@
       <p-card class="w-full lg:w-6">
         <div class="text-center">
           @if (shouldShowEligible()) {
-            <div class="eligible-message">
-              <i class="pi pi-check-circle text-6xl text-green-500"></i>
-              <h2 class="text-green-500 text-4xl"
-                >{{ 'eligibilityForm.eligible.congratulations' | translate }}
-              </h2>
-              <p-message severity="success" [closable]="false" class="text-xl">
-                <div>
-                  <span
-                    [innerHTML]="'eligibilityForm.eligible.compensation-start' | translate"
-                  ></span>
-                  <span>{{ compensation }}</span>
-                  <span
-                    [innerHTML]="'eligibilityForm.eligible.compensation-end' | translate"
-                  ></span>
-                </div>
-              </p-message>
-            </div>
+            @if (isCompensationLoading()) {
+              <div class="text-center">
+                <p-progressSpinner />
+                <h3>{{ 'eligibilityForm.checkEligibility' | translate }}</h3>
+                <p>{{ 'eligibilityForm.loading' | translate }}</p>
+              </div>
+            } @else {
+              <div class="eligible-message">
+                <i class="pi pi-check-circle text-6xl text-green-500"></i>
+                <h2 class="text-green-500 text-4xl"
+                  >{{ 'eligibilityForm.eligible.congratulations' | translate }}
+                </h2>
+                <p-message severity="success" [closable]="false" class="text-xl">
+                  <div>
+                    <span
+                      [innerHTML]="'eligibilityForm.eligible.compensation-start' | translate"
+                    ></span>
+                    <span>{{ compensation }}</span>
+                    <span
+                      [innerHTML]="'eligibilityForm.eligible.compensation-end' | translate"
+                    ></span>
+                  </div>
+                </p-message>
+              </div>
+            }
           }
           @if (shouldNotShowEligible()) {
             @if (checkWhichEligibilityMotive()) {

@@ -378,9 +378,8 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid",
+    "INVALID": "Invalid"
   },
-
   "profile-page": {
     "card-information": {
       "email": "Email:",
