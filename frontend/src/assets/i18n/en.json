@@ -320,5 +320,10 @@
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "reservation-not-found": "The reservation was not found."
+  },
+  "not-found": {
+    "title": "Page Not Found",
+    "message": "The page you’re looking for doesn’t exist, has been moved, or is enjoying a long vacation. Try checking the URL or head back to the homepage.",
+    "button": "Back to Homepage"
   }
 }
