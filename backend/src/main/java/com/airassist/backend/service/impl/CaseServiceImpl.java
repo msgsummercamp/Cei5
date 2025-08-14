@@ -84,19 +84,6 @@ public class CaseServiceImpl implements CaseService {
         if (reservation.getReservationNumber() == null || reservation.getReservationNumber().length() != 6) {
             throw new IllegalArgumentException("Reservation number must be exactly 6 characters");
         }
-        if (reservation.getFlights() != null) {
-            for (Flight flight : reservation.getFlights()) {
-                if (flight.getFlightDate() == null ||
-                        flight.getFlightNumber() == null ||
-                        flight.getDepartingAirport() == null ||
-                        flight.getDestinationAirport() == null ||
-                        flight.getDepartureTime() == null ||
-                        flight.getArrivalTime() == null ||
-                        flight.getAirLine() == null) {
-                    throw new IllegalArgumentException("Missing required flight field");
-                }
-            }
-        }
 
         caseToAdd.setBeneficiary(beneficiary);
 

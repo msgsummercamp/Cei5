@@ -43,4 +43,9 @@ export const routes: Routes = [
         (m) => m.EmployeeCaseTableComponent
       ),
   },
+  {
+    path: 'admin-table',
+    loadComponent: () =>
+      import('./features/admin-table/admin-table.component').then((m) => m.AdminTableComponent),
+  },
 ];

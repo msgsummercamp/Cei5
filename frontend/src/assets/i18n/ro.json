@@ -379,7 +379,6 @@
     "FAILED": "Eșuat",
     "VALID": "Valid",
     "INVALID": "Invalid",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
   },
 
   "profile-page": {
@@ -391,5 +390,25 @@
       "address": "Adresă:",
       "birth-date": "Data nașterii:"
     }
+  },
+  "admin-panel": {
+    "title": "Panou de administrare",
+    "name" : "Nume",
+    "role" : "Rol",
+    "assignedCases" : "Numar de cazuri atribuite",
+    "userDeleted" : "Utilizatorul a fost sters",
+    "addNewEmployee" : "Adaugă un nou angajat"
+  },
+    "employee-dialog": {
+    "header": "Adaugă User",
+    "title": "Detalii User",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "email": "Email",
+    "role": "Rol",
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "fillAllFields": "Vă rugăm să completați toate câmpurile.",
+    "userCreated": "Utilizator creat cu succes."
   }
 }

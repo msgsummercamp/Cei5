@@ -20,40 +20,36 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate flightDate;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Flight number cannot be blank")
+    @Column(nullable = true)
     @Size(min = 3, max = 6, message = "Flight number must be between 3 and 6 characters")
     private String flightNumber;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Airline name cannot be blank")
+    @Column(nullable = true)
     @Size(min = 3, max = 3, message = "Airport codes must be exactly 3 characters")
     private String departingAirport;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Destination airport cannot be blank")
+    @Column(nullable = true)
     @Size(min = 3, max = 3, message = "Airport codes must be exactly 3 characters")
     private String destinationAirport;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime departureTime;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime arrivalTime;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(referencedColumnName = "id")
     private Reservation reservation;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Airline cannot be blank")
+    @Column(nullable = true)
     @Size(min = 3, max = 50, message = "Airline must be between 3 and 50 characters")
     private String airLine;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean problematic;
 
 }
