@@ -23,6 +23,11 @@ export const routes: Routes = [
     canActivate: [alreadyAuthGuardGuard],
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
+  },
+  {
     path: 'change-password',
     loadComponent: () =>
       import('./features/password-reset/change-password-page/change-password-page.component').then(

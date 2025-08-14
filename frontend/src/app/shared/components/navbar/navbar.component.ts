@@ -72,7 +72,7 @@ export class NavbarComponent {
   ];
 
   private _userMenuConfig = [
-    { label: 'navbar.profile', routerLink: '/profile' },
+    { label: 'navbar.profile', command: () => this.redirectToProfile() },
     { label: 'navbar.logout', command: () => this.logout() },
   ];
 
@@ -159,5 +159,10 @@ export class NavbarComponent {
 
   public toggleHamburgerMenu(): void {
     this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+
+  public redirectToProfile(): void {
+    this._stepNavigationService.resetToFirstStep();
+    this._router.navigate(['/profile']);
   }
 }
