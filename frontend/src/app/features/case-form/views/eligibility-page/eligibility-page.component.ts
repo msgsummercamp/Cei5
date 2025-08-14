@@ -229,7 +229,7 @@ export class EligibilityPageComponent implements OnInit {
     const clientID = this.getClientId();
 
     const caseData: CaseDTO = {
-      status: Statuses.PENDING,
+      status: Statuses.VALID,
       disruptionReason: this.disruptionReason(),
       disruptionInfo: this.disruptionInfo(),
       date: new Date().toISOString(),

@@ -1,4 +1,4 @@
-import { Component, inject, output, effect, signal, input } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,

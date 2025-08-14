@@ -1,28 +1,43 @@
 .navbar {
   --p-menubar-background: rgba(15, 27, 88, 0.97);
   --p-menubar-item-color: #ffffff;
-  --p-menubar-item-focus-background	: none;
+  --p-menubar-item-focus-background: none;
   --p-menubar-item-focus-color: #ffffff;
   --p-menubar-border-color: rgba(15, 27, 88, 0.97);
-  --p-menubar-border-radius: 0;
+  --p-menubar-border-radius: 10;
+  --p-menubar-item-active-background: #a6eb55;
 }
 
-.p-select{
+::ng-deep {
+  .p-menubar-item-link {
+    border-radius: 20px;
+  }
+
+  .p-menubar-item-link-active {
+    background-color: #080838;
+  }
+
+  .p-menubar-item-link:hover {
+    background-color: #080838;
+  }
+}
+
+.p-select {
   background: transparent;
   border: none;
   --p-select-placeholder-color: #ffffff;
 }
 
-.p-select-label.p-placeholder{
+.p-select-label.p-placeholder {
   --p-select-placeholder-font-size: 1.5rem !important;
 }
 
-p-select-label{
+p-select-label {
   color: #ffffff;
 }
 
-::ng-deep .navbar-wrapper .p-select-dropdown{
-  display: none !important; ;
+::ng-deep .navbar-wrapper .p-select-dropdown {
+  display: none !important;
 }
 
 .selected-language-flag{
@@ -30,7 +45,7 @@ p-select-label{
   margin-right: -0.7rem;
 }
 
-p-select-list-container{
+p-select-list-container {
   margin-right: 2rem;
 }
 
@@ -38,12 +53,12 @@ p-select-list-container{
   font-size: 1.2rem !important;
 }
 
-.p-button-text:hover,{
+.p-button-text:hover {
   color: #ffffff !important;
   background: none !important;
 }
 
-::ng-deep .navbar-wrapper .p-button{
+::ng-deep .navbar-wrapper .p-button {
   --p-button-primary-background: transparent;
   --p-button-primary-border-color: transparent;
   --p-button-primary-hover-background: none;
@@ -52,17 +67,17 @@ p-select-list-container{
   --p-button-primary-active-border-color: transparent;
 }
 
-.visually-hidden{
+.visually-hidden {
   width: 1px;
   height: 1px;
   padding: 0;
 }
 
-.logo{
+.logo {
   cursor: pointer;
 }
 
-#logo-text{
+#logo-text {
   font-family: 'Baloo 2', sans-serif;
   color: white;
   font-size: 1.3rem !important;

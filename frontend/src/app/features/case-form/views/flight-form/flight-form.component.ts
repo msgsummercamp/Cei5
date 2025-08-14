@@ -18,18 +18,18 @@ import { notEmptyAfterTrimValidator } from '../../../../shared/validators/notEmp
 
 // Interface for flight details
 export interface FlightDetails {
-  flightNumber: string;
-  airline: string;
-  reservationNumber: string;
-  departingAirport: string;
-  destinationAirport: string;
+  flightNumber: string | null;
+  airline: string | null;
+  reservationNumber: string | null;
+  departingAirport: string | null;
+  destinationAirport: string | null;
   plannedDepartureTime: Date | null;
   plannedArrivalTime: Date | null;
 }
 
 type FlightDetailsForm = {
-  flightNumber: FormControl<string>;
-  airline: FormControl<string>;
+  flightNumber: FormControl<string | null>;
+  airline: FormControl<string | null>;
   plannedDepartureTime: FormControl<Date | null>;
   plannedArrivalTime: FormControl<Date | null>;
 };
@@ -67,7 +67,7 @@ export class FlightFormComponent {
   // Form group for flight details
   protected readonly flightDetailsForm = this._formBuilder.group<FlightDetailsForm>(
     {
-      flightNumber: this._formBuilder.control<string>('', [
+      flightNumber: this._formBuilder.control<string | null>('', [
         Validators.minLength(3),
         Validators.maxLength(6),
         Validators.required,

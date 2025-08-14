@@ -17,8 +17,6 @@ import com.airassist.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,9 +44,9 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Page<Case> getCases(Pageable pageable) throws CaseNotFoundException {
-        logger.info("Service - fetching all cases with pagination: {}", pageable);
-        return caseRepository.findAll(pageable);
+    public List<Case> getCases() throws CaseNotFoundException {
+        logger.info("Service - fetching all cases.");
+        return caseRepository.findAll();
     }
 
     @Override
@@ -85,19 +83,6 @@ public class CaseServiceImpl implements CaseService {
 
         if (reservation.getReservationNumber() == null || reservation.getReservationNumber().length() != 6) {
             throw new IllegalArgumentException("Reservation number must be exactly 6 characters");
-        }
-        if (reservation.getFlights() != null) {
-            for (Flight flight : reservation.getFlights()) {
-                if (flight.getFlightDate() == null ||
-                        flight.getFlightNumber() == null ||
-                        flight.getDepartingAirport() == null ||
-                        flight.getDestinationAirport() == null ||
-                        flight.getDepartureTime() == null ||
-                        flight.getArrivalTime() == null ||
-                        flight.getAirLine() == null) {
-                    throw new IllegalArgumentException("Missing required flight field");
-                }
-            }
         }
 
         caseToAdd.setBeneficiary(beneficiary);

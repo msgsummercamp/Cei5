@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
@@ -11,11 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { NgOptimizedImage } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
-import { IfAuthenticatedDirective } from '../../directives/if-authenticated.directive';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../../services/user.service';
 import { StepNavigationService } from '../../services/step-navigation.service';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
+import { NavbarHelper } from '../../helper/visibile-for-role';
+import { Roles } from '../../types/enums/roles';
 
 @Component({
   selector: 'app-navbar',
@@ -29,7 +30,6 @@ import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'pr
     FormsModule,
     Select,
     NgOptimizedImage,
-    IfAuthenticatedDirective,
     Button,
     MenuModule,
     Accordion,
@@ -55,24 +55,51 @@ export class NavbarComponent {
   //Contains the translated elements for the user menu that appears after login
   public userMenuItems: MenuItem[] = [];
 
-  /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.
-  private _menuConfig = [];
-*/
+  /*The menuConfig contains the links from the navbar in this form: {translationKey: 'navbar.home', routerLink: '/home'} Commenting out for now.*/
+  private _menuConfig = [
+    {
+      label: 'navbar.check-flight',
+      routerLink: '/form',
+      icon: 'pi pi-file-check',
+      roles: [Roles.EMPLOYEE, Roles.ADMIN, Roles.USER],
+    },
+    {
+      label: 'navbar.employee-dashboard',
+      routerLink: '/employee-dashboard',
+      icon: 'pi pi-address-book',
+      roles: [Roles.ADMIN, Roles.EMPLOYEE],
+    },
+  ];
+
   private _userMenuConfig = [
     { label: 'navbar.profile', routerLink: '/profile' },
     { label: 'navbar.logout', command: () => this.logout() },
   ];
 
-  ngOnInit() {
-    this.translateMenuItems(
-      this._userMenuConfig,
-      (translatedItems) => (this.userMenuItems = translatedItems)
-    );
+  constructor() {
+    effect(() => {
+      this.translateMenuItems(
+        this._userMenuConfig,
+        (translatedItems) => (this.userMenuItems = translatedItems)
+      );
+      this._menuConfig = this._menuConfig.map((item) => ({
+        ...item,
+        visible: NavbarHelper.isVisibleForAuthUser(item.roles, this._authService),
+      }));
+      this.translateMenuItems(
+        this._menuConfig,
+        (translatedItems) => (this.navbarMainItems = translatedItems)
+      );
+    });
 
     this._translateService.onLangChange.subscribe(() => {
       this.translateMenuItems(
         this._userMenuConfig,
         (translatedItems) => (this.userMenuItems = translatedItems)
+      );
+      this.translateMenuItems(
+        this._menuConfig,
+        (translatedItems) => (this.navbarMainItems = translatedItems)
       );
     });
   }

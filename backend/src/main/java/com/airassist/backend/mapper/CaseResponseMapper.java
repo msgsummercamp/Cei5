@@ -9,7 +9,5 @@ import org.mapstruct.Mapper;
         UserMapper.class,
 })
 public interface CaseResponseMapper {
-    @Mapping(target = "clientId", source = "client.id")
-    @Mapping(target = "assignedColleagueId", source = "assignedColleague")
     CaseResponseDTO toCaseResponseDTO(Case caseEntity);
 }

@@ -7,6 +7,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface CaseMapper {
-    CaseMapper INSTANCE = Mappers.getMapper(CaseMapper.class);
     Case toEntity(CaseDTO caseDTO);
 }
