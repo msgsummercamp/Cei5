@@ -690,7 +690,7 @@ export class CaseFormComponent {
     if (this.disruptionFormData?.disruptionType) {
       if (this.disruptionFormData.disruptionType === 'Cancellation') {
         if (this.disruptionFormData.cancellationAnswer === '>14 days') {
-          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;;
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
         } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
           if (this.disruptionFormData.delayAnswer === '>3 hours') {
             return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_OVER_3H;
