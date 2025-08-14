@@ -408,7 +408,13 @@
     "save": "Salvează",
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
-    "userCreated": "Utilizator creat cu succes."
+    "userCreated": "Utilizator creat cu succes.",
+    "reservation-not-found": "Rezervarea nu a fost găsită."
+  },
+  "not-found": {
+    "title": "Pagină inexistentă",
+    "message": "Pagina pe care o cauți nu există, a fost mutată sau se bucură de o vacanță lungă. Verifică adresa URL sau întoarce-te la pagina principală.",
+    "back-to-home": "Înapoi la pagina principală"
   },
   "forbidden": {
     "title": "Acces interzis",
