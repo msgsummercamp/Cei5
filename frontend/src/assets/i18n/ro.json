@@ -296,7 +296,6 @@
       "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
       "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
     },
-
     "notEligible": {
       "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
       "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
@@ -369,7 +368,9 @@
     "clear": "Curăță",
     "apply": "Aplică",
     "yes": "Da",
-    "no": "Nu"
+    "no": "Nu",
+    "choose": "Alege",
+    "upload": "Încarcă"
   },
   "statuses": {
     "ASSIGNED": "Atribuit",
@@ -379,7 +380,6 @@
     "VALID": "Valid",
     "INVALID": "Invalid"
   },
-
   "profile-page": {
     "card-information": {
       "email": "Email:",
@@ -414,5 +414,24 @@
     "title": "Acces interzis",
     "message": "Oops! Se pare că nu aveți permisiunea să accesați această pagină. Ruta este restricționată.",
     "back-to-home": "Înapoi acasă"
+  },
+  "case-details": {
+    "title": "Detalii Caz",
+    "actions": "Acțiuni",
+    "date": "Dată",
+    "assigned-employee": "Angajat Atribuit",
+    "disruption-reason": "Motivul Perturbării",
+    "disruption-info": "Informații Perturbare",
+    "reservation-details": "Detalii Rezervare",
+    "reservation": "Număr Rezervare",
+    "route": "Rută",
+    "documents": "Documente",
+    "no-documents": "Niciun document încărcat.",
+    "select-file-error": "Vă rugăm să selectați un fișier.",
+    "upload-file-success": "Fișier încărcat cu succes.",
+    "upload": "Încărcare Fișier",
+    "invalid-file-size": "Fișierul este prea mare.",
+    "invalid-file-type": "Tipul fișierului nu este acceptat. Acceptăm doar PDF, JPG, PNG.",
+    "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB."
   }
 }

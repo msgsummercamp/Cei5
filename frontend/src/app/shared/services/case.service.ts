@@ -12,6 +12,8 @@ import { ReservationService } from './reservation.service';
 import { Beneficiary } from '../types/beneficiary';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiError } from '../types/api-error';
+import { Document } from '../types/document';
+import { MimeTypeMapper } from '../helper/mime-type-mappings';
 
 type CreatedCaseDetails = {
   caseId?: string;
@@ -138,6 +140,50 @@ export class CaseService {
         return of(null);
       })
     );
+  }
+
+  public getDocument(documentId: string): Observable<Document> {
+    return this._http.get<Document>(`${this._apiUrl}/documents/${documentId}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of(null as any);
+      })
+    );
+  }
+
+  public getDocumentList(caseId: string): Observable<Document[]> {
+    return this._http.get<Document[]>(`${this._apiUrl}/documents/case/${caseId}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of([]);
+      })
+    );
+  }
+
+  public uploadDocument(
+    caseId: string,
+    file: File,
+    name: string,
+    type: string
+  ): Observable<Document> {
+    let backendType = MimeTypeMapper.mapMimeTypeToDocumentType(type);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', name);
+    formData.append('type', backendType);
+    console.log('Uploading document:');
+
+    return this._http
+      .post<Document>(`${this._apiUrl}/documents/case/${caseId}/upload`, formData)
+      .pipe(
+        catchError((error) => {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+          return of(null as any);
+        })
+      );
   }
 
   private extractDateOnly(date: Date): string {
