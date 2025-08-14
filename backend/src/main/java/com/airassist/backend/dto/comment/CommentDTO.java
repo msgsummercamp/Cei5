@@ -14,4 +14,5 @@ public class CommentDTO {
     private UUID userId;
     private String text;
     private Timestamp timestamp;
+    private String username;
 }

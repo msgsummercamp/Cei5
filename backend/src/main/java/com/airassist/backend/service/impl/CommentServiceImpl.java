@@ -3,11 +3,14 @@ package com.airassist.backend.service.impl;
 import com.airassist.backend.dto.comment.CommentDTO;
 import com.airassist.backend.dto.comment.CreateCommentDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.CommentMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Comment;
+import com.airassist.backend.model.User;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.repository.CommentRepository;
+import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.service.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +23,16 @@ import java.util.UUID;
 @Service
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
     private final CaseRepository caseRepository;
     private final CommentMapper commentMapper;
     private static final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
 
-    public CommentServiceImpl(CommentRepository commentRepository, CaseRepository caseRepository, CommentMapper commentMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, CaseRepository caseRepository, CommentMapper commentMapper, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.caseRepository = caseRepository;
         this.commentMapper = commentMapper;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -69,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws CaseNotFoundException if no case with the given ID exists
      * @throws IllegalArgumentException if the CreateCommentDTO is invalid
      */
-    public CommentDTO addCommentToCase(UUID caseId, CreateCommentDTO createCommentDTO) {
+    public CommentDTO addCommentToCase(UUID caseId, CreateCommentDTO createCommentDTO) throws UserNotFoundException {
         Case caseEntity = caseRepository.findById(caseId)
                 .orElseThrow(CaseNotFoundException::new);
 
@@ -77,7 +82,11 @@ public class CommentServiceImpl implements CommentService {
             throw new IllegalArgumentException("Invalid comment.");
         }
 
+        User user = userRepository.findById(createCommentDTO.getUserId()).orElseThrow(UserNotFoundException::new);
+
         Comment comment = commentMapper.createCommentDtoToComment(createCommentDTO);
+        comment.setUser(user);
+
         comment.setCaseEntity(caseEntity);
         return commentMapper.commentToCommentDTO(commentRepository.save(comment));
     }

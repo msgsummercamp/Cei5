@@ -2,6 +2,7 @@ package com.airassist.backend.controller;
 
 import com.airassist.backend.dto.comment.CommentDTO;
 import com.airassist.backend.dto.comment.CreateCommentDTO;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.service.CommentService;
 
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class CommentController {
      * @return the created CommentDTO object
      */
     @PostMapping("/case/{caseId}")
-    public ResponseEntity<CommentDTO> addCommentToCase(@PathVariable UUID caseId, @RequestBody CreateCommentDTO createCommentDTO) {
+    public ResponseEntity<CommentDTO> addCommentToCase(@PathVariable UUID caseId, @RequestBody CreateCommentDTO createCommentDTO) throws UserNotFoundException {
         return ResponseEntity.ok(commentService.addCommentToCase(caseId, createCommentDTO));
     }
 }
