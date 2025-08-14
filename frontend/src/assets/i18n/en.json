@@ -412,5 +412,11 @@
     "title": "Access Denied: Forbidden",
     "message": "Oops! It looks like you don't have the necessary permissions to view this page. This route is restricted.",
     "back-to-home": "Back to Home"
+  },
+  "case-details": {
+    "chat": {
+      "type-message": "Type your message...",
+      "send": "Send"
+    }
   }
 }

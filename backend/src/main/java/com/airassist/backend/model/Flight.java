@@ -49,7 +49,7 @@ public class Flight {
     @Size(min = 3, max = 50, message = "Airline must be between 3 and 50 characters")
     private String airLine;
 
-    @Column
+    @Column(nullable = false)
     private boolean problematic;
 
 }
