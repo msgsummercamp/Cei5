@@ -354,7 +354,6 @@
     "search-by-flight-number": "Căutare după Număr Zbor",
     "search-by-employee": "Căutare după Angajat",
     "beneficiary-name": "Nume Beneficiar"
-
   },
   "primeng": {
     "startsWith": "Începe cu",
@@ -378,7 +377,7 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid",
+    "INVALID": "Invalid"
   },
 
   "profile-page": {
@@ -393,13 +392,13 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name" : "Nume",
-    "role" : "Rol",
-    "assignedCases" : "Numar de cazuri atribuite",
-    "userDeleted" : "Utilizatorul a fost sters",
-    "addNewEmployee" : "Adaugă un nou angajat"
+    "name": "Nume",
+    "role": "Rol",
+    "assignedCases": "Numar de cazuri atribuite",
+    "userDeleted": "Utilizatorul a fost sters",
+    "addNewEmployee": "Adaugă un nou angajat"
   },
-    "employee-dialog": {
+  "employee-dialog": {
     "header": "Adaugă User",
     "title": "Detalii User",
     "firstName": "Prenume",
