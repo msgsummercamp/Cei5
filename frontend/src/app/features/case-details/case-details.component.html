@@ -1,17 +1,115 @@
 <div class="wrapper">
   @if (!loading && caseData) {
-    <div class="case-details-container flex flex-wrap gap-4">
-      <div class="flex-1 p-3 border-round bg-white">
-        <h2>Case Details</h2>
-        <p
-          ><label><strong>Status: </strong></label>{{ caseData.status }}</p
-        >
+    <div class="case-details-container min-h-full">
+      <div class="column mt-8">
+        <p-card [styleClass]="'m-auto'">
+          <h1>{{ 'case-details.title' | translate }}</h1>
+          <p
+            ><label><strong>Status: </strong></label>{{ getStatusTranslation(caseData.status) }}</p
+          >
+          <p
+            ><label
+              ><strong>{{ 'case-details.date' | translate }}: </strong></label
+            >{{ caseData.date | date: 'mediumDate' }}</p
+          >
+          <p
+            ><label
+              ><strong>{{ 'case-details.assigned-employee' | translate }}: </strong></label
+            >{{ extractEmployeeName(caseData) }}</p
+          >
+          <p
+            ><label
+              ><strong>{{ 'case-details.disruption-reason' | translate }}: </strong></label
+            >{{ caseData.disruptionReason }}</p
+          >
+          <p
+            ><label
+              ><strong>{{ 'case-details.disruption-info' | translate }}: </strong></label
+            >{{ caseData.disruptionInfo }}</p
+          >
+          <h2>{{ 'case-details.reservation-details' | translate }}</h2>
+          <p
+            ><label
+              ><strong>{{ 'case-details.reservation' | translate }}: </strong></label
+            >{{ caseData.reservation.reservationNumber }}</p
+          >
+          <span class="flex align-items-center">
+            <p>
+              <label>
+                <strong>{{ 'case-details.route' | translate }}: &nbsp;</strong>
+              </label>
+            </p>
+            @for (flight of caseData.reservation.flights; track $index) {
+              @if ($index > 0 && caseData.reservation.flights[$index - 1].problematic) {
+                <p-tag [value]="flight.departingAirport" [severity]="'danger'"></p-tag>
+                <i class="pi pi-arrow-right normal-arrow"></i>
+              } @else {
+                <p-tag
+                  [value]="flight.departingAirport"
+                  [severity]="flight.problematic ? 'danger' : 'info'"
+                ></p-tag>
+                <i
+                  class="pi pi-arrow-right normal-arrow"
+                  [class.problematic-arrow]="flight.problematic"
+                ></i>
+              }
+              @if ($last) {
+                <p-tag
+                  [value]="flight.destinationAirport"
+                  [severity]="flight.problematic ? 'danger' : 'info'"
+                ></p-tag>
+              }
+            }
+          </span>
+          <div>
+            <div>
+              <h2>{{ 'case-details.documents' | translate }}</h2>
+              <div class="flex align-items-center gap-2">
+                <p-fileupload
+                  #fileInput
+                  mode="basic"
+                  chooseIcon="pi pi-upload"
+                  maxFileSize="5000000"
+                  [styleClass]="'flex flex-column-reverse align-items-start w-10rem'"
+                  [customUpload]="true"
+                  (uploadHandler)="uploadDocument($event)"
+                  [accept]="'.pdf,.jpg,.png'"
+                  [invalidFileSizeMessageSummary]="'case-details.invalid-file-size' | translate"
+                  [invalidFileSizeMessageDetail]="'case-details.max-file-size' | translate"
+                  [invalidFileTypeMessageSummary]="'case-details.invalid-file-type' | translate"
+                >
+                  <ng-template pTemplate="filelabel">YAY! Empty state works!</ng-template>
+                </p-fileupload>
+                <p-button (onClick)="handleUpload()">{{
+                  'case-details.upload' | translate
+                }}</p-button>
+              </div>
+            </div>
+
+            <div class="flex flex-column gap-2 mt-3 document-list">
+              @if (caseData.documentList) {
+                @for (document of caseData.documentList; track $index) {
+                  <p-button
+                    [label]="document.name"
+                    [icon]="'pi pi-file'"
+                    link
+                    (onClick)="downloadDocument(document.id!)"
+                  />
+                }
+              } @else {
+                <p>{{ 'case-details.no-documents' | translate }}</p>
+              }
+            </div>
+          </div>
+        </p-card>
       </div>
-      <div class="flex-1 p-3 border-round bg-white mt-2">
+
+      <div class="column">
         <div>
-          <h2>Additional Actions</h2>
+          <h2>{{ 'case-details.actions' | translate }}</h2>
         </div>
-        <div style="width: 370px">
+        <div>
+          <div style="width: 370px">
           <p-card
             header="{{ 'case-details.chat.comments' | translate }}"
             class="w-full"
