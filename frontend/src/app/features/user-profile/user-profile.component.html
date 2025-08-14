@@ -1,0 +1,167 @@
+<div class="page-container">
+  <div class="user-information-container">
+    <h1 class="user-information-title">{{ 'navbar.user-profile-title' | translate }} </h1>
+    <p-card>
+      <ng-template #title
+        ><h2 class="card-title">{{ 'navbar.user-profile-card-title' | translate }}</h2></ng-template
+      >
+      <div class="account-information">
+        <p class="account-information-element">
+          {{ 'profile-page.card-information.email' | translate }} {{ this.user?.email || '' }}
+        </p>
+        <p class="account-information-element">
+          {{ 'profile-page.card-information.phone-number' | translate }}
+          {{ this.user?.userDetails?.phoneNumber || '' }}</p
+        >
+        <p class="account-information-element">
+          {{ 'profile-page.card-information.name' | translate }} {{ getUserFullName() }}</p
+        >
+        <p class="account-information-element">
+          {{ 'profile-page.card-information.address' | translate }}
+          {{ this.user?.userDetails?.address || '' }}
+        </p>
+        <p class="account-information-element"
+          >{{ 'profile-page.card-information.address' | translate }}
+          {{ this.user?.userDetails?.postalCode || '' }}
+        </p>
+        <p class="account-information-element">
+          {{ 'profile-page.card-information.birth-date' | translate }}
+          {{ this.user?.userDetails?.birthDate || '' }}</p
+        >
+      </div>
+    </p-card>
+  </div>
+  <div class="table-wrapper mx-4">
+    <p-table
+      #dt
+      dataKey="id"
+      [value]="userCases"
+      [paginator]="true"
+      [rows]="5"
+      [customSort]="true"
+      [scrollable]="true"
+      scrollHeight="80vh"
+      [rowsPerPageOptions]="[5, 10]"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      (sortFunction)="customSort($event)"
+      [globalFilterFields]="[
+        'id',
+        'date',
+        'flightNumber',
+        'beneficiaryName',
+        'assignedColleague',
+        'status',
+      ]"
+    >
+      <ng-template #header>
+        <tr>
+          <th>
+            <div>
+              {{ 'case-table.case-id' | translate }}
+              <p-columnFilter
+                [showAddButton]="false"
+                [showOperator]="false"
+                type="text"
+                field="id"
+                display="menu"
+                placeholder="{{ 'case-table.search-by-id' | translate }}"
+                ariaLabel="search-by-id"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="date"
+            ><div class="flex align-items-center"
+              >{{ 'case-table.created-on' | translate }} <p-sortIcon field="date" /></div
+          ></th>
+          <th>
+            <div class="flex align-items-center">
+              {{ 'case-table.flight-number' | translate }}
+              <p-columnFilter
+                [showAddButton]="false"
+                [showOperator]="false"
+                type="text"
+                field="flightNumber"
+                display="menu"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="beneficiaryName">
+            <div class="flex align-items-center">
+              {{ 'case-table.beneficiary-name' | translate }}
+              <p-sortIcon field="beneficiaryName"
+            /></div>
+          </th>
+          <th
+            ><div class="flex align-items-center">
+              {{ 'case-table.assigned-employee' | translate }}</div
+            ></th
+          >
+          <th
+            ><div class="flex align-items-center"
+              >{{ 'case-table.status' | translate }}
+              <p-columnFilter
+                field="status"
+                matchMode="equals"
+                display="menu"
+                [showAddButton]="false"
+                [showOperator]="false"
+                [showMatchModes]="false"
+                [showApplyButton]="false"
+                [showClearButton]="false"
+              >
+                <ng-template #filter let-filter="filterCallback">
+                  <p-select
+                    [(ngModel)]="statusFilterValue"
+                    [options]="statusOptions"
+                    (onChange)="filter($event.value)"
+                    (onClear)="onStatusFilterClear()"
+                    [showClear]="true"
+                    placeholder="{{ 'case-table.select-status' | translate }}"
+                    class="w-full"
+                  >
+                    <ng-template let-option #item>
+                      <p-tag
+                        [value]="option.label"
+                        [severity]="getStatusSeverity(option.value)"
+                      ></p-tag>
+                    </ng-template>
+                  </p-select>
+                </ng-template> </p-columnFilter></div
+          ></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-userCase>
+        <tr>
+          <td>
+            <p-button icon="pi pi-eye" severity="contrast" [rounded]="true" [outlined]="true" />
+            {{ userCase.id }}</td
+          >
+          <td class="text-center">{{ userCase.date }}</td>
+          <td class="text-center">{{ userCase.flightNumber }}</td>
+          <td class="text-center">{{ this.getBeneficiaryName(userCase) }}</td>
+          <td class="text-center"
+            ><b>{{ userCase.assignedColleague }}</b></td
+          >
+          <td class="text-center">
+            <p-tag
+              [value]="getStatusTranslation(userCase.status)"
+              [severity]="getStatusSeverity(userCase.status)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="7" class="text-center">
+            {{ 'case-table.no-cases-found' | translate }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-confirm-dialog
+      header="{{ 'case-table.confirmation' | translate }}"
+      icon="pi pi-exclamation-triangle"
+    >
+    </p-confirm-dialog>
+  </div>
+</div>

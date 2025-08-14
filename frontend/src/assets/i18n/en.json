@@ -137,6 +137,8 @@
     "greeting": "Hello",
     "login": "Login",
     "logout": "Logout",
+    "user-profile-card-title": "Account Details",
+    "user-profile-title": "My Profile",
     "profile": "Profile",
     "employee-dashboard": "View Cases",
     "check-flight": "Check Flight",
@@ -349,7 +351,8 @@
     "no-cases-found": "No cases found.",
     "title": "All Cases",
     "search-by-employee": "Search by Employee",
-    "search-by-flight-number": "Search by Flight Number"
+    "search-by-flight-number": "Search by Flight Number",
+    "beneficiary-name": "Beneficiary Name"
   },
   "primeng": {
     "startsWith": "Starts with",
@@ -375,6 +378,16 @@
     "VALID": "Valid",
     "INVALID": "Invalid"
   },
+  "profile-page": {
+    "card-information": {
+      "email": "Email:",
+      "phone-number": "Phone number:",
+      "name": "Name:",
+      "postal-code": "Postal Code:",
+      "address": "Adress:",
+      "birth-date": "Birth date:"
+    }
+  },
   "admin-panel": {
     "title": "Admin Panel",
     "name": "Name",
@@ -394,5 +407,11 @@
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
     "userCreated": "User created successfully."
+    "reservation-not-found": "The reservation was not found."
+  },
+  "not-found": {
+    "title": "Page Not Found",
+    "message": "The page you’re looking for doesn’t exist, has been moved, or is enjoying a long vacation. Try checking the URL or head back to the homepage.",
+    "button": "Back to Homepage"
   }
 }

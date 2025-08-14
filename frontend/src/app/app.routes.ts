@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './features/home-page/home-page.component';
 import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CaseFormComponent } from './features/case-form/case-form.component';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
@@ -16,6 +17,11 @@ export const routes: Routes = [
   {
     path: 'sign-in',
     component: SignInComponent,
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
   },
   {
     path: 'change-password',
@@ -43,4 +49,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/admin-table/admin-table.component').then((m) => m.AdminTableComponent),
   },
+  { path: '**', component: NotFoundComponent },
 ];
