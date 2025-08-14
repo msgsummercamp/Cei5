@@ -416,7 +416,9 @@
   "case-details": {
     "chat": {
       "type-message": "Type your message...",
-      "send": "Send"
+      "send": "Send",
+      "message-length": "*The comment has at most 1000 characters",
+      "comments": "Comments"
     }
   }
 }

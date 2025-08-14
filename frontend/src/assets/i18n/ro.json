@@ -418,7 +418,9 @@
   "case-details": {
     "chat": {
       "type-message": "Scrieți mesajul dvs...",
-      "send": "Trimite"
+      "send": "Trimite",
+      "message-length": "*Comentariul are cel mult 1000 de caractere",
+      "comments": "Comentarii"
     }
   }
 }

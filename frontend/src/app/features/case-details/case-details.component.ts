@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'app-case-details',
@@ -28,6 +29,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     InputTextModule,
     CardModule,
+    Message,
   ],
   templateUrl: './case-details.component.html',
   styleUrl: './case-details.component.scss',

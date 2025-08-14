@@ -1,21 +1,22 @@
-.case-details-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  height: 80vh;
-}
-
-.column {
-  padding: 16px;
-  /*border: 1px solid #ccc;*/
-  border-radius: 8px;
+.wrapper {
+  background-color: #f5f7fa;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.comment {
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.user {
+  background-color: #90ee90;
 }
