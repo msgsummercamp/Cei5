@@ -438,6 +438,12 @@
     "upload": "Încărcare Fișier",
     "invalid-file-size": "Fișierul este prea mare.",
     "invalid-file-type": "Tipul fișierului nu este acceptat. Acceptăm doar PDF, JPG, PNG.",
-    "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB."
+    "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB.",
+    "chat": {
+      "type-message": "Scrieți mesajul dvs...",
+      "send": "Trimite",
+      "message-length": "*Comentariul are cel mult 1000 de caractere",
+      "comments": "Comentarii"
+    }
   }
 }

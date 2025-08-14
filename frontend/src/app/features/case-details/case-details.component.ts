@@ -4,8 +4,20 @@ import { Case } from '../../shared/types/case';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Statuses } from '../../shared/types/enums/status';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
+import {
+  CommentDTO,
+  CommentService,
+  CreateCommentDTO,
+} from '../../shared/services/comment.service';
+import { UserService } from '../../shared/services/user.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { Message } from 'primeng/message';
 import { Document } from '../../shared/types/document';
 import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
@@ -17,7 +29,17 @@ import { PrimeTemplate } from 'primeng/api';
 
 @Component({
   selector: 'app-case-details',
-  imports: [ProgressSpinner, TranslatePipe, Tag, Button, DatePipe, Card, FileUpload, PrimeTemplate],
+  imports: [
+    ProgressSpinner,
+    FormsModule,
+    CommonModule,
+    TranslatePipe,
+    ButtonModule,
+    InputTextModule,
+    CardModule,
+    Message,
+    Tag, Button, DatePipe, Card, FileUpload, PrimeTemplate
+  ],
   templateUrl: './case-details.component.html',
   styleUrl: './case-details.component.scss',
 })
@@ -28,8 +50,11 @@ export class CaseDetailsComponent {
   private readonly _route = inject(ActivatedRoute);
   private readonly _translationService = inject(TranslateService);
   private readonly _notificationService = inject(NotificationService);
+  private readonly _commentService = inject(CommentService);
+  private readonly _userService = inject(UserService);
   private readonly _router = inject(Router);
   private readonly _translateService = inject(TranslateService);
+
 
   public caseData: Case | null = null;
   public loading = true;
@@ -38,6 +63,11 @@ export class CaseDetailsComponent {
     invalidFileSizeMessageDetail: '',
     invalidFileTypeMessageSummary: '',
   };
+
+  public comments: CommentDTO[] = [];
+  public loadingComments = false;
+  public newCommentText = '';
+  public postingComment = false;
 
   ngOnInit() {
     this._translateService.onLangChange.subscribe(() => {
@@ -49,6 +79,7 @@ export class CaseDetailsComponent {
         next: (data) => {
           this.caseData = data;
           this.loading = false;
+          this.loadComments();
           let caseId = this.caseData?.id;
           if (caseId) {
             this.getDocuments(caseId);
@@ -61,6 +92,11 @@ export class CaseDetailsComponent {
     } else {
       this.loading = false;
     }
+  }
+
+  public get currentUserId(): string | null {
+    const user = this._userService.userDetails();
+    return user?.id ?? null;
   }
 
   public getStatusTranslation(status: Statuses | undefined): string {
@@ -146,6 +182,40 @@ export class CaseDetailsComponent {
       error: (error) => {
         const apiError = error?.error;
         this._notificationService.showError(this._translationService.instant(apiError.detail));
+      },
+    });
+  }
+
+  public loadComments(): void {
+    if (!this.caseData?.id) return;
+    this.loadingComments = true;
+    this._commentService.getComments(this.caseData.id).subscribe({
+      next: (comments) => {
+        this.comments = comments;
+        this.loadingComments = false;
+      },
+      error: () => {
+        this.loadingComments = false;
+      },
+    });
+  }
+
+  public postComment(userId: string): void {
+    if (!this.newCommentText.trim() || !this.caseData?.id) return;
+    this.postingComment = true;
+    const comment: CreateCommentDTO = {
+      userId,
+      text: this.newCommentText,
+      timestamp: new Date().toISOString(),
+    };
+    this._commentService.addCommentToCase(this.caseData.id, comment).subscribe({
+      next: (createdComment) => {
+        this.comments.push(createdComment);
+        this.newCommentText = '';
+        this.postingComment = false;
+      },
+      error: () => {
+        this.postingComment = false;
       },
     });
   }

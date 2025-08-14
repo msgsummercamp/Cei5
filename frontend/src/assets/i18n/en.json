@@ -408,7 +408,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
-    "userCreated": "User created successfully."
+    "userCreated": "User created successfully.",
     "reservation-not-found": "The reservation was not found."
   },
   "not-found": {
@@ -438,6 +438,12 @@
     "upload": "Upload file",
     "invalid-file-type": "Invalid file type. Please upload a PDF, DOCX, or JPG file.",
     "invalid-file-size": "File size exceeds the limit",
-    "max-file-size": "Maximum file size is 5MB."
+    "max-file-size": "Maximum file size is 5MB.",
+    "chat": {
+      "type-message": "Type your message...",
+      "send": "Send",
+      "message-length": "*The comment has at most 1000 characters",
+      "comments": "Comments"
+    }
   }
 }

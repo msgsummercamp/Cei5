@@ -37,7 +37,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.comment {
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.user {
+  background-color: #90ee90;
 }

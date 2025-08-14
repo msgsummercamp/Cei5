@@ -109,7 +109,65 @@
           <h2>{{ 'case-details.actions' | translate }}</h2>
         </div>
         <div>
-          <h2>Chat</h2>
+          <div style="width: 370px">
+          <p-card
+            header="{{ 'case-details.chat.comments' | translate }}"
+            class="w-full"
+            [styleClass]="'text-center'"
+          >
+            @if (loadingComments) {
+              <p-progress-spinner />
+            } @else {
+              <div
+                class="chat-messages"
+                style="max-height: 300px; overflow-y: auto; max-width: 350px"
+              >
+                @for (comment of comments; track comment.id) {
+                  @if (comment.userId === currentUserId) {
+                    <p-card class="chat-message text-right" [styleClass]="'mb-2 bg-green-100'">
+                      <strong>{{ comment.username }}</strong>
+                      <span class="ml-2 text-xs text-muted">{{
+                        comment.timestamp | date: 'short'
+                      }}</span>
+                      <div style="word-break: break-word; white-space: pre-line">{{
+                        comment.text
+                      }}</div>
+                    </p-card>
+                  } @else {
+                    <p-card class="chat-message text-left" [styleClass]="'mb-2 bg-gray-100'">
+                      <strong>{{ comment.username }}</strong>
+                      <span class="ml-2 text-xs text-muted">{{
+                        comment.timestamp | date: 'short'
+                      }}</span>
+                      <div style="word-break: break-word; white-space: pre-line">{{
+                        comment.text
+                      }}</div>
+                    </p-card>
+                  }
+                }
+              </div>
+              <div class="chat-input mt-2 flex flex-row gap-2">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="newCommentText"
+                  placeholder="{{ 'case-details.chat.type-message' | translate }}"
+                  class="p-inputtext flex-grow-1"
+                  [disabled]="postingComment"
+                />
+                <p-button
+                  label="{{ 'case-details.chat.send' | translate }}"
+                  (click)="postComment(currentUserId!)"
+                  [disabled]="postingComment || !newCommentText.trim() || !currentUserId"
+                  icon="pi pi-send"
+                  class="p-button-sm"
+                ></p-button>
+              </div>
+            }
+            <p-message variant="simple" severity="success">{{
+              'case-details.chat.message-length' | translate
+            }}</p-message>
+          </p-card>
         </div>
       </div>
     </div>
