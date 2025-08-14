@@ -407,5 +407,11 @@
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
     "userCreated": "User created successfully."
-  }    
+    "reservation-not-found": "The reservation was not found."
+  },
+  "not-found": {
+    "title": "Page Not Found",
+    "message": "The page you’re looking for doesn’t exist, has been moved, or is enjoying a long vacation. Try checking the URL or head back to the homepage.",
+    "button": "Back to Homepage"
+  }
 }
