@@ -406,7 +406,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
-    "userCreated": "User created successfully."
+    "userCreated": "User created successfully.",
     "reservation-not-found": "The reservation was not found."
   },
   "not-found": {

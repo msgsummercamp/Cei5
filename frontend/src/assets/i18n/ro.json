@@ -378,7 +378,7 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid",
+    "INVALID": "Invalid"
   },
 
   "profile-page": {
@@ -409,7 +409,7 @@
     "save": "Salvează",
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
-    "userCreated": "Utilizator creat cu succes."
+    "userCreated": "Utilizator creat cu succes.",
     "reservation-not-found": "Rezervarea nu a fost găsită."
   },
   "not-found": {
