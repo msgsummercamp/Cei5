@@ -368,7 +368,9 @@
     "clear": "Clear",
     "apply": "Apply",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "choose": "Choose",
+    "upload": "Upload"
   },
   "statuses": {
     "ASSIGNED": "Assigned",
@@ -413,5 +415,29 @@
     "title": "Page Not Found",
     "message": "The page you’re looking for doesn’t exist, has been moved, or is enjoying a long vacation. Try checking the URL or head back to the homepage.",
     "button": "Back to Homepage"
+  },
+  "forbidden": {
+    "title": "Access Denied: Forbidden",
+    "message": "Oops! It looks like you don't have the necessary permissions to view this page. This route is restricted.",
+    "back-to-home": "Back to Home"
+  },
+  "case-details": {
+    "title": "Case Details",
+    "actions": "Actions",
+    "date": "Date",
+    "assigned-employee": "Assigned Employee",
+    "disruption-reason": "Disruption Reason",
+    "disruption-info": "Disruption Info",
+    "reservation-details": "Reservation Details",
+    "reservation": "Reservation Number",
+    "route": "Route",
+    "documents": "Documents",
+    "no-documents": "No documents uploaded.",
+    "select-file-error": "Please select a file to upload.",
+    "upload-file-success": "File uploaded successfully.",
+    "upload": "Upload file",
+    "invalid-file-type": "Invalid file type. Please upload a PDF, DOCX, or JPG file.",
+    "invalid-file-size": "File size exceeds the limit",
+    "max-file-size": "Maximum file size is 5MB."
   }
 }

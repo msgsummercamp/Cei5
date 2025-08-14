@@ -296,7 +296,6 @@
       "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
       "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
     },
-
     "notEligible": {
       "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
       "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
@@ -354,7 +353,6 @@
     "search-by-flight-number": "Căutare după Număr Zbor",
     "search-by-employee": "Căutare după Angajat",
     "beneficiary-name": "Nume Beneficiar"
-
   },
   "primeng": {
     "startsWith": "Începe cu",
@@ -370,7 +368,9 @@
     "clear": "Curăță",
     "apply": "Aplică",
     "yes": "Da",
-    "no": "Nu"
+    "no": "Nu",
+    "choose": "Alege",
+    "upload": "Încarcă"
   },
   "statuses": {
     "ASSIGNED": "Atribuit",
@@ -378,9 +378,8 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid",
+    "INVALID": "Invalid"
   },
-
   "profile-page": {
     "card-information": {
       "email": "Email:",
@@ -393,13 +392,13 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name" : "Nume",
-    "role" : "Rol",
-    "assignedCases" : "Numar de cazuri atribuite",
-    "userDeleted" : "Utilizatorul a fost sters",
-    "addNewEmployee" : "Adaugă un nou angajat"
+    "name": "Nume",
+    "role": "Rol",
+    "assignedCases": "Numar de cazuri atribuite",
+    "userDeleted": "Utilizatorul a fost sters",
+    "addNewEmployee": "Adaugă un nou angajat"
   },
-    "employee-dialog": {
+  "employee-dialog": {
     "header": "Adaugă User",
     "title": "Detalii User",
     "firstName": "Prenume",
@@ -409,12 +408,36 @@
     "save": "Salvează",
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
-    "userCreated": "Utilizator creat cu succes."
+    "userCreated": "Utilizator creat cu succes.",
     "reservation-not-found": "Rezervarea nu a fost găsită."
   },
   "not-found": {
     "title": "Pagină inexistentă",
     "message": "Pagina pe care o cauți nu există, a fost mutată sau se bucură de o vacanță lungă. Verifică adresa URL sau întoarce-te la pagina principală.",
     "back-to-home": "Înapoi la pagina principală"
+  },
+  "forbidden": {
+    "title": "Acces interzis",
+    "message": "Oops! Se pare că nu aveți permisiunea să accesați această pagină. Ruta este restricționată.",
+    "back-to-home": "Înapoi acasă"
+  },
+  "case-details": {
+    "title": "Detalii Caz",
+    "actions": "Acțiuni",
+    "date": "Dată",
+    "assigned-employee": "Angajat Atribuit",
+    "disruption-reason": "Motivul Perturbării",
+    "disruption-info": "Informații Perturbare",
+    "reservation-details": "Detalii Rezervare",
+    "reservation": "Număr Rezervare",
+    "route": "Rută",
+    "documents": "Documente",
+    "no-documents": "Niciun document încărcat.",
+    "select-file-error": "Vă rugăm să selectați un fișier.",
+    "upload-file-success": "Fișier încărcat cu succes.",
+    "upload": "Încărcare Fișier",
+    "invalid-file-size": "Fișierul este prea mare.",
+    "invalid-file-type": "Tipul fișierului nu este acceptat. Acceptăm doar PDF, JPG, PNG.",
+    "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB."
   }
 }
