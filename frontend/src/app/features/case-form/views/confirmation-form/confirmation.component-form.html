@@ -1,21 +1,30 @@
 <div class="confirmation-wrapper flex flex-column align-items-center">
   <h1 class="text-blue-900">{{ 'confirmation.congratulations' | translate }}</h1>
-  <div class="grid grid-nogutter gap-3 h-full text-justify line-height-3">
-    <p-card class="col" [styleClass]="'h-full'" [header]="'confirmation.step1.title' | translate">
-      <div class="p-4 m-0">
-        {{ 'confirmation.step1.text' | translate }} <br /><br />
-        <p-button>
-          <i class="pi pi-download"></i> &nbsp; {{ 'confirmation.step1.button' | translate }}
-        </p-button>
-      </div>
-    </p-card>
-    <p-card class="col" [styleClass]="'h-full'" [header]="'confirmation.step2.title' | translate">
-      <div class="p-4 m-0" [innerHTML]="'confirmation.step2.text' | translate"> </div>
-    </p-card>
-    <p-card class="col" [styleClass]="'h-full'" [header]="'confirmation.step3.title' | translate">
-      <div class="p-4">
-        {{ 'confirmation.step3.text' | translate }}
-      </div>
-    </p-card>
-  </div>
+  <p-scrollpanel>
+    <div class="grid grid-nogutter gap-3 text-justify line-height-3 p-3">
+      <p-card
+        class="col-12 lg:col"
+        [styleClass]="'h-15rem'"
+        [header]="'confirmation.step1.title' | translate"
+      >
+        <div class="p-4 m-0" [innerHTML]="'confirmation.step1.text' | translate"> </div>
+      </p-card>
+      <p-card
+        class="col-12 lg:col"
+        [styleClass]="'h-15rem'"
+        [header]="'confirmation.step2.title' | translate"
+      >
+        <div class="p-4 m-0" [innerHTML]="'confirmation.step2.text' | translate"><br /><br /> </div>
+      </p-card>
+      <p-card
+        class="col-12 lg:col"
+        [styleClass]="'h-15rem'"
+        [header]="'confirmation.step3.title' | translate"
+      >
+        <div class="p-4">
+          {{ 'confirmation.step3.text' | translate }}
+        </div>
+      </p-card>
+    </div>
+  </p-scrollpanel>
 </div>
