@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './features/home-page/home-page.component';
 import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CaseFormComponent } from './features/case-form/case-form.component';
-import { UserProfileComponent } from './features/user-profile/user-profile.component';
 
 export const routes: Routes = [
   // change these, only for testing purposes
@@ -20,7 +19,8 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: UserProfileComponent,
+    loadComponent: () =>
+      import('./features/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
   },
   {
     path: 'change-password',
