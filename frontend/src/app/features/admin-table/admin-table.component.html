@@ -116,5 +116,11 @@
       (onCancel)="closeEmployeeDialog()"
       (onSuccess)="onEmployeeDialogSuccess()"
     ></app-employee-dialog>
+
+    <p-confirm-dialog
+      header="{{ 'case-table.confirmation' | translate }}"
+      icon="pi pi-exclamation-triangle"
+    >
+    </p-confirm-dialog>
   </div>
 </div>
