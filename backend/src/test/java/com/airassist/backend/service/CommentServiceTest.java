@@ -3,25 +3,23 @@ package com.airassist.backend.service;
 import com.airassist.backend.dto.comment.CommentDTO;
 import com.airassist.backend.dto.comment.CreateCommentDTO;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
+import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.CommentMapper;
 import com.airassist.backend.model.Case;
 import com.airassist.backend.model.Comment;
+import com.airassist.backend.model.User;
 import com.airassist.backend.repository.CaseRepository;
 import com.airassist.backend.repository.CommentRepository;
 import com.airassist.backend.repository.UserRepository;
 import com.airassist.backend.service.impl.CommentServiceImpl;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.IllformedLocaleException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -76,6 +74,85 @@ public class CommentServiceTest {
         assertEquals(commentDTO2, result.get(1));
     }
 
+    @Test
+    void addCommentToCase_WhenCaseDoesNotExist_ShouldThrowCaseNotFoundException() {
+        assertThrows(CaseNotFoundException.class, () -> commentService.addCommentToCase(UUID.randomUUID(), new CreateCommentDTO()));
+    }
 
+    @Test
+    void addCommentToCase_WhenCommentHasNullTest_ShouldThrowIllegalArgumentException() {
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+        CreateCommentDTO dto = new CreateCommentDTO();
+        dto.setText("");
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        assertThrows(IllegalArgumentException.class, () -> commentService.addCommentToCase(caseId, dto));
+    }
 
+    @Test
+    void addCommentToCase_WhenCommentHasNullUserId_ShouldThrowIllegalArgumentException() {
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+        CreateCommentDTO dto = new CreateCommentDTO();
+        dto.setUserId(null);
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        assertThrows(IllegalArgumentException.class, () -> commentService.addCommentToCase(caseId, dto));
+    }
+
+    @Test
+    void addCommentToCase_WhenCommentHasOver1000Length_ShouldThrowIllegalArgumentException() {
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+        CreateCommentDTO dto = new CreateCommentDTO();
+        dto.setText("a".repeat(1001));
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        assertThrows(IllegalArgumentException.class, () -> commentService.addCommentToCase(caseId, dto));
+    }
+
+    @Test
+    void addCommentToCase_WhenUserDoesNotExist_ShouldThrowUserNotFoundException() {
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+
+        UUID userId = UUID.randomUUID();
+        CreateCommentDTO comment = new CreateCommentDTO();
+        comment.setUserId(userId);
+        comment.setText("test text");
+
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        when(userRepository.findById(comment.getUserId())).thenReturn(Optional.empty());
+        assertThrows(UserNotFoundException.class, () -> commentService.addCommentToCase(caseId, comment));
+    }
+
+    @Test
+    void addCommentToCase_WhenUserExistsAndCaseExistsAndCommentIsValid_ShouldReturnTheAddedComment() throws UserNotFoundException {
+        UUID caseId = UUID.randomUUID();
+        Case caseEntity = new Case();
+        caseEntity.setId(caseId);
+
+        UUID userId = UUID.randomUUID();
+        User user = new User();
+        user.setId(userId);
+        CreateCommentDTO commentDTO = new CreateCommentDTO();
+        commentDTO.setUserId(userId);
+        commentDTO.setText("test text");
+
+        Comment comment = new Comment();
+        comment.setText("test text");
+
+        when(caseRepository.findById(caseId)).thenReturn(Optional.of(caseEntity));
+        when(userRepository.findById(commentDTO.getUserId())).thenReturn(Optional.of(user));
+        when(commentMapper.createCommentDtoToComment(commentDTO)).thenReturn(comment);
+
+        comment.setUser(user);
+        comment.setCaseEntity(caseEntity);
+
+        CommentDTO expectedDto = commentMapper.commentToCommentDTO(comment);
+        CommentDTO actualDto = commentService.addCommentToCase(caseId, commentDTO);
+        assertEquals(expectedDto, actualDto);
+    }
 }
