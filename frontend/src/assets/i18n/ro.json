@@ -213,18 +213,18 @@
     "privacy-policy": "politica de confidențialitate."
   },
   "confirmation": {
-    "congratulations": "Felicitări! Acum puteți trimite cazul dumneavoastră. Înainte de aceasta, iată o prezentare a pașilor următori:",
+    "congratulations": "Felicitări! Acum puteți să vă trimiteți cazul. Dar mai întâi, iată o previzualizare a următorilor pași:",
     "step1": {
       "title": "Pasul 1",
-      "text": "Accesați contul dumneavoastră apăsând butonul <strong>Finalizează</strong> de mai jos. După autentificare, încărcați toate documentele necesare pentru cazul dumneavoastră."
+      "text": "Puteți trimite cazul făcând clic pe butonul <strong>Finalizare</strong> de mai jos. După ce accesați contul, noul caz va fi vizibil în profilul dumneavoastră."
     },
     "step2": {
       "title": "Pasul 2",
-      "text": "După ce apăsați <strong>Finalizează</strong>, se va genera un contract cu datele dumneavoastră. Citiți-l cu atenție, semnați-l și încărcați-l în dosarul dumneavoastră."
+      "text": "Când faceți clic pe <strong>Finalizare</strong>, va fi generat un contract cu datele dumneavoastră. Citiți-l, semnați-l și încărcați-l la cazul dumneavoastră, împreună cu alte documente necesare."
     },
     "step3": {
       "title": "Pasul 3",
-      "text": "Așteptați ca un membru al echipei să proceseze cazul dumneavoastră și verificați periodic emailul pentru eventuale actualizări."
+      "text": "Așteptați ca un angajat să proceseze cazul dumneavoastră și verificați-vă e-mailul pentru eventuale actualizări."
     }
   },
   "stepper": {
