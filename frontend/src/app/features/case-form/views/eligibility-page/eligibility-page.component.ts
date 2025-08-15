@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -43,6 +43,7 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _translateService = inject(TranslateService);
 
   private hasRunInitialCheck = false;
+  public isCompensationLoading = signal(true);
 
   public readonly disruptionReason = input<string>('');
   public readonly disruptionInfo = input<string>('');
@@ -79,13 +80,14 @@ export class EligibilityPageComponent implements OnInit {
     const dep = this.departingAirportValue;
     const dest = this.destinationAirportValue;
 
+    this._compensationService.compensation$.subscribe((data) => {
+      this.compensation = data;
+      this.isCompensationLoading.set(false);
+    });
+
     if (!!dep && !!dest) {
       this._compensationService.calculateDistance(dep, dest);
     }
-
-    this._compensationService.compensation$.subscribe((data) => {
-      this.compensation = data;
-    });
   }
 
   public getEligibleMessage(): string {

@@ -289,8 +289,8 @@
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
   },
   "eligibilityForm": {
-    "checkEligibility": "Verificarea eligibilitati.",
-    "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "checkEligibility": "Verificarea eligibilității.",
+    "loading": "Te rog așteaptă, până verificăm eligibilitatea cazului tău.",
     "eligible": {
       "congratulations": "Felicitări!",
       "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
