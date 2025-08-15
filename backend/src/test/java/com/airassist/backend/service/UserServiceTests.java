@@ -97,8 +97,7 @@ class UserServiceTests {
         lenient().when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(randomPasswordGenerator.generateRandomPassword()).thenReturn(generatedPassword);
         when(passwordEncoder.encode(generatedPassword)).thenReturn(encodedPassword);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
+        when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         User savedUser = userService.addUser(user);
 
         assertNotNull(savedUser);
@@ -119,8 +118,7 @@ class UserServiceTests {
         when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(randomPasswordGenerator.generateRandomPassword()).thenReturn(generatedPassword);
         when(passwordEncoder.encode(generatedPassword)).thenReturn(encodedPassword);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
+        when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         User savedUser = userService.addUser(user);
 
         assertEquals(Roles.ADMIN, savedUser.getRole());
@@ -196,8 +194,7 @@ class UserServiceTests {
             when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
             when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
-            when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
-
+            when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
             User updatedUser = userService.updateUser(inputUser);
 
             assertEquals("encodedPassword", updatedUser.getPassword());
@@ -225,8 +222,7 @@ class UserServiceTests {
 
             when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
-            when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
+            when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
             User updatedUser = userService.updateUser(inputUser);
 
             assertEquals(null, updatedUser.getPassword());
@@ -281,8 +277,7 @@ class UserServiceTests {
         when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
         when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
-        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
-
+        when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         User result = userService.patchUser(inputUser);
 
         assertEquals("encodedPassword", result.getPassword());
