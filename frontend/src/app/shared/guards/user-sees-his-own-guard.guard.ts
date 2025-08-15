@@ -27,7 +27,6 @@ export const userSeesHisOwnGuardGuard: CanActivateFn = (route, state) => {
       if (userRole === Roles.USER && caseData.client.id !== userId) {
         return router.parseUrl('/forbidden');
       }
-      console.log('User is authorized to see their own case');
       return true;
     }),
     catchError(() => {
