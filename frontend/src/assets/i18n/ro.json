@@ -398,7 +398,8 @@
     "assignedCases" : "Număr de cazuri atribuite",
     "userDeleted" : "Utilizatorul a fost șters",
     "addNewUser" : "Adaugă utilizator",
-    "selectRole": "Selectați rolul"
+    "selectRole": "Selectați rolul",
+    "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
   },
   "roles": {
     "USER": "Pasager",

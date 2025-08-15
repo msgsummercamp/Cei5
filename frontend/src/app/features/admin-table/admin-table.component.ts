@@ -13,13 +13,13 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { EmployeeDialogComponent } from '../../shared/employee-dialog/employee-dialog.component';
-import { SortEvent } from 'primeng/api';
+import { ConfirmationService, SortEvent } from 'primeng/api';
 import { TableHelper } from '../../shared/helper/table-helper';
 import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
-import { Statuses } from '../../shared/types/enums/status';
 import { Roles } from '../../shared/types/enums/roles';
 import { FormsModule } from '@angular/forms';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-admin-table',
@@ -35,15 +35,18 @@ import { FormsModule } from '@angular/forms';
     Select,
     Tag,
     FormsModule,
+    ConfirmDialog,
   ],
   templateUrl: './admin-table.component.html',
   styleUrl: './admin-table.component.scss',
+  providers: [ConfirmationService],
 })
 export class AdminTableComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _caseService = inject(CaseService);
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
+  private readonly _confirmationService = inject(ConfirmationService);
 
   public users: User[] = [];
   public initialValue: User[] = [];
@@ -81,17 +84,22 @@ export class AdminTableComponent implements OnInit {
   }
 
   public deleteUser(userId: string): void {
-    this._userService.deleteUser(userId).subscribe({
-      next: () => {
-        this.users = this.users.filter((user) => user.id !== userId);
-        this._notificationService.showSuccess(
-          this._translateService.instant('admin-panel.userDeleted')
-        );
-      },
-      error: (error) => {
-        const apiError: ApiError = error?.error;
-        const errorKey = apiError?.detail || 'error.details';
-        this._notificationService.showError(this._translateService.instant(errorKey));
+    this._confirmationService.confirm({
+      message: this._translateService.instant('admin-panel.confirm-delete'),
+      accept: () => {
+        this._userService.deleteUser(userId).subscribe({
+          next: () => {
+            this.users = this.users.filter((user) => user.id !== userId);
+            this._notificationService.showSuccess(
+              this._translateService.instant('admin-panel.userDeleted')
+            );
+          },
+          error: (error) => {
+            const apiError: ApiError = error?.error;
+            const errorKey = apiError?.detail || 'error.details';
+            this._notificationService.showError(this._translateService.instant(errorKey));
+          },
+        });
       },
     });
   }
