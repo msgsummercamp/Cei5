@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CaseService } from '../../../../shared/services/case.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Statuses } from '../../../../shared/types/enums/status';
 import { ReservationService } from '../../../../shared/services/reservation.service';
 import { FlightManagementService } from '../../../../shared/services/flight-management.service';
@@ -27,6 +27,7 @@ import { DisruptionReasons } from '../../../../shared/types/enums/disruption-rea
     MessageModule,
     ProgressSpinnerModule,
     TranslatePipe,
+    RouterLink,
   ],
   templateUrl: './eligibility-page.component.html',
   styleUrl: './eligibility-page.component.scss',
