@@ -142,7 +142,8 @@
     "user-profile-title": "Profilul meu",
     "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
-    "check-flight": "Verifică zbor"
+    "check-flight": "Verifică zbor",
+    "admin-table": "Administrare utilizatori"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -212,18 +213,18 @@
     "privacy-policy": "politica de confidențialitate."
   },
   "confirmation": {
-    "congratulations": "Felicitări! Acum puteți trimite cazul dumneavoastră. Înainte de aceasta, iată o prezentare a pașilor următori:",
+    "congratulations": "Felicitări! Acum puteți să vă trimiteți cazul. Dar mai întâi, iată o previzualizare a următorilor pași:",
     "step1": {
       "title": "Pasul 1",
-      "text": "Accesați contul dumneavoastră apăsând butonul <strong>Finalizează</strong> de mai jos. După autentificare, încărcați toate documentele necesare pentru cazul dumneavoastră."
+      "text": "Puteți trimite cazul făcând clic pe butonul <strong>Finalizare</strong> de mai jos. După ce accesați contul, noul caz va fi vizibil în profilul dumneavoastră."
     },
     "step2": {
       "title": "Pasul 2",
-      "text": "După ce apăsați <strong>Finalizează</strong>, se va genera un contract cu datele dumneavoastră. Citiți-l cu atenție, semnați-l și încărcați-l în dosarul dumneavoastră."
+      "text": "Când faceți clic pe <strong>Finalizare</strong>, va fi generat un contract cu datele dumneavoastră. Citiți-l, semnați-l și încărcați-l la cazul dumneavoastră, împreună cu alte documente necesare."
     },
     "step3": {
       "title": "Pasul 3",
-      "text": "Așteptați ca un membru al echipei să proceseze cazul dumneavoastră și verificați periodic emailul pentru eventuale actualizări."
+      "text": "Așteptați ca un angajat să proceseze cazul dumneavoastră și verificați-vă e-mailul pentru eventuale actualizări."
     }
   },
   "stepper": {
@@ -289,21 +290,22 @@
     "airlinePattern": "Compania aeriană trebuie să conțină doar litere."
   },
   "eligibilityForm": {
-    "checkEligibility": "Verificarea eligibilitati.",
-    "loading": "Te rog asteapta, pana verificam eligibilitatea cazului tau.",
+    "checkEligibility": "Verificarea eligibilității.",
+    "loading": "Te rog așteaptă, până verificăm eligibilitatea cazului tău.",
     "eligible": {
       "congratulations": "Felicitări!",
       "compensation-start": "Este posibil să aveți dreptul la o compensație de până la ",
       "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
     },
     "notEligible": {
-      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
-      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
+      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații.",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească. Pentru a verifica un alt zbor, apăsați "
     },
     "conditionsNotFulfilled": {
-      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate:",
-      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici."
+      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate.",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați "
     },
+    "link": "aici",
     "continueWithPersonalDetails": "Continua cu datele personale.",
     "restart": "Reporniti de la inceput."
   },
@@ -394,15 +396,21 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name": "Nume",
-    "role": "Rol",
-    "assignedCases": "Numar de cazuri atribuite",
-    "userDeleted": "Utilizatorul a fost sters",
-    "addNewEmployee": "Adaugă un nou angajat"
+    "name" : "Nume",
+    "role" : "Rol",
+    "assignedCases" : "Număr de cazuri atribuite",
+    "userDeleted" : "Utilizatorul a fost șters",
+    "addNewUser" : "Adaugă utilizator",
+    "selectRole": "Selectați rolul",
+    "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
+  },
+  "roles": {
+    "USER": "Pasager",
+    "ADMIN": "Administrator",
+    "EMPLOYEE": "Angajat"
   },
   "employee-dialog": {
-    "header": "Adaugă User",
-    "title": "Detalii User",
+    "header": "Detalii utilizator",
     "firstName": "Prenume",
     "lastName": "Nume",
     "email": "Email",
@@ -411,7 +419,8 @@
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
     "userCreated": "Utilizator creat cu succes.",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
+    "reservation-not-found": "Rezervarea nu a fost găsită.",
+    "role-required": "Rolul este obligatoriu."
   },
   "not-found": {
     "title": "Pagină inexistentă",

@@ -96,13 +96,19 @@ p-select-list-container {
 .navbar-wrapper {
   position: sticky;
   width: 100%;
-  z-index: 1000;
+  z-index: 4000;
 }
 
 ::ng-deep .navbar-wrapper .p-select-overlay {
   margin-top: 2.3rem;
   margin-right: 1.5rem;
   margin-left: -3rem;
+}
+
+::ng-deep .user-menu-dropdown .p-menu-overlay {
+  top: 4.72rem !important;
+  left: auto !important;
+  right: 1.2rem;
 }
 
 ::ng-deep .hamburger-menu-button {
@@ -117,11 +123,11 @@ p-select-list-container {
 
 .hamburger-menu-overlay {
   position: fixed;
+  z-index: 4000;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
 }
 
 .hamburger-menu-container {
@@ -130,7 +136,7 @@ p-select-list-container {
   width: 100%;
   min-height: 10%;
   background: rgba(15, 27, 88, 0.99);
-  z-index: 2100;
+  z-index: 4000;
   display: flex;
   flex-direction: column;
   align-items: center;

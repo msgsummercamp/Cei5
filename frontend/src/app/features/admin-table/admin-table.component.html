@@ -1,12 +1,25 @@
 <div class="mt-8 mx-2 employee-case-table px-8 admin-table-container">
-  <h1 class="text-center">
-    {{ 'admin-panel.title' | translate }}
-  </h1>
+  <div class="grid grid-nogutter">
+    <p-button class="col-2 mt-3" size="large" (onClick)="openEmployeeDialog()">
+      <i class="pi pi-user-plus" pButtonIcon></i>
+      {{ 'admin-panel.addNewUser' | translate }}
+    </p-button>
+    <h1 class="text-center col-8">
+      {{ 'admin-panel.title' | translate }}
+    </h1>
+  </div>
   <div class="pt-3">
     <p-table
+      #dt
       [value]="users"
       [paginator]="true"
-      [rows]="10"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 7]"
+      [loading]="loading"
+      [customSort]="true"
+      [scrollable]="true"
+      scrollHeight="80vh"
+      (sortFunction)="customSort($event)"
       [globalFilterFields]="['firstName', 'lastName', 'email', 'role']"
       [tableStyle]="{ 'min-width': '50rem' }"
     >
@@ -21,19 +34,25 @@
                 display="menu"
                 [showAddButton]="false"
                 [showOperator]="false"
-                [showApplyButton]="false"
-                [showClearButton]="false"
-                [showMatchModes]="false"
               />
             </div>
           </th>
 
-          <th><div class="text-center">Email</div></th>
+          <th
+            ><div class="text-center"
+              >Email
+              <p-columnFilter
+                type="text"
+                field="email"
+                display="menu"
+                [showAddButton]="false"
+                [showOperator]="false"
+              /> </div
+          ></th>
 
-          <th pSortableColumn="role" style="width: 20%">
+          <th>
             <div class="text-center">
               {{ 'admin-panel.role' | translate }}
-              <p-sortIcon field="role">{{ 'admin-panel.role' | translate }}</p-sortIcon>
               <p-columnFilter
                 field="role"
                 matchMode="equals"
@@ -43,7 +62,23 @@
                 [showMatchModes]="false"
                 [showApplyButton]="false"
                 [showClearButton]="false"
-              />
+              >
+                <ng-template #filter let-filter="filterCallback">
+                  <p-select
+                    [(ngModel)]="rolesFilterValue"
+                    [options]="rolesOptions"
+                    (onChange)="filter($event.value)"
+                    (onClear)="onRolesFilterClear()"
+                    [showClear]="true"
+                    placeholder="{{ 'admin-panel.selectRole' | translate }}"
+                    class="w-full"
+                  >
+                    <ng-template let-option #item>
+                      <p-tag [value]="option.label" [severity]="'success'"></p-tag>
+                    </ng-template>
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
             </div>
           </th>
           <th pSortableColumn="caseCount">
@@ -52,20 +87,16 @@
               <p-sortIcon field="caseCount"></p-sortIcon>
             </div>
           </th>
-          <th>
-            <p-button
-              label="{{ 'admin-panel.addNewEmployee' | translate }}"
-              (onClick)="openEmployeeDialog()"
-            ></p-button>
-          </th>
-          <th style="width: 5rem"></th>
+          <th> </th>
         </tr>
       </ng-template>
       <ng-template #body let-user>
         <tr>
           <td class="text-center">{{ concatenateName(user) }}</td>
           <td class="text-center">{{ user.email }}</td>
-          <td class="text-center">{{ user.role }}</td>
+          <td class="text-center">
+            <p-tag [value]="getRoleTranslation(user.role)" [severity]="'success'" />
+          </td>
           <td class="text-center">{{ user.caseCount }}</td>
           <td
             ><p-button
@@ -85,5 +116,11 @@
       (onCancel)="closeEmployeeDialog()"
       (onSuccess)="onEmployeeDialogSuccess()"
     ></app-employee-dialog>
+
+    <p-confirm-dialog
+      header="{{ 'case-table.confirmation' | translate }}"
+      icon="pi pi-exclamation-triangle"
+    >
+    </p-confirm-dialog>
   </div>
 </div>

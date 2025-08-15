@@ -55,10 +55,14 @@
               </p-button>
             }
             @if (isAuthenticated()) {
-              <div class="user-menu flex">
-                <p-button (onClick)="userMenu.toggle($event)">
+              <div class="user-menu">
+                <p-button (onClick)="this.toggleUserMenu($event)">
                   <span>{{ userName }}</span>
-                  <i class="pi pi-angle-down"></i>
+                  @if (this.isUserMenuOpen) {
+                    <i class="pi pi-angle-up"></i>
+                  } @else {
+                    <i class="pi pi-angle-down"></i>
+                  }
                 </p-button>
 
                 <p-menu
