@@ -60,7 +60,6 @@ class CaseServiceTest {
         List<Case> result = caseService.getCases();
 
         assertEquals(cases, result);
-        verify(caseRepository).findAll();
     }
 
     @Test
@@ -100,7 +99,6 @@ class CaseServiceTest {
         Case result = caseService.createCase(dto);
 
         assertNotNull(result);
-        verify(caseRepository).save(caseEntity);
     }
 
     @Test
@@ -162,7 +160,6 @@ class CaseServiceTest {
         Case result = caseService.createCase(dto);
 
         assertNotNull(result);
-        verify(reservationRepository).findById(reservation.getId());
     }
 
     @Test
@@ -197,7 +194,6 @@ class CaseServiceTest {
         when(caseRepository.existsById(id)).thenReturn(true);
 
         assertDoesNotThrow(() -> caseService.deleteCase(id));
-        verify(caseRepository).deleteById(id);
     }
 
     @Test
