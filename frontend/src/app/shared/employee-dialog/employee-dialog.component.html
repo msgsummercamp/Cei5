@@ -127,7 +127,7 @@
         label="{{ 'employee-dialog.save' | translate }}"
         (click)="onSaveClick()"
         [loading]="loading()"
-        [disabled]="loading()"
+        [disabled]="loading() || newUserForm.invalid"
       />
     </div>
   </form>
