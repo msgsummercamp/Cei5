@@ -311,7 +311,8 @@
     "next": "Finish"
   },
   "user-service": {
-    "error": "Error"
+    "error": "Error",
+    "user-created": "User created successfully. Check the email for a temporary password."
   },
   "api-errors": {
     "invalid-airport-details": "Invalid airports details: from {{departingAirportCode}} to {{destinationAirportCode}}. Please check the airport codes.",
@@ -370,7 +371,8 @@
     "yes": "Yes",
     "no": "No",
     "choose": "Choose",
-    "upload": "Upload"
+    "upload": "Upload",
+    "cancel": "Cancel"
   },
   "statuses": {
     "ASSIGNED": "Assigned",
@@ -423,8 +425,11 @@
   },
   "case-details": {
     "title": "Case Details",
-    "actions": "Actions",
     "date": "Date",
+    "read": "Read",
+    "created-by": "Created By",
+    "no-client": "Client information not available anymore.",
+    "beneficiary": "Beneficiary",
     "assigned-employee": "Assigned Employee",
     "disruption-reason": "Disruption Reason",
     "disruption-info": "Disruption Info",
@@ -436,14 +441,36 @@
     "select-file-error": "Please select a file to upload.",
     "upload-file-success": "File uploaded successfully.",
     "upload": "Upload file",
+    "select-file": "Select a file",
     "invalid-file-type": "Invalid file type. Please upload a PDF, DOCX, or JPG file.",
     "invalid-file-size": "File size exceeds the limit",
     "max-file-size": "Maximum file size is 5MB.",
+    "actions": {
+      "title": "Actions",
+      "assign-employee": "Assign Employee",
+      "update": "Update",
+      "select-status": "Select Status",
+      "update-status": "Update Status",
+      "status-update-success": "Status updated successfully.",
+      "select-employee": "Select Employee",
+      "employee-update-success": "Employee assigned successfully.",
+      "no-employees": "No employees available to assign."
+    },
     "chat": {
       "type-message": "Type your message...",
       "send": "Send",
       "message-length": "*The comment has at most 1000 characters",
       "comments": "Comments"
     }
+  },
+  "disruption-reasons": {
+    "cancellation-notice-under-14-days": "Cancellation notice less than 14 days in advance",
+    "cancellation-notice-over-14-days": "Cancellation notice more than 14 days in advance",
+    "cancellation-on-day-of-departure": "Cancellation on the day of departure",
+    "arrived-3h-late": "Delay of more than 3 hours on arrival",
+    "arrived-early": "Delay of less than 3 hours on arrival",
+    "never-arrived": "Flight delayed or canceled. Never arrived",
+    "did-not-give-the-seat-voluntarily": "Denied boarding. Did not give up the seat voluntarily",
+    "did-give-the-seat-voluntarily": "Denied boarding. Gave up the seat voluntarily"
   }
 }
