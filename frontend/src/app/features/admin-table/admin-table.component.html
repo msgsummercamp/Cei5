@@ -74,10 +74,7 @@
                     class="w-full"
                   >
                     <ng-template let-option #item>
-                      <p-tag
-                        [value]="option.label"
-                        [severity]="getRoleSeverity(option.value)"
-                      ></p-tag>
+                      <p-tag [value]="option.label" [severity]="'success'"></p-tag>
                     </ng-template>
                   </p-select>
                 </ng-template>
@@ -98,10 +95,7 @@
           <td class="text-center">{{ concatenateName(user) }}</td>
           <td class="text-center">{{ user.email }}</td>
           <td class="text-center">
-            <p-tag
-              [value]="getRoleTranslation(user.role)"
-              [severity]="getRoleSeverity(user.role)"
-            />
+            <p-tag [value]="getRoleTranslation(user.role)" [severity]="'success'" />
           </td>
           <td class="text-center">{{ user.caseCount }}</td>
           <td

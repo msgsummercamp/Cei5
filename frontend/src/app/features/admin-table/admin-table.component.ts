@@ -159,17 +159,6 @@ export class AdminTableComponent implements OnInit {
       });
   }
 
-  public getRoleSeverity(role: Roles): string {
-    switch (role) {
-      case Roles.USER:
-        return 'success';
-      case Roles.ADMIN:
-        return 'success';
-      case Roles.EMPLOYEE:
-        return 'success';
-    }
-  }
-
   public getRoleTranslation(role: Roles): string {
     return this._translateService.instant('roles.' + role);
   }
