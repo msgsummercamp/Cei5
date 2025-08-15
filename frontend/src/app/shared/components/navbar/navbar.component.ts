@@ -72,6 +72,12 @@ export class NavbarComponent {
       icon: 'pi pi-address-book',
       roles: [Roles.ADMIN, Roles.EMPLOYEE],
     },
+    {
+      label: 'navbar.admin-table',
+      routerLink: '/admin-table',
+      icon: 'pi pi-address-book',
+      roles: [Roles.ADMIN],
+    },
   ];
 
   private _userMenuConfig = [

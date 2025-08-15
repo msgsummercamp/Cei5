@@ -142,7 +142,8 @@
     "user-profile-title": "Profilul meu",
     "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
-    "check-flight": "Verifică zbor"
+    "check-flight": "Verifică zbor",
+    "admin-table": "Administrare utilizatori"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -392,15 +393,20 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name": "Nume",
-    "role": "Rol",
-    "assignedCases": "Numar de cazuri atribuite",
-    "userDeleted": "Utilizatorul a fost sters",
-    "addNewEmployee": "Adaugă un nou angajat"
+    "name" : "Nume",
+    "role" : "Rol",
+    "assignedCases" : "Număr de cazuri atribuite",
+    "userDeleted" : "Utilizatorul a fost șters",
+    "addNewUser" : "Adaugă utilizator",
+    "selectRole": "Selectați rolul"
+  },
+  "roles": {
+    "USER": "Pasager",
+    "ADMIN": "Administrator",
+    "EMPLOYEE": "Angajat"
   },
   "employee-dialog": {
-    "header": "Adaugă User",
-    "title": "Detalii User",
+    "header": "Detalii utilizator",
     "firstName": "Prenume",
     "lastName": "Nume",
     "email": "Email",
@@ -409,7 +415,8 @@
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
     "userCreated": "Utilizator creat cu succes.",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
+    "reservation-not-found": "Rezervarea nu a fost găsită.",
+    "role-required": "Rolul este obligatoriu."
   },
   "not-found": {
     "title": "Pagină inexistentă",

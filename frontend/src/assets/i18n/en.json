@@ -141,6 +141,7 @@
     "user-profile-title": "My Profile",
     "profile": "Profile",
     "employee-dashboard": "View Cases",
+    "admin-table": "Users Management",
     "check-flight": "Check Flight",
     "language": "Language"
   },
@@ -396,11 +397,16 @@
     "role": "Role",
     "assignedCases": "Number of assigned cases",
     "userDeleted": "The User was deleted",
-    "addNewEmployee": "Add a new Employee"
+    "addNewUser": "Add User",
+    "selectRole": "Select Role"
+  },
+  "roles": {
+    "USER": "Passenger",
+    "ADMIN": "Administrator",
+    "EMPLOYEE": "Employee"
   },
   "employee-dialog": {
-    "header": "Add User",
-    "title": "User Details",
+    "header": "User Details",
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
@@ -409,7 +415,8 @@
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
     "userCreated": "User created successfully.",
-    "reservation-not-found": "The reservation was not found."
+    "reservation-not-found": "The reservation was not found.",
+    "role-required": "Role is required."
   },
   "not-found": {
     "title": "Page Not Found",
