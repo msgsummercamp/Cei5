@@ -298,13 +298,14 @@
       "compensation-end": ". Click <strong>Next</strong> to provide your personal details and submit your claim."
     },
     "notEligible": {
-      "sorry": "We are sorry! Unfortunately, you are not eligible for compensation:",
-      "notEligibleMessage": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to an air traffic control (ATC) strike, adverse weather conditions, or other circumstances beyond the airline’s control, the airline is not obliged to compensate you."
+      "sorry": "We are sorry! Unfortunately, you are not eligible for compensation.",
+      "notEligibleMessage": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to an air traffic control (ATC) strike, adverse weather conditions, or other circumstances beyond the airline’s control, the airline is not obliged to compensate you. To check another flight, click "
     },
     "conditionsNotFulfilled": {
-      "sorry": "We are sorry! You do not meet the eligibility requirements:",
-      "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click here."
+      "sorry": "We are sorry! You do not meet the eligibility requirements.",
+      "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click "
     },
+    "link": "here",
     "continueWithPersonalDetails": "Continue with personal details.",
     "restart": "Restart from the beginning."
   },
