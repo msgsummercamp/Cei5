@@ -168,7 +168,7 @@ class UserServiceTests {
         try (MockedStatic<UserValidator> mocked = Mockito.mockStatic(UserValidator.class)) {
             mocked.when(() -> UserValidator.userIsValidForUpdate(inputUser)).thenReturn(true);
 
-            when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));   // ← missing before
+            when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
             when(userRepository.existsByEmail("test@test.com")).thenReturn(true);
 
             assertThrows(DuplicateUserException.class, () -> userService.updateUser(inputUser));
