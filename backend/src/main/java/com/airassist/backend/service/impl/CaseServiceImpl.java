@@ -121,11 +121,14 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public boolean checkEligibility(Case caseEntity) {
         return switch (caseEntity.getDisruptionReason()) {
-            case CANCELATION_ON_DAY_OF_DEPARTURE -> true;
-            case CANCELATION_NOTICE_UNDER_14_DAYS -> true;
+            case CANCELLATION_UNDER_14_DAYS_AND_OVER_3H -> true;
+            case CANCELLATION_UNDER_14_DAYS_AND_NEVER_ARRIVED ->  true;
+            case CANCELLATION_ON_DAY_OF_DEPARTURE_AND_OVER_3H -> true;
+            case CANCELLATION_ON_DAY_OF_DEPARTURE_AND_NEVER_ARRIVED -> true;
             case ARRIVED_3H_LATE -> true;
             case NEVER_ARRIVED -> true;
-            case DID_NOT_GIVE_THE_SEAT_VOLUNTARILY -> true;
+            case OVERBOOKING -> true;
+            case DENIED_BOARDING_WITHOUT_REASON -> true;
             default -> false;
         };
     }
