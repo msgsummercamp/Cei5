@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../types/user';
 import { environment } from '../../../environments/environment';
-import { Roles } from '../types/enums/roles';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,7 @@ export class UserService {
 
   public readonly isUserReadOnly = computed(() => {
     const user = this._userDetails();
-    return user ? user.role === Roles.USER : false;
+    return !!user;
   });
 
   constructor() {

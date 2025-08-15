@@ -28,6 +28,11 @@
   --p-select-placeholder-color: #ffffff;
 }
 
+::ng-deep .p-menubar-mobile .p-menubar-root-list {
+  background: rgba(15, 27, 88, 0.97);
+  border: rgba(15, 27, 88, 0.97);
+}
+
 .p-select-label.p-placeholder {
   --p-select-placeholder-font-size: 1.5rem !important;
 }
@@ -38,9 +43,10 @@ p-select-label {
 
 ::ng-deep .navbar-wrapper .p-select-dropdown {
   display: none !important;
+  background-color: rgba(15, 27, 88, 0.97) !important;
 }
 
-.selected-language-flag{
+.selected-language-flag {
   cursor: pointer;
   margin-right: -0.7rem;
 }
@@ -83,11 +89,11 @@ p-select-list-container {
   font-size: 1.3rem !important;
 }
 
-::ng-deep .navbar-wrapper .p-menubar{
+::ng-deep .navbar-wrapper .p-menubar {
   --p-menubar-padding: 1.2rem 1.2rem;
 }
 
-.navbar-wrapper{
+.navbar-wrapper {
   position: sticky;
   width: 100%;
   z-index: 4000;
@@ -106,25 +112,26 @@ p-select-list-container {
   right: 1.2rem;
 }
 
-
-::ng-deep .hamburger-menu-button{
+::ng-deep .hamburger-menu-button {
   display: none !important;
   color: white;
   cursor: pointer;
 
-  .pi{
+  .pi {
     font-size: 1.3rem;
   }
 }
 
-
-.hamburger-menu-overlay{
+.hamburger-menu-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
   z-index: 4000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
-.hamburger-menu-container{
+.hamburger-menu-container {
   position: fixed;
   top: 4.8rem;
   width: 100%;
@@ -137,7 +144,7 @@ p-select-list-container {
   justify-content: center;
 }
 
-.hamburger-menu-container ul{
+.hamburger-menu-container ul {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -147,7 +154,7 @@ p-select-list-container {
   margin: 0;
 }
 
-::ng-deep .hamburger-menu-wrapper .p-button{
+::ng-deep .hamburger-menu-wrapper .p-button {
   --p-button-primary-background: transparent;
   --p-button-primary-border-color: transparent;
   --p-button-primary-hover-background: none;
@@ -156,17 +163,16 @@ p-select-list-container {
   --p-button-primary-active-border-color: transparent;
 }
 
-.hamburger-menu-container .greeting{
+.hamburger-menu-container .greeting {
   font-weight: bold;
   color: white;
 }
 
-.p-accordion{
+.p-accordion {
   --p-accordion-header-color: #ffffff;
-
 }
 
-.p-accordionheader{
+.p-accordionheader {
   --p-accordion-header-background: transparent;
   --p-accordion-header-active-background: transparent;
   --p-accordion-header-active-hover-background: transparent;
@@ -176,30 +182,30 @@ p-select-list-container {
   --p-accordion-header-active-hover-color: #ffffff;
 }
 
-.p-accordioncontent{
+.p-accordioncontent {
   --p-accordion-content-border-color: transparent;
   --p-accordion-content-background: transparent;
 }
 
-@media(max-width: 1024px)  {
+@media (max-width: 1024px) {
   .hamburger-menu-button {
     display: none;
   }
 }
 
-@media(max-width: 1200px)  {
+@media (max-width: 1200px) {
   .hamburger-menu-button {
     display: none;
   }
 }
 
-@media(max-width: 8000px)  {
+@media (max-width: 8000px) {
   .hamburger-menu-button {
     display: none;
   }
 }
 
-@media(max-width: 480px){
+@media (max-width: 480px) {
   .hamburger-menu-button {
     display: block !important;
   }
@@ -208,7 +214,7 @@ p-select-list-container {
     font-size: 1.2rem !important;
   }
 
-  .logo-img{
+  .logo-img {
     width: 2rem;
     height: 2rem;
   }
@@ -226,7 +232,7 @@ p-select-list-container {
   }
 }
 
-@media(max-width: 768px)  {
+@media (max-width: 768px) {
   .hamburger-menu-button {
     display: block !important;
   }

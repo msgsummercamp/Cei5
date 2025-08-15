@@ -126,14 +126,15 @@ export class AuthService {
 
   /**
    * Logs out the user by clearing the token from session storage,
-   * resetting the auth state, and navigating to the login page.
+   * resetting the auth state, and navigating to another route.
+   * @param route - The route to navigate to after logging out. Sign in page by default.
    */
-  public logOut(): void {
+  public logOut(route: string = '/sign-in'): void {
     this.clearTokenFromSessionStorage();
     sessionStorage.removeItem('userDetails');
     this._userService.clearUserDetails();
     this._authState.set(initialState);
-    this._router.navigate(['/']);
+    this._router.navigate([route]);
   }
 
   /**
@@ -207,6 +208,7 @@ export class AuthService {
         this._notificationService.showSuccess(
           this._translationService.instant('auth-service.password-reset-success')
         );
+        this.logOut();
       },
       error: (error) => {
         const apiError: ApiError = error?.error;
