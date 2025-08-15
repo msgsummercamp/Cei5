@@ -1,5 +1,7 @@
 {
   "home": "Acasă",
+  "yes": "Da",
+  "no": "Nu",
   "mandatory": "* Câmpurile marcate cu steluță sunt obligatorii.",
   "homepage": {
     "question": "Zbor întârziat sau anulat? Obține compensația cuvenită!",
