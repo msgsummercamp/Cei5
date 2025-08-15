@@ -5,6 +5,6 @@ export type Document = {
   id?: string;
   name: string;
   type: DocumentType;
-  content: Uint8Array;
+  contentBase64: string;
   caseEntity: Case;
 };

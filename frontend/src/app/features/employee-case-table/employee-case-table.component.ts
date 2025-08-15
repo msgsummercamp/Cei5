@@ -18,8 +18,9 @@ import { FormsModule } from '@angular/forms';
 import { Tag } from 'primeng/tag';
 import { Subscription } from 'rxjs';
 import { TableHelper } from '../../shared/helper/table-helper';
+import { Router } from '@angular/router';
 
-type CaseDTO = {
+export type CaseAux = {
   id: string;
   clientName: string;
   employeeName: string;
@@ -47,11 +48,12 @@ export class EmployeeCaseTableComponent implements OnInit, OnDestroy {
   private readonly _confirmationService = inject(ConfirmationService);
   private readonly _translationService = inject(TranslateService);
   private readonly _notificationService = inject(NotificationService);
+  private readonly _router = inject(Router);
 
   dt = viewChild.required<Table>('dt');
 
-  public cases: CaseDTO[] = [];
-  public initialValue: CaseDTO[] = [];
+  public cases: CaseAux[] = [];
+  public initialValue: CaseAux[] = [];
   public loading = true;
   private isSorted: boolean | null = null;
   public statusOptions: { label: string; value: Statuses }[] = [];
@@ -177,5 +179,9 @@ export class EmployeeCaseTableComponent implements OnInit, OnDestroy {
 
   public onStatusFilterClear(): void {
     this.statusFilterValue = null;
+  }
+
+  public navigateToCaseDetails(caseDetails: CaseAux): void {
+    this._router.navigate(['case-details', caseDetails.id]);
   }
 }

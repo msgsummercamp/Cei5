@@ -1,0 +1,51 @@
+.wrapper {
+  background-color: #f5f7fa;
+}
+
+.case-details-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.problematic-arrow {
+  color: red !important;
+}
+
+.document-list {
+  max-height: 10rem;
+  overflow-y: auto;
+}
+
+.normal-arrow {
+  color: blue;
+}
+
+.route-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.column {
+  padding: 16px;
+  /*border: 1px solid #ccc;*/
+  border-radius: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.comment {
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.user {
+  background-color: #90ee90;
+}

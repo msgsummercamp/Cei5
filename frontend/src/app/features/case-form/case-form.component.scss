@@ -1,7 +1,7 @@
 ::ng-deep {
   .caseFormWrapper {
     .p-button {
-      --p-button-primary-background: rgb(15,27,88);
+      --p-button-primary-background: rgb(15, 27, 88);
       --p-button-primary-border-color: #0078bd;
       --p-button-primary-hover-background: #0078bd;
     }
@@ -62,14 +62,14 @@
   overflow-x: hidden;
 }
 
-@media(max-width: 700px) {
+@media (max-width: 700px) {
   .scroll-container {
     width: 42rem;
     height: 42rem;
   }
 }
 
-@media(min-width: 1900px) {
+@media (min-width: 1900px) {
   .scroll-container {
     height: 42rem;
     width: 42rem;
