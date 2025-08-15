@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +16,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EligibilityDataService } from '../../../../shared/services/eligibility-data.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { CompensationService } from '../../../../shared/services/compensation.service';
+import { DisruptionReasons } from '../../../../shared/types/enums/disruption-reason';
 
 @Component({
   selector: 'app-eligibility-page',
@@ -42,6 +43,7 @@ export class EligibilityPageComponent implements OnInit {
   private readonly _translateService = inject(TranslateService);
 
   private hasRunInitialCheck = false;
+  public isCompensationLoading = signal(true);
 
   public readonly disruptionReason = input<string>('');
   public readonly disruptionInfo = input<string>('');
@@ -78,13 +80,14 @@ export class EligibilityPageComponent implements OnInit {
     const dep = this.departingAirportValue;
     const dest = this.destinationAirportValue;
 
+    this._compensationService.compensation$.subscribe((data) => {
+      this.compensation = data;
+      this.isCompensationLoading.set(false);
+    });
+
     if (!!dep && !!dest) {
       this._compensationService.calculateDistance(dep, dest);
     }
-
-    this._compensationService.compensation$.subscribe((data) => {
-      this.compensation = data;
-    });
   }
 
   public getEligibleMessage(): string {
@@ -98,13 +101,7 @@ export class EligibilityPageComponent implements OnInit {
   }
 
   public checkWhichEligibilityMotive(): boolean {
-    if (
-      this.disruptionReason() === 'ARRIVED_EARLY' ||
-      this.disruptionReason() === 'CANCELATION_NOTICE_OVER_14_DAYS'
-    ) {
-      return true;
-    }
-    return false;
+    return this.disruptionReason() === DisruptionReasons.NOT_ELIGIBLE_REASON;
   }
 
   public getErrorMessage(): string | undefined {

@@ -17,7 +17,6 @@ import { PhoneNumberFormat } from 'google-libphonenumber';
 import { PanelModule } from 'primeng/panel';
 import { Checkbox } from 'primeng/checkbox';
 import { CaseFormUserData } from '../../../../shared/types/case-form-userdata';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CaseFormUserDetailsService } from '../../../../shared/services/case-form-user-details.service';
 
 type UserRegistrationForm = {
@@ -136,7 +135,7 @@ export class UserRegistrationComponent {
     effect(() => {
       const data = this.initialData();
       const readOnly = this.isUserReadOnly();
-
+      console.log(readOnly);
       if (data && !this.hasInitialized) {
         this.hasInitialized = true;
 

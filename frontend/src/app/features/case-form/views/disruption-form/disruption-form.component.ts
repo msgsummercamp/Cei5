@@ -106,25 +106,55 @@ export class DisruptionFormComponent {
   public getResponseForDisruption(): string {
     const disruption = this.disruptionForm.controls;
 
+    if (disruption.airlineMotiveAnswer.value === 'Yes') {
+      if (
+        disruption.airlineMotiveFollowUpAnswer.value === 'Meteorological conditions' ||
+        disruption.airlineMotiveFollowUpAnswer.value === "Airport Staff's Strike" ||
+        disruption.airlineMotiveFollowUpAnswer.value === 'Problems with airport'
+      ) {
+        return DisruptionReasons.NOT_ELIGIBLE_REASON;
+      }
+    }
+
     if (disruption.disruptionType.value === Disruptions.Cancellation) {
       if (disruption.cancellationAnswer.value === '>14 days') {
-        return DisruptionReasons.CANCELATION_NOTICE_OVER_14_DAYS;
+        return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
       } else if (disruption.cancellationAnswer.value === '<14 days') {
-        return DisruptionReasons.CANCELATION_NOTICE_UNDER_14_DAYS;
+        if (disruption.delayAnswer.value === '>3 hours') {
+          return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_OVER_3H;
+        } else if (disruption.delayAnswer.value === '<3 hours') {
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
+        } else {
+          return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_NEVER_ARRIVED;
+        }
+      } else {
+        if (disruption.delayAnswer.value === '>3 hours') {
+          return DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_OVER_3H;
+        } else if (disruption.delayAnswer.value === '<3 hours') {
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
+        } else {
+          return DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_NEVER_ARRIVED;
+        }
       }
-      return DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE;
     } else if (disruption.disruptionType.value === Disruptions.Delay) {
       if (disruption.delayAnswer.value === '>3 hours') {
         return DisruptionReasons.ARRIVED_3H_LATE;
       } else if (disruption.delayAnswer.value === '<3 hours') {
-        return DisruptionReasons.ARRIVED_EARLY;
+        return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
       }
       return DisruptionReasons.NEVER_ARRIVED;
     } else {
       if (disruption.deniedBoardingAnswer.value === 'No') {
-        return DisruptionReasons.DID_NOT_GIVE_THE_SEAT_VOLUNTARILY;
+        if (disruption.deniedBoardingFollowUpAnswer.value === 'Flight overbooked') {
+          return DisruptionReasons.OVERBOOKING;
+        } else if (disruption.deniedBoardingFollowUpAnswer.value === 'Unspecified reason') {
+          return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
+        } else {
+          return DisruptionReasons.NOT_ELIGIBLE_REASON;
+        }
+      } else {
+        return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
       }
-      return DisruptionReasons.DID_GIVE_THE_SEAT_VOLUNTARILY;
     }
   }
 

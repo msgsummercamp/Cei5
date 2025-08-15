@@ -42,6 +42,7 @@ import { CaseFormUserData } from '../../shared/types/case-form-userdata';
 import { NotificationService } from '../../shared/services/toaster/notification.service';
 import { ApiError } from '../../shared/types/api-error';
 import { ContractService } from '../../shared/services/contract.service';
+import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
 import { Tooltip } from 'primeng/tooltip';
 
 type DisruptionForm = {
@@ -677,26 +678,57 @@ export class CaseFormComponent {
   }
 
   public getDisruptionReason(): string {
+    if (this.disruptionFormData?.airlineMotiveAnswer === 'Yes') {
+      if (
+        this.disruptionFormData?.airlineMotiveFollowUpAnswer === 'Meteorological conditions' ||
+        this.disruptionFormData?.airlineMotiveFollowUpAnswer === "Airport Staff's Strike" ||
+        this.disruptionFormData?.airlineMotiveFollowUpAnswer === 'Problems with airport'
+      ) {
+        return DisruptionReasons.NOT_ELIGIBLE_REASON;
+      }
+    }
     if (this.disruptionFormData?.disruptionType) {
       if (this.disruptionFormData.disruptionType === 'Cancellation') {
         if (this.disruptionFormData.cancellationAnswer === '>14 days') {
-          return 'CANCELATION_NOTICE_OVER_14_DAYS';
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
         } else if (this.disruptionFormData.cancellationAnswer === '<14 days') {
-          return 'CANCELATION_NOTICE_UNDER_14_DAYS';
+          if (this.disruptionFormData.delayAnswer === '>3 hours') {
+            return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_OVER_3H;
+          } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
+            return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
+          } else {
+            return DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_NEVER_ARRIVED;
+          }
+        } else {
+          if (this.disruptionFormData.delayAnswer === '>3 hours') {
+            return DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_OVER_3H;
+          } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
+            return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
+          } else {
+            return DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_NEVER_ARRIVED;
+          }
         }
-        return 'CANCELATION_ON_DAY_OF_DEPARTURE';
       } else if (this.disruptionFormData.disruptionType === 'Delay') {
         if (this.disruptionFormData.delayAnswer === '>3 hours') {
-          return 'ARRIVED_3H_LATE';
+          return DisruptionReasons.ARRIVED_3H_LATE;
         } else if (this.disruptionFormData.delayAnswer === '<3 hours') {
-          return 'ARRIVED_EARLY';
+          return DisruptionReasons.CONDITIONS_NOT_FULFILLED;
         }
-        return 'NEVER_ARRIVED';
+        return DisruptionReasons.NEVER_ARRIVED;
       } else if (this.disruptionFormData.disruptionType === 'Denied_Boarding') {
         if (this.disruptionFormData.deniedBoardingAnswer === 'No') {
-          return 'DID_NOT_GIVE_THE_SEAT_VOLUNTARILY';
+          if (this.disruptionFormData.deniedBoardingFollowUpAnswer === 'Flight overbooked') {
+            return DisruptionReasons.OVERBOOKING;
+          } else if (
+            this.disruptionFormData.deniedBoardingFollowUpAnswer === 'Unspecified reason'
+          ) {
+            return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
+          } else {
+            return DisruptionReasons.NOT_ELIGIBLE_REASON;
+          }
+        } else {
+          return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
         }
-        return 'DID_GIVE_THE_SEAT_VOLUNTARILY';
       }
     }
 

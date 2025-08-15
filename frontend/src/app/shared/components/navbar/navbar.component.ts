@@ -158,7 +158,7 @@ export class NavbarComponent {
   public logout(): void {
     this.isUserMenuOpen = false;
     this._stepNavigationService.resetToFirstStep();
-    this._authService.logOut();
+    this._authService.logOut('/');
   }
 
   public get userName(): string {

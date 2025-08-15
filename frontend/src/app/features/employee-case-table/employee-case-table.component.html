@@ -1,7 +1,7 @@
 <div class="mt-8 mx-2 employee-case-table px-8">
-  <h1 class="text-center">
+  <h3 class="text-center">
     {{ 'case-table.title' | translate }}
-  </h1>
+  </h3>
   <div class="pt-3">
     <p-table
       #dt
@@ -123,7 +123,13 @@
       <ng-template #body let-case>
         <tr>
           <td
-            ><p-button icon="pi pi-eye" severity="contrast" [rounded]="true" [outlined]="true" />
+            ><p-button
+              icon="pi pi-eye"
+              severity="contrast"
+              (onClick)="navigateToCaseDetails(case)"
+              [rounded]="true"
+              [outlined]="true"
+            />
             &nbsp;
             {{ case.id }}</td
           >
