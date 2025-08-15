@@ -1,62 +1,109 @@
-<div class="page-container">
-  <div class="user-information-container">
-    <h1 class="user-information-title">{{ 'navbar.user-profile-title' | translate }} </h1>
+<div class="profile-page-container">
+  <div class="information-container">
     <p-card>
       <ng-template #title
-        ><h2 class="card-title">{{ 'navbar.user-profile-card-title' | translate }}</h2></ng-template
+        ><h2 class="information-card-title">{{
+          'navbar.user-profile-card-title' | translate
+        }}</h2></ng-template
       >
       <div class="account-information">
-        <p class="account-information-element">
-          {{ 'profile-page.card-information.email' | translate }} {{ this.user?.email || '' }}
-        </p>
-        <p class="account-information-element">
-          {{ 'profile-page.card-information.phone-number' | translate }}
-          {{ this.user?.userDetails?.phoneNumber || '' }}</p
-        >
-        <p class="account-information-element">
-          {{ 'profile-page.card-information.name' | translate }} {{ getUserFullName() }}</p
-        >
-        <p class="account-information-element">
-          {{ 'profile-page.card-information.address' | translate }}
-          {{ this.user?.userDetails?.address || '' }}
-        </p>
-        <p class="account-information-element"
-          >{{ 'profile-page.card-information.address' | translate }}
-          {{ this.user?.userDetails?.postalCode || '' }}
-        </p>
-        <p class="account-information-element">
-          {{ 'profile-page.card-information.birth-date' | translate }}
-          {{ this.user?.userDetails?.birthDate || '' }}</p
-        >
+        <div class="profile-picture">
+          <img
+            class="profile-picture-image"
+            ngSrc="./assets/photos/tung-tung-tung-sahur.png"
+            alt="Profile Picture"
+            height="100"
+            width="100"
+          />
+        </div>
+        <div class="first-text-information-column">
+          <p class="account-information-element">
+            <span class="user-information-title">
+              {{ 'profile-page.card-information.email' | translate }}
+            </span>
+            <span class="user-information"> {{ this.user?.email || '' }} </span>
+          </p>
+          <p class="account-information-element">
+            <span class="user-information-title">
+              {{ 'profile-page.card-information.phone-number' | translate }}
+            </span>
+            <span class="user-information">
+              {{ this.user?.userDetails?.phoneNumber || '' }}
+            </span></p
+          >
+          <p class="account-information-element">
+            <span class="user-information-title"
+              >{{ 'profile-page.card-information.name' | translate }}
+            </span>
+            <span class="user-information"> {{ getUserFullName() }} </span>
+          </p>
+        </div>
+        <div class="second-text-information-column">
+          <p class="account-information-element">
+            <span class="user-information-title">
+              {{ 'profile-page.card-information.address' | translate }}
+            </span>
+            <span class="user-information"> {{ this.user?.userDetails?.address || '' }} </span>
+          </p>
+          <p class="account-information-element"
+            ><span class="user-information-title">
+              {{ 'profile-page.card-information.postal-code' | translate }}
+            </span>
+            <span class="user-information"> {{ this.user?.userDetails?.postalCode || '' }} </span>
+          </p>
+          <p class="account-information-element">
+            <span class="user-information-title">
+              {{ 'profile-page.card-information.birth-date' | translate }}
+            </span>
+            <span class="user-information">
+              {{ this.user?.userDetails?.birthDate || '' | date: 'mediumDate' }}
+            </span></p
+          >
+        </div>
+      </div>
+    </p-card>
+    <p-card>
+      <div class="new-case-card-content">
+        <h2 class="new-case-card-title"> {{ 'profile-page.card-new-case.title' | translate }} </h2>
+        <h3 class="new-case-card-subtitle">
+          {{ 'profile-page.card-new-case.subtitle' | translate }}
+        </h3>
+        <div class="button-section">
+          <p-button
+            class="new-case-button"
+            label="{{ 'profile-page.card-new-case.button' | translate }}"
+            (onClick)="redirectToCaseForm()"
+          ></p-button>
+        </div>
       </div>
     </p-card>
   </div>
-  <div class="table-wrapper mx-4">
-    <p-table
-      #dt
-      dataKey="id"
-      [value]="userCases"
-      [paginator]="true"
-      [rows]="5"
-      [customSort]="true"
-      [scrollable]="true"
-      scrollHeight="80vh"
-      [rowsPerPageOptions]="[5, 10]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-      (sortFunction)="customSort($event)"
-      [globalFilterFields]="[
-        'id',
-        'date',
-        'flightNumber',
-        'beneficiaryName',
-        'assignedColleague',
-        'status',
-      ]"
-    >
-      <ng-template #header>
-        <tr>
-          <th>
-            <div>
+  <div class="table-wrapper mx-5">
+    <p-card>
+      <h2 class="case-table-title flex-wrap"> {{ 'profile-page.case-table-title' | translate }}</h2>
+      <p-table
+        #dt
+        dataKey="id"
+        [value]="userCases"
+        [paginator]="true"
+        [rows]="5"
+        [customSort]="true"
+        [scrollable]="true"
+        scrollHeight="80vh"
+        [rowsPerPageOptions]="[5, 7]"
+        (sortFunction)="customSort($event)"
+        [globalFilterFields]="[
+          'id',
+          'date',
+          'flightNumber',
+          'beneficiaryName',
+          'assignedColleague',
+          'status',
+        ]"
+      >
+        <ng-template #header>
+          <th class="flex align-items-center">
+            <div class="flex align-items-center">
               {{ 'case-table.case-id' | translate }}
               <p-columnFilter
                 [showAddButton]="false"
@@ -92,7 +139,7 @@
             /></div>
           </th>
           <th
-            ><div class="flex align-items-center">
+            ><div class="align-items-center">
               {{ 'case-table.assigned-employee' | translate }}</div
             ></th
           >
@@ -128,40 +175,40 @@
                   </p-select>
                 </ng-template> </p-columnFilter></div
           ></th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-userCase>
-        <tr>
-          <td>
-            <p-button icon="pi pi-eye" severity="contrast" [rounded]="true" [outlined]="true" />
-            {{ userCase.id }}</td
-          >
-          <td class="text-center">{{ userCase.date }}</td>
-          <td class="text-center">{{ userCase.flightNumber }}</td>
-          <td class="text-center">{{ this.getBeneficiaryName(userCase) }}</td>
-          <td class="text-center"
-            ><b>{{ this.getEmployeeName(userCase) }}</b></td
-          >
-          <td class="text-center">
-            <p-tag
-              [value]="getStatusTranslation(userCase.status)"
-              [severity]="getStatusSeverity(userCase.status)"
-            />
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template #emptymessage>
-        <tr>
-          <td colspan="7" class="text-center">
-            {{ 'case-table.no-cases-found' | translate }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <p-confirm-dialog
-      header="{{ 'case-table.confirmation' | translate }}"
-      icon="pi pi-exclamation-triangle"
-    >
-    </p-confirm-dialog>
+        </ng-template>
+        <ng-template #body let-userCase>
+          <tr>
+            <td>
+              <p-button icon="pi pi-eye" severity="contrast" [rounded]="true" [outlined]="true" />
+              {{ userCase.id }}</td
+            >
+            <td class="text-center">{{ userCase.date }}</td>
+            <td class="text-center">{{ userCase.flightNumber }}</td>
+            <td class="text-center">{{ this.getBeneficiaryName(userCase) }}</td>
+            <td class="text-center"
+              ><b>{{ this.getEmployeeName(userCase) }}</b></td
+            >
+            <td class="text-center">
+              <p-tag
+                [value]="getStatusTranslation(userCase.status)"
+                [severity]="getStatusSeverity(userCase.status)"
+              />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="7" class="text-center">
+              {{ 'case-table.no-cases-found' | translate }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-confirm-dialog
+        header="{{ 'case-table.confirmation' | translate }}"
+        icon="pi pi-exclamation-triangle"
+      >
+      </p-confirm-dialog>
+    </p-card>
   </div>
 </div>

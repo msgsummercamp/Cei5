@@ -156,6 +156,7 @@ export class NavbarComponent {
   }
 
   public logout(): void {
+    this.isUserMenuOpen = false;
     this._stepNavigationService.resetToFirstStep();
     this._authService.logOut();
   }
@@ -171,6 +172,8 @@ export class NavbarComponent {
 
   public redirectToProfile(): void {
     this._stepNavigationService.resetToFirstStep();
+    this.isUserMenuOpen = false;
+    this.isHamburgerMenuOpen = false;
     this._router.navigate(['/profile']);
   }
 }

@@ -378,10 +378,11 @@
     "ARCHIVED": "Arhivat",
     "FAILED": "Eșuat",
     "VALID": "Valid",
-    "INVALID": "Invalid",
+    "INVALID": "Invalid"
   },
 
   "profile-page": {
+    "case-table-title": "Cazurile tale",
     "card-information": {
       "email": "Email:",
       "phone-number": "Număr de telefon:",
@@ -389,7 +390,11 @@
       "postal-code": "Cod poștal:",
       "address": "Adresă:",
       "birth-date": "Data nașterii:"
-    }
+    },
+    "card-new-case": {
+      "button": "Verifică zborul",
+      "title": "Verifică dacă ești eligibil pentru compensație",
+      "subtitle": "Poți primi până la 600€ pentru întârzieri, anulări sau suprarezervări"}
   },
   "admin-panel": {
     "title": "Panou de administrare",

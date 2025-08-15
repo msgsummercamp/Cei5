@@ -1,71 +1,198 @@
-.page-container{
-  background-color: rgb(213, 255, 255);
-  padding-top: 3.5rem;
-  padding-bottom: 3.5rem;
+::ng-deep .profile-page-container .new-case-card-content .p-button{
+  --p-button-primary-background: transparent;
+  --p-button-primary-border-color: transparent;
+  --p-button-primary-hover-background: none;
+  --p-button-primary-active-background: none;
+  --p-button-primary-hover-border-color: transparent;
+  --p-button-primary-active-border-color: transparent;
+  color: #186bd8;
+  font-size: 1rem;
 }
 
-.user-information-container{
-  max-width: 1000px;
+.profile-page-container{
+  padding-top: 2.2rem;
+}
+
+.information-container{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 70% 30%;
+  max-width: 95%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2rem 0 2rem 0;
 }
 
-.user-information-title{
-  font-size: 3rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  text-align: center;
-  color: rgb(15, 27, 88);
+
+.information-card-title{
+  color: black;
+  font-size: 1.7rem;
+  font-weight: bold;
+  text-align: left;
+  padding-left: 2rem;
 }
 
-.card-title{
-  font-size: 2rem;
-  font-weight: 600;
-  text-align: center;
+.profile-picture{
+  align-self: center;
+  padding-left: 4.3rem;
 }
 
 .account-information{
-  border-radius: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
-  align-self: center;
-  text-align: center;
+  color: black;
+  text-align: left;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 20% 40% 40%;
+  margin-top: -1rem;
+  gap: 1rem;
+}
+
+.first-text-information-column{
+  padding-left: 2.5rem;
+}
+
+.profile-picture-image{
+  border-radius: 50%;
 }
 
 .account-information-element{
-  background-color: transparent;
   font-size: 1.1rem;
 }
 
-::ng-deep .user-information-container .p-card{
-  --p-card-color: #ffffff !important;
-  --p-card-background: rgb(15, 27, 88) !important;
+::ng-deep .information-container .p-card{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08),
+  0 6px 20px rgba(0, 0, 0, 0.06);
+  background-color: white;
+}
+
+.user-information-title{
+  font-weight: bold;
 }
 
 .table-wrapper{
-  margin-top: 5rem;
-  margin-bottom: 10rem;
+  margin-bottom: 2rem;
+  max-width: 9%;
+}
+
+::ng-deep .table-wrapper .p-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08),
+  0 6px 20px rgba(0, 0, 0, 0.06);
+  background-color: white;
+  width: 76.2rem;
+
+}
+
+.case-table-title{
+  text-align: center;
+  font-size: 1.9rem;
+}
+
+.new-case-card-content{
+  text-align: center;
+}
+
+.new-case-card-title{
+  color: black;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.button-section{
+  margin-top: 2.2rem;
 }
 
 
 @media (max-width: 768px) {
+  .profile-page-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .information-container{
+    max-width: 22rem;
+    grid-template-columns: 1fr;
+  }
+
   .account-information{
     grid-template-columns: 1fr;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
     text-align: center;
   }
 
   .user-information-title{
     padding-top: 1rem;
+    text-align: center;
   }
 
-  th > .flex {
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
+  .information-card-title{
+    text-align: center;
+    padding: 0;
+  }
+
+  .first-text-information-column{
+    padding: 0;
+  }
+  .profile-picture{
+    padding-left: 0;
+  }
+
+  .table-wrapper{
+    max-width: 22rem;
+    overflow-x: auto;
+  }
+
+  ::ng-deep .table-wrapper .p-card {
+    width: 100%;
+    margin: 0 auto;
   }
 }
+
+@media (max-width: 1200px) {
+  .profile-page-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .information-container{
+    max-width: 22rem;
+    grid-template-columns: 1fr;
+  }
+
+  .account-information{
+    grid-template-columns: 1fr;
+    padding: 0;
+    text-align: center;
+  }
+
+  .user-information-title{
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .information-card-title{
+    text-align: center;
+    padding: 0;
+  }
+
+  .first-text-information-column{
+    padding: 0;
+  }
+  .profile-picture{
+    padding-left: 0;
+  }
+
+  .table-wrapper{
+    max-width: 22rem;
+    overflow-x: auto;
+  }
+
+  ::ng-deep .table-wrapper .p-card {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+
+
+
 
