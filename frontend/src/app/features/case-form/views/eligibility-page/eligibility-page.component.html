@@ -41,11 +41,11 @@
             } @else {
               <div class="eligible-message">
                 <i class="pi pi-check-circle text-6xl text-green-500"></i>
-                <h2 class="text-green-500 text-4xl"
+                <h2 class="text-green-500 text-3xl"
                   >{{ 'eligibilityForm.eligible.congratulations' | translate }}
                 </h2>
                 <p-message severity="success" [closable]="false" class="text-xl">
-                  <div>
+                  <div class="text-lg">
                     <span
                       [innerHTML]="'eligibilityForm.eligible.compensation-start' | translate"
                     ></span>
@@ -61,28 +61,30 @@
           @if (shouldNotShowEligible()) {
             @if (checkWhichEligibilityMotive()) {
               <div class="not-eligible-message">
-                <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
-                <h2 class="text-red-500">{{ 'eligibilityForm.notEligible.sorry' | translate }}</h2>
-                <p-message
-                  severity="warn"
-                  text="{{ 'eligibilityForm.notEligible.notEligibleMessage' | translate }}"
-                  [closable]="false"
-                >
+                <i class="pi pi-times-circle text-6xl text-blue-500 mb-3"></i>
+                <h2 class="text-blue-500 text-3xl">{{
+                  'eligibilityForm.notEligible.sorry' | translate
+                }}</h2>
+                <p-message severity="info" [closable]="false">
+                  <span class="text-lg">
+                    {{ 'eligibilityForm.notEligible.notEligibleMessage' | translate }}
+                    <a routerLink="">{{ 'eligibilityForm.link' | translate }}</a
+                    >.
+                  </span>
                 </p-message>
               </div>
             } @else {
               <div class="not-eligible-message">
-                <i class="pi pi-times-circle text-6xl text-red-500 mb-3"></i>
-                <h2 class="text-red-500">{{
+                <i class="pi pi-times-circle text-6xl text-blue-500 mb-2"></i>
+                <h2 class="text-blue-500 text-3xl">{{
                   'eligibilityForm.conditionsNotFulfilled.sorry' | translate
                 }}</h2>
-                <p-message
-                  severity="warn"
-                  text="{{
-                    'eligibilityForm.conditionsNotFulfilled.notEligibleMessage' | translate
-                  }}"
-                  [closable]="false"
-                >
+                <p-message severity="info" [closable]="false">
+                  <span class="text-lg">
+                    {{ 'eligibilityForm.conditionsNotFulfilled.notEligibleMessage' | translate }}
+                    <a routerLink="">{{ 'eligibilityForm.link' | translate }}</a
+                    >.
+                  </span>
                 </p-message>
               </div>
             }

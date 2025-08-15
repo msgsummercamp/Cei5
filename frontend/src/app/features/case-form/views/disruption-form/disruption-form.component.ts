@@ -153,7 +153,7 @@ export class DisruptionFormComponent {
           return DisruptionReasons.NOT_ELIGIBLE_REASON;
         }
       } else {
-        return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
+        return DisruptionReasons.NOT_ELIGIBLE_REASON;
       }
     }
   }
