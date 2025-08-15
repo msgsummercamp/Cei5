@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
@@ -48,6 +48,9 @@ export class NavbarComponent {
   public readonly _languageService = inject(LanguageService);
 
   public isHamburgerMenuOpen = false;
+  public isUserMenuOpen = false;
+
+  @ViewChild('userMenu') userMenu!: MenuItem;
 
   //Contains the translated elements for the main navbar
   public navbarMainItems: MenuItem[] = [];
@@ -108,6 +111,11 @@ export class NavbarComponent {
         (translatedItems) => (this.navbarMainItems = translatedItems)
       );
     });
+  }
+
+  public toggleUserMenu(event: MouseEvent): void {
+    this.userMenu['toggle'](event);
+    this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
   //initialItems: the array containing the elements to be translated
