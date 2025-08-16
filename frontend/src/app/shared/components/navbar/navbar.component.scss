@@ -96,7 +96,7 @@ p-select-list-container {
 .navbar-wrapper {
   position: sticky;
   width: 100%;
-  z-index: 4000;
+  z-index: 1000;
 }
 
 ::ng-deep .navbar-wrapper .p-select-overlay {
@@ -123,11 +123,8 @@ p-select-list-container {
 
 .hamburger-menu-overlay {
   position: fixed;
-  z-index: 4000;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1000;
 }
 
 .hamburger-menu-container {
@@ -136,7 +133,7 @@ p-select-list-container {
   width: 100%;
   min-height: 10%;
   background: rgba(15, 27, 88, 0.99);
-  z-index: 4000;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;

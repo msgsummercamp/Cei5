@@ -3,7 +3,7 @@ import { Table, TableModule } from 'primeng/table';
 import { Case } from '../../shared/types/case';
 import { CaseService } from '../../shared/services/case.service';
 import { UserService } from '../../shared/services/user.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Flight } from '../../shared/types/flight';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Card } from 'primeng/card';
@@ -21,6 +21,9 @@ import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
 import { Reservation } from '../../shared/types/reservation';
 import { Document } from '../../shared/types/document';
 import { Beneficiary } from '../../shared/types/beneficiary';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { Router, RouterLink } from '@angular/router';
+import { StepNavigationService } from '../../shared/services/step-navigation.service';
 
 type CaseDTO = {
   id: string;
@@ -52,6 +55,9 @@ type CaseDTO = {
     Tag,
     Button,
     ConfirmDialog,
+    NgOptimizedImage,
+    FooterComponent,
+    RouterLink,
   ],
   providers: [ConfirmationService],
 })
@@ -60,6 +66,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private readonly _userService = inject(UserService);
   public readonly user: User | undefined = this._userService.userDetails();
   private readonly _translationService = inject(TranslateService);
+  private readonly _stepNavigationService = inject(StepNavigationService);
+  private readonly router = inject(Router);
 
   private langChangeSub?: Subscription;
   private isSorted: boolean | null = null;
@@ -194,5 +202,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   public onStatusFilterClear(): void {
     this.statusFilterValue = null;
+  }
+
+  public redirectToCaseForm(): void {
+    this._stepNavigationService.resetToFirstStep();
+    this.router.navigate(['/form']);
   }
 }
