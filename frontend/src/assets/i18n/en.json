@@ -1,5 +1,7 @@
 {
   "home": "Home",
+  "yes": "Yes",
+  "no": "No",
   "mandatory": "* Fields marked with asterisk are mandatory.",
   "homepage": {
     "question": "Delayed? Cancelled? Get the compensation you deserve!",

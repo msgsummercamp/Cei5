@@ -12,6 +12,19 @@ body {
   background-color: red;
 }
 
+.p-confirmdialog-accept-button {
+  background-color: #a6eb55 !important;
+  border-color: #a6eb55 !important;
+  color: #0c2c70 !important;
+}
+
+.p-confirmdialog-reject-button {
+  background-color: red !important;
+  border-color: red !important;
+  color: white !important;
+}
+
+
 ::ng-deep .p-floatlabel{
   --p-floatlabel-on-border-radius: 0.5rem;
   --p-floatlabel-on-active-background: white;
