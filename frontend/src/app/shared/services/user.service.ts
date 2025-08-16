@@ -1,15 +1,19 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../types/user';
 import { environment } from '../../../environments/environment';
+import { NotificationService } from './toaster/notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly _httpClient = inject(HttpClient);
+  private readonly _notificationService = inject(NotificationService);
+  private readonly _translateService = inject(TranslateService);
   private readonly API_URL = environment.API_URL;
 
   private readonly _userDetails = signal<User | undefined>(undefined);
@@ -46,6 +50,11 @@ export class UserService {
     return this._httpClient.post<User>(`${this.API_URL}/auth/register`, transformedData).pipe(
       catchError((error) => {
         throw error;
+      }),
+      tap(() => {
+        this._notificationService.showSuccess(
+          this._translateService.instant('user-service.user-created')
+        );
       })
     );
   }
@@ -58,6 +67,22 @@ export class UserService {
     return this._httpClient.get<User[]>(`${this.API_URL}/users`).pipe(
       catchError((error) => {
         throw error;
+      })
+    );
+  }
+
+  /**
+   * Fetches all employees from the backend
+   * @returns Observable<User[]> - All Employees
+   */
+  public getAllEmployees(): Observable<User[]> {
+    return this._httpClient.get<User[]>(`${this.API_URL}/users/employees`).pipe(
+      catchError((error) => {
+        const apiError = error?.error;
+        if (apiError) {
+          this._notificationService.showError(this._translateService.instant(apiError.detail));
+        }
+        return of([]);
       })
     );
   }

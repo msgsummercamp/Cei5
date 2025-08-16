@@ -1,5 +1,7 @@
 {
   "home": "Acasă",
+  "yes": "Da",
+  "no": "Nu",
   "mandatory": "* Câmpurile marcate cu steluță sunt obligatorii.",
   "homepage": {
     "question": "Zbor întârziat sau anulat? Obține compensația cuvenită!",
@@ -142,7 +144,8 @@
     "user-profile-title": "Profilul meu",
     "language": "Limba",
     "employee-dashboard": "Vizualizare cazuri",
-    "check-flight": "Verifică zbor"
+    "check-flight": "Verifică zbor",
+    "admin-table": "Administrare utilizatori"
   },
   "request-reset": {
     "title": "Resetare parolă",
@@ -212,18 +215,18 @@
     "privacy-policy": "politica de confidențialitate."
   },
   "confirmation": {
-    "congratulations": "Felicitări! Acum puteți trimite cazul dumneavoastră. Înainte de aceasta, iată o prezentare a pașilor următori:",
+    "congratulations": "Felicitări! Acum puteți să vă trimiteți cazul. Dar mai întâi, iată o previzualizare a următorilor pași:",
     "step1": {
       "title": "Pasul 1",
-      "text": "Accesați contul dumneavoastră apăsând butonul <strong>Finalizează</strong> de mai jos. După autentificare, încărcați toate documentele necesare pentru cazul dumneavoastră."
+      "text": "Puteți trimite cazul făcând clic pe butonul <strong>Finalizare</strong> de mai jos. După ce accesați contul, noul caz va fi vizibil în profilul dumneavoastră."
     },
     "step2": {
       "title": "Pasul 2",
-      "text": "După ce apăsați <strong>Finalizează</strong>, se va genera un contract cu datele dumneavoastră. Citiți-l cu atenție, semnați-l și încărcați-l în dosarul dumneavoastră."
+      "text": "Când faceți clic pe <strong>Finalizare</strong>, va fi generat un contract cu datele dumneavoastră. Citiți-l, semnați-l și încărcați-l la cazul dumneavoastră, împreună cu alte documente necesare."
     },
     "step3": {
       "title": "Pasul 3",
-      "text": "Așteptați ca un membru al echipei să proceseze cazul dumneavoastră și verificați periodic emailul pentru eventuale actualizări."
+      "text": "Așteptați ca un angajat să proceseze cazul dumneavoastră și verificați-vă e-mailul pentru eventuale actualizări."
     }
   },
   "stepper": {
@@ -297,13 +300,14 @@
       "compensation-end": "€. Faceți clic pe <strong>Următorul</strong> pentru a introduce datele personale și a trimite cererea."
     },
     "notEligible": {
-      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații:",
-      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească."
+      "sorry": "Ne pare rău! Din păcate nu sunteți eligibil pentru compensații.",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, dacă zborul dumneavoastră a fost întârziat sau anulat din cauza grevei controlorilor de trafic aerian (ATC), condiții meteorologice nefavorabile sau alte circumstanțe, care nu se află în sfera influenței companiei aeriene, atunci compania aeriană nu este obligată să vă despăgubească. Pentru a verifica un alt zbor, apăsați "
     },
     "conditionsNotFulfilled": {
-      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate:",
-      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați aici."
+      "sorry": "Ne pare rău! Nu îndepliniți condițiile de eligibilitate.",
+      "notEligibleMessage": "Conform regulamentului european EC261/2004, compania aeriană nu este obligată să vă despăgubească dacă zborul dumneavoastră:\na avut o întârziere de mai puțin de 3 ore sau\ndacă ați fost notificat despre anulare cu peste de 14 zile înainte de data zborului (email, SMS)\ncompania aeriană nu este obligată să vă despăgubească nici în cazul anulărilor anunțate sub 14 zile de la data zborului, dacă ajungeți sub 3 ore de întârziere față de itinerariul inițial cu un zbor alternativ oferit de compania aeriană.\nNe pare rău și vă mulțumim pentru înțelegere. Pentru a verifica un alt zbor, apăsați "
     },
+    "link": "aici",
     "continueWithPersonalDetails": "Continua cu datele personale.",
     "restart": "Reporniti de la inceput."
   },
@@ -311,7 +315,8 @@
     "next": "Finalizează"
   },
   "user-service": {
-    "error": "Eroare"
+    "error": "Eroare",
+    "user-created": "Utilizator creat cu succes. Verificați adresa de email pentru parola temporară."
   },
   "api-errors": {
     "invalid-airport-details": "Detalii aeroport invalide: de la {{departingAirportCode}} la {{destinationAirportCode}}. Vă rugăm să verificați codurile aeroporturilor.",
@@ -365,12 +370,13 @@
     "matchAll": "Potrivire totală",
     "matchAny": "Potrivire parțială",
     "addRule": "Adaugă regulă",
-    "clear": "Curăță",
+    "clear": "Șterge",
     "apply": "Aplică",
     "yes": "Da",
     "no": "Nu",
     "choose": "Alege",
-    "upload": "Încarcă"
+    "upload": "Încarcă",
+    "cancel": "Anulează"
   },
   "statuses": {
     "ASSIGNED": "Atribuit",
@@ -399,14 +405,20 @@
     "title": "Panou de administrare",
     "name": "Nume",
     "role": "Rol",
-    "assignedCases": "Numar de cazuri atribuite",
-    "userDeleted": "Utilizatorul a fost sters",
-    "addNewEmployee": "Adaugă un nou angajat",
+    "assignedCases": "Număr de cazuri atribuite",
+    "userDeleted": "Utilizatorul a fost șters",
+    "addNewUser": "Adaugă utilizator",
+    "selectRole": "Selectați rolul",
+    "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
+  },
+  "roles": {
+    "USER": "Pasager",
+    "ADMIN": "Administrator",
+    "EMPLOYEE": "Angajat",
     "cannotDeleteOwnAccount": "Nu iti poți șterge propriul cont"
   },
   "employee-dialog": {
-    "header": "Adaugă User",
-    "title": "Detalii User",
+    "header": "Detalii utilizator",
     "firstName": "Prenume",
     "lastName": "Nume",
     "email": "Email",
@@ -415,7 +427,8 @@
     "cancel": "Anulează",
     "fillAllFields": "Vă rugăm să completați toate câmpurile.",
     "userCreated": "Utilizator creat cu succes.",
-    "reservation-not-found": "Rezervarea nu a fost găsită."
+    "reservation-not-found": "Rezervarea nu a fost găsită.",
+    "role-required": "Rolul este obligatoriu."
   },
   "not-found": {
     "title": "Pagină inexistentă",
@@ -429,8 +442,11 @@
   },
   "case-details": {
     "title": "Detalii Caz",
-    "actions": "Acțiuni",
     "date": "Dată",
+    "read": "Citește",
+    "created-by": "Creat de",
+    "no-client": "Client information not available anymore.",
+    "beneficiary": "Beneficiar",
     "assigned-employee": "Angajat Atribuit",
     "disruption-reason": "Motivul Perturbării",
     "disruption-info": "Informații Perturbare",
@@ -442,14 +458,38 @@
     "select-file-error": "Vă rugăm să selectați un fișier.",
     "upload-file-success": "Fișier încărcat cu succes.",
     "upload": "Încărcare Fișier",
+    "select-file": "Selectați un fișier",
     "invalid-file-size": "Fișierul este prea mare.",
     "invalid-file-type": "Tipul fișierului nu este acceptat. Acceptăm doar PDF, JPG, PNG.",
     "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB.",
+    "actions": {
+      "title": "Acțiuni",
+      "assign-employee": "Atribuie Angajat",
+      "update": "Actualizează",
+      "select-status": "Selectează Status",
+      "update-status": "Actualizează Status",
+      "status-update-success": "Status actualizat cu succes.",
+      "select-employee": "Selectează Angajat",
+      "employee-update-success": "Angajat atribuit cu succes.",
+      "no-employees": "Niciun angajat disponibil."
+    },
     "chat": {
       "type-message": "Scrieți mesajul dvs...",
       "send": "Trimite",
       "message-length": "*Comentariul are cel mult 1000 de caractere",
       "comments": "Comentarii"
     }
+  },
+  "disruption-reasons": {
+    "cancellation-under-14-days-and-over-3h": "Anunț de anulare cu mai puțin de 14 zile înainte. Întârziere de peste 3 ore la sosire",
+    "cancellation-under-14-days-and-never-arrived": "Anunț de anulare cu mai puțin de 14 zile înainte. Pasagerul nu a ajuns niciodată",
+    "cancellation-on-day-of-departure-and-over-3h": "Anunț de anulare în ziua plecării. Întârziere de peste 3 ore la sosire",
+    "cancellation-on-day-of-departure-and-never-arrived": "Anunț de anulare în ziua plecării. Pasagerul nu a ajuns niciodată",
+    "arrived-3h-late": "Întârziere de peste 3 ore la sosire",
+    "never-arrived": "Zbor întârziat sau anulat. Nu a ajuns niciodată",
+    "overbooking": "Îmbarcare refuzată. Zbor suprarezervat",
+    "denied-boarding-without-reason": "Îmbarcare refuzată fără motiv specificat",
+    "not-eligible-reason": "Neeligibil",
+    "conditions-not-fulfilled": "Condiții neîndeplinite"
   }
 }

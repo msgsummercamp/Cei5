@@ -1,5 +1,7 @@
 {
   "home": "Home",
+  "yes": "Yes",
+  "no": "No",
   "mandatory": "* Fields marked with asterisk are mandatory.",
   "homepage": {
     "question": "Delayed? Cancelled? Get the compensation you deserve!",
@@ -141,6 +143,7 @@
     "user-profile-title": "My Profile",
     "profile": "Profile",
     "employee-dashboard": "View Cases",
+    "admin-table": "Users Management",
     "check-flight": "Check Flight",
     "language": "Language"
   },
@@ -215,11 +218,11 @@
     "congratulations": "Congratulations! You can now submit your case. But first, here is a preview of your next steps:",
     "step1": {
       "title": "Step 1",
-      "text": "You can enter your account by clicking the <strong>Finish</strong> button below. After entering your account, upload all necessary documents for your case."
+      "text": "You can submit your case by clicking the <strong>Finish</strong> button below. When you enter your account, the new case will be visible on your profile."
     },
     "step2": {
       "title": "Step 2",
-      "text": "When you click <strong>Finish</strong> a contract with your details will be generated. Read it, sign it and upload it to your case."
+      "text": "When you click <strong>Finish</strong> a contract with your details will be generated. Read it, sign it and upload it to your case, along with other necessary documents."
     },
     "step3": {
       "title": "Step 3",
@@ -297,13 +300,14 @@
       "compensation-end": ". Click <strong>Next</strong> to provide your personal details and submit your claim."
     },
     "notEligible": {
-      "sorry": "We are sorry! Unfortunately, you are not eligible for compensation:",
-      "notEligibleMessage": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to an air traffic control (ATC) strike, adverse weather conditions, or other circumstances beyond the airline’s control, the airline is not obliged to compensate you."
+      "sorry": "We are sorry! Unfortunately, you are not eligible for compensation.",
+      "notEligibleMessage": "According to European Regulation EC261/2004, if your flight was delayed or canceled due to an air traffic control (ATC) strike, adverse weather conditions, or other circumstances beyond the airline’s control, the airline is not obliged to compensate you. To check another flight, click "
     },
     "conditionsNotFulfilled": {
-      "sorry": "We are sorry! You do not meet the eligibility requirements:",
-      "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click here."
+      "sorry": "We are sorry! You do not meet the eligibility requirements.",
+      "notEligibleMessage": "According to European Regulation EC261/2004, the airline is not obliged to compensate you if your flight:\nhad a delay of less than 3 hours, or\nif you were notified about the cancellation more than 14 days before the flight date (email, SMS)\nthe airline is also not obliged to compensate you in case of cancellations announced less than 14 days before the flight date if you arrive with less than 3 hours of delay compared to the original itinerary on an alternative flight offered by the airline.\nWe are sorry and thank you for your understanding. To check another flight, click "
     },
+    "link": "here",
     "continueWithPersonalDetails": "Continue with personal details.",
     "restart": "Restart from the beginning."
   },
@@ -311,7 +315,8 @@
     "next": "Finish"
   },
   "user-service": {
-    "error": "Error"
+    "error": "Error",
+    "user-created": "User created successfully. Check the email for a temporary password."
   },
   "api-errors": {
     "invalid-airport-details": "Invalid airports details: from {{departingAirportCode}} to {{destinationAirportCode}}. Please check the airport codes.",
@@ -370,7 +375,8 @@
     "yes": "Yes",
     "no": "No",
     "choose": "Choose",
-    "upload": "Upload"
+    "upload": "Upload",
+    "cancel": "Cancel"
   },
   "statuses": {
     "ASSIGNED": "Assigned",
@@ -402,12 +408,18 @@
     "role": "Role",
     "assignedCases": "Number of assigned cases",
     "userDeleted": "The User was deleted",
-    "addNewEmployee": "Add a new Employee",
+    "addNewUser": "Add User",
+    "selectRole": "Select Role",
+    "confirm-delete": "Are you sure you want to delete this user?"
+  },
+  "roles": {
+    "USER": "Passenger",
+    "ADMIN": "Administrator",
+    "EMPLOYEE": "Employee",
     "cannotDeleteOwnAccount": "You cannot delete your own account"
   },
   "employee-dialog": {
-    "header": "Add User",
-    "title": "User Details",
+    "header": "User Details",
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
@@ -416,7 +428,8 @@
     "cancel": "Cancel",
     "fillAllFields": "Please fill in all fields.",
     "userCreated": "User created successfully.",
-    "reservation-not-found": "The reservation was not found."
+    "reservation-not-found": "The reservation was not found.",
+    "role-required": "Role is required."
   },
   "not-found": {
     "title": "Page Not Found",
@@ -430,8 +443,11 @@
   },
   "case-details": {
     "title": "Case Details",
-    "actions": "Actions",
     "date": "Date",
+    "read": "Read",
+    "created-by": "Created By",
+    "no-client": "Client information not available anymore.",
+    "beneficiary": "Beneficiary",
     "assigned-employee": "Assigned Employee",
     "disruption-reason": "Disruption Reason",
     "disruption-info": "Disruption Info",
@@ -443,14 +459,38 @@
     "select-file-error": "Please select a file to upload.",
     "upload-file-success": "File uploaded successfully.",
     "upload": "Upload file",
+    "select-file": "Select a file",
     "invalid-file-type": "Invalid file type. Please upload a PDF, DOCX, or JPG file.",
     "invalid-file-size": "File size exceeds the limit",
     "max-file-size": "Maximum file size is 5MB.",
+    "actions": {
+      "title": "Actions",
+      "assign-employee": "Assign Employee",
+      "update": "Update",
+      "select-status": "Select Status",
+      "update-status": "Update Status",
+      "status-update-success": "Status updated successfully.",
+      "select-employee": "Select Employee",
+      "employee-update-success": "Employee assigned successfully.",
+      "no-employees": "No employees available to assign."
+    },
     "chat": {
       "type-message": "Type your message...",
       "send": "Send",
       "message-length": "*The comment has at most 1000 characters",
       "comments": "Comments"
     }
+  },
+  "disruption-reasons": {
+    "cancellation-under-14-days-and-over-3h": "Cancellation notice less than 14 days in advance. Arrived with a delay over 3 hours",
+    "cancellation-under-14-days-and-never-arrived": "Cancellation notice less than 14 days in advance. Passenger never arrived",
+    "cancellation-on-day-of-departure-and-over-3h": "Cancellation notice on the day of departure. Arrived with a delay over 3 hours",
+    "cancellation-on-day-of-departure-and-never-arrived": "Cancellation notice on the day of departure. Passenger never arrived",
+    "arrived-3h-late": "Delay of more than 3 hours on arrival",
+    "never-arrived": "Flight delayed or canceled. Never arrived",
+    "overbooking": "Denied boarding. Flight was overbooked",
+    "denied-boarding-without-reason": "Denied boarding without reason given",
+    "not-eligible-reason": "Not eligible",
+    "conditions-not-fulfilled": "Conditions not fulfilled"
   }
 }

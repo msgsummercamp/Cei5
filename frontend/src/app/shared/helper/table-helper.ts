@@ -8,7 +8,6 @@ export class TableHelper {
     const field = event.field;
     const order = event.order;
     if (!field || !order) {
-      console.error('Sort event does not have a valid field or order');
       return;
     }
     event.data?.sort((data1: Data, data2: Data) => {

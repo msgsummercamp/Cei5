@@ -143,6 +143,8 @@ export class EmployeeCaseTableComponent implements OnInit, OnDestroy {
   public deleteCase(caseId: string): void {
     this._confirmationService.confirm({
       message: this._translationService.instant('case-table.confirm-delete'),
+      acceptLabel: this._translationService.instant('yes'),
+      rejectLabel: this._translationService.instant('no'),
       accept: () => {
         this._caseService.deleteCase(caseId).subscribe({
           next: () => {

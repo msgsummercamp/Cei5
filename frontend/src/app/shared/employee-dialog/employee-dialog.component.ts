@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -6,10 +6,27 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SelectModule } from 'primeng/select';
 import { Roles } from '../types/enums/roles';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { ApiError } from '../types/api-error';
 import { NotificationService } from '../services/toaster/notification.service';
+import { ErrorMessageComponent } from '../components/error-message/error-message.component';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Subscription } from 'rxjs';
+
+type NewUserForm = {
+  email: FormControl<string>;
+  firstName: FormControl<string>;
+  lastName: FormControl<string>;
+  role: FormControl<Roles | undefined>;
+};
+
 @Component({
   selector: 'app-employee-dialog',
   imports: [
@@ -20,49 +37,76 @@ import { NotificationService } from '../services/toaster/notification.service';
     TranslatePipe,
     SelectModule,
     FormsModule,
+    ErrorMessageComponent,
+    FloatLabel,
+    ReactiveFormsModule,
   ],
   templateUrl: './employee-dialog.component.html',
   styleUrl: './employee-dialog.component.scss',
 })
-export class EmployeeDialogComponent {
+export class EmployeeDialogComponent implements OnInit {
   private readonly _userService = inject(UserService);
   private readonly _translateService = inject(TranslateService);
   private readonly _notificationService = inject(NotificationService);
+  private readonly _formBuilder = inject(NonNullableFormBuilder);
+
+  public roles: { name: string; value: Roles }[] = [];
 
   visible = input<boolean>(false);
-
   onCancel = output<void>();
   onSuccess = output<void>();
   visibleChange = output<boolean>();
+  private langChangeSub?: Subscription;
 
-  private dialogVisible = signal(false);
+  loading = signal(false);
 
-  public loading = signal<boolean>(false);
+  protected readonly newUserForm = this._formBuilder.group<NewUserForm>({
+    email: this._formBuilder.control<string>('', [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(254),
+    ]),
+    firstName: this._formBuilder.control<string>('', [
+      Validators.required,
+      Validators.minLength(1),
+      Validators.maxLength(50),
+      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
+    ]),
+    lastName: this._formBuilder.control<string>('', [
+      Validators.required,
+      Validators.minLength(1),
+      Validators.maxLength(50),
+      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]+$/),
+    ]),
+    role: this._formBuilder.control<Roles | undefined>(undefined, [Validators.required]),
+  });
 
-  public roles = [
-    { name: 'Admin', value: Roles.ADMIN },
-    { name: 'User', value: Roles.USER },
-    { name: 'Employee', value: Roles.EMPLOYEE },
-  ];
+  ngOnInit(): void {
+    this.buildRoleOptions();
+    this.langChangeSub = this._translateService.onLangChange.subscribe(() => {
+      this.buildRoleOptions();
+    });
+  }
 
-  public selectedRole = signal<{ name: string; value: Roles } | null>(null);
-
-  public firstName = signal<string>('');
-  public lastName = signal<string>('');
-  public email = signal<string>('');
+  private buildRoleOptions(): void {
+    this.roles = Object.values(Roles).map((role) => ({
+      name: this.getRoleTranslation(role as Roles),
+      value: role,
+    }));
+  }
 
   public showDialog(): void {
-    this.dialogVisible.set(true);
+    this.visibleChange.emit(true);
   }
 
   public onCancelClick(): void {
-    this.resetForm();
+    this.newUserForm.reset();
     this.visibleChange.emit(false);
     this.onCancel.emit();
   }
 
   public onSaveClick(): void {
-    if (!this.isFormValid()) {
+    if (this.newUserForm.invalid) {
       this._notificationService.showError(
         this._translateService.instant('employee-dialog.fillAllFields')
       );
@@ -71,39 +115,25 @@ export class EmployeeDialogComponent {
 
     this.loading.set(true);
 
-    const employeeData = {
-      firstName: this.firstName(),
-      lastName: this.lastName(),
-      email: this.email(),
-      role: this.selectedRole()?.value,
-    };
-
-    this._userService.createUser(employeeData).subscribe({
-      next: (response) => {
+    this._userService.createUser(this.newUserForm.getRawValue()).subscribe({
+      next: () => {
         this._notificationService.showSuccess(
           this._translateService.instant('employee-dialog.userCreated')
         );
-        this.resetForm();
+        this.newUserForm.reset();
         this.loading.set(false);
         this.visibleChange.emit(false);
         this.onSuccess.emit();
       },
       error: (error) => {
         this.loading.set(false);
-        const apiError: ApiError = error.error.details;
-        const errorKey = apiError?.detail || 'employee-dialog.createUserError';
-        this._notificationService.showError(this._translateService.instant(errorKey));
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translateService.instant(apiError.detail));
       },
     });
   }
 
-  private isFormValid(): boolean {
-    return !!(this.firstName() && this.lastName() && this.email() && this.selectedRole());
-  }
-  private resetForm(): void {
-    this.firstName.set('');
-    this.lastName.set('');
-    this.email.set('');
-    this.selectedRole.set(null);
+  public getRoleTranslation(role: Roles): string {
+    return this._translateService.instant('roles.' + role);
   }
 }

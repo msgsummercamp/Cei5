@@ -31,7 +31,6 @@ export class CaseService {
   public readonly caseSaved = new Subject<CreatedCaseDetails>();
 
   public createCase(caseData: CaseDTO): void {
-    console.log(caseData);
     this._http.post<Case>(`${this._apiUrl}/cases`, caseData).subscribe({
       next: (createdCase) => {
         this.caseSaved.next({
@@ -100,7 +99,7 @@ export class CaseService {
   public createReservationDTO(): ReservationDTO {
     return {
       reservationNumber: this._reservationService.getReservationInformation().reservationNumber,
-      flights: this._flightService.getAllFlights().map((flight, index) => {
+      flights: this._flightService.getAllFlights().map((flight) => {
         const departureDateTime = flight.flightDetails.plannedDepartureTime || new Date();
         const arrivalDateTime = flight.flightDetails.plannedArrivalTime || new Date();
 
@@ -148,6 +147,28 @@ export class CaseService {
     );
   }
 
+  public updateCaseStatus(caseId: string, status: Statuses): Observable<Case | null> {
+    return this._http.patch<Case>(`${this._apiUrl}/cases/${caseId}/${status}`, { status }).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of(null);
+      })
+    );
+  }
+
+  public updateAssignedEmployee(caseId: string, employeeId: string): Observable<Case | null> {
+    return this._http
+      .patch<Case>(`${this._apiUrl}/cases/${caseId}/assign-employee/${employeeId}`, {})
+      .pipe(
+        catchError((error) => {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+          return of(null);
+        })
+      );
+  }
+
   public getDocument(documentId: string): Observable<Document> {
     return this._http.get<Document>(`${this._apiUrl}/documents/${documentId}`).pipe(
       catchError((error) => {
@@ -179,7 +200,6 @@ export class CaseService {
     formData.append('file', file);
     formData.append('name', name);
     formData.append('type', backendType);
-    console.log('Uploading document:');
 
     return this._http
       .post<Document>(`${this._apiUrl}/documents/case/${caseId}/upload`, formData)

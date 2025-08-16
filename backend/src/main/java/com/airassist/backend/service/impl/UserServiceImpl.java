@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
      * @param source the source user containing updated fields
      * @param target the target user to be updated
      */
-    private void updateUserFields(User source, User target) {
+    public void updateUserFields(User source, User target) {
         target.setFirstName(source.getFirstName());
         target.setLastName(source.getLastName());
         target.setPassword(source.getPassword());

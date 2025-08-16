@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
@@ -221,7 +221,7 @@ export class CaseFormComponent {
   }
 
   public isFlagActive(index: number): boolean {
-    return this.isFlagged[index] === true;
+    return this.isFlagged[index];
   }
 
   public getConnectionInitialData(connectionIndex: number): FlightDetails | null {
@@ -630,7 +630,7 @@ export class CaseFormComponent {
   }
 
   public areAllDatesValid(): boolean {
-    const flaggedIndex = this.isFlagged.findIndex((flag) => flag === true);
+    const flaggedIndex = this.isFlagged.findIndex((flag) => flag);
 
     if (flaggedIndex === -1) return false;
 
@@ -731,7 +731,7 @@ export class CaseFormComponent {
             return DisruptionReasons.NOT_ELIGIBLE_REASON;
           }
         } else {
-          return DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON;
+          return DisruptionReasons.NOT_ELIGIBLE_REASON;
         }
       }
     }
