@@ -51,19 +51,25 @@ export class AdminTableComponent implements OnInit {
   }
 
   public deleteUser(userId: string): void {
-    this._userService.deleteUser(userId).subscribe({
-      next: () => {
-        this.users = this.users.filter((user) => user.id !== userId);
-        this._notificationService.showSuccess(
-          this._translateService.instant('admin-panel.userDeleted')
-        );
-      },
-      error: (error) => {
-        const apiError: ApiError = error?.error;
-        const errorKey = apiError?.detail || 'error.details';
-        this._notificationService.showError(this._translateService.instant(errorKey));
-      },
-    });
+    if (userId === this._userService.userDetails()?.id) {
+      this._notificationService.showError(
+        this._translateService.instant('admin-panel.cannotDeleteOwnAccount')
+      );
+    } else {
+      this._userService.deleteUser(userId).subscribe({
+        next: () => {
+          this.users = this.users.filter((user) => user.id !== userId);
+          this._notificationService.showSuccess(
+            this._translateService.instant('admin-panel.userDeleted')
+          );
+        },
+        error: (error) => {
+          const apiError: ApiError = error?.error;
+          const errorKey = apiError?.detail || 'error.details';
+          this._notificationService.showError(this._translateService.instant(errorKey));
+        },
+      });
+    }
   }
 
   public openEmployeeDialog(): void {

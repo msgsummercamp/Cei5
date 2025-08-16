@@ -401,7 +401,8 @@
     "role": "Rol",
     "assignedCases": "Numar de cazuri atribuite",
     "userDeleted": "Utilizatorul a fost sters",
-    "addNewEmployee": "Adaugă un nou angajat"
+    "addNewEmployee": "Adaugă un nou angajat",
+    "cannotDeleteOwnAccount": "Nu iti poți șterge propriul cont"
   },
   "employee-dialog": {
     "header": "Adaugă User",

@@ -402,7 +402,8 @@
     "role": "Role",
     "assignedCases": "Number of assigned cases",
     "userDeleted": "The User was deleted",
-    "addNewEmployee": "Add a new Employee"
+    "addNewEmployee": "Add a new Employee",
+    "cannotDeleteOwnAccount": "You cannot delete your own account"
   },
   "employee-dialog": {
     "header": "Add User",
