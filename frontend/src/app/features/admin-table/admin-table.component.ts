@@ -89,35 +89,37 @@ export class AdminTableComponent implements OnInit {
         this._translateService.instant('admin-panel.cannotDeleteOwnAccount')
       );
     } else {
-    this._confirmationService.confirm({
-      message: this._translateService.instant('admin-panel.confirm-delete'),
-      acceptLabel: this._translateService.instant('yes'),
-      rejectLabel: this._translateService.instant('no'),
-      accept: () => {
-        this._userService.deleteUser(userId).subscribe({
-          next: () => {
-            this.users = this.users.filter((user) => user.id !== userId);
-            this._notificationService.showSuccess(
-              this._translateService.instant('admin-panel.userDeleted')
-            );
-          },
-          error: (error) => {
-            const apiError: ApiError = error?.error;
-            const errorKey = apiError?.detail || 'error.details';
-            this._notificationService.showError(this._translateService.instant(errorKey));
-          },
-        });
-      },
-    });
+      this._confirmationService.confirm({
+        message: this._translateService.instant('admin-panel.confirm-delete'),
+        acceptLabel: this._translateService.instant('yes'),
+        rejectLabel: this._translateService.instant('no'),
+        accept: () => {
+          this._userService.deleteUser(userId).subscribe({
+            next: () => {
+              this.users = this.users.filter((user) => user.id !== userId);
+              this._notificationService.showSuccess(
+                this._translateService.instant('admin-panel.userDeleted')
+              );
+            },
+            error: (error) => {
+              const apiError: ApiError = error?.error;
+              const errorKey = apiError?.detail || 'error.details';
+              this._notificationService.showError(this._translateService.instant(errorKey));
+            },
+          });
+        },
+      });
     }
   }
 
   public openEmployeeDialog(): void {
     this.showEmployeeDialog.set(true);
   }
+
   public closeEmployeeDialog(): void {
     this.showEmployeeDialog.set(false);
   }
+
   public onEmployeeDialogSuccess(): void {
     this.showEmployeeDialog.set(false);
     this.loadUsers();
