@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CaseService } from '../../shared/services/case.service';
 import { Case } from '../../shared/types/case';
 import { ActivatedRoute } from '@angular/router';
@@ -62,6 +62,7 @@ export class CaseDetailsComponent {
   private readonly _notificationService = inject(NotificationService);
   private readonly _commentService = inject(CommentService);
   private readonly _userService = inject(UserService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   public caseData: Case | null = null;
   public loading = true;
@@ -76,6 +77,8 @@ export class CaseDetailsComponent {
   public loadingComments = false;
   public newCommentText = '';
   public postingComment = false;
+
+  @ViewChild('chatMessages') chatMessages!: ElementRef<HTMLDivElement>;
 
   ngOnInit() {
     this._translationService.onLangChange.subscribe(() => {
@@ -271,6 +274,12 @@ export class CaseDetailsComponent {
     });
   }
 
+  private scrollToBottom(): void {
+    if (this.chatMessages) {
+      this.chatMessages.nativeElement.scrollTop = this.chatMessages.nativeElement.scrollHeight;
+    }
+  }
+
   public postComment(userId: string): void {
     if (!this.newCommentText.trim() || !this.caseData?.id) return;
     this.postingComment = true;
@@ -284,6 +293,9 @@ export class CaseDetailsComponent {
         this.comments.push(createdComment);
         this.newCommentText = '';
         this.postingComment = false;
+
+        this.cdr.detectChanges();
+        this.scrollToBottom();
       },
       error: () => {
         this.postingComment = false;

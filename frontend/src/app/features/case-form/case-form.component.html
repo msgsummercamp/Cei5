@@ -156,15 +156,14 @@
                           text="{{ 'mainForm.departingAirportUpper' | translate }}"
                         />
                       }
-                      @case (
-                        reservationForm.hasError('destinationIsDeparting') &&
-                        reservationForm.controls.departingAirport.touched
-                      ) {
-                        <app-error-message
-                          text="{{ 'mainForm.destinationIsDeparting' | translate }}"
-                        />
-                      }
                     }
+                  }
+                  @if (
+                    reservationForm.hasError('destinationIsDeparting') &&
+                    (reservationForm.controls.departingAirport.touched ||
+                      reservationForm.controls.destinationAirport.touched)
+                  ) {
+                    <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                   }
                 </div>
                 <div class="flex align-self-start">
@@ -205,13 +204,11 @@
                 >
                 </app-flight-form>
 
-                <div class="flex justify-content-center align-items-center">
-                  <p-checkbox
-                    [(ngModel)]="checked"
-                    [binary]="true"
-                    (onChange)="onConnectionCheckboxChange()"
-                  />
-                  <label class="ml-2">{{ 'mainForm.clickToAddConnections' | translate }}</label>
+                <div class="flex justify-content-center items-center">
+                  <p-toggleswitch [(ngModel)]="checked" (onChange)="onConnectionCheckboxChange()" />
+                  <label class="ml-2 font-bold" style="margin-top: 2px">{{
+                    'mainForm.clickToAddConnections' | translate
+                  }}</label>
                 </div>
               </div>
 

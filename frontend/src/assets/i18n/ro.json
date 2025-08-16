@@ -269,7 +269,7 @@
     "dateOrder": "Datele zborurilor trebuie să fie în ordine cronologică.",
     "selectConnection": "Selectați o conexiune pentru a adăuga detalii.",
     "invalidFlightTimes": "Orele zborurilor trebuie să fie valide (sosire după plecare).",
-    "clickToAddConnections": "Click pentru a adăuga conexiuni",
+    "clickToAddConnections": "Ai avut zboruri de conexiune?",
     "pleaseAddConnection": "Adaugă un aeroport",
     "fillInAllConnections": "Nu lăsa aeroporturile de conexiune goale."
   },
