@@ -17,8 +17,6 @@ A modern web app for managing flight delay claims and related workflows.
 - Tech stack
 - Architecture
 - Project structure
-- Configuration (DB, mail, env)
-- Development workflow
 - Build & test
 - i18n
 - Troubleshooting
