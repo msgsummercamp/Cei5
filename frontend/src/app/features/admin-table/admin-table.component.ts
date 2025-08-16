@@ -86,6 +86,8 @@ export class AdminTableComponent implements OnInit {
   public deleteUser(userId: string): void {
     this._confirmationService.confirm({
       message: this._translateService.instant('admin-panel.confirm-delete'),
+      acceptLabel: this._translateService.instant('yes'),
+      rejectLabel: this._translateService.instant('no'),
       accept: () => {
         this._userService.deleteUser(userId).subscribe({
           next: () => {
