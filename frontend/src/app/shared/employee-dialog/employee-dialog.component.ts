@@ -90,10 +90,12 @@ export class EmployeeDialogComponent implements OnInit {
   }
 
   private buildRoleOptions(): void {
-    this.roles = Object.values(Roles).map((role) => ({
-      name: this.getRoleTranslation(role as Roles),
-      value: role,
-    }));
+    this.roles = Object.values(Roles)
+      .filter((role) => role !== Roles.USER)
+      .map((role) => ({
+        name: this.getRoleTranslation(role as Roles),
+        value: role,
+      }));
   }
 
   public showDialog(): void {
@@ -118,9 +120,6 @@ export class EmployeeDialogComponent implements OnInit {
 
     this._userService.createUser(this.newUserForm.getRawValue()).subscribe({
       next: () => {
-        this._notificationService.showSuccess(
-          this._translateService.instant('employee-dialog.userCreated')
-        );
         this.newUserForm.reset();
         this.loading.set(false);
         this.visibleChange.emit(false);

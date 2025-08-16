@@ -37,7 +37,9 @@ export class CaseService {
           caseId: createdCase.id,
           caseDate: createdCase.date,
         });
-        this._notificationService.showSuccess('case-service.case-created');
+        this._notificationService.showSuccess(
+          this._translationService.instant('case-service.case-created')
+        );
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 0) {
@@ -99,7 +101,9 @@ export class CaseService {
         if (isEligible) {
           this.createCase(caseData);
         } else {
-          this._notificationService.showError('case-service.ineligible-for-compensation');
+          this._notificationService.showError(
+            this._translationService.instant('case-service.ineligible-for-compensation')
+          );
         }
       },
       error: (error) => {
