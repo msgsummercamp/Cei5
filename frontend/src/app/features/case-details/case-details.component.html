@@ -44,7 +44,11 @@
             <p
               ><label
                 ><strong>{{ 'case-details.disruption-info' | translate }}: </strong></label
-              ><p-button (onClick)="showDialog()" [label]="'case-details.read' | translate" />
+              ><p-button
+                class="custom-button"
+                (onClick)="showDialog()"
+                [label]="'case-details.read' | translate"
+              />
               <p-dialog
                 [header]="'case-details.disruption-info' | translate"
                 [modal]="true"
@@ -102,6 +106,7 @@
                 chooseIcon="pi pi-upload"
                 maxFileSize="5000000"
                 [customUpload]="true"
+                class="custom-button"
                 (uploadHandler)="uploadDocument($event)"
                 [accept]="'.pdf,.jpg,.png'"
                 [invalidFileSizeMessageSummary]="'case-details.invalid-file-size' | translate"
@@ -120,6 +125,7 @@
               @if (caseData.documentList) {
                 @for (document of caseData.documentList; track $index) {
                   <p-button
+                    class="custom-button"
                     [label]="document.name"
                     [icon]="'pi pi-file'"
                     link
@@ -161,7 +167,7 @@
                   (onClick)="updateCaseStatus()"
                   [disabled]="!selectedStatus"
                   icon="pi pi-check"
-                  class="p-button-sm ml-2 py-0"
+                  class="custom-button p-button-sm ml-2 py-0"
                 />
               </div>
               <div class="flex align-items-center pt-2">
@@ -185,7 +191,7 @@
                   (onClick)="updateAssignedEmployee()"
                   [disabled]="!selectedEmployee"
                   icon="pi pi-check"
-                  class="p-button-sm ml-2 py-0"
+                  class="custom-button p-button-sm ml-2 py-0"
                 />
               </div>
             </div>
@@ -236,7 +242,7 @@
                   (click)="postComment(currentUserId!)"
                   [disabled]="postingComment || !newCommentText.trim() || !currentUserId"
                   icon="pi pi-send"
-                  class="p-button-sm"
+                  class="custom-button p-button-sm"
                 ></p-button>
               </div>
             }
