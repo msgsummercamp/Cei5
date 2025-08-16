@@ -197,7 +197,7 @@
             @if (loadingComments) {
               <p-progress-spinner />
             } @else {
-              <div class="chat-messages" style="max-height: 418px; overflow-y: auto">
+              <div #chatMessages class="chat-messages" style="max-height: 418px; overflow-y: auto">
                 @for (comment of comments; track comment.id) {
                   @if (comment.userId === currentUserId) {
                     <p-card class="chat-message text-right" [styleClass]="'mb-2 bg-green-100'">
