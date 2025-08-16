@@ -2,19 +2,22 @@ import { DisruptionReasons } from '../types/enums/disruption-reason';
 
 export class DisruptionReasonMapper {
   private static readonly reasonToTranslationKeyMap: Record<DisruptionReasons, string> = {
-    [DisruptionReasons.CANCELATION_NOTICE_UNDER_14_DAYS]:
-      'disruption-reasons.cancellation-notice-under-14-days',
-    [DisruptionReasons.CANCELATION_NOTICE_OVER_14_DAYS]:
-      'disruption-reasons.cancellation-notice-over-14-days',
-    [DisruptionReasons.CANCELATION_ON_DAY_OF_DEPARTURE]:
-      'disruption-reasons.cancellation-on-day-of-departure',
+    [DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_OVER_3H]:
+      'disruption-reasons.cancellation-under-14-days-and-over-3h',
+    [DisruptionReasons.CANCELLATION_UNDER_14_DAYS_AND_NEVER_ARRIVED]:
+      'disruption-reasons.cancellation-under-14-days-and-never-arrived',
+    [DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_OVER_3H]:
+      'disruption-reasons.cancellation-on-day-of-departure-and-over-3h',
+    [DisruptionReasons.CANCELLATION_ON_DAY_OF_DEPARTURE_AND_NEVER_ARRIVED]:
+      'disruption-reasons.cancellation-on-day-of-departure-and-never-arrived',
     [DisruptionReasons.ARRIVED_3H_LATE]: 'disruption-reasons.arrived-3h-late',
-    [DisruptionReasons.ARRIVED_EARLY]: 'disruption-reasons.arrived-early',
     [DisruptionReasons.NEVER_ARRIVED]: 'disruption-reasons.never-arrived',
-    [DisruptionReasons.DID_NOT_GIVE_THE_SEAT_VOLUNTARILY]:
-      'disruption-reasons.did-not-give-the-seat-voluntarily',
-    [DisruptionReasons.DID_GIVE_THE_SEAT_VOLUNTARILY]:
-      'disruption-reasons.did-give-the-seat-voluntarily',
+    [DisruptionReasons.OVERBOOKING]: 'disruption-reasons.overbooking',
+    [DisruptionReasons.DENIED_BOARDING_WITHOUT_REASON]:
+      'disruption-reasons.denied-boarding-without-reason',
+    [DisruptionReasons.NOT_ELIGIBLE_REASON]: 'disruption-reasons.not-eligible-reason',
+    [DisruptionReasons.CONDITIONS_NOT_FULFILLED]: 'disruption-reasons.conditions-not-fulfilled',
+    [DisruptionReasons.OTHER]: 'disruption-reasons.other',
   };
 
   public static getTranslationKey(reason: DisruptionReasons): string {

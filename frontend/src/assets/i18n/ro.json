@@ -396,11 +396,11 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name" : "Nume",
-    "role" : "Rol",
-    "assignedCases" : "Număr de cazuri atribuite",
-    "userDeleted" : "Utilizatorul a fost șters",
-    "addNewUser" : "Adaugă utilizator",
+    "name": "Nume",
+    "role": "Rol",
+    "assignedCases": "Număr de cazuri atribuite",
+    "userDeleted": "Utilizatorul a fost șters",
+    "addNewUser": "Adaugă utilizator",
     "selectRole": "Selectați rolul",
     "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
   },
@@ -473,13 +473,15 @@
     }
   },
   "disruption-reasons": {
-    "cancellation-notice-under-14-days": "Anunț de anulare cu mai puțin de 14 zile înainte",
-    "cancellation-notice-over-14-days": "Anunț de anulare cu mai mult de 14 zile înainte",
-    "cancellation-on-day-of-departure": "Anulare în ziua plecării",
+    "cancellation-under-14-days-and-over-3h": "Anunț de anulare cu mai puțin de 14 zile înainte. Întârziere de peste 3 ore la sosire",
+    "cancellation-under-14-days-and-never-arrived": "Anunț de anulare cu mai puțin de 14 zile înainte. Pasagerul nu a ajuns niciodată",
+    "cancellation-on-day-of-departure-and-over-3h": "Anunț de anulare în ziua plecării. Întârziere de peste 3 ore la sosire",
+    "cancellation-on-day-of-departure-and-never-arrived": "Anunț de anulare în ziua plecării. Pasagerul nu a ajuns niciodată",
     "arrived-3h-late": "Întârziere de peste 3 ore la sosire",
-    "arrived-early": "Întârziere de sub 3 ore la sosire",
     "never-arrived": "Zbor întârziat sau anulat. Nu a ajuns niciodată",
-    "did-not-give-the-seat-voluntarily": "Îmbarcare refuzată. Nu a cedat locul voluntar",
-    "did-give-the-seat-voluntarily": "Îmbarcare refuzată. A cedat locul voluntar"
+    "overbooking": "Îmbarcare refuzată. Zbor suprarezervat",
+    "denied-boarding-without-reason": "Îmbarcare refuzată fără motiv specificat",
+    "not-eligible-reason": "Neeligibil",
+    "conditions-not-fulfilled": "Condiții neîndeplinite"
   }
 }

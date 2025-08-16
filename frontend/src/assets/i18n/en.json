@@ -473,13 +473,15 @@
     }
   },
   "disruption-reasons": {
-    "cancellation-notice-under-14-days": "Cancellation notice less than 14 days in advance",
-    "cancellation-notice-over-14-days": "Cancellation notice more than 14 days in advance",
-    "cancellation-on-day-of-departure": "Cancellation on the day of departure",
+    "cancellation-under-14-days-and-over-3h": "Cancellation notice less than 14 days in advance. Arrived with a delay over 3 hours",
+    "cancellation-under-14-days-and-never-arrived": "Cancellation notice less than 14 days in advance. Passenger never arrived",
+    "cancellation-on-day-of-departure-and-over-3h": "Cancellation notice on the day of departure. Arrived with a delay over 3 hours",
+    "cancellation-on-day-of-departure-and-never-arrived": "Cancellation notice on the day of departure. Passenger never arrived",
     "arrived-3h-late": "Delay of more than 3 hours on arrival",
-    "arrived-early": "Delay of less than 3 hours on arrival",
     "never-arrived": "Flight delayed or canceled. Never arrived",
-    "did-not-give-the-seat-voluntarily": "Denied boarding. Did not give up the seat voluntarily",
-    "did-give-the-seat-voluntarily": "Denied boarding. Gave up the seat voluntarily"
+    "overbooking": "Denied boarding. Flight was overbooked",
+    "denied-boarding-without-reason": "Denied boarding without reason given",
+    "not-eligible-reason": "Not eligible",
+    "conditions-not-fulfilled": "Conditions not fulfilled"
   }
 }
