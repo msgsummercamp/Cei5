@@ -31,9 +31,6 @@ public class CaseController {
     public ResponseEntity<List<CaseResponseDTO>> getCases() {
         List<Case> caseList = caseService.getCases();
         List<CaseResponseDTO> caseResponseDTOList = caseList.stream().map(caseResponseMapper::toCaseResponseDTO).toList();
-        if (caseResponseDTOList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(caseResponseDTOList);
     }
 
@@ -91,7 +88,7 @@ public class CaseController {
         return ResponseEntity.ok(userCaseDTOs);
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     @PatchMapping("/{caseId}/{status}")
     public ResponseEntity<CaseResponseDTO> setStatusForCase(@PathVariable UUID caseId, @PathVariable Statuses status) {
         Case changedCase = caseService.setCaseStatus(caseId, status);

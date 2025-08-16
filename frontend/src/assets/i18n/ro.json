@@ -315,7 +315,8 @@
     "next": "Finalizează"
   },
   "user-service": {
-    "error": "Eroare"
+    "error": "Eroare",
+    "user-created": "Utilizator creat cu succes. Verificați adresa de email pentru parola temporară."
   },
   "api-errors": {
     "invalid-airport-details": "Detalii aeroport invalide: de la {{departingAirportCode}} la {{destinationAirportCode}}. Vă rugăm să verificați codurile aeroporturilor.",
@@ -374,7 +375,8 @@
     "yes": "Da",
     "no": "Nu",
     "choose": "Alege",
-    "upload": "Încarcă"
+    "upload": "Încarcă",
+    "cancel": "Anulează"
   },
   "statuses": {
     "ASSIGNED": "Atribuit",
@@ -385,6 +387,7 @@
     "INVALID": "Invalid"
   },
   "profile-page": {
+    "case-table-title": "Cazurile tale",
     "card-information": {
       "email": "Email:",
       "phone-number": "Număr de telefon:",
@@ -392,15 +395,19 @@
       "postal-code": "Cod poștal:",
       "address": "Adresă:",
       "birth-date": "Data nașterii:"
-    }
+    },
+    "card-new-case": {
+      "button": "Verifică zborul",
+      "title": "Verifică dacă ești eligibil pentru compensație",
+      "subtitle": "Poți primi până la 600€ pentru întârzieri, anulări sau suprarezervări"}
   },
   "admin-panel": {
     "title": "Panou de administrare",
-    "name" : "Nume",
-    "role" : "Rol",
-    "assignedCases" : "Număr de cazuri atribuite",
-    "userDeleted" : "Utilizatorul a fost șters",
-    "addNewUser" : "Adaugă utilizator",
+    "name": "Nume",
+    "role": "Rol",
+    "assignedCases": "Număr de cazuri atribuite",
+    "userDeleted": "Utilizatorul a fost șters",
+    "addNewUser": "Adaugă utilizator",
     "selectRole": "Selectați rolul",
     "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
   },
@@ -434,8 +441,11 @@
   },
   "case-details": {
     "title": "Detalii Caz",
-    "actions": "Acțiuni",
     "date": "Dată",
+    "read": "Citește",
+    "created-by": "Creat de",
+    "no-client": "Client information not available anymore.",
+    "beneficiary": "Beneficiar",
     "assigned-employee": "Angajat Atribuit",
     "disruption-reason": "Motivul Perturbării",
     "disruption-info": "Informații Perturbare",
@@ -447,14 +457,38 @@
     "select-file-error": "Vă rugăm să selectați un fișier.",
     "upload-file-success": "Fișier încărcat cu succes.",
     "upload": "Încărcare Fișier",
+    "select-file": "Selectați un fișier",
     "invalid-file-size": "Fișierul este prea mare.",
     "invalid-file-type": "Tipul fișierului nu este acceptat. Acceptăm doar PDF, JPG, PNG.",
     "max-file-size": "Dimensiunea maximă a fișierului este de 5 MB.",
+    "actions": {
+      "title": "Acțiuni",
+      "assign-employee": "Atribuie Angajat",
+      "update": "Actualizează",
+      "select-status": "Selectează Status",
+      "update-status": "Actualizează Status",
+      "status-update-success": "Status actualizat cu succes.",
+      "select-employee": "Selectează Angajat",
+      "employee-update-success": "Angajat atribuit cu succes.",
+      "no-employees": "Niciun angajat disponibil."
+    },
     "chat": {
       "type-message": "Scrieți mesajul dvs...",
       "send": "Trimite",
       "message-length": "*Comentariul are cel mult 1000 de caractere",
       "comments": "Comentarii"
     }
+  },
+  "disruption-reasons": {
+    "cancellation-under-14-days-and-over-3h": "Anunț de anulare cu mai puțin de 14 zile înainte. Întârziere de peste 3 ore la sosire",
+    "cancellation-under-14-days-and-never-arrived": "Anunț de anulare cu mai puțin de 14 zile înainte. Pasagerul nu a ajuns niciodată",
+    "cancellation-on-day-of-departure-and-over-3h": "Anunț de anulare în ziua plecării. Întârziere de peste 3 ore la sosire",
+    "cancellation-on-day-of-departure-and-never-arrived": "Anunț de anulare în ziua plecării. Pasagerul nu a ajuns niciodată",
+    "arrived-3h-late": "Întârziere de peste 3 ore la sosire",
+    "never-arrived": "Zbor întârziat sau anulat. Nu a ajuns niciodată",
+    "overbooking": "Îmbarcare refuzată. Zbor suprarezervat",
+    "denied-boarding-without-reason": "Îmbarcare refuzată fără motiv specificat",
+    "not-eligible-reason": "Neeligibil",
+    "conditions-not-fulfilled": "Condiții neîndeplinite"
   }
 }

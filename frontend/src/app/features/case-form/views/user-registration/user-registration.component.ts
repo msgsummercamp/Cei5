@@ -135,7 +135,6 @@ export class UserRegistrationComponent {
     effect(() => {
       const data = this.initialData();
       const readOnly = this.isUserReadOnly();
-      console.log(readOnly);
       if (data && !this.hasInitialized) {
         this.hasInitialized = true;
 

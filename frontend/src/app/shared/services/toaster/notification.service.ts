@@ -18,6 +18,7 @@ export class NotificationService {
       severity: 'success',
       summary: this._translationService.instant('notifications.success'),
       detail: message,
+      sticky: true,
     });
   }
 
@@ -30,6 +31,7 @@ export class NotificationService {
       severity: 'error',
       summary: this._translationService.instant('notifications.error'),
       detail: message,
+      sticky: true,
     });
   }
 
@@ -42,6 +44,7 @@ export class NotificationService {
       severity: 'info',
       summary: this._translationService.instant('notifications.info'),
       detail: message,
+      sticky: true,
     });
   }
 
@@ -54,6 +57,7 @@ export class NotificationService {
       severity: 'warn',
       summary: this._translationService.instant('notifications.warning'),
       detail: message,
+      sticky: true,
     });
   }
 }

@@ -315,7 +315,8 @@
     "next": "Finish"
   },
   "user-service": {
-    "error": "Error"
+    "error": "Error",
+    "user-created": "User created successfully. Check the email for a temporary password."
   },
   "api-errors": {
     "invalid-airport-details": "Invalid airports details: from {{departingAirportCode}} to {{destinationAirportCode}}. Please check the airport codes.",
@@ -374,7 +375,8 @@
     "yes": "Yes",
     "no": "No",
     "choose": "Choose",
-    "upload": "Upload"
+    "upload": "Upload",
+    "cancel": "Cancel"
   },
   "statuses": {
     "ASSIGNED": "Assigned",
@@ -385,6 +387,7 @@
     "INVALID": "Invalid"
   },
   "profile-page": {
+    "case-table-title": "Your Cases",
     "card-information": {
       "email": "Email:",
       "phone-number": "Phone number:",
@@ -392,6 +395,11 @@
       "postal-code": "Postal Code:",
       "address": "Adress:",
       "birth-date": "Birth date:"
+    },
+    "card-new-case": {
+    "button": "Verify flight",
+      "title": "Check if your're eligible for flight compensation",
+      "subtitle": "Up to 600€ for delays, cancellations, or overbooking"
     }
   },
   "admin-panel": {
@@ -434,8 +442,11 @@
   },
   "case-details": {
     "title": "Case Details",
-    "actions": "Actions",
     "date": "Date",
+    "read": "Read",
+    "created-by": "Created By",
+    "no-client": "Client information not available anymore.",
+    "beneficiary": "Beneficiary",
     "assigned-employee": "Assigned Employee",
     "disruption-reason": "Disruption Reason",
     "disruption-info": "Disruption Info",
@@ -447,14 +458,38 @@
     "select-file-error": "Please select a file to upload.",
     "upload-file-success": "File uploaded successfully.",
     "upload": "Upload file",
+    "select-file": "Select a file",
     "invalid-file-type": "Invalid file type. Please upload a PDF, DOCX, or JPG file.",
     "invalid-file-size": "File size exceeds the limit",
     "max-file-size": "Maximum file size is 5MB.",
+    "actions": {
+      "title": "Actions",
+      "assign-employee": "Assign Employee",
+      "update": "Update",
+      "select-status": "Select Status",
+      "update-status": "Update Status",
+      "status-update-success": "Status updated successfully.",
+      "select-employee": "Select Employee",
+      "employee-update-success": "Employee assigned successfully.",
+      "no-employees": "No employees available to assign."
+    },
     "chat": {
       "type-message": "Type your message...",
       "send": "Send",
       "message-length": "*The comment has at most 1000 characters",
       "comments": "Comments"
     }
+  },
+  "disruption-reasons": {
+    "cancellation-under-14-days-and-over-3h": "Cancellation notice less than 14 days in advance. Arrived with a delay over 3 hours",
+    "cancellation-under-14-days-and-never-arrived": "Cancellation notice less than 14 days in advance. Passenger never arrived",
+    "cancellation-on-day-of-departure-and-over-3h": "Cancellation notice on the day of departure. Arrived with a delay over 3 hours",
+    "cancellation-on-day-of-departure-and-never-arrived": "Cancellation notice on the day of departure. Passenger never arrived",
+    "arrived-3h-late": "Delay of more than 3 hours on arrival",
+    "never-arrived": "Flight delayed or canceled. Never arrived",
+    "overbooking": "Denied boarding. Flight was overbooked",
+    "denied-boarding-without-reason": "Denied boarding without reason given",
+    "not-eligible-reason": "Not eligible",
+    "conditions-not-fulfilled": "Conditions not fulfilled"
   }
 }

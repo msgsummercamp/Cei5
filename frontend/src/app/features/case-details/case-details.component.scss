@@ -1,11 +1,24 @@
 .wrapper {
   background-color: #f5f7fa;
+  height: 99vh;
 }
 
 .case-details-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  padding-top: 5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+::ng-deep .p-fileupload {
+  width: 30rem;
+}
+
+.chatbox .p-card {
+  --p-card-shadow: none;
 }
 
 .problematic-arrow {
@@ -13,7 +26,7 @@
 }
 
 .document-list {
-  max-height: 10rem;
+  max-height: 7rem;
   overflow-y: auto;
 }
 
@@ -28,8 +41,7 @@
 }
 
 .column {
-  padding: 16px;
-  /*border: 1px solid #ccc;*/
+  padding: 8px;
   border-radius: 8px;
 }
 
