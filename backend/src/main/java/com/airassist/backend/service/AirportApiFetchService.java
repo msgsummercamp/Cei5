@@ -11,20 +11,22 @@ import java.util.List;
 public interface AirportApiFetchService {
 
     /**
-     * Fetches airport data from the external API.
+     * Fetches airport data from database.
      *
-     * @return List of airports fetched from the API.
-     * @throws JsonProcessingException If there is an error processing the JSON response.
-     * @throws InterruptedException If the thread is interrupted while fetching data.
+     * @return List of airports.
      */
-    List<Airport> fetchAirportData() throws JsonProcessingException, InterruptedException;
+    List<Airport> getAirports();
 
     /**
      * Fetches airport data from the external API.
      *
-     * @return List of airports fetched from the API.
      * @throws JsonProcessingException If there is an error processing the JSON response.
      * @throws InterruptedException If the thread is interrupted while fetching data.
      */
-    List<Airport> fetchAirportDataInternal() throws JsonProcessingException, InterruptedException;
+    void fetchAirportDataInternal() throws JsonProcessingException, InterruptedException;
+
+    /**
+     * Scheduled DB refresh once a day at 2 AM
+     */
+    void scheduledAirportRefresh();
 }
