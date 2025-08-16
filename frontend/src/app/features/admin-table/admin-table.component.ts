@@ -20,6 +20,7 @@ import { Tag } from 'primeng/tag';
 import { Roles } from '../../shared/types/enums/roles';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Card } from 'primeng/card';
 
 @Component({
   selector: 'app-admin-table',
@@ -36,6 +37,7 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
     Tag,
     FormsModule,
     ConfirmDialog,
+    Card,
   ],
   templateUrl: './admin-table.component.html',
   styleUrl: './admin-table.component.scss',
@@ -54,7 +56,7 @@ export class AdminTableComponent implements OnInit {
   public loading = true;
   private isSorted: boolean | null = null;
   public rolesFilterValue: Roles | null = null;
-  public rolesOptions: { label: string; value: Roles }[] = [];
+  public rolesOptions: { label: string; value: string }[] = [];
   private langChangeSub?: Subscription;
 
   public showEmployeeDialog = signal(false);
@@ -86,7 +88,7 @@ export class AdminTableComponent implements OnInit {
   public deleteUser(userId: string): void {
     if (userId === this._userService.userDetails()?.id) {
       this._notificationService.showError(
-        this._translateService.instant('admin-panel.cannotDeleteOwnAccount')
+        this._translateService.instant('admin-panel.cannot-delete-own-account')
       );
     } else {
       this._confirmationService.confirm({

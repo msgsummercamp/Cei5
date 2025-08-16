@@ -403,19 +403,20 @@
   },
   "admin-panel": {
     "title": "Panou de administrare",
+    "userList-title": "Lista utilizatorilor",
     "name": "Nume",
     "role": "Rol",
     "assignedCases": "Număr de cazuri atribuite",
     "userDeleted": "Utilizatorul a fost șters",
     "addNewUser": "Adaugă utilizator",
     "selectRole": "Selectați rolul",
-    "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?"
+    "confirm-delete": "Sunteți sigur că doriți să ștergeți acest utilizator?",
+    "cannot-delete-own-account": "Nu puteți șterge propriul cont."
   },
   "roles": {
     "USER": "Pasager",
     "ADMIN": "Administrator",
-    "EMPLOYEE": "Angajat",
-    "cannotDeleteOwnAccount": "Nu iti poți șterge propriul cont"
+    "EMPLOYEE": "Angajat"
   },
   "employee-dialog": {
     "header": "Detalii utilizator",
