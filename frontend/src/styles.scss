@@ -5,8 +5,14 @@ body {
   font-family: 'Candara', serif;
   font-style: normal;
   margin: 0;
+  background-color: #f5f7fa;
 }
 
 .disabled-button .p-button:disabled {
   background-color: red;
+}
+
+::ng-deep .p-floatlabel{
+  --p-floatlabel-on-border-radius: 0.5rem;
+  --p-floatlabel-on-active-background: white;
 }

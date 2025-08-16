@@ -383,6 +383,7 @@
     "INVALID": "Invalid"
   },
   "profile-page": {
+    "case-table-title": "Your Cases",
     "card-information": {
       "email": "Email:",
       "phone-number": "Phone number:",
@@ -390,6 +391,11 @@
       "postal-code": "Postal Code:",
       "address": "Adress:",
       "birth-date": "Birth date:"
+    },
+    "card-new-case": {
+    "button": "Verify flight",
+      "title": "Check if your're eligible for flight compensation",
+      "subtitle": "Up to 600€ for delays, cancellations, or overbooking"
     }
   },
   "admin-panel": {
