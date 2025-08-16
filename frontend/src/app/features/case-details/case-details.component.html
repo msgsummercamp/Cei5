@@ -234,7 +234,12 @@
                 <p-button
                   label="{{ 'case-details.chat.send' | translate }}"
                   (click)="postComment(currentUserId!)"
-                  [disabled]="postingComment || !newCommentText.trim() || !currentUserId"
+                  [disabled]="
+                    postingComment ||
+                    !newCommentText.trim() ||
+                    !currentUserId ||
+                    newCommentText.length > 1000
+                  "
                   icon="pi pi-send"
                   class="p-button-sm"
                 ></p-button>
