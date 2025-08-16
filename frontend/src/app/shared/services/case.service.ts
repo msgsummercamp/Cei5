@@ -48,7 +48,13 @@ export class CaseService {
   }
 
   public getAllUserCases(clientID: string): Observable<Case[]> {
-    return this._http.get<Case[]>(`${this._apiUrl}/cases/user/${clientID}`);
+    return this._http.get<Case[]>(`${this._apiUrl}/cases/user/${clientID}`).pipe(
+      catchError((error) => {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        return of([]);
+      })
+    );
   }
 
   public checkEligibility(caseDTO: CaseDTO): Observable<boolean> {
