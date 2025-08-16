@@ -15,6 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FlightDetails, FlightFormComponent } from './views/flight-form/flight-form.component';
 import { StepNavigationService } from '../../shared/services/step-navigation.service';
@@ -99,6 +100,7 @@ export class CaseFormComponent {
   private readonly _notificationService = inject(NotificationService);
   private readonly _translateService = inject(TranslateService);
   private readonly _contractService = inject(ContractService);
+  private readonly _router = inject(Router);
 
   private _lastUserRegistrationData?: CaseFormUserData;
   private _lastUser?: any;
@@ -547,6 +549,7 @@ export class CaseFormComponent {
                 clientID = userId;
                 this.handleCaseSubmission(clientID);
                 this._contractService.generateContract('contract');
+                this._router.navigate(['/']);
               }
             } else {
               this._notificationService.showInfo(
@@ -563,6 +566,7 @@ export class CaseFormComponent {
     } else {
       this.handleCaseSubmission(clientID);
       this._contractService.generateContract('contract');
+      this._router.navigate(['/']);
     }
   }
 

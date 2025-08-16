@@ -56,7 +56,11 @@
               {{ 'profile-page.card-information.birth-date' | translate }}
             </span>
             <span class="user-information">
-              {{ this.user?.userDetails?.birthDate || '' | date: 'mediumDate' }}
+              {{
+                this.user?.userDetails?.birthDate
+                  ? (this.user?.userDetails?.birthDate | date: 'mediumDate')
+                  : '\u2014'
+              }}
             </span></p
           >
         </div>
@@ -78,11 +82,12 @@
       </div>
     </p-card>
   </div>
-  <div class="table-wrapper mx-5">
+  <div class="table-wrapper">
     <p-card>
       <h2 class="case-table-title flex-wrap"> {{ 'profile-page.case-table-title' | translate }}</h2>
       <p-table
         #dt
+        [showGridlines]="true"
         dataKey="id"
         [value]="userCases"
         [paginator]="true"
@@ -102,7 +107,7 @@
         ]"
       >
         <ng-template #header>
-          <th class="flex align-items-center">
+          <th>
             <div class="flex align-items-center">
               {{ 'case-table.case-id' | translate }}
               <p-columnFilter
@@ -138,11 +143,21 @@
               <p-sortIcon field="beneficiaryName"
             /></div>
           </th>
-          <th
-            ><div class="align-items-center">
-              {{ 'case-table.assigned-employee' | translate }}</div
-            ></th
-          >
+          <th pSortableColumn="assignedColleague"
+            ><div class="flex align-items-center justify-content-center">
+              {{ 'case-table.assigned-employee' | translate }}
+              <p-sortIcon field="assignedColleague" />
+              <p-columnFilter
+                [showAddButton]="false"
+                [showOperator]="false"
+                type="text"
+                field="assignedColleague"
+                display="menu"
+                placeholder="{{ 'case-table.search-by-employee' | translate }}"
+                ariaLabel="search-by-employee"
+              />
+            </div>
+          </th>
           <th
             ><div class="flex align-items-center"
               >{{ 'case-table.status' | translate }}
@@ -179,7 +194,13 @@
         <ng-template #body let-userCase>
           <tr>
             <td>
-              <p-button icon="pi pi-eye" severity="contrast" [rounded]="true" [outlined]="true" />
+              <p-button
+                icon="pi pi-eye"
+                severity="contrast"
+                [rounded]="true"
+                [outlined]="true"
+                (onClick)="navigateToCaseDetails(userCase.id)"
+              />
               {{ userCase.id }}</td
             >
             <td class="text-center">{{ userCase.date }}</td>

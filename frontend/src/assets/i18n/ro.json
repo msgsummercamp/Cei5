@@ -414,7 +414,8 @@
   "roles": {
     "USER": "Pasager",
     "ADMIN": "Administrator",
-    "EMPLOYEE": "Angajat"
+    "EMPLOYEE": "Angajat",
+    "cannotDeleteOwnAccount": "Nu iti poți șterge propriul cont"
   },
   "employee-dialog": {
     "header": "Detalii utilizator",

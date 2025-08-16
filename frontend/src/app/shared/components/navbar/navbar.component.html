@@ -36,12 +36,12 @@
               #langSelect
               class="visually-hidden"
               [options]="languages"
-              [ngModel]="_languageService.getSelectedLanguageCode()"
+              [ngModel]="_languageService.getSelectedLanguageName()"
               (ngModelChange)="selectLanguage($event)"
             >
               <ng-template pTemplate="item" let-language>
                 <img [ngSrc]="language.flag" alt="Language" width="24" height="24" class="mr-2" />
-                {{ language.code }}
+                {{ language.name }}
               </ng-template>
             </p-select>
             @if (!isAuthenticated()) {
@@ -137,7 +137,7 @@
             <p-accordion-panel value="0">
               <p-accordion-header
                 >{{ 'navbar.language' | translate }}:
-                {{ _languageService.getSelectedLanguageCode() }}
+                {{ _languageService.getSelectedLanguageName() }}
               </p-accordion-header>
               <p-accordion-content>
                 @for (language of languages; track language.name) {

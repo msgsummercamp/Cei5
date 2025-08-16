@@ -415,7 +415,8 @@
   "roles": {
     "USER": "Passenger",
     "ADMIN": "Administrator",
-    "EMPLOYEE": "Employee"
+    "EMPLOYEE": "Employee",
+    "cannotDeleteOwnAccount": "You cannot delete your own account"
   },
   "employee-dialog": {
     "header": "User Details",
