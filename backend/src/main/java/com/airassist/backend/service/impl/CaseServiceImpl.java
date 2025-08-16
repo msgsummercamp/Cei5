@@ -172,12 +172,6 @@ public class CaseServiceImpl implements CaseService {
     public List<Case> getCasesForClient(UUID clientId) {
         List<Case> cases = caseRepository.getCasesByClientId(clientId);
         logger.info("Service - fetching all cases for client {}", clientId);
-
-        if(cases.isEmpty()) {
-            logger.warn("There are no cases for the client: {}", clientId);
-            throw new CaseNotFoundException();
-        }
-
         return cases;
     }
 

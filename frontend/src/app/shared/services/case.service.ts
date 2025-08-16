@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Case } from '../types/case';
@@ -37,20 +37,34 @@ export class CaseService {
           caseId: createdCase.id,
           caseDate: createdCase.date,
         });
-        this._notificationService.showSuccess('Case created successfully');
+        this._notificationService.showSuccess(
+          this._translationService.instant('case-service.case-created')
+        );
       },
-      error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
       },
     });
   }
 
   public getAllUserCases(clientID: string): Observable<Case[]> {
     return this._http.get<Case[]>(`${this._apiUrl}/cases/user/${clientID}`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of([]);
       })
     );
@@ -87,7 +101,9 @@ export class CaseService {
         if (isEligible) {
           this.createCase(caseData);
         } else {
-          this._notificationService.showError('You are not eligible for compensation');
+          this._notificationService.showError(
+            this._translationService.instant('case-service.ineligible-for-compensation')
+          );
         }
       },
       error: (error) => {
@@ -119,9 +135,15 @@ export class CaseService {
 
   public getAllCases(): Observable<Case[]> {
     return this._http.get<Case[]>(`${this._apiUrl}/cases`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of([]);
       })
     );
@@ -129,9 +151,15 @@ export class CaseService {
 
   public deleteCase(caseId: string): Observable<void> {
     return this._http.delete<void>(`${this._apiUrl}/cases/${caseId}`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of();
       })
     );
@@ -139,9 +167,15 @@ export class CaseService {
 
   public getCaseById(caseId: string): Observable<Case | null> {
     return this._http.get<Case>(`${this._apiUrl}/cases/${caseId}`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of(null);
       })
     );
@@ -149,9 +183,15 @@ export class CaseService {
 
   public updateCaseStatus(caseId: string, status: Statuses): Observable<Case | null> {
     return this._http.patch<Case>(`${this._apiUrl}/cases/${caseId}/${status}`, { status }).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of(null);
       })
     );
@@ -161,9 +201,15 @@ export class CaseService {
     return this._http
       .patch<Case>(`${this._apiUrl}/cases/${caseId}/assign-employee/${employeeId}`, {})
       .pipe(
-        catchError((error) => {
-          const apiError: ApiError = error?.error;
-          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this._notificationService.showError(
+              this._translationService.instant('api-errors.network-error')
+            );
+          } else {
+            const apiError: ApiError = error?.error;
+            this._notificationService.showError(this._translationService.instant(apiError.detail));
+          }
           return of(null);
         })
       );
@@ -171,9 +217,15 @@ export class CaseService {
 
   public getDocument(documentId: string): Observable<Document> {
     return this._http.get<Document>(`${this._apiUrl}/documents/${documentId}`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of(null as any);
       })
     );
@@ -181,9 +233,15 @@ export class CaseService {
 
   public getDocumentList(caseId: string): Observable<Document[]> {
     return this._http.get<Document[]>(`${this._apiUrl}/documents/case/${caseId}`).pipe(
-      catchError((error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         return of([]);
       })
     );
@@ -204,9 +262,15 @@ export class CaseService {
     return this._http
       .post<Document>(`${this._apiUrl}/documents/case/${caseId}/upload`, formData)
       .pipe(
-        catchError((error) => {
-          const apiError: ApiError = error?.error;
-          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this._notificationService.showError(
+              this._translationService.instant('api-errors.network-error')
+            );
+          } else {
+            const apiError: ApiError = error?.error;
+            this._notificationService.showError(this._translationService.instant(apiError.detail));
+          }
           return of(null as any);
         })
       );

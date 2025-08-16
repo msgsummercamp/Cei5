@@ -11,8 +11,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  const authToken = authService.jwtToken();
+  const authToken = authService.getTokenFromLocalStorage();
   if (!authToken) {
+    // authService.logOut();
     return next(req);
   }
 

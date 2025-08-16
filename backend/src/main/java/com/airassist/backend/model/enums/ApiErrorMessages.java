@@ -22,7 +22,9 @@ public enum ApiErrorMessages {
     USER_VALIDATION_ERROR("api-errors.user-validation-error"),
     CONSTRAINT_VIOLATION("api-errors.constraint-violation"),
     RESERVATION_NOT_FOUND("api-errors.reservation-not-found"),
-    DOCUMENT_NOT_FOUND("api-errors.document-not-found");
+    DOCUMENT_NOT_FOUND("api-errors.document-not-found"),
+    FORBIDDEN("api-errors.forbidden"),
+    UNAUTHORIZED("api-errors.unauthorized");
 
     private final String code;
 

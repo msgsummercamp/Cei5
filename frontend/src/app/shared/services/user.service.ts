@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../types/user';
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   public loadUserDetails(): void {
-    const userDetailsFromStorage = sessionStorage.getItem(environment.userDetailsSessionStorageKey);
+    const userDetailsFromStorage = localStorage.getItem(environment.userDetailsLocalStorageKey);
     if (userDetailsFromStorage) {
       this._userDetails.set(JSON.parse(userDetailsFromStorage));
     }
@@ -77,10 +77,16 @@ export class UserService {
    */
   public getAllEmployees(): Observable<User[]> {
     return this._httpClient.get<User[]>(`${this.API_URL}/users/employees`).pipe(
-      catchError((error) => {
-        const apiError = error?.error;
-        if (apiError) {
-          this._notificationService.showError(this._translateService.instant(apiError.detail));
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translateService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError = error?.error;
+          if (apiError) {
+            this._notificationService.showError(this._translateService.instant(apiError.detail));
+          }
         }
         return of([]);
       })

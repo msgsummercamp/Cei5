@@ -1,6 +1,6 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { AuthState } from '../../types/auth/auth-state';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { DecodedToken } from '../../types/auth/decoded-token';
@@ -16,6 +16,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../user.service';
 import { ApiError } from '../../types/api-error';
+import { TokenResponse } from '../../types/auth/token-response';
 
 const defaultUser: User = {
   id: '',
@@ -37,7 +38,6 @@ const initialState: AuthState = {
   isAuthenticated: false,
   id: '',
   email: '',
-  token: '',
   role: '',
   user: defaultUser,
 };
@@ -57,17 +57,25 @@ export class AuthService {
   public isLoggedIn = computed(() => this._authState().isAuthenticated);
   public userId = computed(() => this._authState().id);
   public userEmail = computed(() => this._authState().email);
-  public jwtToken = computed(() => this._authState().token);
   public userRole = computed(() => this._authState().role);
   public user = computed(() => this._authState().user);
 
   constructor() {
     this.restoreAuthState();
+    effect(() => {
+      if (this.isLoggedIn()) {
+        const intervalId = setInterval(() => {
+          this.checkAndRefreshToken();
+        }, 5000);
+        return () => clearInterval(intervalId);
+      }
+      return () => {};
+    });
   }
 
   /**
    * Logs in the user by sending a sign-in request to the server.
-   * If the login is successful, it saves the JWT token to session storage,
+   * If the login is successful, it saves the JWT token to local storage,
    * decodes the token to set the auth state, and navigates to the appropriate page.
    * If it's the user's first login, it redirects to the change password page.
    * If the login fails, it shows an error notification and resets the auth state.
@@ -77,21 +85,26 @@ export class AuthService {
     this._httpClient.post<SignInResponse>(`${this.API_URL}/auth/sign-in`, req).subscribe({
       next: (response) => {
         const token = response.token;
-        this.saveTokenToSessionStorage(token);
+        this.saveTokenToLocalStorage(token);
         this.decodeTokenAndSetState(token);
         this.fetchFullUserDetails();
-        // #TODO replace with real routes
         if (response.firstTimeLogin) {
           this._router.navigate(['/change-password']);
         } else {
           this._router.navigate(['/']);
         }
       },
-      error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
         this._authState.set(initialState);
-        this.clearTokenFromSessionStorage();
+        this.clearTokenFromLocalStorage();
       },
     });
   }
@@ -118,20 +131,26 @@ export class AuthService {
         this._router.navigate(['/sign-in']);
       },
       error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
       },
     });
   }
 
   /**
-   * Logs out the user by clearing the token from session storage,
+   * Logs out the user by clearing the token from local storage,
    * resetting the auth state, and navigating to another route.
    * @param route - The route to navigate to after logging out. Sign in page by default.
    */
   public logOut(route: string = '/sign-in'): void {
-    this.clearTokenFromSessionStorage();
-    sessionStorage.removeItem('userDetails');
+    this.clearTokenFromLocalStorage();
+    localStorage.removeItem('userDetails');
     this._userService.clearUserDetails();
     this._authState.set(initialState);
     this._router.navigate([route]);
@@ -162,8 +181,14 @@ export class AuthService {
         );
       },
       error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translationService.instant(apiError.detail));
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translationService.instant(apiError.detail));
+        }
       },
     });
   }
@@ -211,12 +236,18 @@ export class AuthService {
         this.logOut();
       },
       error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(
-          this._translationService.instant('auth-service.password-reset-failed') +
-            ': ' +
-            this._translationService.instant(apiError.detail)
-        );
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(
+            this._translationService.instant('auth-service.password-reset-failed') +
+              ': ' +
+              this._translationService.instant(apiError.detail)
+          );
+        }
       },
     });
   }
@@ -236,44 +267,50 @@ export class AuthService {
     }
     this._httpClient.get<User>(`${this.API_URL}/users/${this.userId()}`).subscribe({
       next: (user) => {
-        sessionStorage.setItem(environment.userDetailsSessionStorageKey, JSON.stringify(user));
+        localStorage.setItem(environment.userDetailsLocalStorageKey, JSON.stringify(user));
         this._userService.loadUserDetails();
       },
       error: (error) => {
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(
-          this._translationService.instant('auth-service.fetch-user-details-error') +
-            this._translationService.instant(apiError.detail)
-        );
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translationService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(
+            this._translationService.instant('auth-service.fetch-user-details-error') +
+              this._translationService.instant(apiError.detail)
+          );
+        }
       },
     });
   }
 
   /**
-   * Saves the JWT token to session storage.
+   * Saves the JWT token to local storage.
    * @param token - The JWT token to save.
    * @private
    */
-  private saveTokenToSessionStorage(token: string): void {
-    sessionStorage.setItem(environment.tokenSessionStorageKey, token);
+  private saveTokenToLocalStorage(token: string): void {
+    localStorage.setItem(environment.tokenLocalStorageKey, token);
   }
 
   /**
-   * Retrieves the JWT token from session storage.
+   * Retrieves the JWT token from local storage.
    * @returns The JWT token if it exists, otherwise null.
    * @private
    */
-  private getTokenFromSessionStorage(): string | null {
-    return sessionStorage.getItem(environment.tokenSessionStorageKey);
+  public getTokenFromLocalStorage(): string | null {
+    return localStorage.getItem(environment.tokenLocalStorageKey);
   }
 
   /**
-   * Clears the JWT token from session storage.
+   * Clears the JWT token from local storage.
    * This is typically called when the user logs out.
    * @private
    */
-  private clearTokenFromSessionStorage(): void {
-    sessionStorage.removeItem(environment.tokenSessionStorageKey);
+  private clearTokenFromLocalStorage(): void {
+    localStorage.removeItem(environment.tokenLocalStorageKey);
   }
 
   /**
@@ -288,7 +325,6 @@ export class AuthService {
         isAuthenticated: true,
         id: decodedToken.sub,
         email: decodedToken.email,
-        token: token,
         role: decodedToken.role,
         user: defaultUser,
       });
@@ -301,14 +337,37 @@ export class AuthService {
   }
 
   /**
-   * Checks if the user is authenticated by looking for a valid token in session storage.
+   * Checks if the user is authenticated by looking for a valid token in local storage.
    * If a valid token is found, it decodes the token and updates the auth state.
    * @private
    */
   private restoreAuthState(): void {
-    const token = this.getTokenFromSessionStorage();
+    const token = this.getTokenFromLocalStorage();
     if (token) {
       this.decodeTokenAndSetState(token);
+    }
+  }
+
+  private checkAndRefreshToken(): void {
+    const token = this.getTokenFromLocalStorage();
+    if (token) {
+      this._httpClient.get<TokenResponse>(`${this.API_URL}/refresh-token`).subscribe({
+        next: (response) => {
+          if (response.renewed) {
+            this.saveTokenToLocalStorage(response.newToken);
+            this.decodeTokenAndSetState(response.newToken);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error.status !== 0) {
+            const apiError: ApiError = error?.error;
+            this._notificationService.showError(this._translationService.instant(apiError.detail));
+          }
+          this.logOut();
+        },
+      });
+    } else {
+      this.logOut();
     }
   }
 }
