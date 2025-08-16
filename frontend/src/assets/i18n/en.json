@@ -335,7 +335,12 @@
     "user-validation-error": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "constraint-violation": "Some of the provided data did not meet the required constraints. Please check your input and try again.",
     "reservation-not-found": "The reservation was not found.",
-    "document-not-found": "The requested document was not found."
+    "document-not-found": "The requested document was not found.",
+    "forbidden": "You do not have permission to perform this operation.",
+    "unauthorized": "You are not authorized to perform this operation. Please log in.",
+    "cannot-load-comments": "Cannot load comments for this case.",
+    "cannot-post-comment": "Cannot post comment. Please try again later.",
+    "network-error": "Server unreachable. Please check your internet connection and try again later."
   },
   "case-table": {
     "case-id": "Case ID",
@@ -395,7 +400,7 @@
       "birth-date": "Birth date:"
     },
     "card-new-case": {
-    "button": "Verify flight",
+      "button": "Verify flight",
       "title": "Check if your're eligible for flight compensation",
       "subtitle": "Up to 600€ for delays, cancellations, or overbooking"
     }
@@ -489,5 +494,9 @@
     "denied-boarding-without-reason": "Denied boarding without reason given",
     "not-eligible-reason": "Not eligible",
     "conditions-not-fulfilled": "Conditions not fulfilled"
+  },
+  "case-service": {
+    "ineligible-for-compensation": "You are not eligible for compensation.",
+    "case-created": "Your case has been successfully submitted."
   }
 }

@@ -10,6 +10,7 @@ import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.mapper.UserMapper;
+import com.airassist.backend.model.TokenResponse;
 import com.airassist.backend.model.User;
 import com.airassist.backend.model.enums.Roles;
 import com.airassist.backend.repository.UserRepository;
@@ -40,7 +41,8 @@ public class AuthServiceImpl implements AuthService {
     private final MailSenderService mailSenderService;
     private final UserMapper userMapper;
     private final Key jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long JWT_EXPIRATION_MS = 3600000; // 1 hour in milliseconds
+    private final long JWT_EXPIRATION_MS = 3600000; //1 hour in milliseconds
+    private final long JWT_EXPIRATION_RENEW_MS = 15000; // 15 seconds in milliseconds
 
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {
@@ -131,5 +133,31 @@ public class AuthServiceImpl implements AuthService {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
                 .signWith(jwtSecret)
                 .compact();
+    }
+
+
+    public TokenResponse checkTokenValidityAndRenew(String token) throws InvalidTokenException, UserNotFoundException {
+        try {
+            var claims = Jwts.parserBuilder()
+                    .setSigningKey(jwtSecret)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            Date expiration = claims.getExpiration();
+            long timeToExpire = expiration.getTime() - System.currentTimeMillis();
+            boolean isValid = timeToExpire > 0;
+            String newToken = null;
+
+            if (timeToExpire <= JWT_EXPIRATION_RENEW_MS && isValid) {
+                String email = claims.get("email", String.class);
+                User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+                newToken = generateToken(user);
+                return new TokenResponse(true, newToken);
+            }
+            return new TokenResponse(false, null);
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
     }
 }

@@ -20,6 +20,7 @@ import { Tag } from 'primeng/tag';
 import { Roles } from '../../shared/types/enums/roles';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-table',
@@ -95,9 +96,15 @@ export class AdminTableComponent implements OnInit {
             );
           },
           error: (error) => {
-            const apiError: ApiError = error?.error;
-            const errorKey = apiError?.detail || 'error.details';
-            this._notificationService.showError(this._translateService.instant(errorKey));
+            if (error.status === 0) {
+              this._notificationService.showError(
+                this._translateService.instant('api-errors.network-error')
+              );
+            } else {
+              const apiError: ApiError = error?.error;
+              const errorKey = apiError?.detail;
+              this._notificationService.showError(this._translateService.instant(errorKey));
+            }
           },
         });
       },
@@ -159,10 +166,16 @@ export class AdminTableComponent implements OnInit {
           this.initialValue = [...this.users];
           this.loading = false;
         },
-        error: (error) => {
-          const apiError: ApiError = error?.error;
-          const errorKey = apiError?.detail || 'error.message';
-          this._notificationService.showError(this._translateService.instant(errorKey));
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this._notificationService.showError(
+              this._translateService.instant('api-errors.network-error')
+            );
+          } else {
+            const apiError: ApiError = error?.error;
+            const errorKey = apiError?.detail;
+            this._notificationService.showError(this._translateService.instant(errorKey));
+          }
         },
       });
   }

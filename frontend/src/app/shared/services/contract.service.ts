@@ -1,14 +1,12 @@
-import { computed, inject, Injectable, signal, Signal } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, combineLatest, shareReplay, Subject, switchMap, throwError } from 'rxjs';
+import { catchError, of, Subject, switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from './toaster/notification.service';
 import { ApiError } from '../types/api-error';
 import { CaseService } from './case.service';
 import { CaseFormUserDetailsService } from './case-form-user-details.service';
-import { Beneficiary } from '../types/beneficiary';
-import { User } from '../types/user';
 import { ReservationService } from './reservation.service';
 
 @Injectable({
@@ -57,10 +55,16 @@ export class ContractService {
         }
       );
     }),
-    catchError((error) => {
-      const apiError: ApiError = error?.error;
-      this._notificationService.showError(this._translationService.instant(apiError.detail));
-      return throwError(() => error);
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 0) {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.network-error')
+        );
+      } else {
+        const apiError: ApiError = error?.error;
+        this._notificationService.showError(this._translationService.instant(apiError.detail));
+      }
+      return of(null);
     })
   );
 }
