@@ -21,8 +21,7 @@ import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
 import { Reservation } from '../../shared/types/reservation';
 import { Document } from '../../shared/types/document';
 import { Beneficiary } from '../../shared/types/beneficiary';
-import { FooterComponent } from '../../shared/components/footer/footer.component';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { StepNavigationService } from '../../shared/services/step-navigation.service';
 
 type CaseDTO = {
@@ -56,8 +55,6 @@ type CaseDTO = {
     Button,
     ConfirmDialog,
     NgOptimizedImage,
-    FooterComponent,
-    RouterLink,
   ],
   providers: [ConfirmationService],
 })
@@ -207,5 +204,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   public redirectToCaseForm(): void {
     this._stepNavigationService.resetToFirstStep();
     this.router.navigate(['/form']);
+  }
+
+  public navigateToCaseDetails(caseId: string): void {
+    this.router.navigate(['/case-details', caseId]);
   }
 }

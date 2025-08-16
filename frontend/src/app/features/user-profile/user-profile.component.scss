@@ -1,3 +1,13 @@
+th > .flex {
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+::ng-deep .profile-page-container .table-wrapper .p-datatable-tbody > tr > td {
+  text-align: center;
+  max-width: 17rem;
+}
+
 ::ng-deep .profile-page-container .new-case-card-content .p-button{
   --p-button-primary-background: transparent;
   --p-button-primary-border-color: transparent;
@@ -16,12 +26,19 @@
 .information-container{
   display: grid;
   gap: 1rem;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 69% 30%;
   max-width: 95%;
   margin: 0 auto;
   padding: 2rem 0 2rem 0;
+  width: 100%;
+
 }
 
+::ng-deep .information-container .p-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 .information-card-title{
   color: black;
@@ -68,16 +85,16 @@
 }
 
 .table-wrapper{
-  margin-bottom: 2rem;
-  max-width: 9%;
+  margin: 0 auto;
+  max-width: 95%;
 }
 
 ::ng-deep .table-wrapper .p-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08),
   0 6px 20px rgba(0, 0, 0, 0.06);
   background-color: white;
-  width: 76.2rem;
-
+  width: 100%;
+  margin: 0 auto;
 }
 
 .case-table-title{

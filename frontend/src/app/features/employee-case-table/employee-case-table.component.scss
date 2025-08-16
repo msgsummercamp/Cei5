@@ -3,3 +3,18 @@ th > .flex {
   justify-content: center;
   white-space: nowrap;
 }
+
+.case-table-title{
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding-bottom: 1rem;
+}
+
+::ng-deep .employee_page .p-card{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08),
+  0 6px 20px rgba(0, 0, 0, 0.06);
+  background-color: white;
+}
+
+
+
