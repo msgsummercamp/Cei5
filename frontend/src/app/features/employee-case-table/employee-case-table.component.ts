@@ -19,6 +19,7 @@ import { Tag } from 'primeng/tag';
 import { Subscription } from 'rxjs';
 import { TableHelper } from '../../shared/helper/table-helper';
 import { Router } from '@angular/router';
+import { Card } from 'primeng/card';
 
 export type CaseAux = {
   id: string;
@@ -38,7 +39,7 @@ export type CaseAux = {
 
 @Component({
   selector: 'app-employee-case-table',
-  imports: [TableModule, TranslatePipe, Button, ConfirmDialog, Select, FormsModule, Tag],
+  imports: [TableModule, TranslatePipe, Button, ConfirmDialog, Select, FormsModule, Tag, Card],
   templateUrl: './employee-case-table.component.html',
   styleUrl: './employee-case-table.component.scss',
   providers: [ConfirmationService],

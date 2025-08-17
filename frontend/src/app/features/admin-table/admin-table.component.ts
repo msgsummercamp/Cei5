@@ -20,6 +20,7 @@ import { Tag } from 'primeng/tag';
 import { Roles } from '../../shared/types/enums/roles';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Card } from 'primeng/card';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -37,6 +38,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     Tag,
     FormsModule,
     ConfirmDialog,
+    Card,
   ],
   templateUrl: './admin-table.component.html',
   styleUrl: './admin-table.component.scss',
@@ -55,7 +57,7 @@ export class AdminTableComponent implements OnInit {
   public loading = true;
   private isSorted: boolean | null = null;
   public rolesFilterValue: Roles | null = null;
-  public rolesOptions: { label: string; value: Roles }[] = [];
+  public rolesOptions: { label: string; value: string }[] = [];
   private langChangeSub?: Subscription;
 
   public showEmployeeDialog = signal(false);
@@ -85,6 +87,31 @@ export class AdminTableComponent implements OnInit {
   }
 
   public deleteUser(userId: string): void {
+    if (userId === this._userService.userDetails()?.id) {
+      this._notificationService.showError(
+        this._translateService.instant('admin-panel.cannot-delete-own-account')
+      );
+    } else {
+      this._confirmationService.confirm({
+        message: this._translateService.instant('admin-panel.confirm-delete'),
+        acceptLabel: this._translateService.instant('yes'),
+        rejectLabel: this._translateService.instant('no'),
+        accept: () => {
+          this._userService.deleteUser(userId).subscribe({
+            next: () => {
+              this.users = this.users.filter((user) => user.id !== userId);
+              this._notificationService.showSuccess(
+                this._translateService.instant('admin-panel.userDeleted')
+              );
+            },
+            error: (error) => {
+              const apiError: ApiError = error?.error;
+              const errorKey = apiError?.detail || 'error.details';
+              this._notificationService.showError(this._translateService.instant(errorKey));
+            },
+          });
+        },
+      });
     this._confirmationService.confirm({
       message: this._translateService.instant('admin-panel.confirm-delete'),
       acceptLabel: this._translateService.instant('yes'),
@@ -111,14 +138,17 @@ export class AdminTableComponent implements OnInit {
         });
       },
     });
-  }
+   }
+ }
 
   public openEmployeeDialog(): void {
     this.showEmployeeDialog.set(true);
   }
+
   public closeEmployeeDialog(): void {
     this.showEmployeeDialog.set(false);
   }
+
   public onEmployeeDialogSuccess(): void {
     this.showEmployeeDialog.set(false);
     this.loadUsers();

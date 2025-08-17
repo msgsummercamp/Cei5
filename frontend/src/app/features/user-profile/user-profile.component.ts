@@ -205,4 +205,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this._stepNavigationService.resetToFirstStep();
     this.router.navigate(['/form']);
   }
+
+  public navigateToCaseDetails(caseId: string): void {
+    this.router.navigate(['/case-details', caseId]);
+  }
 }

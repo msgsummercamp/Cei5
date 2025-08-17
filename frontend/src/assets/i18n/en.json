@@ -409,13 +409,15 @@
   },
   "admin-panel": {
     "title": "Admin Panel",
+    "userList-title": "User List",
     "name": "Name",
     "role": "Role",
     "assignedCases": "Number of assigned cases",
     "userDeleted": "The User was deleted",
     "addNewUser": "Add User",
     "selectRole": "Select Role",
-    "confirm-delete": "Are you sure you want to delete this user?"
+    "confirm-delete": "Are you sure you want to delete this user?",
+    "cannot-delete-own-account": "You cannot delete your own account"
   },
   "roles": {
     "USER": "Passenger",
