@@ -28,18 +28,3 @@ body {
   --p-floatlabel-on-border-radius: 0.5rem;
   --p-floatlabel-on-active-background: white;
 }
-
-::ng-deep {
-  --p-primary-50: var(--p-emerald-50);
-  --p-primary-100: var(--p-emerald-100);
-  --p-primary-200: var(--p-emerald-200);
-  --p-primary-300: var(--p-emerald-300);
-  --p-primary-400: var(--p-emerald-400);
-  --p-primary-500: #a6eb55;
-  --p-primary-600: var(--p-emerald-600);
-  --p-primary-700: var(--p-emerald-700);
-  --p-primary-800: var(--p-emerald-800);
-  --p-primary-900: var(--p-emerald-900);
-  --p-primary-950: var(--p-emerald-950);
-  --p-primary-color: #a6eb55;
-}
