@@ -62,12 +62,16 @@ export class AuthService {
 
   constructor() {
     this.restoreAuthState();
-    effect(() => {
+    effect((onCleanup) => {
       if (this.isLoggedIn()) {
         const intervalId = setInterval(() => {
+          console.log('Checking and refreshing token...');
           this.checkAndRefreshToken();
         }, 5000);
-        return () => clearInterval(intervalId);
+        onCleanup(() => {
+          clearInterval(intervalId);
+          console.log('Clearing refresh token interval');
+        });
       }
       return () => {};
     });
@@ -348,12 +352,18 @@ export class AuthService {
     }
   }
 
+  /**
+   * Checks if the token is valid and refreshes it if necessary.
+   * This method is called periodically to ensure the user remains authenticated.
+   * If the token is invalid or expired, it logs the user out.
+   * @private
+   */
   private checkAndRefreshToken(): void {
     const token = this.getTokenFromLocalStorage();
     if (token) {
       this._httpClient.get<TokenResponse>(`${this.API_URL}/refresh-token`).subscribe({
         next: (response) => {
-          if (response.renewed) {
+          if (response.renewed && this.isLoggedIn()) {
             this.saveTokenToLocalStorage(response.newToken);
             this.decodeTokenAndSetState(response.newToken);
           }
@@ -366,7 +376,7 @@ export class AuthService {
           this.logOut();
         },
       });
-    } else {
+    } else if (this.isLoggedIn()) {
       this.logOut();
     }
   }
