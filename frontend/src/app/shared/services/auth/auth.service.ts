@@ -65,12 +65,10 @@ export class AuthService {
     effect((onCleanup) => {
       if (this.isLoggedIn()) {
         const intervalId = setInterval(() => {
-          console.log('Checking and refreshing token...');
           this.checkAndRefreshToken();
         }, 5000);
         onCleanup(() => {
           clearInterval(intervalId);
-          console.log('Clearing refresh token interval');
         });
       }
       return () => {};

@@ -112,34 +112,34 @@ export class AdminTableComponent implements OnInit {
           });
         },
       });
-    this._confirmationService.confirm({
-      message: this._translateService.instant('admin-panel.confirm-delete'),
-      acceptLabel: this._translateService.instant('yes'),
-      rejectLabel: this._translateService.instant('no'),
-      accept: () => {
-        this._userService.deleteUser(userId).subscribe({
-          next: () => {
-            this.users = this.users.filter((user) => user.id !== userId);
-            this._notificationService.showSuccess(
-              this._translateService.instant('admin-panel.userDeleted')
-            );
-          },
-          error: (error) => {
-            if (error.status === 0) {
-              this._notificationService.showError(
-                this._translateService.instant('api-errors.network-error')
+      this._confirmationService.confirm({
+        message: this._translateService.instant('admin-panel.confirm-delete'),
+        acceptLabel: this._translateService.instant('yes'),
+        rejectLabel: this._translateService.instant('no'),
+        accept: () => {
+          this._userService.deleteUser(userId).subscribe({
+            next: () => {
+              this.users = this.users.filter((user) => user.id !== userId);
+              this._notificationService.showSuccess(
+                this._translateService.instant('admin-panel.userDeleted')
               );
-            } else {
-              const apiError: ApiError = error?.error;
-              const errorKey = apiError?.detail;
-              this._notificationService.showError(this._translateService.instant(errorKey));
-            }
-          },
-        });
-      },
-    });
-   }
- }
+            },
+            error: (error) => {
+              if (error.status === 0) {
+                this._notificationService.showError(
+                  this._translateService.instant('api-errors.network-error')
+                );
+              } else {
+                const apiError: ApiError = error?.error;
+                const errorKey = apiError?.detail;
+                this._notificationService.showError(this._translateService.instant(errorKey));
+              }
+            },
+          });
+        },
+      });
+    }
+  }
 
   public openEmployeeDialog(): void {
     this.showEmployeeDialog.set(true);
@@ -218,5 +218,16 @@ export class AdminTableComponent implements OnInit {
 
   public onRolesFilterClear(): void {
     this.rolesFilterValue = null;
+  }
+
+  public getRoleSeverity(status: Roles): string {
+    switch (status) {
+      case Roles.USER:
+        return 'secondary';
+      case Roles.ADMIN:
+        return 'warn';
+      case Roles.EMPLOYEE:
+        return 'info';
+    }
   }
 }
