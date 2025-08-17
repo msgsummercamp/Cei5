@@ -54,6 +54,7 @@
                 [modal]="true"
                 [maximizable]="true"
                 [(visible)]="visible"
+                [styleClass]="'w-6'"
               >
                 <p>
                   {{ caseData.disruptionInfo }}
@@ -146,7 +147,9 @@
             ><h2 class="text-center mt-2">{{ 'case-details.actions.title' | translate }}</h2>
             <div>
               <div class="flex align-items-center">
-                <p class="my-0 mr-3">{{ 'case-details.actions.update-status' | translate }}</p>
+                <p class="my-0 mr-3" style="min-width: 9rem">{{
+                  'case-details.actions.update-status' | translate
+                }}</p>
                 <p-select
                   [(ngModel)]="selectedStatus"
                   [options]="statusOptions"
@@ -171,7 +174,9 @@
                 />
               </div>
               <div class="flex align-items-center pt-2">
-                <p class="my-0 mr-3">{{ 'case-details.actions.assign-employee' | translate }}</p>
+                <p class="my-0 mr-3" style="min-width: 9rem">{{
+                  'case-details.actions.assign-employee' | translate
+                }}</p>
                 <p-select
                   [(ngModel)]="selectedEmployee"
                   [options]="employees"

@@ -44,7 +44,7 @@
               ><div class="flex align-items-center"
                 >{{ 'case-table.created-on' | translate }} &nbsp; <p-sortIcon field="date" /></div
             ></th>
-            <th pSortableColumn="problemFlightNumber"
+            <th pSortableColumn="problemFlightNumber" style="min-width: 9rem"
               ><div class="flex align-items-center"
                 >{{ 'case-table.flight-number' | translate }} &nbsp;
                 <p-sortIcon field="problemFlightNumber" /> &nbsp;
@@ -58,7 +58,7 @@
                   [showOperator]="false"
                 /> </div
             ></th>
-            <th pSortableColumn="clientName"
+            <th pSortableColumn="clientName" style="min-width: 15rem"
               ><div class="flex align-items-center"
                 >{{ 'case-table.client-name' | translate }} &nbsp;
                 <p-sortIcon field="clientName" /> &nbsp;
@@ -71,7 +71,7 @@
                   [showAddButton]="false"
                   [showOperator]="false" /></div
             ></th>
-            <th pSortableColumn="employeeName"
+            <th pSortableColumn="employeeName" style="min-width: 15rem"
               ><div class="flex align-items-center"
                 >{{ 'case-table.assigned-employee' | translate }} &nbsp;
                 <p-sortIcon field="employeeName" /> &nbsp;
@@ -85,7 +85,7 @@
                   [showOperator]="false"
                 /> </div
             ></th>
-            <th
+            <th style="min-width: 7rem"
               ><div class="flex align-items-center"
                 >{{ 'case-table.status' | translate }}
                 <p-columnFilter
