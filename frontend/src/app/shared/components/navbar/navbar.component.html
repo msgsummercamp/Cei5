@@ -99,26 +99,39 @@
           <ul class="user-options">
             @if (isAuthenticated()) {
               <li>
-                <p class="greeting">{{ 'navbar.greeting' | translate }}, {{ userName }}</p>
+                <p class="greeting text-2xl">{{ 'navbar.greeting' | translate }}, {{ userName }}</p>
               </li>
-              <div>
-                <li>
-                  <p-button
-                    label="{{ 'navbar.profile' | translate }}"
-                    type="button"
-                    class="p-button-text"
-                    (onClick)="redirectToProfile()"
-                  ></p-button>
-                </li>
-                <li>
-                  <p-button
-                    label="{{ 'navbar.logout' | translate }}"
-                    type="button"
-                    class="p-button-text"
-                    (onClick)="logout()"
-                  ></p-button>
-                </li>
-              </div>
+
+              <div class="divider"></div>
+
+              <li>
+                <p-button
+                  label="{{ 'navbar.profile' | translate }}"
+                  type="button"
+                  class="p-button-text"
+                  (onClick)="redirectToProfile()"
+                ></p-button>
+              </li>
+              <li>
+                <p-button
+                  label="{{ 'navbar.logout' | translate }}"
+                  type="button"
+                  class="p-button-text"
+                  (onClick)="logout()"
+                ></p-button>
+              </li>
+
+              <div class="divider"></div>
+
+              @for (item of navbarMainItems; track item.label) {
+                <p-button
+                  class="hamburger-menu-item"
+                  [label]="item.label"
+                  [routerLink]="item.routerLink"
+                  (onClick)="toggleHamburgerMenu()"
+                >
+                </p-button>
+              }
             }
             @if (!isAuthenticated()) {
               <div>
@@ -130,6 +143,7 @@
                 ></p-button>
               </div>
             }
+            <div class="divider"></div>
           </ul>
         </li>
         <li class="second-section">

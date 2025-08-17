@@ -67,16 +67,16 @@ export class NavbarComponent {
       roles: [Roles.EMPLOYEE, Roles.ADMIN, Roles.USER],
     },
     {
-      label: 'navbar.employee-dashboard',
-      routerLink: '/employee-dashboard',
-      icon: 'pi pi-address-book',
-      roles: [Roles.ADMIN, Roles.EMPLOYEE],
-    },
-    {
       label: 'navbar.admin-table',
       routerLink: '/admin-table',
       icon: 'pi pi-address-book',
       roles: [Roles.ADMIN],
+    },
+    {
+      label: 'navbar.employee-dashboard',
+      routerLink: '/employee-dashboard',
+      icon: 'pi pi-address-book',
+      roles: [Roles.ADMIN, Roles.EMPLOYEE],
     },
   ];
 

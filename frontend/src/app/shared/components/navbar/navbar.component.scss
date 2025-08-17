@@ -8,6 +8,7 @@
   --p-menubar-item-active-background: #a6eb55;
 }
 
+
 ::ng-deep {
   .p-menubar-item-link {
     border-radius: 20px;
@@ -20,6 +21,59 @@
   .p-menubar-item-link:hover {
     background-color: #080838;
   }
+
+  .p-menubar-button{
+    display: none!important;
+  }
+
+  .p-menubar-mobile .p-menubar-root-list {
+    background: rgba(15, 27, 88, 0.97);
+    border: rgba(15, 27, 88, 0.97);
+  }
+
+  .navbar-wrapper .p-select-dropdown {
+    display: none !important;
+    background-color: rgba(15, 27, 88, 0.97) !important;
+  }
+
+  .navbar-wrapper .p-button-label {
+    font-size: 1.2rem !important;
+  }
+
+  .navbar-wrapper .p-button {
+    --p-button-primary-background: transparent;
+    --p-button-primary-border-color: transparent;
+    --p-button-primary-hover-background: none;
+    --p-button-primary-active-background: none;
+    --p-button-primary-hover-border-color: transparent;
+    --p-button-primary-active-border-color: transparent;
+  }
+
+  .navbar-wrapper .p-menubar {
+    --p-menubar-padding: 1.2rem 1.2rem;
+  }
+
+  .navbar-wrapper .p-select-overlay {
+    margin-top: 2.3rem;
+    margin-right: 1.5rem;
+    margin-left: -3rem;
+  }
+
+   .user-menu-dropdown .p-menu-overlay {
+    top: 4.72rem !important;
+    left: auto !important;
+    right: 1.2rem;
+  }
+
+   .hamburger-menu-button {
+    display: none !important;
+    color: white;
+    cursor: pointer;
+
+    .pi {
+      font-size: 1.3rem;
+    }
+  }
 }
 
 .p-select {
@@ -28,22 +82,12 @@
   --p-select-placeholder-color: #ffffff;
 }
 
-::ng-deep .p-menubar-mobile .p-menubar-root-list {
-  background: rgba(15, 27, 88, 0.97);
-  border: rgba(15, 27, 88, 0.97);
-}
-
 .p-select-label.p-placeholder {
   --p-select-placeholder-font-size: 1.5rem !important;
 }
 
 p-select-label {
   color: #ffffff;
-}
-
-::ng-deep .navbar-wrapper .p-select-dropdown {
-  display: none !important;
-  background-color: rgba(15, 27, 88, 0.97) !important;
 }
 
 .selected-language-flag {
@@ -55,22 +99,10 @@ p-select-list-container {
   margin-right: 2rem;
 }
 
-::ng-deep .navbar-wrapper .p-button-label {
-  font-size: 1.2rem !important;
-}
 
 .p-button-text:hover {
   color: #ffffff !important;
   background: none !important;
-}
-
-::ng-deep .navbar-wrapper .p-button {
-  --p-button-primary-background: transparent;
-  --p-button-primary-border-color: transparent;
-  --p-button-primary-hover-background: none;
-  --p-button-primary-active-background: none;
-  --p-button-primary-hover-border-color: transparent;
-  --p-button-primary-active-border-color: transparent;
 }
 
 .visually-hidden {
@@ -89,37 +121,12 @@ p-select-list-container {
   font-size: 1.3rem !important;
 }
 
-::ng-deep .navbar-wrapper .p-menubar {
-  --p-menubar-padding: 1.2rem 1.2rem;
-}
-
 .navbar-wrapper {
   position: sticky;
   width: 100%;
   z-index: 1000;
 }
 
-::ng-deep .navbar-wrapper .p-select-overlay {
-  margin-top: 2.3rem;
-  margin-right: 1.5rem;
-  margin-left: -3rem;
-}
-
-::ng-deep .user-menu-dropdown .p-menu-overlay {
-  top: 4.72rem !important;
-  left: auto !important;
-  right: 1.2rem;
-}
-
-::ng-deep .hamburger-menu-button {
-  display: none !important;
-  color: white;
-  cursor: pointer;
-
-  .pi {
-    font-size: 1.3rem;
-  }
-}
 
 .hamburger-menu-overlay {
   position: fixed;
@@ -166,6 +173,7 @@ p-select-list-container {
 
 .p-accordion {
   --p-accordion-header-color: #ffffff;
+  --p-accordion-panel-border-color: gray;
 }
 
 .p-accordionheader {
@@ -181,6 +189,18 @@ p-select-list-container {
 .p-accordioncontent {
   --p-accordion-content-border-color: transparent;
   --p-accordion-content-background: transparent;
+
+}
+
+.divider{
+  height: 1px;
+  background: gray;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+.first-section{
+  margin: -2rem 0;
 }
 
 @media (max-width: 1024px) {
