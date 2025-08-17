@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
     private final RandomPasswordGeneratorService randomPasswordGenerator;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    /**
+     * Retrieves a user by their ID.
+     * @param id the UUID of the user
+     * @return User object if found
+     * @throws UserNotFoundException if no user is found with the given ID
+     */
     @Override
     public User getUserById(UUID id) throws UserNotFoundException {
         logger.info("UserService - Fetching user with ID: {}", id);
@@ -40,6 +46,12 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    /**
+     * Retrieves a user by their email.
+     * @param email the email of the user
+     * @return User object if found
+     * @throws UserNotFoundException if no user is found with the given email
+     */
     @Override
     public User getUserByEmail(String email) throws UserNotFoundException {
         logger.info("UserService - Fetching user with email: {}", email);
@@ -50,6 +62,14 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    /**
+     * Adds a new user to the repository.
+     * @param user the User object to be added
+     * @return the saved User object
+     * @throws DuplicateUserException if a user with the same email already exists
+     * @throws JsonProcessingException if there is an error processing JSON data
+     * @throws PasswordApiException if there is an error generating a password
+     */
     @Override
     public User addUser(User user) throws DuplicateUserException, JsonProcessingException, PasswordApiException {
         String email = user.getEmail();
@@ -64,31 +84,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public User updateUser(User user) throws UserNotFoundException, DuplicateUserException {
-        UUID id = user.getId();
-        logger.info("UserService - Attempting to update user: {}", id);
-
-        /*Check for null values in non-nullable fields. This allows us to use the same dto for update and patch*/
-        if(!UserValidator.userIsValidForUpdate(user)) {
-            logger.error("User with ID {} has invalid data for update", id);
-            throw new IllegalArgumentException();
-        }
-
-        Optional<User> existingUserOpt = userRepository.findById(id);
-        if (existingUserOpt.isEmpty()) {
-            logger.warn("User with ID {} not found for update", id);
-            throw new UserNotFoundException();
-        }
-        checkForDuplicateEmail(user.getEmail());
-        User userToUpdate = existingUserOpt.get();
-        if(user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        updateUserFields(user, userToUpdate);
-        return userRepository.save(userToUpdate);
-    }
-
+    /**
+     * Patches an existing user in the repository.
+     * @param user the User object containing fields to be patched
+     * @return the patched User object
+     * @throws UserNotFoundException if no user is found with the given ID
+     * @throws DuplicateUserException if a user with the same email already exists
+     */
     @Override
     public User patchUser(User user) throws UserNotFoundException, DuplicateUserException {
         UUID id = user.getId();
@@ -108,6 +110,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userToPatch);
     }
 
+    /**
+     * Deletes a user by their ID.
+     * @param id the UUID of the user to be deleted
+     * @throws UserNotFoundException if no user is found with the given ID
+     */
     @Override
     public void deleteUser(UUID id) throws UserNotFoundException {
         logger.info("UserService - Attempting to delete user with id: {}", id);
@@ -119,6 +126,11 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Checks if a user with the given email already exists in the repository.
+     * @param email the email to check
+     * @throws DuplicateUserException if a user with the same email already exists
+     */
     private void checkForDuplicateEmail(String email) throws DuplicateUserException {
         if (userRepository.existsByEmail(email)) {
             logger.warn("User with email {} already exists", email);
@@ -208,9 +220,8 @@ public class UserServiceImpl implements UserService {
      * Retrieves all employees from the repository.
      * @return List of all employees with the specified role
      */
-    public List<User> getAllEmployees() throws UserNotFoundException {
+    public List<User> getAllEmployees() {
         logger.info("UserService - Fetching all employees");
-        List<User> employees = userRepository.findAllEmployees(Roles.EMPLOYEE);
-        return employees;
+        return userRepository.findAllEmployees(Roles.EMPLOYEE);
     }
 }

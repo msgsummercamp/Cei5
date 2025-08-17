@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.security.Key;
 import java.util.Date;
 
@@ -44,6 +43,13 @@ public class AuthServiceImpl implements AuthService {
     private final long JWT_EXPIRATION_MS = 3600000; //1 hour in milliseconds
     private final long JWT_EXPIRATION_RENEW_MS = 15000; // 15 seconds in milliseconds
 
+    /**
+     * Signs in a user with the provided credentials.
+     * @param signInRequest the request containing user email and password
+     * @return SignInResponse containing JWT token and first login status
+     * @throws UserNotFoundException if the user is not found
+     * @throws InvalidPasswordException if the password is invalid
+     */
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws UserNotFoundException, InvalidPasswordException {
         log.info("Signing in user with email: {}", signInRequest.getEmail());
@@ -59,6 +65,16 @@ public class AuthServiceImpl implements AuthService {
         return new SignInResponse(token, foundUser.getIsFirstLogin().booleanValue());
     }
 
+
+    /**
+     * Registers a new user with the provided user details.
+     * @param userDTO the user details to register
+     * @return the registered User object
+     * @throws DuplicateUserException if a user with the same email already exists
+     * @throws MessagingException if there is an error sending the email
+     * @throws JsonProcessingException if there is an error processing JSON
+     * @throws PasswordApiException if there is an error generating a password
+     */
     @Override
     public User register(UserDTO userDTO) throws DuplicateUserException, MessagingException, JsonProcessingException, PasswordApiException {
         log.info("Registering user with email: {}", userDTO.getEmail());
@@ -78,6 +94,14 @@ public class AuthServiceImpl implements AuthService {
         return user;
     }
 
+    /**
+     * Resets the password for a user with the provided email.
+     * @param resetPasswordRequest the request containing the user's email
+     * @throws MessagingException if there is an error sending the email
+     * @throws UserNotFoundException if the user is not found
+     * @throws JsonProcessingException if there is an error processing JSON
+     * @throws PasswordApiException if there is an error generating a password
+     */
     @Override
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException, UserNotFoundException, JsonProcessingException, PasswordApiException {
         log.info("Resetting password for email: {}", resetPasswordRequest.getEmail());
@@ -91,6 +115,12 @@ public class AuthServiceImpl implements AuthService {
         mailSenderService.sendGeneratedPasswordEmail(user.getEmail(), newPassword);
     }
 
+    /**
+     * Validates the provided JWT token.
+     * @param token the JWT token to validate
+     * @return true if the token is valid, false otherwise
+     * @throws InvalidTokenException if the token is invalid
+     */
     @Override
     public boolean validateToken(String token) throws InvalidTokenException {
         try {
@@ -105,6 +135,12 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    /**
+     * Retrieves the email from the provided JWT token.
+     * @param token the JWT token
+     * @return the email extracted from the token
+     * @throws InvalidTokenException if the token is invalid or does not contain an email
+     */
     @Override
     public String getEmailFromToken(String token) throws InvalidTokenException {
         String email = Jwts.parserBuilder()
@@ -136,6 +172,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    /**
+     * Checks the validity of the provided token and renews it if it is close to expiration.
+     * @param token the JWT token to check
+     * @return TokenResponse containing the renewal status and new token if applicable
+     * @throws InvalidTokenException if the token is invalid
+     * @throws UserNotFoundException if the user associated with the token is not found
+     */
     public TokenResponse checkTokenValidityAndRenew(String token) throws InvalidTokenException, UserNotFoundException {
         try {
             var claims = Jwts.parserBuilder()

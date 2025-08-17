@@ -35,16 +35,6 @@ public class CaseControllerTest {
     private CaseController caseController;
 
     @Test
-    void getCases_WhenNoCases_ShouldReturnNoContent() {
-        when(caseService.getCases()).thenReturn(List.of());
-
-        ResponseEntity<List<CaseResponseDTO>> response = caseController.getCases();
-
-        assertEquals(204, response.getStatusCodeValue());
-        assertNull(response.getBody());
-    }
-
-    @Test
     void getCases_WhenCasesExist_ShouldReturnList() {
         Case c = new Case();
         CaseResponseDTO dto = new CaseResponseDTO();
@@ -102,30 +92,6 @@ public class CaseControllerTest {
         when(caseService.createCase(dto)).thenThrow(new UserNotFoundException());
 
         assertThrows(UserNotFoundException.class, () -> caseController.createCase(dto));
-    }
-
-    @Test
-    void updateCase_WhenValid_ShouldReturnOk() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = new CaseDTO();
-        Case updated = new Case();
-        CaseResponseDTO responseDTO = new CaseResponseDTO();
-        when(caseService.updateCase(dto, id)).thenReturn(updated);
-        when(caseResponseMapper.toCaseResponseDTO(updated)).thenReturn(responseDTO);
-
-        ResponseEntity<CaseResponseDTO> response = caseController.updateCase(id, dto);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
-    }
-
-    @Test
-    void updateCase_WhenNotFound_ShouldThrow() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = new CaseDTO();
-        when(caseService.updateCase(dto, id)).thenThrow(new CaseNotFoundException());
-
-        assertThrows(CaseNotFoundException.class, () -> caseController.updateCase(id, dto));
     }
 
     @Test

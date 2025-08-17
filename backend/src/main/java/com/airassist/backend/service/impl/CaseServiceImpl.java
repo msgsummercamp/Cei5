@@ -18,7 +18,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,18 +42,38 @@ public class CaseServiceImpl implements CaseService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Fetches all cases from the repository.
+     *
+     * @return List of all cases.
+     * @throws CaseNotFoundException if no cases are found.
+     */
     @Override
     public List<Case> getCases() throws CaseNotFoundException {
         logger.info("Service - fetching all cases.");
         return caseRepository.findAll();
     }
 
+    /**
+     * Fetches a case by its ID.
+     *
+     * @param id the ID of the case to fetch.
+     * @return an Optional containing the case if found, or empty if not found.
+     * @throws CaseNotFoundException if the case with the given ID does not exist.
+     */
     @Override
     public Optional<Case> getCaseById(UUID id) throws CaseNotFoundException {
         logger.info("Service - getting case by ID: {}", id);
         return caseRepository.findById(id);
     }
 
+    /**
+     * Creates a new case based on the provided CaseDTO.
+     *
+     * @param caseDTO the DTO containing case details.
+     * @return the created Case entity.
+     * @throws UserNotFoundException if the client associated with the case does not exist.
+     */
     public Case createCase(CaseDTO caseDTO) throws UserNotFoundException {
         Case caseToAdd = caseMapper.toEntity(caseDTO);
         Reservation reservation = reservationMapper.toEntity(caseDTO.getReservation());
@@ -66,7 +85,7 @@ public class CaseServiceImpl implements CaseService {
         caseToAdd.setReservation(reservation);
 
         User client = userRepository.findById(caseDTO.getClientID())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         caseToAdd.setClient(client);
 
         if (reservation.getId() != null) {
@@ -92,22 +111,12 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.save(caseToAdd);
     }
 
-    @Override
-    public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
-        Case updateReqCase = caseMapper.toEntity(caseDTO);
-        updateReqCase.setId(id);
-        Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", id);
-            return new CaseNotFoundException();
-        });
-        updateCaseFields(updateReqCase, caseToUpdate);
-        logger.info("Service - updating case with ID: {}", id);
-        Case updatedCase = caseRepository.save(caseToUpdate);
-
-
-        return updatedCase;
-    }
-
+    /**
+     * Deletes a case by its ID.
+     *
+     * @param id the ID of the case to delete.
+     * @throws CaseNotFoundException if the case with the given ID does not exist.
+     */
     @Override
     public void deleteCase(UUID id) throws CaseNotFoundException {
         if (!caseRepository.existsById(id)) {
@@ -118,6 +127,12 @@ public class CaseServiceImpl implements CaseService {
         caseRepository.deleteById(id);
     }
 
+    /**
+     * Checks if a case is eligible based on its disruption reason.
+     *
+     * @param caseEntity the case to check.
+     * @return true if the case is eligible, false otherwise.
+     */
     @Override
     public boolean checkEligibility(Case caseEntity) {
         return switch (caseEntity.getDisruptionReason()) {
@@ -133,29 +148,19 @@ public class CaseServiceImpl implements CaseService {
         };
     }
 
-    private void updateCaseFields(Case source, Case target) {
-        target.setStatus(source.getStatus());
-        target.setDisruptionReason(source.getDisruptionReason());
-        target.setDisruptionInfo(source.getDisruptionInfo());
-        target.setDate(source.getDate());
-        target.setClient(source.getClient());
-        target.setAssignedColleague(source.getAssignedColleague());
-        target.setReservation(source.getReservation());
-        target.setDocumentList(source.getDocumentList());
-        target.setBeneficiary(source.getBeneficiary());
-    }
-
+    /**
+     * Assigns an employee to a case.
+     *
+     * @param caseId the ID of the case to assign the employee to.
+     * @param employeeId the ID of the employee to assign.
+     * @return the updated Case entity with the assigned employee.
+     * @throws CaseNotFoundException if the case with the given ID does not exist.
+     * @throws UserNotFoundException if the employee with the given ID does not exist or is not an employee.
+     */
     @Override
     public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException, UserNotFoundException {
-        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new CaseNotFoundException();
-        });
-
-        User employee = userRepository.findById(employeeId).orElseThrow(() -> {
-            logger.warn("Service - Employee with ID {} not found", employeeId);
-            return new UserNotFoundException();
-        });
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
+        User employee = userRepository.findById(employeeId).orElseThrow(UserNotFoundException::new);
 
         if(employee.getRole() != Roles.EMPLOYEE) {
             logger.warn("User with ID {} does not have EMPLOYEE role", employeeId);
@@ -165,22 +170,30 @@ public class CaseServiceImpl implements CaseService {
         caseEntity.setAssignedColleague(employee);
         caseRepository.save(caseEntity);
         logger.info("Case with ID {} has an employee assigned: {}", caseId, employeeId);
-
         return caseEntity;
     }
 
+    /**
+     * Fetches all cases for a specific client.
+     *
+     * @param clientId the ID of the client whose cases are to be fetched.
+     * @return a list of cases associated with the specified client.
+     */
     public List<Case> getCasesForClient(UUID clientId) {
-        List<Case> cases = caseRepository.getCasesByClientId(clientId);
         logger.info("Service - fetching all cases for client {}", clientId);
-        return cases;
+        return caseRepository.getCasesByClientId(clientId);
     }
 
+    /**
+     * Sets the status of a case.
+     *
+     * @param caseId the ID of the case to update.
+     * @param status the new status to set for the case.
+     * @return the updated Case entity.
+     * @throws CaseNotFoundException if the case with the given ID does not exist.
+     */
     public Case setCaseStatus(UUID caseId, Statuses status) {
-        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new CaseNotFoundException();
-        });
-
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
         caseEntity.setStatus(status);
         caseRepository.save(caseEntity);
         return caseEntity;

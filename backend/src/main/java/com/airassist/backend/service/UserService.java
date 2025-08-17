@@ -4,7 +4,6 @@ import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.model.User;
-import com.airassist.backend.model.enums.Roles;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import java.util.UUID;
@@ -43,18 +42,6 @@ public interface UserService {
      * @throws PasswordApiException if there is an error calling the password generation API
      */
     User addUser(User user) throws DuplicateUserException, JsonProcessingException, PasswordApiException;
-
-    /**
-     * Updates an existing user in the repository by their email.
-     * Role and password are not updated.
-     *
-     * @param user the user to update
-     * @return the updated user entity
-     * @throws UserNotFoundException if the user with the given email does not exist
-     * @throws IllegalArgumentException if the user's phone number is null
-     * @throws DuplicateUserException if a user with the same email already exists
-     */
-    User updateUser(User user) throws UserNotFoundException, DuplicateUserException;
 
     /**
      * Patches an existing user in the repository by their email.

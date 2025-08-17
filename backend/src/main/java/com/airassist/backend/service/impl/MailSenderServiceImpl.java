@@ -23,6 +23,13 @@ public class MailSenderServiceImpl implements MailSenderService {
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * Sends an email message with the specified recipient, subject, and HTML body.
+     * @param recipient Recipient's email address.
+     * @param subject Subject of the email.
+     * @param htmlBody the HTML page containing the email body.
+     * @throws MessagingException if there is an error in sending the email.
+     */
     @Override
     public void sendMessage(String recipient, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -35,6 +42,12 @@ public class MailSenderServiceImpl implements MailSenderService {
         mailSender.send(message);
     }
 
+    /**
+     * Sends an email to notify the recipient about a new case.
+     * @param recipient Recipient's email address.
+     * @param caseId ID of the case.
+     * @throws MessagingException if there is an error in sending the email.
+     */
     @Override
     public void sendValidCaseEmail(String recipient, int caseId) throws MessagingException {
         Context thymeleafContext = new Context();
@@ -47,6 +60,12 @@ public class MailSenderServiceImpl implements MailSenderService {
         sendMessage(recipient, mailSubject, htmlBody);
     }
 
+    /**
+     * Sends an email to notify the recipient about the generation of a new password.
+     * @param recipient Recipient's email address.
+     * @param generatedPassword The generated password to be sent.
+     * @throws MessagingException if there is an error in sending the email.
+     */
     @Override
     public void sendGeneratedPasswordEmail(String recipient, String generatedPassword) throws MessagingException {
         Context thymeleafContext = new Context();
@@ -59,6 +78,12 @@ public class MailSenderServiceImpl implements MailSenderService {
         sendMessage(recipient, mailSubject, htmlBody);
     }
 
+    /**
+     * Sends an email to notify the recipient about a contract link.
+     * @param recipient Recipient's email address.
+     * @param contractLink The link to the contract to be sent.
+     * @throws MessagingException if there is an error in sending the email.
+     */
     @Override
     public void sendContractLink(String recipient, String contractLink) throws MessagingException {
         Context thymeleafContext = new Context();
