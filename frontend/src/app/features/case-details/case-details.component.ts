@@ -24,7 +24,7 @@ import { MimeTypeMapper } from '../../shared/helper/mime-type-mappings';
 import { FileUpload } from 'primeng/fileupload';
 import { PrimeTemplate } from 'primeng/api';
 import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
-import { DisruptionReasonMapper } from '../../shared/helper/diruption-reasons-mapper';
+import { DisruptionReasonMapper } from '../../shared/helper/disruption-reasons-mapper';
 import { Dialog } from 'primeng/dialog';
 import { ShowIfRoleDirective } from '../../shared/directives/if-roles-directive';
 import { Select } from 'primeng/select';
@@ -269,6 +269,9 @@ export class CaseDetailsComponent {
         this.loadingComments = false;
       },
       error: () => {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.cannot-load-comments')
+        );
         this.loadingComments = false;
       },
     });
@@ -298,6 +301,9 @@ export class CaseDetailsComponent {
         this.scrollToBottom();
       },
       error: () => {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.cannot-post-comment')
+        );
         this.postingComment = false;
       },
     });

@@ -45,6 +45,8 @@ import { ContractService } from '../../shared/services/contract.service';
 import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
 import { Tooltip } from 'primeng/tooltip';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 type DisruptionForm = {
   disruptionType: string;
@@ -556,9 +558,15 @@ export class CaseFormComponent {
               );
             }
           },
-          error: (error) => {
-            const apiError: ApiError = error?.error;
-            this._notificationService.showError(this._translateService.instant(apiError.detail));
+          error: (error: HttpErrorResponse) => {
+            if (error.status === 0) {
+              this._notificationService.showError(
+                this._translateService.instant('api-errors.network-error')
+              );
+            } else {
+              const apiError: ApiError = error?.error;
+              this._notificationService.showError(this._translateService.instant(apiError.detail));
+            }
           },
         });
       }

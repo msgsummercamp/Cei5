@@ -9,6 +9,7 @@ import com.airassist.backend.exception.auth.InvalidTokenException;
 import com.airassist.backend.exception.user.DuplicateUserException;
 import com.airassist.backend.exception.user.PasswordApiException;
 import com.airassist.backend.exception.user.UserNotFoundException;
+import com.airassist.backend.model.TokenResponse;
 import com.airassist.backend.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.mail.MessagingException;
@@ -66,4 +67,14 @@ public interface AuthService {
      * @throws InvalidTokenException if the token has a missing email claim
      */
     String getEmailFromToken(String token) throws InvalidTokenException;
+
+    /**
+     * Checks the validity of the provided token and renews it if it has less than 15 seconds until expiration.
+     *
+     * @param token the JWT token to check
+     * @return TokenResponse containing the new token and its expiration time
+     * @throws InvalidTokenException if the token is invalid or has expired
+     * @throws UserNotFoundException if the user associated with the token is not found
+     */
+    public TokenResponse checkTokenValidityAndRenew(String token) throws InvalidTokenException, UserNotFoundException;
 }

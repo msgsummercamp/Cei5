@@ -1,5 +1,7 @@
 {
   "home": "Acasă",
+  "yes": "Da",
+  "no": "Nu",
   "mandatory": "* Câmpurile marcate cu steluță sunt obligatorii.",
   "homepage": {
     "question": "Zbor întârziat sau anulat? Obține compensația cuvenită!",
@@ -335,7 +337,12 @@
     "user-validation-error": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "constraint-violation": "Unele dintre datele furnizate nu respectă cerințele necesare. Vă rugăm să verificați datele și să încercați din nou.",
     "reservation-not-found": "Rezervarea nu a fost găsită.",
-    "document-not-found": "Documentul solicitat nu a fost găsit."
+    "document-not-found": "Documentul solicitat nu a fost găsit.",
+    "forbidden": "Nu aveți permisiunea să efectuați această operațiune.",
+    "unauthorized": "Nu sunteți autorizat să efectuați această operațiune. Vă rugăm să vă autentificați.",
+    "cannot-load-comments": "Nu se pot încărca comentariile pentru acest caz.",
+    "cannot-post-comment": "Nu se poate posta comentariul. Vă rugăm să încercați din nou.",
+    "network-error": "Eroare de rețea. Vă rugăm să verificați conexiunea la internet și să încercați din nou."
   },
   "case-table": {
     "case-id": "ID Caz",
@@ -368,7 +375,7 @@
     "matchAll": "Potrivire totală",
     "matchAny": "Potrivire parțială",
     "addRule": "Adaugă regulă",
-    "clear": "Curăță",
+    "clear": "Șterge",
     "apply": "Aplică",
     "yes": "Da",
     "no": "Nu",
@@ -385,6 +392,7 @@
     "INVALID": "Invalid"
   },
   "profile-page": {
+    "case-table-title": "Cazurile tale",
     "card-information": {
       "email": "Email:",
       "phone-number": "Număr de telefon:",
@@ -392,6 +400,11 @@
       "postal-code": "Cod poștal:",
       "address": "Adresă:",
       "birth-date": "Data nașterii:"
+    },
+    "card-new-case": {
+      "button": "Verifică zborul",
+      "title": "Verifică dacă ești eligibil pentru compensație",
+      "subtitle": "Poți primi până la 600€ pentru întârzieri, anulări sau suprarezervări"
     }
   },
   "admin-panel": {
@@ -483,5 +496,9 @@
     "denied-boarding-without-reason": "Îmbarcare refuzată fără motiv specificat",
     "not-eligible-reason": "Neeligibil",
     "conditions-not-fulfilled": "Condiții neîndeplinite"
+  },
+  "case-service": {
+    "ineligible-for-compensation": "Nu sunteți eligibil pentru compensație.",
+    "case-created": "Caz creat cu succes."
   }
 }

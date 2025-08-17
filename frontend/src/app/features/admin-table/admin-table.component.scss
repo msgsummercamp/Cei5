@@ -1,0 +1,15 @@
+::ng-deep {
+  .add-container {
+    .p-button {
+      background-color: #a6eb55;
+      border-color: #a6eb55;
+      --p-button-label-font-weight: bold;
+    }
+
+    .p-button:hover {
+      background-color: #6d991d;
+      border-color: #6d991d;
+      color: white !important;
+    }
+  }
+}

@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
      * @param source the source user containing updated fields
      * @param target the target user to be updated
      */
-    private void updateUserFields(User source, User target) {
+    public void updateUserFields(User source, User target) {
         target.setFirstName(source.getFirstName());
         target.setLastName(source.getLastName());
         target.setPassword(source.getPassword());
@@ -191,7 +191,6 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves all users from the repository.
      * @return List of all users
-     * @throws UserNotFoundException
      */
     public List<User> getAllUsers() throws UserNotFoundException {
         logger.info("UserService - Fetching all users");
@@ -208,17 +207,10 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves all employees from the repository.
      * @return List of all employees with the specified role
-     * @throws UserNotFoundException
      */
     public List<User> getAllEmployees() throws UserNotFoundException {
         logger.info("UserService - Fetching all employees");
         List<User> employees = userRepository.findAllEmployees(Roles.EMPLOYEE);
-
-        if(employees.isEmpty()) {
-            logger.warn("Employee not found.");
-            throw new UserNotFoundException();
-        }
-
         return employees;
     }
 }
