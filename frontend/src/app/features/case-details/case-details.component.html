@@ -27,7 +27,7 @@
             <p
               ><label
                 ><strong>{{ 'case-details.created-by' | translate }}: </strong></label
-              >{{ caseData.client.firstName }} {{ caseData.client.lastName }}</p
+              >{{ extractClientName(caseData) }}</p
             >
             @if (caseData.beneficiary) {
               <p

@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CaseService } from '../../shared/services/case.service';
 import { Case } from '../../shared/types/case';
 import { ActivatedRoute } from '@angular/router';
@@ -196,9 +196,6 @@ export class CaseDetailsComponent {
     if (file && this.caseData?.id) {
       this._caseService.uploadDocument(this.caseData.id, file, file.name, file.type).subscribe({
         next: () => {
-          this._notificationService.showSuccess(
-            this._translationService.instant('case-details.upload-file-success')
-          );
           if (this.caseData?.id) {
             this.getDocuments(this.caseData.id);
             window.location.reload();

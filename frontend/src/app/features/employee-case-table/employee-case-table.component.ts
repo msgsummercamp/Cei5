@@ -119,7 +119,7 @@ export class EmployeeCaseTableComponent implements OnInit, OnDestroy {
   }
 
   public extractClientName(caseItem: Case): string {
-    return caseItem.client ? `${caseItem.client.firstName} ${caseItem.client.lastName}` : '';
+    return caseItem.client ? `${caseItem.client.firstName} ${caseItem.client.lastName}` : '\u2014';
   }
 
   public getStatusTranslation(status: Statuses): string {

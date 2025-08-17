@@ -4,6 +4,14 @@
       --p-button-primary-background: rgb(15, 27, 88);
       --p-button-primary-border-color: #0078bd;
       --p-button-primary-hover-background: #0078bd;
+      --p-button-secondary-background: #a6eb55;
+      --p-button-secondary-border-color: #6d991d;
+      --p-button-secondary-hover-background: #6d991d;
+      --p-button-secondary-color: rgb(15, 27, 88);
+    }
+
+    .np .p-button {
+      min-width: 11rem;
     }
 
     .p-stepper {

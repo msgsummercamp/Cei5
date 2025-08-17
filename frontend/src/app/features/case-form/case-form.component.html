@@ -221,6 +221,7 @@
                     }}</p-header>
                     <div class="ml-4">
                       <p-button
+                        class="connection-buttons"
                         icon="pi pi-plus"
                         (onClick)="addConnectionFlight()"
                         [styleClass]="'px-1'"
@@ -275,75 +276,60 @@
 
                                   <!-- Error Messages -->
                                   <div class="error-placeholder">
-                                    @if (airport.touched && airport.errors) {
-                                      @switch (true) {
-                                        @case (airport.hasError('required')) {
-                                          <app-error-message
-                                            text="{{
-                                              'mainForm.connectionDestinationRequired' | translate
-                                            }}"
-                                          />
-                                        }
-                                        @case (
-                                          airport.hasError('minlength') ||
-                                          airport.hasError('maxlength')
-                                        ) {
-                                          <app-error-message
-                                            text="{{
-                                              'mainForm.connectionDestinationLength' | translate
-                                            }}"
-                                          />
-                                        }
-                                        @case (airport.hasError('pattern')) {
-                                          <app-error-message
-                                            text="{{
-                                              'mainForm.connectionDestinationUpper' | translate
-                                            }}"
-                                          />
-                                        }
+                                    @if (airport.touched) {
+                                      @if (airport.hasError('required')) {
+                                        <app-error-message
+                                          text="{{
+                                            'mainForm.connectionDestinationRequired' | translate
+                                          }}"
+                                        />
+                                      } @else if (
+                                        airport.hasError('minlength') ||
+                                        airport.hasError('maxlength')
+                                      ) {
+                                        <app-error-message
+                                          text="{{
+                                            'mainForm.connectionDestinationLength' | translate
+                                          }}"
+                                        />
+                                      } @else if (airport.hasError('pattern')) {
+                                        <app-error-message
+                                          text="{{
+                                            'mainForm.connectionDestinationUpper' | translate
+                                          }}"
+                                        />
+                                      } @else if (
+                                        airport.hasError('connectionsShouldBeDifferent')
+                                      ) {
+                                        <app-error-message
+                                          text="{{
+                                            'mainForm.connectionsShouldBedifferent' | translate
+                                          }}"
+                                        />
+                                      } @else if (
+                                        reservationInformation.departingAirport === airport.value
+                                      ) {
+                                        <app-error-message
+                                          text="{{ 'mainForm.usedDepartingAirport' | translate }}"
+                                        />
+                                      } @else if (
+                                        reservationInformation.destinationAirport === airport.value
+                                      ) {
+                                        <app-error-message
+                                          text="{{ 'mainForm.usedDestinationAirport' | translate }}"
+                                        />
+                                      } @else if (getConnectionValidationError()) {
+                                        <app-error-message
+                                          [text]="getConnectionValidationError()!"
+                                        />
                                       }
-                                    }
-                                    <div
-                                      class="error-placeholder align-items-start align-content-center"
-                                    >
-                                      @if (getConnectionValidationError()) {
-                                        <div class="mb-2">
-                                          <app-error-message
-                                            [text]="getConnectionValidationError()!"
-                                          />
-                                        </div>
-                                      }
-                                    </div>
-
-                                    @if (
-                                      airport.hasError('connectionsShouldBeDifferent') &&
-                                      airport.touched
-                                    ) {
-                                      <app-error-message
-                                        text="{{
-                                          'mainForm.connectionsShouldBedifferent' | translate
-                                        }}"
-                                      />
-                                    } @else if (
-                                      airport.touched &&
-                                      reservationInformation.departingAirport === airport.value
-                                    ) {
-                                      <app-error-message
-                                        text="{{ 'mainForm.usedDepartingAirport' | translate }}"
-                                      />
-                                    } @else if (
-                                      airport.touched &&
-                                      reservationInformation.destinationAirport === airport.value
-                                    ) {
-                                      <app-error-message
-                                        text="{{ 'mainForm.usedDestinationAirport' | translate }}"
-                                      />
                                     }
                                   </div>
                                 </div>
 
                                 <!-- Remove Button -->
                                 <p-button
+                                  class="connection-buttons"
                                   icon="pi pi-trash"
                                   severity="danger"
                                   (onClick)="removeConnectionFlight(i)"
@@ -369,12 +355,14 @@
           <!-- Next and back buttons -->
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
               [styleClass]="'px-6'"
             />
             <p-button
+              class="np"
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
               [disabled]="!isNextButtonEnabled"
@@ -443,6 +431,7 @@
           <!-- Next and back buttons -->
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
@@ -450,6 +439,7 @@
             />
 
             <p-button
+              class="np"
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
               [disabled]="!isConnectionStepValid"
@@ -473,6 +463,7 @@
           />
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPreviousFromDisruptionInfo(prevCallback)"
@@ -480,6 +471,7 @@
             />
 
             <p-button
+              class="np"
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
               [disabled]="!isDisruptionFormValid"
@@ -503,6 +495,7 @@
           </app-eligibility-page>
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
@@ -510,6 +503,7 @@
             />
 
             <p-button
+              class="np"
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
               [disabled]="!isEligibilityCheckValid"
@@ -536,6 +530,7 @@
 
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPreviousFromUserRegistration(prevCallback)"
@@ -543,6 +538,7 @@
             />
 
             <p-button
+              class="np"
               label="{{ 'mainForm.next' | translate }}"
               severity="primary"
               [disabled]="!isUserRegistrationValid"
@@ -562,6 +558,7 @@
           <app-confirmation-form></app-confirmation-form>
           <div class="justify-content-center flex flex-row gap-6">
             <p-button
+              class="np"
               label="{{ 'mainForm.previous' | translate }}"
               severity="secondary"
               (onClick)="onPrevious(prevCallback)"
@@ -569,6 +566,7 @@
             />
 
             <p-button
+              class="np"
               label="{{ 'lastForm.next' | translate }}"
               severity="primary"
               (onClick)="submitCase()"
