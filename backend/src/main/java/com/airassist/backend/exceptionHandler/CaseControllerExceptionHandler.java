@@ -1,6 +1,5 @@
 package com.airassist.backend.exceptionHandler;
 
-
 import com.airassist.backend.controller.CaseController;
 import com.airassist.backend.exception.cases.CaseNotFoundException;
 import com.airassist.backend.exception.user.UserNotFoundException;

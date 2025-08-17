@@ -89,24 +89,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void updateUser_ValidInput_ShouldReturnUpdatedUser() throws UserNotFoundException, DuplicateUserException {
-        UUID id = UUID.randomUUID();
-        UserDTO userDTO = new UserDTO();
-        User userToUpdate = new User();
-        userToUpdate.setId(id);
-        User updatedUser = new User();
-        UserResponseDTO dto = new UserResponseDTO();
-
-        when(userMapper.userDTOToUser(userDTO)).thenReturn(userToUpdate);
-        when(userService.updateUser(userToUpdate)).thenReturn(updatedUser);
-        when(userMapper.userToUserResponseDTO(updatedUser)).thenReturn(dto);
-
-        ResponseEntity<UserResponseDTO> response = userController.updateUser(id, userDTO);
-
-        assertEquals(dto, response.getBody());
-    }
-
-    @Test
     void patchUser_ValidInput_ShouldReturnPatchedUser() throws UserNotFoundException, DuplicateUserException {
         UUID id = UUID.randomUUID();
         UserDTO userDTO = new UserDTO();

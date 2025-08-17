@@ -65,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
         return new SignInResponse(token, foundUser.getIsFirstLogin().booleanValue());
     }
 
+
     /**
      * Registers a new user with the provided user details.
      * @param userDTO the user details to register

@@ -66,21 +66,6 @@ public class CaseController {
     }
 
     /**
-     * Updates an existing case.
-     *
-     * @param id the UUID of the case to update
-     * @param caseRequest the CaseDTO containing the updated details of the case
-     * @return ResponseEntity containing the updated CaseResponseDTO
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<CaseResponseDTO> updateCase(@PathVariable UUID id, @Valid @RequestBody CaseDTO caseRequest) {
-        Case updatedCase = caseService.updateCase(caseRequest, id);
-        CaseResponseDTO updatedCaseResponse = caseResponseMapper.toCaseResponseDTO(updatedCase);
-        return ResponseEntity.ok(updatedCaseResponse);
-
-    }
-
-    /**
      * Deletes a case by its ID.
      *
      * @param id the UUID of the case to delete

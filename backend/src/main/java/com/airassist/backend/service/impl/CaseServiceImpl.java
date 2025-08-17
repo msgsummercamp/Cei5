@@ -112,24 +112,6 @@ public class CaseServiceImpl implements CaseService {
     }
 
     /**
-     * Updates an existing case with the provided CaseDTO.
-     *
-     * @param caseDTO the DTO containing updated case details.
-     * @param id      the ID of the case to update.
-     * @return the updated Case entity.
-     * @throws CaseNotFoundException if the case with the given ID does not exist.
-     */
-    @Override
-    public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
-        Case updateReqCase = caseMapper.toEntity(caseDTO);
-        updateReqCase.setId(id);
-        Case caseToUpdate = caseRepository.findById(id).orElseThrow(CaseNotFoundException::new);
-        updateCaseFields(updateReqCase, caseToUpdate);
-        logger.info("Service - updating case with ID: {}", id);
-        return caseRepository.save(caseToUpdate);
-    }
-
-    /**
      * Deletes a case by its ID.
      *
      * @param id the ID of the case to delete.
@@ -164,24 +146,6 @@ public class CaseServiceImpl implements CaseService {
             case DENIED_BOARDING_WITHOUT_REASON -> true;
             default -> false;
         };
-    }
-
-    /**
-     * Updates the fields of a target case with values from a source case.
-     *
-     * @param source the source case containing new values.
-     * @param target the target case to be updated.
-     */
-    private void updateCaseFields(Case source, Case target) {
-        target.setStatus(source.getStatus());
-        target.setDisruptionReason(source.getDisruptionReason());
-        target.setDisruptionInfo(source.getDisruptionInfo());
-        target.setDate(source.getDate());
-        target.setClient(source.getClient());
-        target.setAssignedColleague(source.getAssignedColleague());
-        target.setReservation(source.getReservation());
-        target.setDocumentList(source.getDocumentList());
-        target.setBeneficiary(source.getBeneficiary());
     }
 
     /**

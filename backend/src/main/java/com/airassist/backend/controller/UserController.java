@@ -84,23 +84,6 @@ public class UserController {
     }
 
     /**
-     * Updates an existing user.
-     * @param id the UUID of the user to update
-     * @param userDTO the UserDTO containing updated user details
-     * @return ResponseEntity containing the updated UserResponseDTO
-     * @throws UserNotFoundException if the user with the given ID does not exist
-     * @throws DuplicateUserException if a user with the same email already exists
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable UUID id, @Valid @RequestBody UserDTO userDTO) throws UserNotFoundException, DuplicateUserException {
-        User userToUpdate = userMapper.userDTOToUser(userDTO);
-        userToUpdate.setId(id);
-        User updatedUser = userService.updateUser(userToUpdate);
-        UserResponseDTO response = userMapper.userToUserResponseDTO(updatedUser);
-        return ResponseEntity.ok(response);
-    }
-
-    /**
      * Partially updates an existing user.
      * @param id the UUID of the user to patch
      * @param userDTO the UserDTO containing updated user details

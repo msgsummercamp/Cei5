@@ -163,32 +163,6 @@ class CaseServiceTest {
     }
 
     @Test
-    void updateCase_WhenCaseExists_ShouldUpdateAndReturnCase() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = mock(CaseDTO.class);
-        Case updateReq = new Case();
-        Case existing = new Case();
-        when(caseMapper.toEntity(dto)).thenReturn(updateReq);
-        when(caseRepository.findById(id)).thenReturn(Optional.of(existing));
-        when(caseRepository.save(existing)).thenReturn(existing);
-
-        Case result = caseService.updateCase(dto, id);
-
-        assertEquals(existing, result);
-        verify(caseRepository).save(existing);
-    }
-
-    @Test
-    void updateCase_WhenCaseNotFound_ShouldThrowCaseNotFoundException() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = mock(CaseDTO.class);
-        when(caseMapper.toEntity(dto)).thenReturn(new Case());
-        when(caseRepository.findById(id)).thenReturn(Optional.empty());
-
-        assertThrows(CaseNotFoundException.class, () -> caseService.updateCase(dto, id));
-    }
-
-    @Test
     void deleteCase_WhenCaseExists_ShouldDelete() {
         UUID id = UUID.randomUUID();
         when(caseRepository.existsById(id)).thenReturn(true);

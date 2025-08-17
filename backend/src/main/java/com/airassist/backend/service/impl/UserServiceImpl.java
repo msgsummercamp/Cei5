@@ -85,38 +85,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Updates an existing user in the repository.
-     * @param user the User object containing updated fields
-     * @return the updated User object
-     * @throws UserNotFoundException if no user is found with the given ID
-     * @throws DuplicateUserException if a user with the same email already exists
-     */
-    @Override
-    public User updateUser(User user) throws UserNotFoundException, DuplicateUserException {
-        UUID id = user.getId();
-        logger.info("UserService - Attempting to update user: {}", id);
-
-        /*Check for null values in non-nullable fields. This allows us to use the same dto for update and patch*/
-        if(!UserValidator.userIsValidForUpdate(user)) {
-            logger.error("User with ID {} has invalid data for update", id);
-            throw new IllegalArgumentException();
-        }
-
-        Optional<User> existingUserOpt = userRepository.findById(id);
-        if (existingUserOpt.isEmpty()) {
-            logger.warn("User with ID {} not found for update", id);
-            throw new UserNotFoundException();
-        }
-        checkForDuplicateEmail(user.getEmail());
-        User userToUpdate = existingUserOpt.get();
-        if(user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        updateUserFields(user, userToUpdate);
-        return userRepository.save(userToUpdate);
-    }
-
-    /**
      * Patches an existing user in the repository.
      * @param user the User object containing fields to be patched
      * @return the patched User object

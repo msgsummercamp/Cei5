@@ -95,30 +95,6 @@ public class CaseControllerTest {
     }
 
     @Test
-    void updateCase_WhenValid_ShouldReturnOk() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = new CaseDTO();
-        Case updated = new Case();
-        CaseResponseDTO responseDTO = new CaseResponseDTO();
-        when(caseService.updateCase(dto, id)).thenReturn(updated);
-        when(caseResponseMapper.toCaseResponseDTO(updated)).thenReturn(responseDTO);
-
-        ResponseEntity<CaseResponseDTO> response = caseController.updateCase(id, dto);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(responseDTO, response.getBody());
-    }
-
-    @Test
-    void updateCase_WhenNotFound_ShouldThrow() {
-        UUID id = UUID.randomUUID();
-        CaseDTO dto = new CaseDTO();
-        when(caseService.updateCase(dto, id)).thenThrow(new CaseNotFoundException());
-
-        assertThrows(CaseNotFoundException.class, () -> caseController.updateCase(id, dto));
-    }
-
-    @Test
     void deleteCase_WhenValid_ShouldReturnOk() {
         UUID id = UUID.randomUUID();
 

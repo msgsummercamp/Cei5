@@ -17,8 +17,6 @@ public interface CaseService {
 
     Case createCase(CaseDTO caseDTO) throws UserNotFoundException;
 
-    Case updateCase(CaseDTO caseDTO, UUID id);
-
     void deleteCase(UUID id);
 
     boolean checkEligibility(Case caseEntity);

@@ -1,6 +1,5 @@
 package com.airassist.backend.repository;
 
-import com.airassist.backend.dto.document.DocumentSummaryDTO;
 import com.airassist.backend.model.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

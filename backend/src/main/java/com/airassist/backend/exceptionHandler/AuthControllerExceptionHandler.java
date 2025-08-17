@@ -63,6 +63,4 @@ public class AuthControllerExceptionHandler {
     public ProblemDetail handlePasswordApiException(PasswordApiException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessages.PASSWORD_API_ERROR.getCode());
     }
-
-
 }
