@@ -7,7 +7,7 @@
 
 A modern web app for managing flight delay claims and related workflows.
 
-- Backend: Spring Boot (JWT auth, JPA/PostgreSQL, MapStruct, Caffeine cache, mailing, PDF generation)
+- Backend: Spring Boot (JWT auth, JPA/PostgreSQL, MapStruct, mailing, PDF generation)
 - Frontend: Angular 19 + PrimeNG + PrimeFlex + ngx-translate (EN/RO)
 
 ---
