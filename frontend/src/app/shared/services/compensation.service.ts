@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, of, shareReplay, Subject, switchMap } from 'rxjs';
 import { NotificationService } from './toaster/notification.service';
@@ -37,13 +37,19 @@ export class CompensationService {
         airportData.destinationCode;
 
       return this._httpClient.post<number>(endpoint, {}).pipe(
-        catchError((error) => {
-          const apiError: ApiError = error?.error;
-          const message = this._translationService.instant(apiError.detail, {
-            departingAirportCode: airportData.departureCode,
-            destinationAirportCode: airportData.destinationCode,
-          });
-          this._notificationService.showError(message);
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this._notificationService.showError(
+              this._translationService.instant('api-errors.network-error')
+            );
+          } else {
+            const apiError: ApiError = error?.error;
+            const message = this._translationService.instant(apiError.detail, {
+              departingAirportCode: airportData.departureCode,
+              destinationAirportCode: airportData.destinationCode,
+            });
+            this._notificationService.showError(message);
+          }
           return of(null);
         })
       );

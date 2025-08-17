@@ -28,7 +28,7 @@ public class AirportApiController {
      */
     @GetMapping("/fetch")
     public List<Airport> fetchAirports() throws JsonProcessingException, InterruptedException {
-        return airportApiFetchService.fetchAirportData();
+        return airportApiFetchService.getAirports();
     }
 
     /**

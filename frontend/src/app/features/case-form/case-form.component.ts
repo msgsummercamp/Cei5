@@ -45,6 +45,9 @@ import { ApiError } from '../../shared/types/api-error';
 import { ContractService } from '../../shared/services/contract.service';
 import { DisruptionReasons } from '../../shared/types/enums/disruption-reason';
 import { Tooltip } from 'primeng/tooltip';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 type DisruptionForm = {
   disruptionType: string;
@@ -79,6 +82,7 @@ type DisruptionForm = {
     ConfirmationFormComponent,
     CheckboxModule,
     Tooltip,
+    ToggleSwitchModule,
   ],
   templateUrl: './case-form.component.html',
   styleUrl: './case-form.component.scss',
@@ -557,9 +561,15 @@ export class CaseFormComponent {
               );
             }
           },
-          error: (error) => {
-            const apiError: ApiError = error?.error;
-            this._notificationService.showError(this._translateService.instant(apiError.detail));
+          error: (error: HttpErrorResponse) => {
+            if (error.status === 0) {
+              this._notificationService.showError(
+                this._translateService.instant('api-errors.network-error')
+              );
+            } else {
+              const apiError: ApiError = error?.error;
+              this._notificationService.showError(this._translateService.instant(apiError.detail));
+            }
           },
         });
       }

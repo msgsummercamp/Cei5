@@ -61,3 +61,18 @@
 .user {
   background-color: #90ee90;
 }
+
+::ng-deep .custom-button {
+  .p-button {
+    background-color: #a6eb55;
+    border-color: #a6eb55;
+    color: #0c2c70;
+    --p-button-label-font-weight: bold;
+  }
+
+  .p-button:hover {
+    background-color: #6d991d;
+    border-color: #6d991d;
+    color: white !important;
+  }
+}

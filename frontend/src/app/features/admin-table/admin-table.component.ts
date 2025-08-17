@@ -21,6 +21,7 @@ import { Roles } from '../../shared/types/enums/roles';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Card } from 'primeng/card';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-table',
@@ -111,8 +112,34 @@ export class AdminTableComponent implements OnInit {
           });
         },
       });
-    }
-  }
+    this._confirmationService.confirm({
+      message: this._translateService.instant('admin-panel.confirm-delete'),
+      acceptLabel: this._translateService.instant('yes'),
+      rejectLabel: this._translateService.instant('no'),
+      accept: () => {
+        this._userService.deleteUser(userId).subscribe({
+          next: () => {
+            this.users = this.users.filter((user) => user.id !== userId);
+            this._notificationService.showSuccess(
+              this._translateService.instant('admin-panel.userDeleted')
+            );
+          },
+          error: (error) => {
+            if (error.status === 0) {
+              this._notificationService.showError(
+                this._translateService.instant('api-errors.network-error')
+              );
+            } else {
+              const apiError: ApiError = error?.error;
+              const errorKey = apiError?.detail;
+              this._notificationService.showError(this._translateService.instant(errorKey));
+            }
+          },
+        });
+      },
+    });
+   }
+ }
 
   public openEmployeeDialog(): void {
     this.showEmployeeDialog.set(true);
@@ -171,10 +198,16 @@ export class AdminTableComponent implements OnInit {
           this.initialValue = [...this.users];
           this.loading = false;
         },
-        error: (error) => {
-          const apiError: ApiError = error?.error;
-          const errorKey = apiError?.detail || 'error.message';
-          this._notificationService.showError(this._translateService.instant(errorKey));
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 0) {
+            this._notificationService.showError(
+              this._translateService.instant('api-errors.network-error')
+            );
+          } else {
+            const apiError: ApiError = error?.error;
+            const errorKey = apiError?.detail;
+            this._notificationService.showError(this._translateService.instant(errorKey));
+          }
         },
       });
   }
