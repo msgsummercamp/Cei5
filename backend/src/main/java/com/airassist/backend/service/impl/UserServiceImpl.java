@@ -252,9 +252,8 @@ public class UserServiceImpl implements UserService {
      * Retrieves all employees from the repository.
      * @return List of all employees with the specified role
      */
-    public List<User> getAllEmployees() throws UserNotFoundException {
+    public List<User> getAllEmployees() {
         logger.info("UserService - Fetching all employees");
-        List<User> employees = userRepository.findAllEmployees(Roles.EMPLOYEE);
-        return employees;
+        return userRepository.findAllEmployees(Roles.EMPLOYEE);
     }
 }

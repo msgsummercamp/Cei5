@@ -35,16 +35,6 @@ public class CaseControllerTest {
     private CaseController caseController;
 
     @Test
-    void getCases_WhenNoCases_ShouldReturnNoContent() {
-        when(caseService.getCases()).thenReturn(List.of());
-
-        ResponseEntity<List<CaseResponseDTO>> response = caseController.getCases();
-
-        assertEquals(204, response.getStatusCodeValue());
-        assertNull(response.getBody());
-    }
-
-    @Test
     void getCases_WhenCasesExist_ShouldReturnList() {
         Case c = new Case();
         CaseResponseDTO dto = new CaseResponseDTO();

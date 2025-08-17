@@ -171,6 +171,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    /**
+     * Checks the validity of the provided token and renews it if it is close to expiration.
+     * @param token the JWT token to check
+     * @return TokenResponse containing the renewal status and new token if applicable
+     * @throws InvalidTokenException if the token is invalid
+     * @throws UserNotFoundException if the user associated with the token is not found
+     */
     public TokenResponse checkTokenValidityAndRenew(String token) throws InvalidTokenException, UserNotFoundException {
         try {
             var claims = Jwts.parserBuilder()

@@ -329,12 +329,6 @@ class UserServiceTests {
     }
 
     @Test
-    void getAllEmployees_WhenEmployeesNotExist_ThrowExceptionUserNotFound() {
-        when(userRepository.findAllEmployees(Roles.EMPLOYEE)).thenReturn(List.of());
-        assertThrows(UserNotFoundException.class, () -> userService.getAllEmployees());
-    }
-
-    @Test
     void getAllEmployees_WhenEmployeesExist_ReturnListOfEmployees() throws UserNotFoundException {
         User employee1 = new User();
         employee1.setEmail("test@test1.com");

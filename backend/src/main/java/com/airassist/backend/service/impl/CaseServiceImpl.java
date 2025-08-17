@@ -85,7 +85,7 @@ public class CaseServiceImpl implements CaseService {
         caseToAdd.setReservation(reservation);
 
         User client = userRepository.findById(caseDTO.getClientID())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         caseToAdd.setClient(client);
 
         if (reservation.getId() != null) {
@@ -123,16 +123,10 @@ public class CaseServiceImpl implements CaseService {
     public Case updateCase(CaseDTO caseDTO, UUID id) throws CaseNotFoundException {
         Case updateReqCase = caseMapper.toEntity(caseDTO);
         updateReqCase.setId(id);
-        Case caseToUpdate = caseRepository.findById(id).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", id);
-            return new CaseNotFoundException();
-        });
+        Case caseToUpdate = caseRepository.findById(id).orElseThrow(CaseNotFoundException::new);
         updateCaseFields(updateReqCase, caseToUpdate);
         logger.info("Service - updating case with ID: {}", id);
-        Case updatedCase = caseRepository.save(caseToUpdate);
-
-
-        return updatedCase;
+        return caseRepository.save(caseToUpdate);
     }
 
     /**
@@ -201,15 +195,8 @@ public class CaseServiceImpl implements CaseService {
      */
     @Override
     public Case assignEmployee(UUID caseId, UUID employeeId) throws CaseNotFoundException, UserNotFoundException {
-        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new CaseNotFoundException();
-        });
-
-        User employee = userRepository.findById(employeeId).orElseThrow(() -> {
-            logger.warn("Service - Employee with ID {} not found", employeeId);
-            return new UserNotFoundException();
-        });
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
+        User employee = userRepository.findById(employeeId).orElseThrow(UserNotFoundException::new);
 
         if(employee.getRole() != Roles.EMPLOYEE) {
             logger.warn("User with ID {} does not have EMPLOYEE role", employeeId);
@@ -219,7 +206,6 @@ public class CaseServiceImpl implements CaseService {
         caseEntity.setAssignedColleague(employee);
         caseRepository.save(caseEntity);
         logger.info("Case with ID {} has an employee assigned: {}", caseId, employeeId);
-
         return caseEntity;
     }
 
@@ -230,9 +216,8 @@ public class CaseServiceImpl implements CaseService {
      * @return a list of cases associated with the specified client.
      */
     public List<Case> getCasesForClient(UUID clientId) {
-        List<Case> cases = caseRepository.getCasesByClientId(clientId);
         logger.info("Service - fetching all cases for client {}", clientId);
-        return cases;
+        return caseRepository.getCasesByClientId(clientId);
     }
 
     /**
@@ -244,11 +229,7 @@ public class CaseServiceImpl implements CaseService {
      * @throws CaseNotFoundException if the case with the given ID does not exist.
      */
     public Case setCaseStatus(UUID caseId, Statuses status) {
-        Case caseEntity = caseRepository.findById(caseId).orElseThrow(() -> {
-            logger.warn("Service - Case with ID {} not found for update", caseId);
-            return new CaseNotFoundException();
-        });
-
+        Case caseEntity = caseRepository.findById(caseId).orElseThrow(CaseNotFoundException::new);
         caseEntity.setStatus(status);
         caseRepository.save(caseEntity);
         return caseEntity;

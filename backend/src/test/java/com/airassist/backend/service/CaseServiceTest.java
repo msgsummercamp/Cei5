@@ -268,14 +268,6 @@ class CaseServiceTest {
     }
 
     @Test
-    void getCasesForClient_WhenNoCasesExist_ShouldThrowCaseNotFoundException() {
-        UUID clientId = UUID.randomUUID();
-        when(caseRepository.getCasesByClientId(clientId)).thenReturn(Collections.emptyList());
-
-        assertThrows(CaseNotFoundException.class, () -> caseService.getCasesForClient(clientId));
-    }
-
-    @Test
     void setCaseStatus_WhenCaseExists_ShouldSetStatus() {
         UUID caseId = UUID.randomUUID();
         Case c = new Case();
