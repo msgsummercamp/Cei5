@@ -43,6 +43,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws CaseNotFoundException if no case with the given ID exists
      */
     public List<CommentDTO> getCommentsForCase(UUID caseId) {
+        logger.info("Comment Service - Trying to get all the comments form the case {}", caseId);
         if(!caseRepository.existsById(caseId)) {
             throw new CaseNotFoundException();
         }
@@ -75,6 +76,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws IllegalArgumentException if the CreateCommentDTO is invalid
      */
     public CommentDTO addCommentToCase(UUID caseId, CreateCommentDTO createCommentDTO) throws UserNotFoundException {
+        logger.info("Comment Service - Trying to add a comment to the case {}", caseId);
         Case caseEntity = caseRepository.findById(caseId)
                 .orElseThrow(CaseNotFoundException::new);
 
@@ -88,6 +90,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUser(user);
 
         comment.setCaseEntity(caseEntity);
+        logger.info("Comment Service - Adding the comment {} to the case {}", comment, caseId);
         return commentMapper.commentToCommentDTO(commentRepository.save(comment));
     }
 }

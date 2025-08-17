@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Card } from 'primeng/card';
-import { Button } from 'primeng/button';
 import FileSaver from 'file-saver';
 import { ContractService } from '../../../../shared/services/contract.service';
 import { ScrollPanel } from 'primeng/scrollpanel';
@@ -26,6 +25,9 @@ type ContractDetails = {
 export class ConfirmationFormComponent implements OnInit {
   ngOnInit(): void {
     this._contractService.contract$.subscribe((data) => {
+      if (!data) {
+        return;
+      }
       FileSaver.saveAs(data, 'contract');
     });
   }

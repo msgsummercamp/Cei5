@@ -1,6 +1,7 @@
 package com.airassist.backend.service.impl;
 
 import com.airassist.backend.model.Airport;
+import com.airassist.backend.repository.AirportRepository;
 import com.airassist.backend.service.AirportApiFetchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,10 +10,11 @@ import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class AirportApiFetchServiceImpl implements AirportApiFetchService {
 
     private static final Logger logger = LoggerFactory.getLogger(AirportApiFetchServiceImpl.class);
@@ -35,47 +37,23 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
     private RestTemplate restTemplate;
     private ObjectMapper objectMapper;
 
-    private final ExecutorService cacheExecutor = Executors.newFixedThreadPool(1);
-
-    private AsyncLoadingCache<String, List<Airport>> airportsCache;
+    private final AirportRepository airportRepository;
 
     @PostConstruct
     void init() {
         restTemplate = new RestTemplate();
         objectMapper = new ObjectMapper();
         logger.info("AirportApiFetchServiceImplementation initialized with API URL: {}", airportApiUrl);
-
-        this.airportsCache = Caffeine.newBuilder()
-                .maximumSize(1)
-                .refreshAfterWrite(1, TimeUnit.DAYS)
-                // The hard expiration can be slightly longer to handle cases where
-                // the refresh fails. We still want to serve the old data.
-                .expireAfterWrite(2, TimeUnit.DAYS)
-                .executor(cacheExecutor)
-                .buildAsync(key -> fetchAirportDataInternal());
-    }
-
-    @PreDestroy
-    private void shutdownExecutor() {
-        logger.info("Shutting down cacheExecutor.");
-        cacheExecutor.shutdown();
-        try {
-            if (!cacheExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
-                cacheExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            cacheExecutor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override
-    public List<Airport> fetchAirportData() {
-        return this.airportsCache.get(AIRPORTS_CACHE_KEY).join();
+    public List<Airport> getAirports() {
+        logger.info("Service - fetching all airports.");
+        return this.airportRepository.findAll();
     }
 
     @Override
-    public List<Airport> fetchAirportDataInternal() throws InterruptedException, JsonProcessingException {
+    public void fetchAirportDataInternal() throws InterruptedException, JsonProcessingException {
         logger.info("Starting asynchronous refresh of airport data.");
 
         List<Airport> airports = new ArrayList<>();
@@ -113,7 +91,19 @@ public class AirportApiFetchServiceImpl implements AirportApiFetchService {
             }
         }
 
+        airportRepository.deleteAllInBatch();
+        airportRepository.saveAll(airports);
+
         logger.info("Successfully refreshed and fetched total airports: {}", airports.size());
-        return airports;
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 2 * * *", zone = "Europe/Bucharest")
+    public void scheduledAirportRefresh() {
+        try {
+            fetchAirportDataInternal();
+        } catch (Exception e) {
+            logger.error("Failed to refresh airports from API", e);
+        }
     }
 }
