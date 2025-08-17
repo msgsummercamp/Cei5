@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from './toaster/notification.service';
@@ -29,16 +29,22 @@ export class AirportsService {
         name: `${airport.name} (${airport.code})`,
       }))
     ),
-    catchError((error) => {
-      const apiError: ApiError = error?.error;
-      let message: string;
-
-      if (apiError) {
-        message = this._translationService.instant(apiError.detail);
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 0) {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.network-error')
+        );
       } else {
-        message = this._translationService.instant('api-errors.generic-server-error');
+        const apiError: ApiError = error?.error;
+        let message: string;
+
+        if (apiError) {
+          message = this._translationService.instant(apiError.detail);
+        } else {
+          message = this._translationService.instant('api-errors.generic-server-error');
+        }
+        this._notificationService.showError(message);
       }
-      this._notificationService.showError(message);
       return of([]);
     }),
     shareReplay({ bufferSize: 1, refCount: true })

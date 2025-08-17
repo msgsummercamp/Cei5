@@ -19,6 +19,7 @@ import { NotificationService } from '../services/toaster/notification.service';
 import { ErrorMessageComponent } from '../components/error-message/error-message.component';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type NewUserForm = {
   email: FormControl<string>;
@@ -89,10 +90,12 @@ export class EmployeeDialogComponent implements OnInit {
   }
 
   private buildRoleOptions(): void {
-    this.roles = Object.values(Roles).map((role) => ({
-      name: this.getRoleTranslation(role as Roles),
-      value: role,
-    }));
+    this.roles = Object.values(Roles)
+      .filter((role) => role !== Roles.USER)
+      .map((role) => ({
+        name: this.getRoleTranslation(role as Roles),
+        value: role,
+      }));
   }
 
   public showDialog(): void {
@@ -117,18 +120,21 @@ export class EmployeeDialogComponent implements OnInit {
 
     this._userService.createUser(this.newUserForm.getRawValue()).subscribe({
       next: () => {
-        this._notificationService.showSuccess(
-          this._translateService.instant('employee-dialog.userCreated')
-        );
         this.newUserForm.reset();
         this.loading.set(false);
         this.visibleChange.emit(false);
         this.onSuccess.emit();
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         this.loading.set(false);
-        const apiError: ApiError = error?.error;
-        this._notificationService.showError(this._translateService.instant(apiError.detail));
+        if (error.status === 0) {
+          this._notificationService.showError(
+            this._translateService.instant('api-errors.network-error')
+          );
+        } else {
+          const apiError: ApiError = error?.error;
+          this._notificationService.showError(this._translateService.instant(apiError.detail));
+        }
       },
     });
   }

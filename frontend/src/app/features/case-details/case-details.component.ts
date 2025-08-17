@@ -266,6 +266,9 @@ export class CaseDetailsComponent {
         this.loadingComments = false;
       },
       error: () => {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.cannot-load-comments')
+        );
         this.loadingComments = false;
       },
     });
@@ -286,6 +289,9 @@ export class CaseDetailsComponent {
         this.postingComment = false;
       },
       error: () => {
+        this._notificationService.showError(
+          this._translationService.instant('api-errors.cannot-post-comment')
+        );
         this.postingComment = false;
       },
     });
