@@ -269,7 +269,7 @@
     "dateOrder": "Flight times must be in chronological order",
     "selectConnection": "Please select a connection flight to provide details",
     "invalidFlightTimes": "Flight times must be valid (arrival after departure)",
-    "clickToAddConnections": "Click to add connections",
+    "clickToAddConnections": "Did you have any connection flights?",
     "pleaseAddConnection": "Add a connection airport",
     "fillInAllConnections": "Do not leave connection airports empty."
   },
