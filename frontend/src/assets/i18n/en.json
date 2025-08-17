@@ -249,7 +249,7 @@
     "departingAirportRequired": "Departing Airport is required.",
     "departingAirportLength": "Departing Airport must be exactly 3 characters",
     "departingAirportUpper": "Airport code must be 3 uppercase letters.",
-    "destinationAirport": "Destination Airport",
+    "destinationAirport": "Destination Airport*",
     "destinationAirportRequired": "Destination Airport is required.",
     "destinationAirportLength": "Destination Airport must be exactly 3 characters",
     "destinationAirportUpper": "Airport code must be 3 uppercase letters.",

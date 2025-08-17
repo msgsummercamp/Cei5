@@ -127,7 +127,7 @@
                     [virtualScrollItemSize]="50"
                   />
                   <label for="destinationAirport">{{
-                    'mainForm.departingAirport' | translate
+                    'mainForm.destinationAirport' | translate
                   }}</label>
                 </p-floatlabel>
                 <!-- Error Messages -->
@@ -160,8 +160,9 @@
                   }
                   @if (
                     reservationForm.hasError('destinationIsDeparting') &&
-                    (reservationForm.controls.departingAirport.touched ||
-                      reservationForm.controls.destinationAirport.touched)
+                    reservationForm.controls.departingAirport.touched &&
+                    reservationForm.controls.destinationAirport.touched &&
+                    reservationForm.controls.destinationAirport.value !== ''
                   ) {
                     <app-error-message text="{{ 'mainForm.destinationIsDeparting' | translate }}" />
                   }
@@ -235,7 +236,10 @@
                     class="flex flex-column flex-wrap align-items-start align-content-center px-auto mt-4"
                   >
                     <!-- Displaying the departing airport -->
-                    <p-message variant="outlined" severity="primary" class="w-full md:w-25rem mb-2"
+                    <p-message
+                      variant="outlined"
+                      severity="primary"
+                      class="w-full md:w-25rem mb-2 bg-white"
                       >{{ 'mainForm.connectionDepartingAirport' | translate }}
                       {{ reservationInformation.departingAirport }}</p-message
                     >
@@ -343,7 +347,10 @@
                     </form>
 
                     <!-- Displaying the destination airport -->
-                    <p-message variant="outlined" severity="primary" class="mt-2 w-full md:w-25rem"
+                    <p-message
+                      variant="outlined"
+                      severity="primary"
+                      class="mt-2 w-full md:w-25rem bg-white"
                       >{{ 'mainForm.destinationAirport' | translate }}
                       {{ reservationInformation.destinationAirport }}</p-message
                     >
@@ -380,7 +387,7 @@
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
         >
-          <div class="flex flex-row justify-content-center gap-8 mb-4">
+          <div class="flex flex-row justify-content-center gap-8 mb-8">
             <!-- Left Column: Connection Headers -->
             <div class="flex flex-column gap-4 mt-6">
               @for (i of connectionIndices; track i) {
@@ -419,13 +426,6 @@
                 }
               }
             </div>
-
-            <!-- Error message if no connection is flagged -->
-            @if (!flagged) {
-              <p-message severity="warn" class="mb-2 text-center">
-                {{ 'mainForm.selectConnection' | translate }}
-              </p-message>
-            }
           </div>
 
           <!-- Next and back buttons -->

@@ -249,7 +249,7 @@
     "departingAirportRequired": "Aeroportul de plecare este obligatoriu.",
     "departingAirportLength": "Aeroportul de plecare trebuie să aibă exact 3 caractere",
     "departingAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
-    "destinationAirport": "Aeroportul de destinație:",
+    "destinationAirport": "Aeroportul de destinație*",
     "destinationAirportRequired": "Aeroportul de destinație este obligatoriu.",
     "destinationAirportLength": "Aeroportul de destinație trebuie să aibă exact 3 caractere",
     "destinationAirportUpper": "Codul aeroportului trebuie să fie format din 3 litere mari.",
