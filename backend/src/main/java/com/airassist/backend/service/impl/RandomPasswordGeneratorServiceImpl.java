@@ -29,6 +29,14 @@ public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGenerat
         logger.info("RandomPasswordGeneratorService initialized with API URL: {}", apiUrl);
     }
 
+    /**
+     * Generates a random password of the specified length using an external API.
+     *
+     * @param length the desired length of the password
+     * @return a randomly generated password
+     * @throws JsonProcessingException if there is an error processing the JSON response
+     * @throws PasswordApiException if there is an error calling the password generator API
+     */
     @Override
     public String generateRandomPassword(int length) throws JsonProcessingException, PasswordApiException {
         String url = apiUrl.replace("{}", String.valueOf(length));
@@ -52,6 +60,13 @@ public class RandomPasswordGeneratorServiceImpl implements RandomPasswordGenerat
         return root.get("password").asText();
     }
 
+    /**
+     * Generates a random password of default length (12 characters).
+     *
+     * @return a randomly generated password
+     * @throws JsonProcessingException if there is an error processing the JSON response
+     * @throws PasswordApiException if there is an error calling the password generator API
+     */
     @Override
     public String generateRandomPassword() throws JsonProcessingException, PasswordApiException {
         return generateRandomPassword(12);

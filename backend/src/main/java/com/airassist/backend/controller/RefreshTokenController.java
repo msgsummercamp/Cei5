@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class RefreshTokenController {
     private final AuthService authService;
 
+    /**
+     * Endpoint to refresh the authentication token.
+     *
+     * @param authorizationHeader The Authorization header containing the Bearer token.
+     * @return A ResponseEntity containing the new TokenResponse.
+     * @throws UserNotFoundException If the user associated with the token is not found.
+     * @throws InvalidTokenException If the provided token is invalid or expired.
+     */
     @GetMapping
     public ResponseEntity<TokenResponse> refreshToken(@RequestHeader("Authorization") String authorizationHeader) throws UserNotFoundException, InvalidTokenException {
         String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7) : authorizationHeader;

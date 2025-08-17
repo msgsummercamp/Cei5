@@ -4,10 +4,8 @@ import com.airassist.backend.dto.comment.CommentDTO;
 import com.airassist.backend.dto.comment.CreateCommentDTO;
 import com.airassist.backend.exception.user.UserNotFoundException;
 import com.airassist.backend.service.CommentService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 

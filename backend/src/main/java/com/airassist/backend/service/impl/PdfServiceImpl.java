@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Map;
@@ -20,6 +19,13 @@ public class PdfServiceImpl implements PdfService {
 
     private final TemplateEngine templateEngine;
 
+    /**
+     * Generates a PDF document from a Thymeleaf template and data.
+     *
+     * @param templateName the name of the Thymeleaf template
+     * @param data the data to be used in the template
+     * @return a byte array containing the generated PDF document
+     */
     @SneakyThrows
     @Override
     public byte[] generatePdf(String templateName, Map<String, Object> data) {
